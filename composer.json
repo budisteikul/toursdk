@@ -1,0 +1,15 @@
+{
+    "name": "budisteikul/toursdk",
+    "description": "Tour SDK",
+    "authors": [
+        {
+            "name": "Budi",
+            "email": "aku@budi.my.id"
+        }
+    ],
+    "autoload": {
+   		"psr-4": {
+        	"budisteikul\\toursdk\\": "src/"
+    	}
+	}
+}

@@ -9,8 +9,7 @@ class Image extends Model
     protected $table = 'images';
 	protected $keyType = 'string';
     protected $dateFormat = 'Y-m-d H:i:s.u';
-    protected $fillable = ['name','url','sort'];
-    //protected $fillable = ['name','height','width','mimetype','size','path','url','short'];
+    protected $fillable = ['public_id','secure_url','sort'];
 
     public function product()
     {

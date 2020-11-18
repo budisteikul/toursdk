@@ -21,8 +21,8 @@ class CreateImagesTable extends Migration
                   ->references('id')->on('products')
                   ->onDelete('cascade')->onUpdate('cascade');
 
-            $table->string('name')->nullable();
-            $table->string('url')->nullable();
+            $table->string('public_id')->nullable();
+            $table->string('secure_url')->nullable();
             $table->integer('sort')->nullable();
 
             $table->timestamps(6);

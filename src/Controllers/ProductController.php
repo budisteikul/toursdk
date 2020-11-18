@@ -91,8 +91,8 @@ class ProductController extends Controller
                 
                 $image = new Image();
                 $image->product_id = $product->id;
-                $image->name = basename($filetemp->file);
-                $image->url = $response['secure_url'];
+                $image->public_id = $response['public_id'];
+                $image->secure_url = $response['secure_url'];
                 $image->sort = $sort;
                 $image->save();
                 $filetemp->delete();
@@ -187,7 +187,7 @@ class ProductController extends Controller
     {
         foreach($product->images as $image)
         {
-            ImageHelper::deleteImageCloudinary($image->name);
+            ImageHelper::deleteImageCloudinary($image->public_id);
         }
 
 		$product->categories()->detach();

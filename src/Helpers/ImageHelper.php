@@ -18,15 +18,14 @@ class ImageHelper {
         return $response;
     }
 
-    public static function deleteImageCloudinary($file_name)
+    public static function deleteImageCloudinary($public_id)
     {
         \Cloudinary::config(array( 
             "cloud_name" => env('CLOUDINARY_NAME'), 
             "api_key" => env('CLOUDINARY_KEY'), 
             "api_secret" => env('CLOUDINARY_SECRET') 
         ));
-        $public_id = explode(".",$file_name);
-        \Cloudinary\Uploader::destroy(env('CLOUDINARY_NAME').'/images/'. $public_id[0]);
+        \Cloudinary\Uploader::destroy($public_id);
     }
 
 }

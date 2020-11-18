@@ -15,4 +15,9 @@ class Product extends Model
     {
         return $this->belongsToMany('budisteikul\toursdk\Models\Category','category_product','product_id','category_id')->withTimestamps();
     }
+	
+	public function Category()
+    {
+        return $this->belongsTo('budisteikul\toursdk\Models\Category','category_id');
+    }
 }

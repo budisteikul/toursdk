@@ -4,6 +4,7 @@ namespace budisteikul\toursdk\Controllers;
 use App\Http\Controllers\Controller;
 
 use budisteikul\toursdk\Models\Category;
+use budisteikul\toursdk\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use budisteikul\toursdk\Helpers\CategoryHelper;
@@ -135,6 +136,8 @@ class CategoryController extends Controller
     public function destroy(Category $category)
     {
         Category::where('parent_id',$category->id)->update(['parent_id'=>0]);
-        $category->delete();
+        Product::where('category_id',$category->id)-?update(['category_id'=>0]);
+		$category->Products()->detach();
+		$category->delete();
     }
 }

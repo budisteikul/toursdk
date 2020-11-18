@@ -10,22 +10,22 @@ class Category extends Model
     protected $dateFormat = 'Y-m-d H:i:s.u';
     protected $fillable = ['name','slug'];
 
-    public function ChildCategories()
+    public function child()
     {
         return $this->hasMany('budisteikul\toursdk\Models\Category','parent_id','id');
     }
 
-    public function ParentCategory()
+    public function parent()
     {
         return $this->belongsTo('budisteikul\toursdk\Models\Category','parent_id','id');
     }
 	
-	public function Products()
+	public function products()
     {
         return $this->belongsToMany('budisteikul\toursdk\Models\Product','category_product','category_id','product_id')->withTimestamps();
     }
 
-    public function Product()
+    public function product()
     {
         return $this->hasOne('budisteikul\toursdk\Models\Product','category_id');
     }

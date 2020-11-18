@@ -6,11 +6,15 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Validator;
+use Ramsey\Uuid\Uuid;
 
 use budisteikul\toursdk\DataTables\ProductDataTable;
 use budisteikul\toursdk\Models\Product;
+use budisteikul\toursdk\Models\Image;
 use budisteikul\toursdk\Models\Category;
+use budisteikul\coresdk\Models\FileTemp;
 use budisteikul\toursdk\Helpers\CategoryHelper;
+use budisteikul\toursdk\Helpers\ImageHelper;
 
 class ProductController extends Controller
 {
@@ -32,7 +36,10 @@ class ProductController extends Controller
     public function create()
     {
         $categories = Category::orderBy('name')->get();
-        return view('toursdk::product.create',['categories'=>$categories]);
+        return view('toursdk::product.create',[
+            'categories'=>$categories,
+            'file_key'=>Uuid::uuid4()->toString()
+        ]);
     }
 
     /**
@@ -66,13 +73,31 @@ class ProductController extends Controller
 		if($category_id>0)
             {
                 $categories = CategoryHelper::getParent($category_id);
-                $product->Categories()->attach($categories);
+                $product->categories()->attach($categories);
                 $product->category_id = $category_id;
                 $product->save();
             }
 		
 		$product->save();
-			
+		
+
+        $key = $request->input('key');
+        $filetemps = FileTemp::where('key',$key)->get();
+        $sort = 0 ;
+        foreach($filetemps as $filetemp)
+        {
+                $sort++;
+                $response = ImageHelper::uploadImageCloudinary($filetemp->file);
+                
+                $image = new Image();
+                $image->product_id = $product->id;
+                $image->name = basename($filetemp->file);
+                $image->url = $response['secure_url'];
+                $image->sort = $sort;
+                $image->save();
+                $filetemp->delete();
+        }
+
 		return response()->json([
                     "id" => "1",
                     "message" => 'Success'
@@ -135,11 +160,11 @@ class ProductController extends Controller
 		$product->category_id = 0;
         $product->save();
 		
-		$product->Categories()->detach();
+		$product->categories()->detach();
 		if($category_id>0)
             {
                 $categories = CategoryHelper::getParent($category_id);
-                $product->Categories()->attach($categories);
+                $product->categories()->attach($categories);
                 $product->category_id = $category_id;
                 $product->save();
             }
@@ -160,7 +185,12 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
-		$product->Categories()->detach();
+        foreach($product->images as $image)
+        {
+            ImageHelper::deleteImageCloudinary($image->name);
+        }
+
+		$product->categories()->detach();
         $product->delete();
     }
 }

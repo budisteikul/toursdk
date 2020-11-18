@@ -27,6 +27,7 @@ class TourSDKServiceProvider extends ServiceProvider
         $this->loadMigrationsFrom(__DIR__.'/migrations/2020_11_17_133006_create_categories_table.php');
 		$this->loadMigrationsFrom(__DIR__.'/migrations/2020_11_17_222702_create_products_table.php');
 		$this->loadMigrationsFrom(__DIR__.'/migrations/2020_11_17_225332_create_category_product_table.php');
+        $this->loadMigrationsFrom(__DIR__.'/migrations/2020_11_18_151603_create_images_table.php');
         $this->loadRoutesFrom(__DIR__.'/routes/web.php');
     }
 }

@@ -28,7 +28,7 @@ class CategoryDataTable extends DataTable
                     }
                     else
                     {
-                        return $id->ParentCategory->name;
+                        return $id->parent->name;
                     }
                     
                 })

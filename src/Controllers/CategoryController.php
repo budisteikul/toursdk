@@ -137,7 +137,7 @@ class CategoryController extends Controller
     {
         Category::where('parent_id',$category->id)->update(['parent_id'=>0]);
         Product::where('category_id',$category->id)->update(['category_id'=>0]);
-		$category->Products()->detach();
+		$category->products()->detach();
 		$category->delete();
     }
 }

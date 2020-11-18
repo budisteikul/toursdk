@@ -19,6 +19,7 @@ function STORE()
 			"name": $('#name').val(),
 			"bokun_id": $('#bokun_id').val(),
 			"category_id": $('#category_id').val(),
+			"key": '{{ $file_key }}'
 			
         },
 		type: 'POST',
@@ -81,6 +82,55 @@ function STORE()
       <option value="{{ $category->id }}">{{ $category->name }}</option>
       @endforeach
     </select>
+</div>
+
+<div class="form-group">
+<label>Image :</label>
+<div id="status"></div>
+<div id="mulitplefileuploader"><b class="fa fa-plus"> Upload Imge </b></div>
+<script>
+$(document).ready(function()
+{
+var settings = {
+    url: "{{ route('route_coresdk_filetemp.index') }}",
+    multiple:true,
+	dragDrop:true,
+	maxFileCount:-1,
+    fileName: "myfile",
+    allowedTypes:"jpg,jpeg,png",	
+    returnType:"json",
+	acceptFiles:"image/*",
+	uploadStr:"<i class=\"fa fa-folder-open\"></i> Browse",
+	onSuccess:function(files,data,xhr)
+    {
+		$.each( data, function( index, value ) {
+		});	
+    },
+    showDelete:true,
+	formData: { key: '{{ $file_key }}' , _token: $("meta[name=csrf-token]").attr("content") },
+    deleteCallback: function(data,pd)
+	{
+		
+    for(var i=0;i<data.length;i++)
+    {
+						
+						$.ajax({
+							beforeSend: function(request) {
+    							request.setRequestHeader("X-CSRF-TOKEN", $("meta[name=csrf-token]").attr("content"));
+  						},
+     						type: 'DELETE',
+     						url: '{{ route('route_coresdk_filetemp.index') }}/'+ data[i]
+						}).done(function( msg ) {
+							
+						});	
+     }
+           
+    pd.statusbar.hide();
+	}
+}
+var uploadObj = $("#mulitplefileuploader").uploadFile(settings);
+});
+</script>
 </div>
 
 	<button  class="btn btn-danger" type="button" onClick="$.fancybox.close();"><i class="fa fa-window-close"></i> Cancel</button>

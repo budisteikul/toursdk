@@ -34,8 +34,8 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        $Categories = Category::orderBy('name')->get();
-        return view('toursdk::category.create',['Categories'=>$Categories]);
+        $categories = Category::orderBy('name')->get();
+        return view('toursdk::category.create',['categories'=>$categories]);
     }
 
     /**

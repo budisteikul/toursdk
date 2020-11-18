@@ -1,0 +1,166 @@
+<?php
+
+namespace budisteikul\toursdk\Controllers;
+use App\Http\Controllers\Controller;
+
+use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Validator;
+
+use budisteikul\toursdk\DataTables\ProductDataTable;
+use budisteikul\toursdk\Models\Product;
+use budisteikul\toursdk\Models\Category;
+use budisteikul\toursdk\Helpers\CategoryHelper;
+
+class ProductController extends Controller
+{
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index(ProductDataTable $dataTable)
+    {
+        return $dataTable->render('toursdk::product.index');
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        $categories = Category::orderBy('name')->get();
+        return view('toursdk::product.create',['categories'=>$categories]);
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255|unique:products,name',
+            'bokun_id' => 'required|numeric|unique:products,bokun_id',
+        ]);
+        
+        if ($validator->fails()) {
+            $errors = $validator->errors();
+            return response()->json($errors);
+        }
+		
+		$name =  $request->input('name');
+		$category_id =  $request->input('category_id');
+        $bokun_id =  $request->input('bokun_id');
+		
+		$product = new Product();
+        $product->name = $name;
+        $product->slug = Str::slug($name,'-');
+		$product->bokun_id = $bokun_id;
+        $product->save();
+		
+		if($category_id>0)
+            {
+                $categories = CategoryHelper::getParent($category_id);
+                $product->Categories()->attach($categories);
+                $product->category_id = $category_id;
+                $product->save();
+            }
+		
+		$product->save();
+			
+		return response()->json([
+                    "id" => "1",
+                    "message" => 'Success'
+                ]);
+		
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  \App\Product  $product
+     * @return \Illuminate\Http\Response
+     */
+    public function show(Product $product)
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  \App\Product  $product
+     * @return \Illuminate\Http\Response
+     */
+    public function edit(Product $product)
+    {
+        $categories = Category::orderBy('name')->get();
+		return view('toursdk::product.edit',[
+				'product'=>$product,
+				'categories'=>$categories,
+			]);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Product  $product
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, Product $product)
+    {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255|unique:products,name,'.$product->id,
+            'bokun_id' => 'required|numeric|unique:products,bokun_id,'.$product->id,
+        ]);
+        
+        if ($validator->fails()) {
+            $errors = $validator->errors();
+            return response()->json($errors);
+        }
+		
+		$name =  $request->input('name');
+		$category_id =  $request->input('category_id');
+        $bokun_id =  $request->input('bokun_id');
+		
+        $product->name = $name;
+        $product->slug = Str::slug($name,'-');
+		$product->bokun_id = $bokun_id;
+		$product->category_id = 0;
+        $product->save();
+		
+		$product->Categories()->detach();
+		if($category_id>0)
+            {
+                $categories = CategoryHelper::getParent($category_id);
+                $product->Categories()->attach($categories);
+                $product->category_id = $category_id;
+                $product->save();
+            }
+		
+		$product->save();
+			
+		return response()->json([
+                    "id" => "1",
+                    "message" => 'Success'
+                ]);
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\Product  $product
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy(Product $product)
+    {
+		$product->Categories()->detach();
+        $product->delete();
+    }
+}

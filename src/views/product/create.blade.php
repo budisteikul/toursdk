@@ -5,21 +5,24 @@ function STORE()
 	var error = false;
 	$("#submit").attr("disabled", true);
 	$('#submit').html('<i class="fa fa-spinner fa-spin"></i>');
-	var input = ["name"];
+	var input = ["name","bokun_id"];
 	
 	$.each(input, function( index, value ) {
   		$('#'+ value).removeClass('is-invalid');
   		$('#span-'+ value).remove();
 	});
 	
+
 	$.ajax({
 		data: {
         	"_token": $("meta[name=csrf-token]").attr("content"),
 			"name": $('#name').val(),
-			"parent_id": $('#parent_id').val(),
+			"bokun_id": $('#bokun_id').val(),
+			"category_id": $('#category_id').val(),
+			
         },
 		type: 'POST',
-		url: '{{ route('route_toursdk_category.store') }}'
+		url: '{{ route('route_toursdk_product.store') }}'
 		}).done(function( data ) {
 			
 			if(data.id=="1")
@@ -53,7 +56,7 @@ function STORE()
         <div class="col-md-12 pr-0 pl-0 pt-0 pb-0">
              <div class="card">
              
-	<div class="card-header">Add Category</div>
+	<div class="card-header">Add Product</div>
 	<div class="card-body">
 				
 <form onSubmit="STORE(); return false;">
@@ -63,17 +66,22 @@ function STORE()
 <div class="form-group">
 	<label for="name">Name :</label>
 	<input type="text" id="name" name="name" class="form-control" placeholder="Name" autocomplete="off">
-</div> 
+</div>
 
 <div class="form-group">
-    <label for="parent_id">Parent</label>
-    <select class="form-control" id="parent_id">
-      <option value="0">No Parent</option>
+	<label for="bokun_id">Bokun ID :</label>
+	<input type="text" id="bokun_id" name="bokun_id" class="form-control" placeholder="Bokun ID" autocomplete="off">
+</div>  
+
+<div class="form-group">
+    <label for="category_id">Category</label>
+    <select class="form-control" id="category_id">
+      <option value="0">No Category</option>
       @foreach($categories as $category)
       <option value="{{ $category->id }}">{{ $category->name }}</option>
       @endforeach
     </select>
-  </div>
+</div>
 
 	<button  class="btn btn-danger" type="button" onClick="$.fancybox.close();"><i class="fa fa-window-close"></i> Cancel</button>
 	<button id="submit" type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>

@@ -13,7 +13,7 @@ class ImageHelper {
             "api_key" => env('CLOUDINARY_KEY'), 
             "api_secret" => env('CLOUDINARY_SECRET') 
         ));
-        $response = \Cloudinary\Uploader::upload(storage_path('app').'/'. $file, Array('unique_filename'=>false,'use_filename'=>true,'folder' => env('CLOUDINARY_NAME') .'/images'));
+        $response = \Cloudinary\Uploader::upload(storage_path('app').'/'. $file, Array('unique_filename'=>false,'use_filename'=>true,'folder' => env('APP_NAME') .'/images'));
         Storage::disk('local')->delete($file);
         return $response;
     }

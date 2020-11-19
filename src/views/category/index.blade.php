@@ -2,21 +2,7 @@
 @section('content')
 @push('scripts')
 <script type="text/javascript">
-  function UPDATE_STATUS(id,status)
-  {
-      $.ajax({
-      data: {
-          "_token": $("meta[name=csrf-token]").attr("content"),
-          "status": status,
-          "action": "update_status"
-      },
-      type: 'PUT',
-      url: '{{ route('route_toursdk_category.index') }}/'+ id
-      }).done(function( data ) {
-        var table = $('#dataTableBuilder').DataTable();
-        table.ajax.reload( null, false );
-      });
-  }
+  
 
 	function DELETE(id)
 	{

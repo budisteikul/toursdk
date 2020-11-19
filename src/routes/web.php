@@ -7,3 +7,6 @@ Route::resource('/cms/toursdk/category','budisteikul\toursdk\Controllers\Categor
 //Product
 Route::resource('/cms/toursdk/product','budisteikul\toursdk\Controllers\ProductController',[ 'names' => 'route_toursdk_product' ])
 	->middleware(['web','auth','verified','CoreMiddleware']);
+	
+Route::resource('/cms/toursdk/channel','budisteikul\toursdk\Controllers\ChannelController',[ 'names' => 'route_toursdk_channel' ])
+	->middleware(['web','auth','verified','CoreMiddleware']);

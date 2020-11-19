@@ -27,6 +27,25 @@ class ImageHelper {
         ));
         \Cloudinary\Uploader::destroy($public_id);
     }
+	
+	public static function urlImageCloudinary($public_id,$width=0,$height=0)
+	{
+		\Cloudinary::config(array( 
+			"cloud_name" => env('CLOUDINARY_NAME'), 
+			"api_key" => env('CLOUDINARY_KEY'), 
+			"api_secret" => env('CLOUDINARY_SECRET') 
+		));
 
+		if($width>0 && $height>0)
+		{
+			$url = cloudinary_url($public_id, array("width" => $width, "height" => $height, "crop" => "fill","secure"=>true));
+		}
+		else
+		{
+			$url = cloudinary_url($public_id, array("secure"=>true));
+		}
+		return $url;
+		
+	}
 }
 ?>

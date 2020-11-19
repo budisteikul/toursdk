@@ -128,6 +128,7 @@ class ProductController extends Controller
 		return view('toursdk::product.edit',[
 				'product'=>$product,
 				'categories'=>$categories,
+				'file_key'=>Uuid::uuid4()->toString()
 			]);
     }
 
@@ -170,7 +171,42 @@ class ProductController extends Controller
             }
 		
 		$product->save();
-			
+		
+        foreach($product->images->sortBy('sort') as $image)
+        {
+
+            $sort = $request->input('image_'. str_ireplace("-","_",$image->id));
+            if($sort=="") $sort = 0;
+			$image->sort = $sort;
+            $image->save();
+            
+            $check = $request->input('del_image_'. str_ireplace("-","_",$image->id));
+            
+            if($check=="hapus")
+            {
+                ImageHelper::deleteImageCloudinary($image->public_id);
+                $image->delete();
+            }
+            
+        }
+		
+		$key = $request->input('key');
+        $filetemps = FileTemp::where('key',$key)->get();
+        $sort = $product->images->max('sort');
+        foreach($filetemps as $filetemp)
+        {
+                $sort++;
+                $response = ImageHelper::uploadImageCloudinary($filetemp->file);
+                $image = new Image();
+                $image->product_id = $product->id;
+                $image->public_id = $response['public_id'];
+                $image->secure_url = $response['secure_url'];
+                $image->sort = $sort;
+                $image->save();
+                $filetemp->delete();
+        }
+		
+		
 		return response()->json([
                     "id" => "1",
                     "message" => 'Success'

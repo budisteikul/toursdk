@@ -1,4 +1,4 @@
-
+@inject('ImageHelper', budisteikul\toursdk\Helpers\ImageHelper)
 <script language="javascript">
 function UPDATE()
 {
@@ -12,6 +12,13 @@ function UPDATE()
   		$('#span-'+ value).remove();
 	});
 	
+	@foreach($product->images as $image)
+	var image_{{ $image->id }} = $('#image_{{ $image->id }}').val();
+	if($('#del_image_{{ $image->id }}').is(':checked'))
+	{
+		var del_image_{{ $image->id }} = $('#del_image_{{ $image->id }}').val();
+	}
+	@endforeach
 
 	$.ajax({
 		data: {
@@ -19,6 +26,10 @@ function UPDATE()
 			"name": $('#name').val(),
 			"bokun_id": $('#bokun_id').val(),
 			"category_id": $('#category_id').val(),
+			"key": '{{$file_key}}',
+			@foreach($product->images as $image)
+				image_{{ $image->id }}: image_{{ $image->id }}, del_image_{{ $image->id }}: del_image_{{ $image->id }},
+			@endforeach
         },
 		type: 'PUT',
 		url: '{{ route('route_toursdk_product.update',$product->id) }}'
@@ -78,6 +89,78 @@ function UPDATE()
       @endforeach
     </select>
   </div>
+
+
+<div class="form-group">
+	<div class="row">
+		@foreach($product->images->sortBy('sort') as $image)
+				<div class="col-auto" style="margin-top:10px;">
+					<img style=" height:150px; " class="image-photo rounded" src="{{ $ImageHelper->urlImageCloudinary($image->public_id,'250','250') }}" >
+					<div class="form-row align-items-center pt-1">
+                    	<div class="col-auto">
+							<input type="text" class="form-control text-center" style="width:50px;" id="image_{{ str_ireplace("-","_",$image->id) }}" name="image_{{ str_ireplace("-","_",$image->id) }}" value="{{ $image->sort }}">
+						</div>
+						<div class="col-auto">
+							<div class="form-check form-check-inline">
+								<input type="checkbox" class="form-check-input" id="del_image_{{ $image->id }}" name="del_image_{{ $image->id }}" value="hapus">
+								<label class="form-check-label" for="del_image_{{ $image->id }}">
+								Delete
+								</label>
+							</div>
+						</div>
+					</div>
+				</div>
+		@endforeach
+	</div>
+</div>
+
+<div class="form-group">
+<label>Image :</label>
+<div id="status"></div>
+<div id="mulitplefileuploader"><b class="fa fa-plus"> Upload Imge </b></div>
+<script>
+$(document).ready(function()
+{
+var settings = {
+    url: "{{ route('route_coresdk_filetemp.index') }}",
+    multiple:true,
+	dragDrop:true,
+	maxFileCount:-1,
+    fileName: "myfile",
+    allowedTypes:"jpg,jpeg,png",	
+    returnType:"json",
+	acceptFiles:"image/*",
+	uploadStr:"<i class=\"fa fa-folder-open\"></i> Browse",
+	onSuccess:function(files,data,xhr)
+    {
+		$.each( data, function( index, value ) {
+		});	
+    },
+    showDelete:true,
+	formData: { key: '{{ $file_key }}' , _token: $("meta[name=csrf-token]").attr("content") },
+    deleteCallback: function(data,pd)
+	{
+		
+    for(var i=0;i<data.length;i++)
+    {
+						
+						$.ajax({
+							beforeSend: function(request) {
+    							request.setRequestHeader("X-CSRF-TOKEN", $("meta[name=csrf-token]").attr("content"));
+  						},
+     						type: 'DELETE',
+     						url: '{{ route('route_coresdk_filetemp.index') }}/'+ data[i]
+						}).done(function( msg ) {
+							
+						});	
+     }      
+    pd.statusbar.hide();
+	}
+}
+var uploadObj = $("#mulitplefileuploader").uploadFile(settings);
+});
+</script>
+</div>
      
 <button  class="btn btn-danger" type="button" onClick="$.fancybox.close();"><i class="fa fa-window-close"></i> Cancel</button>
 <button id="submit" type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>

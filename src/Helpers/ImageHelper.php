@@ -1,5 +1,6 @@
 <?php
 namespace budisteikul\toursdk\Helpers;
+use budisteikul\toursdk\Models\Product;
 use budisteikul\toursdk\Models\Image;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
@@ -47,5 +48,20 @@ class ImageHelper {
 		return $url;
 		
 	}
+
+    public static function cover(Product $product)
+    {
+        $image = $product->images->sortBy('sort')->first();
+        $url = self::urlImageCloudinary($image->public_id,300,150);
+        return $url;
+    }
+
+    public static function thumbnail(Product $product)
+    {
+        $image = $product->images->sortBy('sort')->first();
+        $url = self::urlImageCloudinary($image->public_id,80,80);
+        return $url;
+    }
+
 }
 ?>

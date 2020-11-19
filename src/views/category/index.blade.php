@@ -80,7 +80,7 @@
                     <button type="button" class="btn btn-secondary"  onclick="CREATE(); return false;"><b class="fa fa-plus-square"></b> Create Category</button>
                     </div>
                     <div class="col text-right mr-0 pr-0">
-                    <button type="button" class="btn btn-success"  onclick="SHOW(); return false;"><b class="fa fa-plus-square"></b> Show Structure</button>
+                    <button type="button" class="btn btn-success"  onclick="SHOW(); return false;"><b class="fa fa-eye"></b> Show Structure</button>
                     </div>
                 </div>
                 </div>  

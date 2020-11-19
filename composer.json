@@ -7,6 +7,9 @@
             "email": "aku@budi.my.id"
         }
     ],
+	"require": {
+        "cloudinary/cloudinary_php": "^1.19"
+    },
     "autoload": {
    		"psr-4": {
         	"budisteikul\\toursdk\\": "src/"

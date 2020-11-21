@@ -58,8 +58,9 @@ class ImageHelper {
 
     public static function thumbnail(Product $product)
     {
+        $url = '';
         $image = $product->images->sortBy('sort')->first();
-        $url = self::urlImageCloudinary($image->public_id,80,80);
+        if(isset($image)) $url = self::urlImageCloudinary($image->public_id,80,80);
         return $url;
     }
 

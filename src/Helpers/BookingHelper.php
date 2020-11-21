@@ -790,8 +790,8 @@ class BookingHelper {
 		foreach($activityBookings as $activityBooking)
 		{
 			
-			$check_rev_shoppingcart_questions = ShoppingcartQuestion::where('booking_id',$activityBooking->bookingId)->get();
-			if(!@count($check_rev_shoppingcart_questions))
+			$check_shoppingcart_questions = ShoppingcartQuestion::where('booking_id',$activityBooking->bookingId)->get();
+			if(!@count($check_shoppingcart_questions))
 			{
 				if(isset($activityBooking->pickupQuestions))
 				{
@@ -885,6 +885,88 @@ class BookingHelper {
 		if($action=="update") self::update_shoppingcart($contents,$id);
 	}
 	
+	public static function clear_cart($shoppingcart)
+	{
+		BokunHelper::get_removepromocode($shoppingcart->session_id);
+		foreach($shoppingcart->shoppingcart_products()->get() as $shoppingcart_product)
+            {
+                BokunHelper::get_removeactivity($shoppingcart->session_id,$shoppingcart_product->booking_id);
+            }
+        Session::forget('sessionId');
+        return $shoppingcart;
+	}
+
+	public static function save_question($shoppingcart,$request,$required=false)
+	{
+		foreach($shoppingcart->shoppingcart_questions()->get() as $question)
+            {
+            	if($required)
+            	{
+            		if($request->input($question->id)=="" && $question->required)
+					{
+						return response()->json([
+							"id" => "2",
+							"message" => 'Variable Not Valid'
+						]);
+					}
+            	}
+            	
+
+                $shoppingcart_question = ShoppingcartQuestion::find($question->id);
+                $shoppingcart_question->answer = $request->input($question->id);
+                $shoppingcart_question->save();
+                
+                if($shoppingcart_question->select_option)
+                {
+                    $shoppingcart_question_options = ShoppingcartQuestionOption::where('shoppingcart_questions_id',$shoppingcart_question->id)->get();
+                    foreach($shoppingcart_question_options as $shoppingcart_question_option)
+                    {
+                        if($shoppingcart_question_option->value==$request->input($question->id))
+                        {
+                            $shoppingcart_question_option = ShoppingcartQuestionOption::find($shoppingcart_question_option->id);
+                            $shoppingcart_question_option->answer = 1;
+                            $shoppingcart_question_option->save();
+                        }
+                        else
+                        {
+                            $shoppingcart_question_option_ = ShoppingcartQuestionOption::find($shoppingcart_question_option->id);
+                            $shoppingcart_question_option_->answer = 0;
+                            $shoppingcart_question_option_->save();
+                        }
+                        
+                    }
+                }
+            }
+        return $shoppingcart;
+	}
+
+	public static function remove_promocode($shoppingcart)
+	{
+		BokunHelper::get_removepromocode($shoppingcart->session_id);
+        self::get_shoppingcart($shoppingcart->session_id,"update");
+        return $shoppingcart;
+	}
+
+	public static function remove_activity($shoppingcart,$bookingId)
+	{
+		ShoppingcartQuestion::where('booking_id',$bookingId)->delete();
+		BokunHelper::get_removeactivity($shoppingcart->session_id,$bookingId);
+		self::get_shoppingcart($shoppingcart->session_id,"update");
+		return $shoppingcart;
+	}
+
+	public static function apply_promocode($shoppingcart,$promocode)
+	{
+		$status = false;
+		$contents = BokunHelper::get_applypromocode($shoppingcart->session_id,$promocode);
+		
+		if(!isset($contents->fields->reason))
+		{
+			$status = true;
+			self::get_shoppingcart($shoppingcart->session_id,"update");
+		}
+		return $status;
+	}
 
 	public static function get_rate($from,$to)
 	{
@@ -924,22 +1006,6 @@ class BookingHelper {
         	$uuid = "VER-". rand(100000,999999);
     	}
     	return $uuid;
-	}
-	
-	
-
-	public static function get_reseller($id)
-	{
-		$slug = rev_resellers::where('id',$product_id)->first();
-		if(isset($slug))
-		{
-			$id = $slug->id;	
-		}
-		else
-		{
-			$id = '';
-		}
-		return $id;
 	}
 	
 	
@@ -1021,10 +1087,11 @@ class BookingHelper {
 		}
 		return $hasil;
 	}
+
 	public static function check_shoppingcart($sessionId)
 	{
 		$status = false;
-		$shoppingcart = Shoppingcart::where('sessionId', $sessionId)->where('bookingStatus','CART')->first();
+		$shoppingcart = Shoppingcart::where('session_id', $sessionId)->where('bookingStatus','CART')->first();
 		if(@count($shoppingcart))
 		{
 			$check = $shoppingcart->shoppingcart_products()->count();

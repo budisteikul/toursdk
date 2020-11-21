@@ -14,7 +14,7 @@
 @foreach($root_categories as $root_category)
   <li class="parent_li">
     <span><b>- {{ $root_category->name }}</b></span>
-    @if(count($root_category->ChildCategories))
+    @if(@count($root_category->ChildCategories))
       {{ $Category->structure($root_category->id) }}
     @endif
   </li>

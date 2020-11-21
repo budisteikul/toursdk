@@ -63,7 +63,28 @@
         onAddedToCart: function(cart) {
 				$('.btn-theme').attr("disabled",true);
 				$('.btn-theme').html(' <i class="fa fa-spinner fa-spin fa-fw"></i>  processing... ');
-				var successUrl = '{{route('route_toursdk_booking.index')}}/shoppingcart';
+				
+                $.ajax({
+                    data: {
+                        "_token": $("meta[name=csrf-token]").attr("content"),
+                        "sessionId": '<?= $sessionId ?>',
+                    },
+                    type: 'POST',
+                    url: '/snippets/shoppingcart'
+                    }).done(function( data ) {
+            
+                        if(data.id=="1")
+                        {
+                            window.location.href = '{{route('route_toursdk_booking.index')}}/checkout';
+                        }
+                        else
+                        {
+                            $("#submit").attr("disabled", false);
+                            $('.btn-theme').html(' Book now ');
+                        }
+                    });
+                /*
+                var successUrl = '{{route('route_toursdk_booking.index')}}/shoppingcart';
                 if ( successUrl.indexOf('?') == -1 ) {
                   successUrl += '?sessionId=<?= $sessionId ?>';
                 } else {
@@ -74,6 +95,7 @@
                 } else {
                   window.location = successUrl;
                 }
+                */
             
         },
         

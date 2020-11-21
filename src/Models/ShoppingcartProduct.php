@@ -17,6 +17,6 @@ class ShoppingcartProduct extends Model
 	
 	public function shoppingcart_rates()
     {
-        return $this->hasMany('budisteikul\toursdk\Models\ShoppingcartRates','shoppingcart_product_id');
+        return $this->hasMany('budisteikul\toursdk\Models\ShoppingcartRate','shoppingcart_product_id');
     }
 }

@@ -6,10 +6,12 @@ use App\Http\Controllers\Controller;
 use budisteikul\toursdk\Models\Shoppingcart;
 use budisteikul\toursdk\Helpers\BookingHelper;
 use budisteikul\toursdk\Helpers\BokunHelper;
-use budisteikul\toursdk\Helpers\PaypalHelper;
+use budisteikul\toursdk\Models\Channel;
+use budisteikul\toursdk\DataTables\BookingDataTable;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Ramsey\Uuid\Uuid;
+use Illuminate\Support\Facades\Validator;
 
 class BookingController extends Controller
 {
@@ -20,6 +22,7 @@ class BookingController extends Controller
             Session::put('sessionId',$sessionId);
         }
 
+        $this->sessionId = Session::get('sessionId');
         $this->bookingChannelUUID = env("BOKUN_BOOKING_CHANNEL");
         $this->currency = env("BOKUN_CURRENCY");
         $this->lang = env("BOKUN_LANG");
@@ -33,7 +36,7 @@ class BookingController extends Controller
         }
         
         $sessionId = Session::get('sessionId');
-        $shoppingcart = Shoppingcart::where('sessionId', $sessionId)
+        $shoppingcart = Shoppingcart::where('session_id', $sessionId)
                         ->where('booking_status','CART')->first();
         
         if(!isset($shoppingcart))
@@ -54,31 +57,21 @@ class BookingController extends Controller
                     ]);
     }
 
-    public function shoppingcart(Request $request)
-    {
-        $id = $request->input('sessionId');
-        BookingHelper::get_shoppingcart($id,"insert");
-        //return redirect(route('route_toursdk_booking.index')."/checkout");
-    }
-
     public function calendar(Request $request)
     {
         $id = $request->input('activityId');
         $contents = BokunHelper::get_product($id);
+        $bookingChannelUUID = $this->bookingChannelUUID;
+        $currency = $this->currency;
+        $lang = $this->lang;
+        $sessionId = $this->sessionId;
+
         $pickup = '';
         if($contents->meetingType=='PICK_UP' || $contents->meetingType=='MEET_ON_LOCATION_OR_PICK_UP')
         {
             $pickup = BokunHelper::get_product_pickup($id);
         }
-        
-        if(Session::has('sessionId')){
-            $sessionId = Session::get('sessionId');
-        }else{
-            $sessionId = Uuid::uuid4()->toString();
-            Session::put('sessionId',$sessionId);
-        }
-        $bookingChannelUUID = $this->bookingChannelUUID;
-        
+
         $availability = BokunHelper::get_availabilityactivity($contents->id,1);
         $first = '[{"date":'. $availability[0]->date .',"localizedDate":"'. $availability[0]->localizedDate .'","availabilities":';
         $middle = json_encode($availability);
@@ -90,9 +83,6 @@ class BookingController extends Controller
         $year = date("Y",$microtime/1000);
         $embedded = "false";
 
-        $currency = $this->currency;
-        $lang = $this->lang;
-
         return view('toursdk::booking.calendar')->with(['currency'=>$currency,'lang'=>$lang,'embedded'=>$embedded,'contents'=>$contents,'pickup'=>$pickup,'sessionId'=>$sessionId,'bookingChannelUUID'=>$bookingChannelUUID,'firstavailability'=>$firstavailability,'year'=>$year,'month'=>$month]);
     }
 
@@ -101,9 +91,9 @@ class BookingController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(BookingDataTable $dataTable)
     {
-        //
+        return $dataTable->render('toursdk::booking.index');
     }
 
     /**

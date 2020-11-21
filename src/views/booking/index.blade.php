@@ -23,7 +23,7 @@
     							     request.setRequestHeader("X-CSRF-TOKEN", $("meta[name=csrf-token]").attr("content"));
   						      },
      						   type: 'DELETE',
-     						   url: '{{ route('route_toursdk_category.index') }}/'+ id
+     						   url: '{{ route('route_toursdk_booking.index') }}/'+ id
 						        }).done(function( msg ) {
 							         table.ajax.reload( null, false );
 						        });	
@@ -41,7 +41,7 @@
 	{
 		$.fancybox.open({
         	type: 'ajax',
-       	 	src: '{{ route('route_toursdk_category.create') }}',
+       	 	src: '{{ route('route_toursdk_booking.create') }}',
 			touch: false,
 			modal: true,
    		});	
@@ -51,7 +51,7 @@
 	{
 		$.fancybox.open({
         	type: 'ajax',
-       	 	src: '{{ route('route_toursdk_category.index') }}/'+ id +'/edit',
+       	 	src: '{{ route('route_toursdk_booking.index') }}/'+ id +'/edit',
 			modal: true,
    		});
 		
@@ -61,7 +61,7 @@
   {
     $.fancybox.open({
           type: 'ajax',
-          src: '{{ route('route_toursdk_category.index') }}/structure',
+          src: '{{ route('route_toursdk_booking.index') }}/structure',
       modal: false,
       });
     
@@ -71,19 +71,17 @@
 <div class="row justify-content-center">
         <div class="col-md-12">
             <div class="card">
-                <div class="card-header">Category</div>
+                <div class="card-header">Channel</div>
                 <div class="card-body">
         		
-               
-                <div class="row w-100">
-                	<div class="col  text-left">
-                    <button type="button" class="btn btn-secondary"  onclick="CREATE(); return false;"><b class="fa fa-plus-square"></b> Create Category</button>
+                <div class="container ml-0 pl-0">
+                <div class="row">
+                	<div class="col">
+                    <button type="button" class="btn btn-secondary"  onclick="CREATE(); return false;"><b class="fa fa-plus-square"></b> Create Booking</button>
                     </div>
-                    <div class="col-auto text-right mr-0 pr-0">
-                    <button type="button" class="btn btn-success"  onclick="SHOW(); return false;"><b class="fa fa-eye"></b> Show Structure</button>
-                    </div>
+                    
                 </div>
-                
+                </div>  
        
       	
         <hr>

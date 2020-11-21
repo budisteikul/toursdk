@@ -12,10 +12,6 @@ class BokunHelper {
 		{
 			$endpoint = "https://api.bokun.io";
 		}
-		else if(env("BOKUN_ENV")=="vertikaltrip")
-		{
-			$endpoint = "https://vertikaltrip.bokun.io";
-		}
 		else
 		{
 			$endpoint = "https://api.bokuntest.com";
@@ -41,11 +37,13 @@ class BokunHelper {
           'X-Bokun-Signature' => $base64_signature,
 		  'X-Bokun-Channel' => env("BOKUN_BOOKING_CHANNEL"),
         ];
-    
-		$client = new \GuzzleHttp\Client(['headers' => $headers,'exceptions' => false]);
-		if($method=="POST")
+    	
+
+    	$client = new \GuzzleHttp\Client(['headers' => $headers,'http_errors' => false]);
+
+    	if($data!="")
 		{
-			$response = $client->request('POST',$endpoint.$path.$query,
+			$response = $client->request($method,$endpoint.$path.$query,
     			['json' => $data]
 			);
 		}
@@ -54,33 +52,18 @@ class BokunHelper {
 			$response = $client->request($method,$endpoint.$path.$query);
 		}
 
-		$statusCode = $response->getStatusCode(); 
+		$contents = $response->getBody()->getContents();
+
+		if($accept=='application/json') $contents = json_decode($contents );
 		
-		if(200 === $statusCode)
-		{
-			if($accept=='application/json')
-			{
-        		$contents = json_decode($response->getBody()->getContents());
-			}
-			else
-			{
-				$contents = $response->getBody()->getContents();
-			}
-			return $contents;
-		}
-		else if(400 === $statusCode)
-		{
-			$contents = json_decode($response->getBody()->getContents());
-			if($contents->message == "No permission to access web services.");
-			return redirect('/page/maintenence');
-		}
-		else
-		{
-			header("Location: /");
-			exit();
-		}
+		return $contents;
 	}
 	
+	public static function get_invoice($data)
+	{
+		return self::get_connect('/snippets/activity/invoice-preview','POST','application/json',$data);
+	}
+
 	public static function get_product($activityId)
 	{
 		$currency = env("BOKUN_CURRENCY");
@@ -186,10 +169,7 @@ class BokunHelper {
     	return $value;
 	}
 	
-	public static function get_invoice($data)
-	{
-		return self::get_connect('/snippets/activity/invoice-preview','POST','application/json',$data);
-	}
+	
 
 	//=====================================================================================
 

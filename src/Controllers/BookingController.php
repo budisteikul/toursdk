@@ -17,12 +17,6 @@ class BookingController extends Controller
 {
     public function __construct()
     {
-        if(!Session::has('sessionId')){
-            $sessionId = Uuid::uuid4()->toString();
-            Session::put('sessionId',$sessionId);
-        }
-
-        $this->sessionId = Session::get('sessionId');
         $this->bookingChannelUUID = env("BOKUN_BOOKING_CHANNEL");
         $this->currency = env("BOKUN_CURRENCY");
         $this->lang = env("BOKUN_LANG");
@@ -30,12 +24,12 @@ class BookingController extends Controller
 
     public function checkout(Request $request)
     {
-        
         if(!Session::has('sessionId')){
-            return redirect(route('route_toursdk_booking.index'));
+            $sessionId = Uuid::uuid4()->toString();
+            Session::put('sessionId',$sessionId);
         }
-        
         $sessionId = Session::get('sessionId');
+        
         $shoppingcart = Shoppingcart::where('session_id', $sessionId)
                         ->where('booking_status','CART')->first();
         
@@ -59,12 +53,19 @@ class BookingController extends Controller
 
     public function calendar(Request $request)
     {
+        if(!Session::has('sessionId')){
+            $sessionId = Uuid::uuid4()->toString();
+            Session::put('sessionId',$sessionId);
+        }
+        $sessionId = Session::get('sessionId');
+
         $id = $request->input('activityId');
         $contents = BokunHelper::get_product($id);
         $bookingChannelUUID = $this->bookingChannelUUID;
         $currency = $this->currency;
         $lang = $this->lang;
-        $sessionId = $this->sessionId;
+        
+
 
         $pickup = '';
         if($contents->meetingType=='PICK_UP' || $contents->meetingType=='MEET_ON_LOCATION_OR_PICK_UP')

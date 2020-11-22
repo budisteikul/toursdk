@@ -24,7 +24,7 @@ class BookingDataTable extends DataTable
                 ->addIndexColumn()
                 ->addColumn('invoice', function ($id){
                     $value = '';
-                    $value .= '<b><a class="text-decoration-none" href="/snippets/pdf/invoice/'. $id->confirmation_code .'" target="_blank">'. $id->confirmation_code .'</a> - INVOICE</b> <br />';
+                    $value .= '<b><a class="text-decoration-none" href="/snippets/pdf/invoice/'. $id->session_id .'/Invoice-'. $id->confirmation_code .'.pdf" target="_blank">'. $id->confirmation_code .'</a> - INVOICE</b> <br />';
                     $value .= ' Channel : '.$id->booking_channel.' <br />';
 
                     $name = $id->shoppingcart_questions()->select('answer')->where('type','mainContactDetails')->where('question_id','firstName')->first()->answer .' '. $id->shoppingcart_questions()->select('answer')->where('type','mainContactDetails')->where('question_id','lastName')->first()->answer;
@@ -42,7 +42,7 @@ class BookingDataTable extends DataTable
                     $value = '';
                     foreach($id->shoppingcart_products()->get() as $shoppingcart_product)
                     {
-                        $value .= '<b><a class="text-decoration-none" href="/snippets/pdf/ticket/'. $shoppingcart_product->product_confirmation_code .'" target="_blank">'. $shoppingcart_product->product_confirmation_code .'</a> - '.$shoppingcart_product->title.'</b> <br />';
+                        $value .= '<b><a class="text-decoration-none" href="/snippets/pdf/ticket/'. $id->session_id .'/Ticket-'. $shoppingcart_product->product_confirmation_code .'.pdf" target="_blank">'. $shoppingcart_product->product_confirmation_code .'</a> - '.$shoppingcart_product->title.'</b> <br />';
                         if($shoppingcart_product->rate!="") $value .= $shoppingcart_product->rate .' <br />';
                         $value .= BookingHelper::datetotext($shoppingcart_product->date) .' <br />';
                         foreach($shoppingcart_product->shoppingcart_rates()->get() as $shoppingcart_rate)
@@ -70,22 +70,7 @@ class BookingDataTable extends DataTable
                     $paymentStatus = 0;
                     $shoppingcart_payment = $id->shoppingcart_payment->first();
                     if(isset($shoppingcart_payment)) $paymentStatus = $shoppingcart_payment->paymentStatus;
-
-                    switch($paymentStatus)
-                    {
-                        case 1:
-                            $paymentStatus = "AUTHORIZED";
-                        break;
-                        case 2:
-                            $paymentStatus = "CAPTURED";
-                        break;
-                        case 3:
-                            $paymentStatus = "VOIDED";
-                        break;
-                        default:
-                            $paymentStatus = "NOT AVAILABLE";
-                    }
-                    return $paymentStatus;
+                    return BookingHelper::payment_status($paymentStatus);
                 })
                 ->addColumn('action', function ($id) {
                 return '

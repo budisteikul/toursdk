@@ -12,6 +12,10 @@ Route::resource('/cms/toursdk/product','budisteikul\toursdk\Controllers\ProductC
 Route::resource('/cms/toursdk/channel','budisteikul\toursdk\Controllers\ChannelController',[ 'names' => 'route_toursdk_channel' ])
 	->middleware(['web','auth','verified','CoreMiddleware']);
 
+//Review
+Route::resource('/cms/toursdk/review','budisteikul\toursdk\Controllers\ReviewController',[ 'names' => 'route_toursdk_review' ])
+	->middleware(['web','auth','verified','CoreMiddleware']);
+
 //Booking
 Route::get('/cms/toursdk/booking/calendar', 'budisteikul\toursdk\Controllers\BookingController@calendar')->middleware(['web','auth','verified','CoreMiddleware']);
 Route::get('/cms/toursdk/booking/checkout', 'budisteikul\toursdk\Controllers\BookingController@checkout')->middleware(['web','auth','verified','CoreMiddleware']);
@@ -23,8 +27,8 @@ Route::resource('/cms/toursdk/booking','budisteikul\toursdk\Controllers\BookingC
 
 
 Route::get('/snippets/activity/{activityId}/calendar/json/{year}/{month}', 'budisteikul\toursdk\Controllers\ShoppingCartController@snippetscalendar');
-Route::get('/snippets/pdf/invoice/{id}', 'budisteikul\toursdk\Controllers\ShoppingCartController@invoice');
-Route::get('/snippets/pdf/ticket/{id}', 'budisteikul\toursdk\Controllers\ShoppingCartController@ticket');
+Route::get('/snippets/pdf/invoice/{sessionId}/Invoice-{id}.pdf', 'budisteikul\toursdk\Controllers\ShoppingCartController@invoice');
+Route::get('/snippets/pdf/ticket/{sessionId}/Ticket-{id}.pdf', 'budisteikul\toursdk\Controllers\ShoppingCartController@ticket');
 Route::post('/snippets/shoppingcart', 'budisteikul\toursdk\Controllers\ShoppingCartController@shoppingcart');
 Route::post('/snippets/shoppingcart/checkout', 'budisteikul\toursdk\Controllers\ShoppingCartController@checkout');
 Route::post('/snippets/promocode', 'budisteikul\toursdk\Controllers\ShoppingCartController@applypromocode');

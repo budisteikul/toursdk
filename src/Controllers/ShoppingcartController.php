@@ -17,10 +17,9 @@ use Barryvdh\DomPDF\Facade as PDF;
 
 class ShoppingcartController extends Controller
 {
-    public function invoice($id)
+    public function invoice($sessionId,$id)
     {
-        $shoppingcart = Shoppingcart::where('confirmation_code',$id)->firstOrFail();
-
+        $shoppingcart = Shoppingcart::where('confirmation_code',$id)->where('session_id',$sessionId)->firstOrFail();
         $notice = '';
         
         /*
@@ -34,9 +33,11 @@ class ShoppingcartController extends Controller
         return $pdf->download('Invoice-'. $shoppingcart->confirmation_code .'.pdf');
     }
     
-    public function ticket($id)
+    public function ticket($sessionId,$id)
     {
-        $shoppingcart_product = ShoppingcartProduct::where('product_confirmation_code',$id)->firstOrFail();
+        $shoppingcart_product = ShoppingcartProduct::where('product_confirmation_code',$id)->whereHas('shoppingcart', function($query) use ($sessionId){
+            return $query->where('session_id', $sessionId);
+        })->firstOrFail();
         $customPaper = array(0,0,300,540);
         $pdf = PDF::loadView('toursdk::layouts.pdf.ticket', compact('shoppingcart_product'))->setPaper($customPaper);
         return $pdf->download('Ticket-'. $shoppingcart_product->product_confirmation_code .'.pdf');

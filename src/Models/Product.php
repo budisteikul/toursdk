@@ -23,6 +23,11 @@ class Product extends Model
 
     public function images()
     {
-        return $this->hasMany('budisteikul\toursdk\Models\Image','product_id','id');
+        return $this->hasMany('budisteikul\toursdk\Models\Image','product_id');
+    }
+
+    public function reviews()
+    {
+        return $this->hasMany('budisteikul\toursdk\Models\Review','product_id');
     }
 }

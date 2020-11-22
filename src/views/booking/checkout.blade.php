@@ -410,7 +410,7 @@ function DELETE()
 <!-- ########################################### -->    
 
 
-<button id="submit" type="submit" style="height:47px;" class="btn btn-lg btn-block btn-theme"><i class="fas fa-save"></i> Save</button>
+<button id="submit" type="submit" style="height:47px;" class="btn btn-lg btn-block btn-primary"><i class="fas fa-save"></i> Save</button>
 </form>
 
 

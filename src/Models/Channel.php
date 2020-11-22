@@ -10,4 +10,9 @@ class Channel extends Model
 	protected $keyType = 'string';
     protected $dateFormat = 'Y-m-d H:i:s.u';
     protected $fillable = ['name'];
+
+    public function reviews()
+    {
+        return $this->hasMany('budisteikul\toursdk\Models\Review','channel_id');
+    }
 }

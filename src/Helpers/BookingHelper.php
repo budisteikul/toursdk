@@ -1051,6 +1051,25 @@ class BookingHelper {
 		}
 	}
 	
+	public static function payment_status($paymentStatus)
+	{
+		switch($paymentStatus)
+                    {
+                        case 1:
+                            $paymentStatus = "AUTHORIZED";
+                        break;
+                        case 2:
+                            $paymentStatus = "CAPTURED";
+                        break;
+                        case 3:
+                            $paymentStatus = "VOIDED";
+                        break;
+                        default:
+                            $paymentStatus = "NOT AVAILABLE";
+                    }
+       return $paymentStatus;
+	}
+
 	public static function lang($type,$str){
 		$hasil = '';
 		if($type=='categories')

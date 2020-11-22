@@ -24,7 +24,7 @@ class BookingDataTable extends DataTable
                 ->addIndexColumn()
                 ->addColumn('invoice', function ($id){
                     $value = '';
-                    $value .= '<b>'. $id->confirmation_code .' - INVOICE</b> <br />';
+                    $value .= '<b><a class="text-decoration-none" href="/snippets/pdf/invoice/'. $id->confirmation_code .'" target="_blank">'. $id->confirmation_code .'</a> - INVOICE</b> <br />';
                     $value .= ' Channel : '.$id->booking_channel.' <br />';
 
                     $name = $id->shoppingcart_questions()->select('answer')->where('type','mainContactDetails')->where('question_id','firstName')->first()->answer .' '. $id->shoppingcart_questions()->select('answer')->where('type','mainContactDetails')->where('question_id','lastName')->first()->answer;
@@ -42,7 +42,7 @@ class BookingDataTable extends DataTable
                     $value = '';
                     foreach($id->shoppingcart_products()->get() as $shoppingcart_product)
                     {
-                        $value .= '<b>'. $shoppingcart_product->product_confirmation_code .' - '.$shoppingcart_product->title.'</b> <br />';
+                        $value .= '<b><a class="text-decoration-none" href="/snippets/pdf/ticket/'. $shoppingcart_product->product_confirmation_code .'" target="_blank">'. $shoppingcart_product->product_confirmation_code .'</a> - '.$shoppingcart_product->title.'</b> <br />';
                         if($shoppingcart_product->rate!="") $value .= $shoppingcart_product->rate .' <br />';
                         $value .= BookingHelper::datetotext($shoppingcart_product->date) .' <br />';
                         foreach($shoppingcart_product->shoppingcart_rates()->get() as $shoppingcart_rate)
@@ -92,7 +92,7 @@ class BookingDataTable extends DataTable
                 <div class="btn-toolbar justify-content-end">
                     <div class="btn-group mr-2 mb-2" role="group">
                         
-                        <!-- button id="btn-edit" type="button" onClick="EDIT(\''.$id->id.'\'); return false;" class="btn btn-sm btn-success"><i class="fa fa-edit"></i> Edit</button -->
+                        <!-- button id="btn-edit" type="button" onClick="EDIT(\''.$id->id.'\'); return false;" class="btn btn-sm btn-success"><i class="fa fa-ban"></i> Cancel This Booking</button -->
                         <button id="btn-del" type="button" onClick="DELETE(\''. $id->id .'\')" class="btn btn-sm btn-danger"><i class="fa fa-trash-alt"></i> Delete</button>
                         
                     </div>

@@ -1,7 +1,17 @@
 @inject('BookingHelper', budisteikul\toursdk\Helpers\BookingHelper)
 @extends('coresdk::layouts.app')
 @section('content')
-
+<script language="javascript">
+function CREATE()
+    {
+        $.fancybox.open({
+            type: 'ajax',
+            src: '{{ route('route_toursdk_booking.create') }}',
+            touch: false,
+            modal: true,
+        }); 
+    }
+</script>
 <div class="row justify-content-center">
         <div class="col-md-12">
             <div class="card">
@@ -324,7 +334,7 @@ function DELETE()
  @endif         
 <!-- ################################################################### -->
 
-                <a href="/rev/experiences" class="btn btn-success mt-4">Add item booking</a>
+                <button type="button" class="btn btn-secondary mt-4"  onclick="CREATE(); return false;"><b class="fa fa-plus-square"></b> Add product to Booking</button>
             	</div>
                 
 
@@ -457,6 +467,7 @@ function STORE()
 		data: {
         	"_token": $("meta[name=csrf-token]").attr("content"),
             "bookingChannel": $("#bookingChannel").val(),
+            "skip_payment": true,
             "sessionId": '{{$shoppingcart->session_id}}',
 			
 				@php

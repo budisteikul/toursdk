@@ -4,6 +4,7 @@ namespace budisteikul\toursdk\Controllers;
 use App\Http\Controllers\Controller;
 
 use budisteikul\toursdk\Models\Shoppingcart;
+use budisteikul\toursdk\Models\ShoppingcartProduct;
 use budisteikul\toursdk\Helpers\BookingHelper;
 use budisteikul\toursdk\Helpers\BokunHelper;
 use budisteikul\toursdk\Helpers\PaypalHelper;
@@ -11,9 +12,36 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Http\Request;
 use Ramsey\Uuid\Uuid;
 use Illuminate\Support\Facades\Validator;
+use Barryvdh\DomPDF\Facade as PDF;
+
 
 class ShoppingcartController extends Controller
 {
+    public function invoice($id)
+    {
+        $shoppingcart = Shoppingcart::where('confirmation_code',$id)->firstOrFail();
+
+        $notice = '';
+        
+        /*
+        if($rev_shoppingcarts->currency!='USD')
+        {
+            $notice = BookClass::get_rate($rev_shoppingcarts->currency,'USD');
+        }
+        */
+
+        $pdf = PDF::loadView('toursdk::layouts.pdf.invoice', compact('shoppingcart','notice'))->setPaper('a4', 'portrait');
+        return $pdf->download('Invoice-'. $shoppingcart->confirmation_code .'.pdf');
+    }
+    
+    public function ticket($id)
+    {
+        $shoppingcart_product = ShoppingcartProduct::where('product_confirmation_code',$id)->firstOrFail();
+        $customPaper = array(0,0,300,540);
+        $pdf = PDF::loadView('toursdk::layouts.pdf.ticket', compact('shoppingcart_product'))->setPaper($customPaper);
+        return $pdf->download('Ticket-'. $shoppingcart_product->product_confirmation_code .'.pdf');
+    }
+
     public function checkout(Request $request)
     {
             $validator = Validator::make($request->all(), [
@@ -26,16 +54,29 @@ class ShoppingcartController extends Controller
             }
         
             $sessionId = $request->input('sessionId');
-            $bookingChannel = $request->input('bookingChannel');
             $shoppingcart = Shoppingcart::where('booking_status','CART')->where('session_id',$sessionId)->firstOrFail();
 
-            $shoppingcart = BookingHelper::save_question($shoppingcart,$request);
-
-            $shoppingcart->booking_channel = $bookingChannel;
-            $shoppingcart->booking_status = 'CONFIRMED';
-            $shoppingcart->save();
-
-            BookingHelper::clear_cart($shoppingcart);
+            $skip_payment = $request->input('skip_payment');
+            if($skip_payment=="") $skip_payment = false;
+            if($skip_payment)
+            {
+                $bookingChannel = $request->input('bookingChannel');
+                $shoppingcart = BookingHelper::save_question($shoppingcart,$request);
+                $shoppingcart->booking_channel = $bookingChannel;
+                $shoppingcart->booking_status = 'CONFIRMED';
+                $shoppingcart->save();
+                BookingHelper::shoppingcart_clear($shoppingcart);
+            }
+            else
+            {
+                $check_question = BookingHelper::check_question($shoppingcart,$request);
+                if(@count($check_question) > 0)
+                {
+                    return response()->json($check_question);
+                }
+                $shoppingcart = BookingHelper::save_question($shoppingcart,$request);
+                $shoppingcart->save();
+            }
 
             return response()->json([
                     "id" => "1",

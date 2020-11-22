@@ -885,7 +885,16 @@ class BookingHelper {
 		if($action=="update") self::update_shoppingcart($contents,$id);
 	}
 	
-	public static function clear_cart($shoppingcart)
+	public static function shoppingcart_session()
+	{
+		if(!Session::has('sessionId')){
+            $sessionId = Uuid::uuid4()->toString();
+            Session::put('sessionId',$sessionId);
+        }
+        return Session::get('sessionId');
+	}
+
+	public static function shoppingcart_clear($shoppingcart)
 	{
 		BokunHelper::get_removepromocode($shoppingcart->session_id);
 		foreach($shoppingcart->shoppingcart_products()->get() as $shoppingcart_product)
@@ -896,22 +905,25 @@ class BookingHelper {
         return $shoppingcart;
 	}
 
-	public static function save_question($shoppingcart,$request,$required=false)
+	public static function check_question($shoppingcart,$request)
+	{
+		$status = true;
+		$array = array();
+		foreach($shoppingcart->shoppingcart_questions()->get() as $question)
+            {
+            	if($request->input($question->id)=="" && $question->required)
+					{
+						$status = false;
+						$array[$question->id] = array($question->label .' field is required.');
+					}
+            }
+        return $array;
+	}
+
+	public static function save_question($shoppingcart,$request)
 	{
 		foreach($shoppingcart->shoppingcart_questions()->get() as $question)
             {
-            	if($required)
-            	{
-            		if($request->input($question->id)=="" && $question->required)
-					{
-						return response()->json([
-							"id" => "2",
-							"message" => 'Variable Not Valid'
-						]);
-					}
-            	}
-            	
-
                 $shoppingcart_question = ShoppingcartQuestion::find($question->id);
                 $shoppingcart_question->answer = $request->input($question->id);
                 $shoppingcart_question->save();

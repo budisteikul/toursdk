@@ -7,6 +7,7 @@ use budisteikul\toursdk\Models\Shoppingcart;
 use budisteikul\toursdk\Helpers\BookingHelper;
 use budisteikul\toursdk\Helpers\BokunHelper;
 use budisteikul\toursdk\Models\Channel;
+use budisteikul\toursdk\Models\Product;
 use budisteikul\toursdk\DataTables\BookingDataTable;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
@@ -17,18 +18,23 @@ class BookingController extends Controller
 {
     public function __construct()
     {
+        
         $this->bookingChannelUUID = env("BOKUN_BOOKING_CHANNEL");
         $this->currency = env("BOKUN_CURRENCY");
         $this->lang = env("BOKUN_LANG");
     }
 
+    public function test()
+    {
+        $array = array();
+        $array['aaa'] = array('aaa aaa');
+        $array['bbb'] = array('bbb bbb');
+        print_r(json_encode($array));
+    }
+
     public function checkout(Request $request)
     {
-        if(!Session::has('sessionId')){
-            $sessionId = Uuid::uuid4()->toString();
-            Session::put('sessionId',$sessionId);
-        }
-        $sessionId = Session::get('sessionId');
+        $sessionId = BookingHelper::shoppingcart_session();
         
         $shoppingcart = Shoppingcart::where('session_id', $sessionId)
                         ->where('booking_status','CART')->first();
@@ -53,11 +59,7 @@ class BookingController extends Controller
 
     public function calendar(Request $request)
     {
-        if(!Session::has('sessionId')){
-            $sessionId = Uuid::uuid4()->toString();
-            Session::put('sessionId',$sessionId);
-        }
-        $sessionId = Session::get('sessionId');
+        $sessionId = BookingHelper::shoppingcart_session();
 
         $id = $request->input('activityId');
         $contents = BokunHelper::get_product($id);
@@ -104,7 +106,8 @@ class BookingController extends Controller
      */
     public function create()
     {
-        //
+        $products = Product::orderBy('name')->get();
+        return view('toursdk::booking.create',['products'=>$products]);
     }
 
     /**
@@ -158,8 +161,9 @@ class BookingController extends Controller
      * @param  \App\Models\Booking  $booking
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Booking $booking)
+    public function destroy($id)
     {
-        //
+        $shoppingcart = Shoppingcart::findOrFail($id);
+        $shoppingcart->delete();
     }
 }

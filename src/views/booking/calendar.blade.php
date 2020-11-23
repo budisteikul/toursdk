@@ -61,8 +61,8 @@
         onAvailabilitySelected: function(selectedRate, selectedDate, selectedAvailability) {
         },
         onAddedToCart: function(cart) {
-				$('.btn-theme').attr("disabled",true);
-				$('.btn-theme').html(' <i class="fa fa-spinner fa-spin fa-fw"></i>  processing... ');
+				$('.btn-primary').attr("disabled",true);
+				$('.btn-primary').html(' <i class="fa fa-spinner fa-spin fa-fw"></i>  processing... ');
 				
                 $.ajax({
                     data: {
@@ -80,7 +80,7 @@
                         else
                         {
                             $("#submit").attr("disabled", false);
-                            $('.btn-theme').html(' Book now ');
+                            $('.btn-primary').html(' Book now ');
                         }
                     });
                 /*

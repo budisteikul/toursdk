@@ -17,6 +17,76 @@ use Barryvdh\DomPDF\Facade as PDF;
 
 class ShoppingcartController extends Controller
 {
+
+    public function confirmpayment(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'orderID' => ['required', 'string', 'max:255'],
+            'authorizationID' => ['required', 'string', 'max:255'],
+            'sessionId' => ['required', 'string', 'max:255'],
+        ]);
+        
+        if ($validator->fails()) {
+            $errors = $validator->errors();
+            return response()->json($errors);
+        }
+
+        $orderID = $request->input('orderID');
+        $authorizationID = $request->input('authorizationID');
+        $sessionId = $request->input('sessionId');
+        
+        $shoppingcart = Shoppingcart::where('booking_status','CART')->where('session_id',$sessionId)->firstOrFail();
+
+        $grand_total = $shoppingcart->shoppingcart_payment()->amount;
+        $payment_total = PaypalHelper::getOrder($orderID);
+        
+        if($payment_total!=$grand_total)
+        {
+            PaypalHelper::voidPaypal($authorizationID);
+            return response()->json([
+                    "id" => "2",
+                    "message" => 'Payment Not Valid'
+                ]);
+        }
+        
+        $shoppingcart->booking_channel = 'WEBSITE';
+        $shoppingcart->booking_status = 'CONFIRMED';
+        $shoppingcart->save();
+
+        $shoppingcart->shoppingcart_payment->order_id = $orderID;
+        $shoppingcart->shoppingcart_payment->authorization_id = $authorizationID;
+        $shoppingcart->shoppingcart_payment->payment_status = 1;
+        $shoppingcart->shoppingcart_payment->save();
+        
+        BookingHelper::shoppingcart_mail($shoppingcart);
+
+        BookingHelper::shoppingcart_clear($shoppingcart);                
+
+        return response()->json([
+                    "id" => "1",
+                    "message" => $shoppingcart->id
+                ]);
+        
+    }
+
+    public function createpayment(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+                'sessionId' => ['required', 'string', 'max:255'],
+            ]);
+
+            if ($validator->fails()) {
+                $errors = $validator->errors();
+                return response()->json($errors);
+            }
+
+        $sessionId = $request->input('sessionId');
+        $shoppingcart = Shoppingcart::where('booking_status','CART')->where('session_id',$sessionId)->firstOrFail();
+        $value = number_format((float)$shoppingcart->shoppingcart_payment->amount, 2, '.', '');
+        $response = PaypalHelper::createOrder($value,'BOOKING REFERENCE: '. $shoppingcart->confirmation_code,$shoppingcart->shoppingcart_payment->currency);
+        return response()->json($response);
+    }
+
     public function invoice($sessionId,$id)
     {
         $shoppingcart = Shoppingcart::where('confirmation_code',$id)->where('session_id',$sessionId)->firstOrFail();

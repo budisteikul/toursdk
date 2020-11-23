@@ -14,6 +14,10 @@ use Illuminate\Support\Facades\Session;
 use Ramsey\Uuid\Uuid;
 use Illuminate\Support\Facades\Validator;
 
+
+use Illuminate\Support\Facades\Mail;
+use budisteikul\toursdk\Mail\BookingConfirmedMail;
+
 class BookingController extends Controller
 {
     public function __construct()
@@ -26,10 +30,8 @@ class BookingController extends Controller
 
     public function test()
     {
-        $array = array();
-        $array['aaa'] = array('aaa aaa');
-        $array['bbb'] = array('bbb bbb');
-        print_r(json_encode($array));
+        $shoppingcart = Shoppingcart::find(30);
+        BookingHelper::shoppingcart_mail($shoppingcart);
     }
 
     public function checkout(Request $request)

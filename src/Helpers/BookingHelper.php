@@ -11,7 +11,8 @@ use budisteikul\toursdk\Models\ShoppingcartRate;
 use budisteikul\toursdk\Models\ShoppingcartQuestion;
 use budisteikul\toursdk\Models\ShoppingcartQuestionOption;
 use budisteikul\toursdk\Models\ShoppingcartPayment;
-
+use Illuminate\Support\Facades\Mail;
+use budisteikul\toursdk\Mail\BookingConfirmedMail;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Session;
 use Ramsey\Uuid\Uuid;
@@ -892,6 +893,15 @@ class BookingHelper {
             Session::put('sessionId',$sessionId);
         }
         return Session::get('sessionId');
+	}
+
+	public static function shoppingcart_mail($shoppingcart)
+	{
+		$email = $shoppingcart->shoppingcart_questions()->select('answer')->where('type','mainContactDetails')->where('question_id','email')->first()->answer;
+		if($email!="")
+		{
+			Mail::to($email)->send(new BookingConfirmedMail($shoppingcart));
+		}
 	}
 
 	public static function shoppingcart_clear($shoppingcart)

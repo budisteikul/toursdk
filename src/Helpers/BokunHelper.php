@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Session;
 
 class BokunHelper {
 	
-	public static function get_connect($path,$method = 'GET',$accept = 'application/json',$data="")
+	public static function bokun_connect($path,$method = 'GET',$accept = 'application/json',$data="")
 	{
 		if(env("BOKUN_ENV")=="production")
 		{
@@ -61,15 +61,15 @@ class BokunHelper {
 	
 	public static function get_invoice($data)
 	{
-		return self::get_connect('/snippets/activity/invoice-preview','POST','application/json',$data);
+		return self::bokun_connect('/snippets/activity/invoice-preview','POST','application/json',$data);
 	}
 
 	public static function get_product($activityId)
 	{
 		$currency = env("BOKUN_CURRENCY");
         $lang = env("BOKUN_LANG");
-		$value = Cache::store('database')->rememberForever('bokunProductbyid_'. $currency .'_'. $lang .'_'.$activityId, function() use ($activityId) {
-    		return self::get_connect('/activity.json/'. $activityId);
+		$value = Cache::store('database')->rememberForever('_bokunProductById_'. $currency .'_'. $lang .'_'.$activityId, function() use ($activityId) {
+    		return self::bokun_connect('/activity.json/'. $activityId);
 		});
 		return $value;
 	}
@@ -78,8 +78,8 @@ class BokunHelper {
 	{
 		$currency = env("BOKUN_CURRENCY");
         $lang = env("BOKUN_LANG");
-		$value = Cache::store('database')->rememberForever('bokunProductbyslug_'. $currency .'_'. $lang .'_'. $slug, function() use ($slug) {
-    		return self::get_connect('/activity.json/slug/'. $slug);
+		$value = Cache::store('database')->rememberForever('_bokunProductBySlug_'. $currency .'_'. $lang .'_'. $slug, function() use ($slug) {
+    		return self::bokun_connect('/activity.json/slug/'. $slug);
 		});
 		return $value;
 	}
@@ -88,8 +88,8 @@ class BokunHelper {
 	{
 		$currency = env("BOKUN_CURRENCY");
         $lang = env("BOKUN_LANG");
-		$value = Cache::store('database')->rememberForever('bokunProductpickup_'. $currency .'_'. $lang .'_'. $activityId, function() use ($activityId) {
-    		return self::get_connect('/activity.json/'. $activityId .'/pickup-places');
+		$value = Cache::store('database')->rememberForever('_bokunProductPickup_'. $currency .'_'. $lang .'_'. $activityId, function() use ($activityId) {
+    		return self::bokun_connect('/activity.json/'. $activityId .'/pickup-places');
 		});
 		return $value;
 	}
@@ -98,8 +98,8 @@ class BokunHelper {
 	{
 		$currency = env("BOKUN_CURRENCY");
         $lang = env("BOKUN_LANG");
-		$value = Cache::store('database')->rememberForever('bokunProductlistbyid_'. $currency .'_'. $lang .'_'. $id, function() use ($id) {
-    		return self::get_connect('/product-list.json/'. $id);
+		$value = Cache::store('database')->rememberForever('_bokunProductlistById_'. $currency .'_'. $lang .'_'. $id, function() use ($id) {
+    		return self::bokun_connect('/product-list.json/'. $id);
 		});
 		return $value;
 	}
@@ -109,8 +109,8 @@ class BokunHelper {
 
 		$currency = env("BOKUN_CURRENCY");
         $lang = env("BOKUN_LANG");
-		$value = Cache::store('database')->rememberForever('bokunProductlist_'. $currency .'_'. $lang, function() {
-    		return self::get_connect('/product-list.json/list');
+		$value = Cache::store('database')->rememberForever('_bokunProductList_'. $currency .'_'. $lang, function() {
+    		return self::bokun_connect('/product-list.json/list');
 		});
 		return $value;
 	}
@@ -119,8 +119,8 @@ class BokunHelper {
 	{
 		$currency = env("BOKUN_CURRENCY");
         $lang = env("BOKUN_LANG");
-		$value = Cache::store('database')->rememberForever('bokunActiveids_'. $currency .'_'. $lang, function() {
-    		return self::get_connect('/activity.json/active-ids');
+		$value = Cache::store('database')->rememberForever('_bokunActiveIds_'. $currency .'_'. $lang, function() {
+    		return self::bokun_connect('/activity.json/active-ids');
 		});
 		return $value;
 	}
@@ -129,8 +129,8 @@ class BokunHelper {
 	{
 		$currency = env("BOKUN_CURRENCY");
         $lang = env("BOKUN_LANG");
-		$value = Cache::store('database')->rememberForever('bokunCountry_'. $currency .'_'. $lang, function() {
-    		return self::get_connect('/country.json/findAll');
+		$value = Cache::store('database')->rememberForever('_bokunCountry_'. $currency .'_'. $lang, function() {
+    		return self::bokun_connect('/country.json/findAll');
 		});
 		return $value;
 	}
@@ -141,8 +141,8 @@ class BokunHelper {
 	{
 		$currency = env("BOKUN_CURRENCY");
         $lang = env("BOKUN_LANG");
-		$value = Cache::store('database')->remember('bokunCalendar_'.$activityId .'_'.$year .'_'.$month .'_'. $currency .'_'. $lang,7200, function() use ($activityId,$year,$month) {
-    		return self::get_connect('/snippets/activity/'.$activityId.'/calendar/json/'.$year.'/'.$month);
+		$value = Cache::store('database')->remember('_bokunCalendar_'.$activityId .'_'.$year .'_'.$month .'_'. $currency .'_'. $lang,7200, function() use ($activityId,$year,$month) {
+    		return self::bokun_connect('/snippets/activity/'.$activityId.'/calendar/json/'.$year.'/'.$month);
 		});
 		return $value;
 	}
@@ -151,9 +151,9 @@ class BokunHelper {
 	{
 		$currency = env("BOKUN_CURRENCY");
         $lang = env("BOKUN_LANG");
-		$value = Cache::store('database')->remember('bokunAvailability_'. $id .'_'. $start .'_'. $end .'_'. $lang .'_'. $currency,7200, function() use ($id,$start,$end,$lang,$currency)
+		$value = Cache::store('database')->remember('_bokunAvailability_'. $id .'_'. $start .'_'. $end .'_'. $lang .'_'. $currency,7200, function() use ($id,$start,$end,$lang,$currency)
 		{
-    		return self::get_connect('/activity.json/'.$id.'/availabilities?start='.$start.'&end='.$end.'&lang='. $lang .'&currency='.$currency.'&includeSoldOut=false');
+    		return self::bokun_connect('/activity.json/'.$id.'/availabilities?start='.$start.'&end='.$end.'&lang='. $lang .'&currency='.$currency.'&includeSoldOut=false');
 		});
     	return $value;
 	}
@@ -162,9 +162,9 @@ class BokunHelper {
 	{
 		$currency = env("BOKUN_CURRENCY");
         $lang = env("BOKUN_LANG");
-		$value = Cache::store('database')->remember('bokunCurrency_'. $currency .'_'. $lang,7200, function()
+		$value = Cache::store('database')->remember('_bokunCurrency_'. $currency .'_'. $lang,7200, function()
 		{
-    		return self::get_connect('/currency.json/findAll');
+    		return self::bokun_connect('/currency.json/findAll');
 		});
     	return $value;
 	}
@@ -176,68 +176,68 @@ class BokunHelper {
 	
 	public static function get_questionshoppingcart($id)
 	{
-		return self::get_connect('/question.json/shopping-cart/'.$id);
+		return self::bokun_connect('/question.json/shopping-cart/'.$id);
 	}
 	
 	public static function get_questionbooking($id)
 	{
-		return self::get_connect('/question.json/activity-booking/'.$id);
+		return self::bokun_connect('/question.json/activity-booking/'.$id);
 	}
 
 	public static function get_checkout($sessionId)
 	{
-		return self::get_connect('/checkout.json/options/shopping-cart/'. $sessionId);
+		return self::bokun_connect('/checkout.json/options/shopping-cart/'. $sessionId);
 	}
 	
 	public static function get_shoppingcart($sessionId)
 	{
-		return self::get_connect('/shopping-cart.json/session/'. $sessionId);
+		return self::bokun_connect('/shopping-cart.json/session/'. $sessionId);
 	}
 	
 	public static function get_ticket($confirmationCode)
 	{
-		return self::get_connect('/booking.json/activity-booking/'.$confirmationCode.'/ticket','GET','application/pdf');
+		return self::bokun_connect('/booking.json/activity-booking/'.$confirmationCode.'/ticket','GET','application/pdf');
 	}
 	
 	public static function get_invoicepdf($id)
 	{
-		return self::get_connect('/booking.json/'. $id .'/summary','GET','application/pdf');
+		return self::bokun_connect('/booking.json/'. $id .'/summary','GET','application/pdf');
 	}
 	
 	public static function get_productbooking($id)
 	{
-		return self::get_connect('/booking.json/activity-booking/'.$id);
+		return self::bokun_connect('/booking.json/activity-booking/'.$id);
 	}
 	
 	public static function get_removeshoppingcart($sessionId,$id)
 	{
-		return self::get_connect('/shopping-cart.json/session/'.$sessionId.'/remove-activity/'.$id);
+		return self::bokun_connect('/shopping-cart.json/session/'.$sessionId.'/remove-activity/'.$id);
 	}
 	
 	public static function get_removepromocode($sessionId)
 	{
-		return self::get_connect('/cart.json/'.$sessionId.'/remove-promo-code');
+		return self::bokun_connect('/cart.json/'.$sessionId.'/remove-promo-code');
 	}
 	
 	public static function get_applypromocode($sessionId,$id)
 	{
 		$id = strtolower($id);
-		return self::get_connect('/cart.json/'.$sessionId.'/apply-promo-code/'.$id);
+		return self::bokun_connect('/cart.json/'.$sessionId.'/apply-promo-code/'.$id);
 	}
 	
 	public static function get_removeactivity($sessionId,$id)
 	{
-		return self::get_connect('/shopping-cart.json/session/'.$sessionId.'/remove-activity/'. $id);
+		return self::bokun_connect('/shopping-cart.json/session/'.$sessionId.'/remove-activity/'. $id);
 	}
 	
 	public static function get_availabilityactivity($id,$max)
 	{
-		return self::get_connect('/activity.json/'.$id.'/upcoming-availabilities/'.$max);
+		return self::bokun_connect('/activity.json/'.$id.'/upcoming-availabilities/'.$max);
 	}
 	
 	public static function get_addshoppingcart($sessionId,$data)
 	{
-		return self::get_connect('/shopping-cart.json/session/'. $sessionId .'/activity','POST','application/json',$data);
+		return self::bokun_connect('/shopping-cart.json/session/'. $sessionId .'/activity','POST','application/json',$data);
 	}
 }
 ?>

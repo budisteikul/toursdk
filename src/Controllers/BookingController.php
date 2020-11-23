@@ -67,7 +67,7 @@ class BookingController extends Controller
         $currency = $this->currency;
         $lang = $this->lang;
         
-
+		
 
         $pickup = '';
         if($contents->meetingType=='PICK_UP' || $contents->meetingType=='MEET_ON_LOCATION_OR_PICK_UP')

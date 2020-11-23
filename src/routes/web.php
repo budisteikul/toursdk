@@ -26,16 +26,16 @@ Route::resource('/cms/toursdk/booking','budisteikul\toursdk\Controllers\BookingC
 
 
 
-Route::get('/snippets/activity/{activityId}/calendar/json/{year}/{month}', 'budisteikul\toursdk\Controllers\ShoppingCartController@snippetscalendar');
-Route::get('/snippets/pdf/invoice/{sessionId}/Invoice-{id}.pdf', 'budisteikul\toursdk\Controllers\ShoppingCartController@invoice');
-Route::get('/snippets/pdf/ticket/{sessionId}/Ticket-{id}.pdf', 'budisteikul\toursdk\Controllers\ShoppingCartController@ticket');
-Route::post('/snippets/shoppingcart', 'budisteikul\toursdk\Controllers\ShoppingCartController@shoppingcart');
-Route::post('/snippets/shoppingcart/checkout', 'budisteikul\toursdk\Controllers\ShoppingCartController@checkout');
-Route::post('/snippets/promocode', 'budisteikul\toursdk\Controllers\ShoppingCartController@applypromocode');
-Route::post('/snippets/promocode/remove', 'budisteikul\toursdk\Controllers\ShoppingCartController@removepromocode');
-Route::post('/snippets/activity/remove', 'budisteikul\toursdk\Controllers\ShoppingCartController@removebookingid');
-Route::post('/snippets/activity/invoice-preview', 'budisteikul\toursdk\Controllers\ShoppingCartController@snippetsinvoice');
-Route::post('/snippets/widget/cart/session/{id}/activity', 'budisteikul\toursdk\Controllers\ShoppingCartController@addshoppingcart');
+Route::get('/snippets/activity/{activityId}/calendar/json/{year}/{month}', 'budisteikul\toursdk\Controllers\ShoppingcartController@snippetscalendar');
+Route::get('/snippets/pdf/invoice/{sessionId}/Invoice-{id}.pdf', 'budisteikul\toursdk\Controllers\ShoppingcartController@invoice');
+Route::get('/snippets/pdf/ticket/{sessionId}/Ticket-{id}.pdf', 'budisteikul\toursdk\Controllers\ShoppingcartController@ticket');
+Route::post('/snippets/shoppingcart', 'budisteikul\toursdk\Controllers\ShoppingcartController@shoppingcart');
+Route::post('/snippets/shoppingcart/checkout', 'budisteikul\toursdk\Controllers\ShoppingcartController@checkout');
+Route::post('/snippets/promocode', 'budisteikul\toursdk\Controllers\ShoppingcartController@applypromocode');
+Route::post('/snippets/promocode/remove', 'budisteikul\toursdk\Controllers\ShoppingcartController@removepromocode');
+Route::post('/snippets/activity/remove', 'budisteikul\toursdk\Controllers\ShoppingcartController@removebookingid');
+Route::post('/snippets/activity/invoice-preview', 'budisteikul\toursdk\Controllers\ShoppingcartController@snippetsinvoice');
+Route::post('/snippets/widget/cart/session/{id}/activity', 'budisteikul\toursdk\Controllers\ShoppingcartController@addshoppingcart');
 
 
 

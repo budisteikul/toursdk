@@ -179,7 +179,7 @@ footer {
        <tbody>
          <tr>
            <td style="background-color:#FFFFFF; text-align:left; padding-left:0px;">
-           <img src="data:image/png;base64, {{ base64_encode(QrCode::errorCorrection('H')->format('png')->size(111)->margin(0)->generate(url('/booking/invoice/'.$shoppingcart->id))) }} ">
+           <img src="data:image/png;base64, {!! base64_encode(QrCode::errorCorrection('H')->format('png')->size(111)->margin(0)->generate(url('/booking/invoice/'.$shoppingcart->id))) !!} ">
            				
            </td>
            <td style="background-color:#FFFFFF; text-align:right; padding-right:0px; line-height: 18px; font-size:14px; color:#777777">
@@ -216,7 +216,7 @@ footer {
                 	$min_date = $shoppingcart->shoppingcart_products()->orderBy('date','asc')->first()->date;
                 @endphp
                 <div class="date" style=" line-height: 18px; font-size:14px;">Due Date: {{ Carbon\Carbon::parse($min_date)->formatLocalized('%d %b %Y') }}</div>
-          		<div class="date" style=" line-height: 18px; font-size:14px;">Status: {{ $shoppingcart->bookingStatus }}</div>
+          		<div class="date" style=" line-height: 18px; font-size:14px;">Status: {{ $shoppingcart->booking_status }}</div>
         	</div>           
            </td>
          </tr>
@@ -309,7 +309,7 @@ footer {
           @endif
         </tfoot>
 </table>
-<div id="thanks">Thank you for your booking with VERTIKAL TRIP</div>   
+<div id="thanks">Thank you for your booking with {{env('APP_NAME')}}</div>   
 <div id="notices">
 <div>NOTICE:</div>
 <div class="notice"><small>&nbsp;{{$notice}}</small></div>

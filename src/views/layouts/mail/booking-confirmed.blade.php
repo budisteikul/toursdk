@@ -3,7 +3,7 @@
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-  <title>Vertikal Trip</title>
+  <title>{{env('APP_NAME')}}</title>
   <style type="text/css" rel="stylesheet" media="all">
     /* Base ------------------------------ */
     *:not(br):not(tr):not(html) {
@@ -184,7 +184,7 @@
           <!-- Logo -->
           <tr>
             <td class="email-masthead">
-              <a class="email-masthead_name">VERTIKAL TRIP</a>
+              <a class="email-masthead_name">{{env('APP_NAME')}}</a>
             </td>
           </tr>
           <!-- Email Body -->
@@ -197,14 +197,14 @@
                     
                     <h1>Hi {{$shoppingcart->shoppingcart_questions()->select('answer')->where('type','mainContactDetails')->where('question_id','firstName')->first()->answer}},</h1>
                     <p>Have a good day,<br />
-                      Thank you for your booking with VERTIKAL TRIP. <br />
+                      Thank you for your booking with {{env('APP_NAME')}}. <br />
                     You can find booking receipt and e-ticket  on attachments and present it  to our team on location                  <br />
                     If you have any question, feel free to contact us.<br />
                     Thanks again, and enjoy your time in Indonesia :)
                     <br />
                     </p>
                     <p>Regards,<br />
-                    Vertikal Trip team.</p>
+                    {{env('APP_NAME')}} team.</p>
                     <!-- Action -->
                     
                     <!-- Sub copy -->
@@ -224,7 +224,7 @@
               <table class="email-footer" align="center" width="570" cellpadding="0" cellspacing="0">
                 <tr>
                   <td class="content-cell">
-                    <p class="sub center">VERTIKAL TRIP<br />
+                    <p class="sub center">{{env('APP_NAME')}}<br />
                     Jl. Abiyoso VII No.190 Bantul ID<br />
                     Website : www.vertikaltrip.com
                     <br />

@@ -1,29 +1,21 @@
 @inject('BookingHelper', budisteikul\toursdk\Helpers\BookingHelper)
-@extends('coresdk::layouts.app')
-@section('content')
-<script language="javascript">
-function CREATE()
-    {
-        $.fancybox.open({
-            type: 'ajax',
-            src: '{{ route('route_toursdk_booking.create') }}',
-            touch: false,
-            modal: true,
-        }); 
-    }
+@extends('toursdk::layouts.app')
+@section('title','Checkout')
+@push('scripts')
+<script>
+$( document ).ready(function() {
+    $('#proses').hide();
+});
 </script>
-<div class="row justify-content-center">
-        <div class="col-md-12">
-            <div class="card">
-                <div class="card-header">Checkout Booking</div>
-                <div class="card-body">
-
-
+@endpush
+@section('content')
+<section id="booking" style="background-color:#ffffff">
+<div class="container">
 	<div class="row">
 		<div class="col-lg-12 col-md-12 mx-auto">
 			<div class="row" style="padding-bottom:0px;">
 				<div class="col-lg-12 text-left">
-				
+				<div style="height:56px;"></div>
             	<div class="row mb-2">  
 				<div class="col-lg-6 col-lg-auto mb-6 mt-4">
                 
@@ -31,34 +23,37 @@ function CREATE()
 <script language="javascript">
 function REMOVE(id)
 {
-	$('#remove-'+id).attr("disabled", true);
-	$('#remove-'+id).html('<i class="fa fa-spinner fa-spin"></i>');
-	
-	$.ajax({
-		data: {
-        	"_token": $("meta[name=csrf-token]").attr("content"),
-			"bookingId": id,
+    $('#remove-'+id).attr("disabled", true);
+    $('#remove-'+id).html('<i class="fa fa-spinner fa-spin"></i>');
+    
+    $.ajax({
+        data: {
+            "_token": $("meta[name=csrf-token]").attr("content"),
+            "bookingId": id,
             "sessionId": '{{$shoppingcart->session_id}}',
         },
-		type: 'POST',
-		url: '/snippets/activity/remove'
-		}).done(function( data ) {
-			if(data.id=="1")
-			{
-				window.location.href = '/booking/checkout';
-			}
-			else
-			{
-				$('#remove-'+id).attr("disabled", false);
-				$('#remove-'+id).html('<i class="fa fa-trash-alt"></i>');
-			}
-		});
-	
-	
-	return false;
+        type: 'POST',
+        url: '/snippets/activity/remove'
+        }).done(function( data ) {
+            if(data.id=="1")
+            {
+                window.location.href = '{{route('route_toursdk_booking.index')}}/checkout';
+            }
+            else
+            {
+                $('#remove-'+id).attr("disabled", false);
+                $('#remove-'+id).html('<i class="fa fa-trash-alt"></i>');
+            }
+        });
+    
+    
+    return false;
 }
 </script>
-                <div class="card">
+                <div class="card shadow">
+  				<div class="card-header bg-dark text-white pb-1">
+    				<h4><i class="fas fa-shopping-cart"></i> Order Summary</h4>
+  				</div>
                 <?php
 				$grand_subtotal = 0;
 				$grand_discount = 0;
@@ -99,7 +94,7 @@ function REMOVE(id)
                     				<img class="img-fluid" width="55" src="{{ $shoppingcart_product->image }}">
                                 	@endif
                     			</div>
-                    			<div class="col-8" style="font-size:12px; margin-left:-5px">
+                    			<div class="col-8 product-detail">
                                 	{{ $BookingHelper->datetotext($shoppingcart_product->date) }}
                                 	<br>
                                     {{ $shoppingcart_product->rate }}
@@ -135,7 +130,7 @@ function REMOVE(id)
                     						@if($shopppingcart_rates->discount > 0)
                                             	<strike class="text-muted">{{ $shopppingcart_rates->subtotal }}</strike><br><b>{{ $shopppingcart_rates->total }}</b>
                                             @else
-                                            	<b>${{ $shopppingcart_rates->subtotal }}</b>
+                                            	<b>{{ $shopppingcart_rates->subtotal }}</b>
                     						@endif
                                         </div>
                 					</div>
@@ -165,7 +160,7 @@ function REMOVE(id)
                                         	@if($shopppingcart_rates->discount > 0)
                                             	<strike class="text-muted">{{ $shopppingcart_rates->subtotal }}</strike><br><b>{{ $shopppingcart_rates->total }}</b>
                                             @else
-                    							<b>${{ $shoppingcart_rates->subtotal }}</b>
+                    							<b>{{ $shoppingcart_rates->subtotal }}</b>
                                             @endif
                     					</div>
                 					</div>
@@ -210,7 +205,7 @@ function REMOVE(id)
                 	<hr class="mt-0"> 
                     <div class="row mb-4 mt-0">
                 		<div class="col-8">
-                    		<b style="font-size:18px">Total ({{$shoppingcart->currency}})</b>
+                    		<b style="font-size:18px">Total ({{ $shoppingcart->currency }})</b>
                     	</div>
                     	<div class="col-4 text-right">
                     	<b style="font-size:18px">{{ $grand_total }}</b>
@@ -223,49 +218,48 @@ function REMOVE(id)
 <script language="javascript">
 function PROMOCODE()
 {
-	$('#alert-promocode-success').fadeOut("slow");
-	$('#alert-promocode-failed').fadeOut("slow");
-	$("#apply").attr("disabled", true);
-	$("#promocode").attr("disabled", true);
-	$('#apply').html('<i class="fa fa-spinner fa-spin"></i>');
-	
-	$.ajax({
-		data: {
-        	"_token": $("meta[name=csrf-token]").attr("content"),
-			"promocode": $('#promocode').val(),
+    $('#alert-promocode-success').fadeOut("slow");
+    $('#alert-promocode-failed').fadeOut("slow");
+    $("#apply").attr("disabled", true);
+    $("#promocode").attr("disabled", true);
+    $('#apply').html('<i class="fa fa-spinner fa-spin"></i>');
+    
+    $.ajax({
+        data: {
+            "_token": $("meta[name=csrf-token]").attr("content"),
+            "promocode": $('#promocode').val(),
             "sessionId": '{{$shoppingcart->session_id}}',
         },
-		type: 'POST',
-		url: '/snippets/promocode'
-		}).done(function( data ) {
-			if(data.id=="1")
-			{
-				window.location.href = '{{route('route_toursdk_booking.index')}}/checkout';
-				$('#alert-promocode').hide();
+        type: 'POST',
+        url: '/snippets/promocode'
+        }).done(function( data ) {
+            if(data.id=="1")
+            {
+                window.location.href = '/booking/checkout';
+                $('#alert-promocode').hide();
                 $('#alert-promocode').html('<div id="alert-promocode-success" class="alert alert-primary text-center" role="alert"><i class="far fa-smile"></i> Promo code applied</div>');
                 $('#alert-promocode').fadeIn("slow");
-			}
-			else
-			{
-				$('#promocode').val('');
+            }
+            else
+            {
+                $('#promocode').val('');
                 $('#alert-promocode').hide();
                 $('#alert-promocode').html('<div id="alert-promocode-failed" class="alert alert-danger text-center" role="alert"><i class="far fa-frown"></i> Promo code not valid</div>');
                 $('#alert-promocode').fadeIn("slow");
                 $("#promocode").attr("disabled", false);
                 $("#apply").attr("disabled", false);
                 $('#apply').html('Apply');
-			}
-		});
-	
-	
-	return false;
+            }
+        });
+    return false;
 }
 </script>
 <!-- ################################################################### -->
-
-                <div class="card mt-4">
+                <div class="card shadow mt-4">
                 	<div class="card-body">
-                    		<div id="alert-promocode"></div>
+                            <div id="alert-promocode"></div>
+                    		
+                            
                     	<form onSubmit="PROMOCODE(); return false;" class="form-inline">
   							<div class="form-row align-items-center">
     							<div class="col-auto">
@@ -288,33 +282,33 @@ $( document ).ready(function() {
 <script language="javascript">
 function DELETE()
 {
-	$("#apply").attr("disabled", true);
-	$('#apply').html('<i class="fa fa-spinner fa-spin"></i>');
-	
-	$.ajax({
-		data: {
-        	"_token": $("meta[name=csrf-token]").attr("content"),
+    $("#apply").attr("disabled", true);
+    $('#apply').html('<i class="fa fa-spinner fa-spin"></i>');
+    
+    $.ajax({
+        data: {
+            "_token": $("meta[name=csrf-token]").attr("content"),
             "sessionId": '{{$shoppingcart->session_id}}',
         },
-		type: 'POST',
-		url: '/snippets/promocode/remove'
-		}).done(function( data ) {
-			if(data.id=="1")
-			{
-				window.location.href = '{{route('route_toursdk_booking.index')}}/checkout';
-				$('#alert-promocode').hide();
+        type: 'POST',
+        url: '/snippets/promocode/remove'
+        }).done(function( data ) {
+            if(data.id=="1")
+            {
+                window.location.href = '/booking/checkout';
+                $('#alert-promocode').hide();
                 $('#alert-promocode').html('<div id="alert-promocode-failed" class="alert alert-danger text-center" role="alert"><i class="far fa-frown"></i> Promo code removed</div>');
                 $('#alert-promocode').fadeIn("slow");
-			}
-		});
-	
-	
-	return false;
+            }
+        });
+    
+    
+    return false;
 }
 </script>
 <div class="card shadow mt-4">
 	<div class="card-body">
-            <div id="alert-promocode"></div>
+    		<div id="alert-promocode"></div>
     	<div class="row mb-2">
         	<div class="col-8 my-auto">
 				<strong>Promo code : {{ $shoppingcart->promo_code }}</strong>
@@ -325,50 +319,38 @@ function DELETE()
 		</div>	
 	</div>
 </div>
- @endif         
+@endif         
 <!-- ################################################################### -->
 
-                <button type="button" class="btn btn-secondary mt-4"  onclick="CREATE(); return false;"><b class="fa fa-plus-square"></b> Add product to Booking</button>
-            	</div>
-                
-
+            </div>
+            
             <div class="col-lg-6 col-lg-auto mb-6 mt-4">
-            <div class="card mb-8 p-2">
+            <div class="card mb-8 shadow p-2">
  				 <div class="card-body" style="padding-left:10px;padding-right:10px;padding-top:10px;padding-bottom:15px;">
                  
 <form onSubmit="STORE(); return false;">             
 <!-- ########################################### -->
-<h3>Booking Channel</h3>
-<div class="form-group">
-<label for="bookingChannel"><strong>Channel</strong></label>
-<select style="font-size:16px;height:47px;"  class="form-control" id="bookingChannel" name="bookingChannel">
-        <option value="Internal Booking">Internal Booking</option>
-        @foreach($channels as $channel)
-        <option value="{{$channel->name}}">{{$channel->name}}</option>
-        @endforeach
-</select>
-</div>
-<h3>Main Contact</h3>   
+<h2>Main Contact</h2>   
 	@php
     	$main_contacts = $shoppingcart->shoppingcart_questions()->where('type','mainContactDetails')->orderBy('order')->get()
     @endphp
     @foreach($main_contacts as $main_contact)        
 <div class="form-group">
-	<label for="{{ $main_contact->id }}"><strong>{{ $main_contact->label }}</strong></label>
-    @if($main_contact->data_format=="EMAIL_ADDRESS")
-	<input name="{{ $main_contact->id }}" value="{{ $main_contact->answer }}" type="email" class="form-control" id="{{ $main_contact->id }}" style="height:47px;">
-    @elseif($main_contact->data_format=="PHONE_NUMBER")
-    <input name="{{ $main_contact->id }}" value="{{ $main_contact->answer }}" type="tel" class="form-control" id="{{ $main_contact->id }}" style="height:47px;">
+	<label for="{{ $main_contact->id }}" class="{{ $main_contact->required ? "required" : "" }}"><strong>{{ $main_contact->label }}</strong></label>
+    @if($main_contact->dataFormat=="EMAIL_ADDRESS")
+	<input name="{{ $main_contact->id }}" value="{{ $main_contact->answer }}" type="email" class="form-control" id="{{ $main_contact->id }}" style="height:47px;" {{ $main_contact->required ? "required" : "" }}>
+    @elseif($main_contact->dataFormat=="PHONE_NUMBER")
+    <input name="{{ $main_contact->id }}" value="{{ $main_contact->answer }}" type="tel" class="form-control" id="{{ $main_contact->id }}" style="height:47px;" {{ $main_contact->required ? "required" : "" }}>
     @else
     @if($main_contact->selectOption)
-    <select style="font-size:16px;height:47px;"  class="form-control" id="{{ $main_contact->id }}" name="{{ $main_contact->id }}">
+    <select style="font-size:16px;height:47px;"  class="form-control" id="{{ $main_contact->id }}" name="{{ $main_contact->id }}" {{ $main_contact->required ? "required" : "" }}>
     	<option value=""></option>
     	@foreach($main_contact->shoppingcart_question_options()->orderBy('order')->get() as $shoppingcart_question_option)
     	<option value="{{ $shoppingcart_question_option->value }}" {{ $shoppingcart_question_option->answer==1 ? "selected" : "" }}>{{ $shoppingcart_question_option->label }}</option>
         @endforeach
     </select>
     @else
-    <input name="{{ $main_contact->id }}" value="{{ $main_contact->answer }}" type="text" class="form-control" id="{{ $main_contact->id }}" style="height:47px;">
+    <input name="{{ $main_contact->id }}" value="{{ $main_contact->answer }}" type="text" class="form-control" id="{{ $main_contact->id }}" style="height:47px;" {{ $main_contact->required ? "required" : "" }}>
     @endif
     @endif
 </div>
@@ -382,18 +364,18 @@ function DELETE()
     <h2>{{ $shoppingcart_products->title }}</h2>
     
     @foreach($activityBookings as $activityBooking)
-    <div class="form-group">
-	<label for="{{ $activityBooking->id }}"><strong>{{ $activityBooking->label }}</strong></label>
-    @if($activityBooking->selectOption)
-    <select style="font-size:16px;height:47px;" class="form-control" id="{{ $activityBooking->id }}" name="{{ $activityBooking->id }}">
-    	<option value=""></option>
-    	@foreach($activityBooking->shoppingcart_question_options()->orderBy('order')->get() as $shoppingcart_question_option)
-    	<option value="{{ $shoppingcart_question_option->value }}" {{ $shoppingcart_question_option->answer==1 ? "selected" : "" }}>{{ $shoppingcart_question_option->label }}</option>
-        @endforeach
-    </select>
-    @else
-    <input type="text" id="{{ $activityBooking->id }}" value="{{ $activityBooking->answer }}" style="height:47px;" name="{{ $activityBooking->id }}" class="form-control">
-    @endif
+    	<div class="form-group">
+		<label for="{{ $activityBooking->id }}" class="{{ $activityBooking->required ? "required" : "" }}"><strong>{{ $activityBooking->label }}</strong></label>
+    	@if($activityBooking->selectOption)
+    	<select style="font-size:16px;height:47px;" class="form-control" id="{{ $activityBooking->id }}" name="{{ $activityBooking->id }}" {{ $activityBooking->required ? "required" : "" }}>
+    		<option value=""></option>
+    		@foreach($activityBooking->shoppingcart_question_options()->orderBy('order')->get() as $shoppingcart_question_option)
+    		<option value="{{ $shoppingcart_question_option->value }}" {{ $shoppingcart_question_option->answer==1 ? "selected" : "" }}>{{ $shoppingcart_question_option->label }}</option>
+    	    @endforeach
+    	</select>
+    	@else
+    	<input type="text" id="{{ $activityBooking->id }}" value="{{ $activityBooking->answer }}" style="height:47px;" name="{{ $activityBooking->id }}" class="form-control" {{ $activityBooking->required ? "required" : "" }}>
+    	@endif
     @if(isset($activityBooking->help))
     <small class="form-text text-muted">{{$activityBooking->help}}</small>
     @endif
@@ -404,8 +386,13 @@ function DELETE()
 <!-- ########################################### -->    
 
 
-<button id="submit" type="submit" style="height:47px;" class="btn btn-lg btn-block btn-primary"><i class="fas fa-save"></i> Save</button>
+<button id="submit" type="submit" style="height:47px;" class="btn btn-lg btn-block btn-theme"><i class="fas fa-lock"></i> <strong>Pay {{ $shoppingcart->currency }} {{ $shoppingcart->total }}</strong></button>
 </form>
+
+<div id="payment-container"></div>
+
+
+<div id="alert-payment"></div>
 
 
 			</div>
@@ -417,6 +404,46 @@ function DELETE()
 			</div>
         </div>
 	</div>
+</div>
+</section>
+<script>
+@php
+$questions = $shoppingcart->shoppingcart_questions()->where('required',1)->get()
+@endphp
+    @foreach($questions as $question)
+	$("#{{ $question->id }}").focusout(function() {
+		$('#{{ $question->id }}').removeClass('is-invalid');
+  		$('#span-{{ $question->id }}').remove();
+    	if($("#{{ $question->id }}").val()=="")
+		{
+			$('#{{ $question->id }}').addClass('is-invalid');
+			$('#{{ $question->id }}').after('<span id="span-{{ $question->id }}" class="invalid-feedback" role="alert"><strong>Please fill out this field</strong></span>');
+		}
+		else
+		{
+			@if($question->dataFormat=="EMAIL_ADDRESS")
+				var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+				if(regex.test($("#{{ $question->id }}").val()))
+				{
+					$('#{{ $question->id }}').removeClass('is-invalid');
+  					$('#span-{{ $question->id }}').remove();
+				}
+				else
+				{
+					$('#{{ $question->id }}').addClass('is-invalid');
+					$('#{{ $question->id }}').after('<span id="span-{{ $question->id }}" class="invalid-feedback" role="alert"><strong>Invalid email</strong></span>');
+				}
+			@else
+				$('#{{ $question->id }}').removeClass('is-invalid');
+  				$('#span-{{ $question->id }}').remove();
+			@endif
+		}
+		
+  	});
+	@endforeach
+
+
+</script>
 <script language="javascript">
 function STORE()
 {
@@ -460,8 +487,6 @@ function STORE()
 	$.ajax({
 		data: {
         	"_token": $("meta[name=csrf-token]").attr("content"),
-            "bookingChannel": $("#bookingChannel").val(),
-            "skip_payment": true,
             "sessionId": '{{$shoppingcart->session_id}}',
 			
 				@php
@@ -495,7 +520,113 @@ function STORE()
 			
 			if(data.id=="1")
 			{
-				window.location.href = '{{route('route_toursdk_booking.index')}}';
+				$("#apply").attr("disabled", true);
+				$("#promocode").attr("disabled", true);
+
+				@php
+				$bookingId_buttons = $shoppingcart->shoppingcart_products()->get();
+				@endphp
+				@foreach($bookingId_buttons as $bookingId_button)
+					$("#remove-{{ $bookingId_button->booking_id }}").attr("disabled", true);
+				@endforeach
+
+				@php
+    			$main_contacts = $shoppingcart->shoppingcart_questions()->where('type','mainContactDetails')->orderBy('order')->get()
+    			@endphp
+    			@foreach($main_contacts as $main_contact)
+					$("#{{ $main_contact->id }}").attr("disabled", true);
+					$("#{{ $main_contact->id }}").addClass("input-disabled");
+				@endforeach
+				
+				@php
+    			$activityBookings = $shoppingcart->shoppingcart_questions()->where('type','activityBookings')->orderBy('order')->get();
+    			@endphp
+				@if(count($activityBookings))
+    				@foreach($activityBookings as $activityBooking)
+						$("#{{ $activityBooking->id }}").attr("disabled", true);
+						$("#{{ $activityBooking->id }}").addClass("input-disabled");
+					@endforeach
+				@endif
+				@php
+    			$pickup_questions = $shoppingcart->shoppingcart_questions()->where('type','pickupQuestions')->orderBy('order')->get();
+    			@endphp
+    			@if(count($pickup_questions))
+					@foreach($pickup_questions as $pickup_question)
+					$("#{{ $pickup_question->id }}").attr("disabled", true);
+					$("#{{ $pickup_question->id }}").addClass("input-disabled");
+					@endforeach
+				@endif
+				
+				
+				
+				$("#submit").slideUp("slow");
+                $('#payment-container').html('<div id="proses"><h2>Pay with</h2><div id="paypal-button-container"></div></div>');
+                $('#payment-container').fadeIn("slow");
+				$("#proses").fadeIn("slow");
+				//=========================================================
+				paypal.Buttons({
+    			createOrder: function() {
+					
+  					return fetch('/snippets/payment', {
+    				method: 'POST',
+					credentials: 'same-origin',
+    				headers: {
+      					'content-type': 'application/json',
+						'X-CSRF-TOKEN': $("meta[name=csrf-token]").attr("content"),
+                        'sessionId': '{{ $shoppingcart->session_id }}'
+    					}
+  					}).then(function(res) {
+						//console.log(res);
+    					return res.json();
+  					}).then(function(data) {
+						//console.log(data);
+    					return data.result.id;
+  					});
+					
+				},
+				onError: function (err) {
+    				$("#proses").hide();
+					$('#alert-payment').html('<div id="alert-failed" class="alert alert-danger text-center" role="alert"><h2 style="margin-bottom:10px; margin-top:10px;"><i class="far fa-frown"></i> Payment Error!</h2></div>');
+                                $('#alert-payment').fadeIn("slow");
+					
+  				},
+   				onApprove: function(data, actions) {
+					$("#proses").addClass("loader");
+      				actions.order.authorize().then(function(authorization) {
+        				var authorizationID = authorization.purchase_units[0].payments.authorizations[0].id
+						$.ajax({
+							data: {
+        						"_token": $("meta[name=csrf-token]").attr("content"),
+								"orderID": data.orderID,
+								"authorizationID": authorizationID,
+                                "sessionId": '{{ $shoppingcart->session_id }}',
+        						},
+							type: 'POST',
+							url: '/snippets/payment/confirm'
+						}).done(function(data) {
+							if(data.id=="1")
+							{
+								window.location.href = '/booking/receipt/'+ data.message;
+								$("#proses").hide();
+                                $('#alert-payment').html('<div id="alert-success" class="alert alert-primary text-center" role="alert"><h2 style="margin-bottom:10px; margin-top:10px;"><i class="far fa-smile"></i> Payment Successful!</h2></div>');
+                                $('#alert-payment').fadeIn("slow");
+								
+							}
+							else
+							{
+								$("#proses").hide();
+                                $('#alert-payment').html('<div id="alert-failed" class="alert alert-danger text-center" role="alert"><h2 style="margin-bottom:10px; margin-top:10px;"><i class="far fa-frown"></i> Payment Failed!</h2></div>');
+                                $('#alert-payment').fadeIn("slow");
+							}
+						}).fail(function(error) {
+							console.log(error);
+						});
+      				});
+    			}
+			
+  				}).render('#paypal-button-container');
+				//=========================================================
+				
 			}
 			else
 			{
@@ -508,7 +639,7 @@ function STORE()
 					});
 					
 				$("#submit").attr("disabled", false);
-				$('#submit').html('<i class="fas fa-save"></i> Save');
+				$('#submit').html('<i class="fas fa-lock"></i> <strong>Pay {{ $shoppingcart->currency }} {{ $shoppingcart->total }}</strong>');
 				
 			}
 		});
@@ -518,10 +649,4 @@ function STORE()
 }
 </script>
 
-
-		
-                </div>
-            </div>
-        </div>
- </div>
 @endsection

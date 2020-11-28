@@ -37,7 +37,7 @@ class ShoppingcartController extends Controller
         
         $shoppingcart = Shoppingcart::where('booking_status','CART')->where('session_id',$sessionId)->firstOrFail();
 
-        $grand_total = $shoppingcart->shoppingcart_payment()->amount;
+        $grand_total = $shoppingcart->shoppingcart_payment->amount;
         $payment_total = PaypalHelper::getOrder($orderID);
         
         if($payment_total!=$grand_total)
@@ -64,23 +64,14 @@ class ShoppingcartController extends Controller
 
         return response()->json([
                     "id" => "1",
-                    "message" => $shoppingcart->id
+                    "message" => $shoppingcart->id .'/'. $shoppingcart->session_id
                 ]);
         
     }
 
     public function createpayment(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-                'sessionId' => ['required', 'string', 'max:255'],
-            ]);
-
-            if ($validator->fails()) {
-                $errors = $validator->errors();
-                return response()->json($errors);
-            }
-
-        $sessionId = $request->input('sessionId');
+        $sessionId = $request->header('sessionId');
         $shoppingcart = Shoppingcart::where('booking_status','CART')->where('session_id',$sessionId)->firstOrFail();
         $value = number_format((float)$shoppingcart->shoppingcart_payment->amount, 2, '.', '');
         $response = PaypalHelper::createOrder($value,'BOOKING REFERENCE: '. $shoppingcart->confirmation_code,$shoppingcart->shoppingcart_payment->currency);
@@ -98,7 +89,8 @@ class ShoppingcartController extends Controller
             $notice = BookClass::get_rate($rev_shoppingcarts->currency,'USD');
         }
         */
-
+        //return view('toursdk::layouts.pdf.invoice', compact('shoppingcart','notice'));
+        //exit();
         $pdf = PDF::loadView('toursdk::layouts.pdf.invoice', compact('shoppingcart','notice'))->setPaper('a4', 'portrait');
         return $pdf->download('Invoice-'. $shoppingcart->confirmation_code .'.pdf');
     }
@@ -214,7 +206,7 @@ class ShoppingcartController extends Controller
     public function removebookingid(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'promocode' => ['required', 'string', 'max:255'],
+            'bookingId' => ['required', 'string', 'max:255'],
             'sessionId' => ['required', 'string', 'max:255'],
         ]);
 

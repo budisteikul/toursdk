@@ -1,4 +1,11 @@
 <?php
+
+Route::get('/tours/{slug}','budisteikul\toursdk\Controllers\FrontendController@category')->middleware(['web']);
+Route::get('/tour/{slug}','budisteikul\toursdk\Controllers\FrontendController@product')->middleware(['web']);
+Route::get('/booking/checkout','budisteikul\toursdk\Controllers\FrontendController@checkout')->middleware(['web']);
+Route::get('/booking/receipt/{id}/{sessionId}','budisteikul\toursdk\Controllers\FrontendController@receipt')->middleware(['web']);
+
+
 //Category
 Route::get('/cms/toursdk/category/structure','budisteikul\toursdk\Controllers\CategoryController@structure')->middleware(['web','auth','verified','CoreMiddleware']);
 Route::resource('/cms/toursdk/category','budisteikul\toursdk\Controllers\CategoryController',[ 'names' => 'route_toursdk_category' ])
@@ -14,6 +21,10 @@ Route::resource('/cms/toursdk/channel','budisteikul\toursdk\Controllers\ChannelC
 
 //Review
 Route::resource('/cms/toursdk/review','budisteikul\toursdk\Controllers\ReviewController',[ 'names' => 'route_toursdk_review' ])
+	->middleware(['web','auth','verified','CoreMiddleware']);
+
+//Page
+Route::resource('/cms/toursdk/page','budisteikul\toursdk\Controllers\PageController',[ 'names' => 'route_toursdk_page' ])
 	->middleware(['web','auth','verified','CoreMiddleware']);
 
 //Booking

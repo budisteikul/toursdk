@@ -11,7 +11,7 @@
         "cloudinary/cloudinary_php": "^1.19",
         "barryvdh/laravel-dompdf": "^0.8.7",
         "paypal/paypal-checkout-sdk": "^1.0",
-        "simplesoftwareio/simple-qrcode": "^4.1"
+        "simplesoftwareio/simple-qrcode": "^2.0"
     },
     "autoload": {
    		"psr-4": {

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use budisteikul\toursdk\Models\Shoppingcart;
 use budisteikul\toursdk\Helpers\BookingHelper;
 use budisteikul\toursdk\Helpers\BokunHelper;
+use budisteikul\toursdk\Helpers\PaypalHelper;
 use budisteikul\toursdk\Models\Channel;
 use budisteikul\toursdk\Models\Product;
 use budisteikul\toursdk\DataTables\BookingDataTable;
@@ -152,9 +153,43 @@ class BookingController extends Controller
      * @param  \App\Models\Booking  $booking
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Booking $booking)
+    public function update(Request $request, $id)
     {
-        //
+        if($request->input('update')!="")
+        {
+            $validator = Validator::make($request->all(), [
+                    'update' => 'in:capture,void'
+            ]);
+                
+            if ($validator->fails()) {
+                $errors = $validator->errors();
+                return response()->json($errors);
+            }
+
+            $shoppingcart = Shoppingcart::findOrFail($id);
+            $update = $request->input('update');
+            if($update=="capture")
+            {
+                PaypalHelper::captureAuth($shoppingcart->shoppingcart_payment->authorization_id);
+                $shoppingcart->shoppingcart_payment->payment_status = 2;
+                $shoppingcart->shoppingcart_payment->save();
+                $shoppingcart->booking_status = 'CONFIRMED';
+                $shoppingcart->save();
+            }
+            if($update=="void")
+            {
+
+                PaypalHelper::voidPaypal($shoppingcart->shoppingcart_payment->authorization_id);
+                $shoppingcart->shoppingcart_payment->payment_status = 3;
+                $shoppingcart->shoppingcart_payment->save();
+                $shoppingcart->booking_status = 'CANCELLED';
+                $shoppingcart->save();
+            }
+            return response()->json([
+                        "id"=>"1",
+                        "message"=>'success'
+                    ]);
+        }
     }
 
     /**

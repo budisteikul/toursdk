@@ -9,6 +9,7 @@ $( document ).ready(function() {
 </script>
 @endpush
 @section('content')
+@include('toursdk::layouts.loading')
 <section id="booking" style="background-color:#ffffff">
 <div class="container">
 	<div class="row">
@@ -37,7 +38,7 @@ function REMOVE(id)
         }).done(function( data ) {
             if(data.id=="1")
             {
-                window.location.href = '{{route('route_toursdk_booking.index')}}/checkout';
+                window.location.href = '/booking/checkout';
             }
             else
             {

@@ -67,10 +67,27 @@ class BookingDataTable extends DataTable
                     return $value;
                 })
                 ->addColumn('payment', function ($id){
-                    $paymentStatus = 0;
-                    $shoppingcart_payment = $id->shoppingcart_payment->first();
-                    if(isset($shoppingcart_payment)) $paymentStatus = $shoppingcart_payment->paymentStatus;
-                    return BookingHelper::payment_status($paymentStatus);
+                    $payment_status = $id->shoppingcart_payment->payment_status;
+                    switch($id->shoppingcart_payment->payment_status)
+                    {
+                        case 1:
+                            return '
+                <div class="btn-toolbar justify-content-end">
+                    <div class="btn-group mr-2 mb-2" role="group">
+                        
+                        <button id="void-'.$id->id.'" type="button" onClick="STATUS(\''.$id->id.'\',\'void\'); return false;" class="btn btn-sm btn-warning payment"><i class="fa fa-ban"></i> Void</button>
+                        <button id="capture-'.$id->id.'" type="button" onClick="STATUS(\''. $id->id .'\',\'capture\')" class="btn btn-sm btn-primary payment"><i class="fa fa-money-check"></i> Capture</button>
+                        
+                    </div>
+                </div>';
+                        break;
+                        default:
+                            return BookingHelper::payment_status($id->shoppingcart_payment->payment_status);
+                    }
+                    //$paymentStatus = 0;
+                    //$shoppingcart_payment = $id->shoppingcart_payment->first();
+                    //if(isset($shoppingcart_payment)) $paymentStatus = $shoppingcart_payment->payment_status;
+                    //return BookingHelper::payment_status($paymentStatus);
                 })
                 ->addColumn('action', function ($id) {
                 return '

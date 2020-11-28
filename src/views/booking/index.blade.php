@@ -2,7 +2,38 @@
 @section('content')
 @push('scripts')
 <script type="text/javascript">
-  
+  function STATUS(id, status)
+  {
+    
+    $("#capture-"+ id).attr("disabled", true);
+    $("#void-"+ id).attr("disabled", true);
+    if(status=="capture")
+    {
+      $("#capture-"+ id).html('<i class="fa fa-spinner fa-spin"></i>');
+    }
+    if(status=="void")
+    {
+      $("#void-"+ id).html('<i class="fa fa-spinner fa-spin"></i>');
+    }
+    var table = $('#dataTableBuilder').DataTable();
+    $.ajax({
+    data: {
+          "_token": $("meta[name=csrf-token]").attr("content"),
+          "update":status
+        },
+    type: 'PUT',
+    url: "{{ route('route_toursdk_booking.index') }}/"+ id
+    }).done(function( data ) {
+      if(data.id=="1")
+      {
+        $("#capture-"+ id).attr("disabled", false);
+        $("#void-"+ id).attr("disabled", false);
+        $("#capture-"+ id).html('<i class="far fa-money-bill-alt"></i> Capture');
+        $("#void-"+ id).html('<i class="far fa-money-bill-alt"></i> Void');
+        table.ajax.reload( null, false );
+      }
+    });
+  }
 
 	function DELETE(id)
 	{

@@ -4,6 +4,14 @@ Route::get('/tours/{slug}','budisteikul\toursdk\Controllers\FrontendController@c
 Route::get('/tour/{slug}','budisteikul\toursdk\Controllers\FrontendController@product')->middleware(['web']);
 Route::get('/booking/checkout','budisteikul\toursdk\Controllers\FrontendController@checkout')->middleware(['web']);
 Route::get('/booking/receipt/{id}/{sessionId}','budisteikul\toursdk\Controllers\FrontendController@receipt')->middleware(['web']);
+Route::get('/booking/shoppingcart/empty',function(){
+	return view('toursdk::frontend.empty-shoppingcart');
+})->middleware(['web']);
+Route::get('/booking/{slug}','budisteikul\toursdk\Controllers\FrontendController@booking')->middleware(['web']);
+Route::get('/page/{slug}','budisteikul\toursdk\Controllers\FrontendController@page')->middleware(['web']);
+
+
+
 
 
 //Category

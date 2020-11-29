@@ -1,19 +1,5 @@
 <?php
 
-Route::post('/reviews','budisteikul\toursdk\Controllers\FrontendController@reviews')->middleware(['web']);
-Route::get('/tours/{slug}','budisteikul\toursdk\Controllers\FrontendController@category')->middleware(['web']);
-Route::get('/tour/{slug}','budisteikul\toursdk\Controllers\FrontendController@product')->middleware(['web']);
-Route::get('/booking/checkout','budisteikul\toursdk\Controllers\FrontendController@checkout')->middleware(['web']);
-Route::get('/booking/receipt/{id}/{sessionId}','budisteikul\toursdk\Controllers\FrontendController@receipt')->middleware(['web']);
-Route::get('/booking/shoppingcart/empty',function(){
-	return view('toursdk::frontend.empty-shoppingcart');
-})->middleware(['web']);
-Route::get('/booking/{slug}','budisteikul\toursdk\Controllers\FrontendController@booking')->middleware(['web']);
-Route::get('/page/{slug}','budisteikul\toursdk\Controllers\FrontendController@page')->middleware(['web']);
-
-
-
-
 
 //Category
 Route::get('/cms/toursdk/category/structure','budisteikul\toursdk\Controllers\CategoryController@structure')->middleware(['web','auth','verified','CoreMiddleware']);
@@ -41,9 +27,6 @@ Route::get('/cms/toursdk/booking/calendar', 'budisteikul\toursdk\Controllers\Boo
 Route::get('/cms/toursdk/booking/checkout', 'budisteikul\toursdk\Controllers\BookingController@checkout')->middleware(['web','auth','verified','CoreMiddleware']);
 Route::resource('/cms/toursdk/booking','budisteikul\toursdk\Controllers\BookingController',[ 'names' => 'route_toursdk_booking' ])
 	->middleware(['web','auth','verified','CoreMiddleware']);
-
-
-Route::get('/test', 'budisteikul\toursdk\Controllers\BookingController@test');
 
 
 Route::get('/snippets/activity/{activityId}/calendar/json/{year}/{month}', 'budisteikul\toursdk\Controllers\ShoppingcartController@snippetscalendar');

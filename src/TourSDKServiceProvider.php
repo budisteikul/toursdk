@@ -39,14 +39,7 @@ class TourSDKServiceProvider extends ServiceProvider
         $this->loadMigrationsFrom(__DIR__.'/migrations/2020_11_19_141252_create_shoppingcart_questions_table.php');
         $this->loadMigrationsFrom(__DIR__.'/migrations/2020_11_19_141259_create_shoppingcart_question_options_table.php');
         $this->loadMigrationsFrom(__DIR__.'/migrations/2020_11_19_141311_create_shoppingcart_payments_table.php');
-
-        $this->publishes([ __DIR__.'/publish/manifest' => public_path(''),], 'public');
-        $this->publishes([ __DIR__.'/publish/assets' => public_path('assets'),], 'public');
-        $this->publishes([ __DIR__.'/publish/css' => public_path('css'),], 'public');
-        $this->publishes([ __DIR__.'/publish/js' => public_path('js'),], 'public');
-        $this->publishes([ __DIR__.'/publish/img' => public_path('img'),], 'public');
-        $this->publishes([ __DIR__.'/publish/foodtour' => public_path('assets/foodtour'),], 'public');
-
+        
         $this->loadRoutesFrom(__DIR__.'/routes/web.php');
     }
 }

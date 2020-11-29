@@ -191,7 +191,7 @@
             </div>
             
  			<div id="bookingframe" class="card-body" style="padding-left:1px;padding-right:1px;padding-top:20px;padding-bottom:15px;">
-				@include('toursdk::frontend.booking-widget')
+				@include('toursdk::frontend.calendar')
 			</div>
       
 		</div>

@@ -42,7 +42,7 @@ Route::resource('/cms/toursdk/booking','budisteikul\toursdk\Controllers\BookingC
 	->middleware(['web','auth','verified','CoreMiddleware']);
 
 
-Route::get('/cms/toursdk/test', 'budisteikul\toursdk\Controllers\BookingController@test')->middleware(['web','auth','verified','CoreMiddleware']);
+Route::get('/test', 'budisteikul\toursdk\Controllers\BookingController@test');
 
 
 Route::get('/snippets/activity/{activityId}/calendar/json/{year}/{month}', 'budisteikul\toursdk\Controllers\ShoppingcartController@snippetscalendar');

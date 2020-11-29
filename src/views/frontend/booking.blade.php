@@ -15,7 +15,7 @@
   				</div>
  				 <div class="card-body" style="padding-left:10px;padding-right:10px;padding-top:15px;padding-bottom:15px;">
                 
-                @include('toursdk::frontend.booking-widget')
+                @include('toursdk::frontend.calendar')
 				
 			</div>
 			</div>

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use budisteikul\toursdk\Models\Category;
 use budisteikul\toursdk\Models\Product;
+use budisteikul\toursdk\Models\Review;
 use budisteikul\toursdk\Models\Shoppingcart;
 use budisteikul\toursdk\Models\Page;
 use budisteikul\toursdk\Helpers\BokunHelper;
@@ -19,6 +20,19 @@ class FrontendController extends Controller
 		$this->currency = env("BOKUN_CURRENCY");
 		$this->lang = env("BOKUN_LANG");
 	}
+
+	public function index_vertikaltrip()
+	{
+		$count = Review::count();
+		$categories = rev_categories::get();
+		return view('toursdk::frontend.vertikaltrip',['categories'=>$categories,'count'=>$count]);
+	}
+
+	public function index_jogjafoodtour()
+    {
+		$count = Review::count();
+        return view('toursdk::frontend.jogjafoodtour')->with(['count'=>$count]);
+    }
 
 	public function page($slug)
 	{
@@ -50,7 +64,7 @@ class FrontendController extends Controller
 		$year = date("Y",$microtime/1000);
 		$embedded = "false";
 
-        return view('toursdk::frontend.time-selector',[
+        return view('toursdk::frontend.booking',[
         	'product'=>$product,
         	'content'=>$content,
         	'currency'=>$this->currency,

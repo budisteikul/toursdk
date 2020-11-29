@@ -1,5 +1,5 @@
 @inject('BookingHelper', budisteikul\toursdk\Helpers\BookingHelper)
-@extends('toursdk::layouts.app')
+@extends('toursdk::layouts.frontend.app')
 @section('title','Checkout')
 @push('scripts')
 <script>

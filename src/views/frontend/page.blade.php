@@ -1,4 +1,4 @@
-@extends('toursdk::layouts.app')
+@extends('toursdk::layouts.frontend.app')
 @section('title',$page->title)
 @section('content')
 

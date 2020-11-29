@@ -1,5 +1,5 @@
-@inject('Book', App\Classes\Rev\BookClass)
-@inject('Bokun', App\Classes\Rev\BokunClass)
+@inject('BokunHelper', budisteikul\toursdk\Helpers\BokunHelper)
+@inject('ImageHelper', budisteikul\toursdk\Helpers\ImageHelper)
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -47,15 +47,10 @@
       <ul class="navbar-nav text-uppercase ml-auto mb-1">
             @foreach($categories as $category)
             <li class="nav-item">
-               <a class="nav-link menu-hover" href="/tours/{{ $category->slug }}">{{ $category->title }}</a>
+               <a class="nav-link menu-hover" href="/tours/{{ $category->slug }}">{{ $category->name }}</a>
             </li>
             @endforeach
-            @if($Book->check_shoppingcart(Session::get('sessionId')))
-            <div class="dropdown-divider"></div>
-            <li class="nav-item mb-1">
-                <a class="nav-link menu-hover" href="/booking/checkout"><i class="fas fa-shopping-cart"></i> Shopping Cart</a>
-            </li>
-            @endif
+            
       </ul>
     </div>
     <!-- ##############################################################  -->
@@ -123,7 +118,7 @@
             <div class="row" style="padding-bottom:0px;">
                 <div class="col-lg-12 text-center">
         <div style="height:70px;"></div>
-                    <h3 class="section-heading" style="margin-top:0px;">{{ $category->title }}</h3>
+                    <h3 class="section-heading" style="margin-top:0px;">{{ $category->name }}</h3>
                     <hr class="hr-theme">
                     <div style="height:30px;"></div>
                 </div>
@@ -131,23 +126,23 @@
       <div class="row" style="padding-bottom:0px;">
         <div class="col-lg-12 text-center">
             <div class="row">
-                    @foreach($category->experiences as $experience)
+                    @foreach($category->products as $product)
                     @php
-                        $content = $Bokun->get_product($experience->productId);
+                        $content = $BokunHelper->get_product($product->bokun_id);
                     @endphp
               <div class="col-lg-4 col-md-6 mb-4">
 
             <div class="card h-100 shadow card-block rounded">
             
                             <div class="container-book">
-                            <a href="/tour/{{ $experience->slug }}" class="text-decoration-none"><img class="card-img-top image-book" src="{{ \App\Classes\Rev\RevClass::get_cover($experience->productId) }}" alt="{{ $experience->title }}"></a>
+                            <a href="/tour/{{ $product->slug }}" class="text-decoration-none"><img class="card-img-top image-book" src="{{ $ImageHelper->cover($product) }}" alt="{{ $product->title }}"></a>
                             <div class="middle-book">
-                                <a href="/tour/{{ $experience->slug }}" class="btn btn-theme btn-md p-3" style="border-radius:0;">BOOK NOW</a>
+                                <a href="/tour/{{ $product->slug }}" class="btn btn-theme btn-md p-3" style="border-radius:0;">BOOK NOW</a>
                             </div>
                             </div>
             
               <div class="card-header bg-white border-0 text-left pb-0">
-                <h3 class="mb-4"><a href="/tour/{{ $experience->slug }}" class="text-dark text-decoration-none">{{ $experience->title }}</a></h3>
+                <h3 class="mb-4"><a href="/tour/{{ $product->slug }}" class="text-dark text-decoration-none">{{ $product->name }}</a></h3>
               </div>
               @if($content->excerpt!="")
               <div class="card-body pt-0">
@@ -168,7 +163,7 @@
                                       </div>
                                     </div>
                     <div class="ml-auto p-0">
-                                      <a href="/tour/{{ $experience->slug }}" class="btn btn-theme btn-md"><i class="fas fa-info-circle"></i> More info</a>
+                                      <a href="/tour/{{ $product->slug }}" class="btn btn-theme btn-md"><i class="fas fa-info-circle"></i> More info</a>
                                     </div>
                 </div>
               </div>
@@ -195,7 +190,7 @@ var table = $('#dataTables-example').DataTable(
   "serverSide": true,
   "ajax": 
   {
-    "url": "/review",
+    "url": "/reviews",
     "type": "POST",
     "headers": {
           'X-CSRF-TOKEN': $("meta[name=csrf-token]").attr("content")

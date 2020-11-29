@@ -1,5 +1,6 @@
 <?php
 
+Route::post('/reviews','budisteikul\toursdk\Controllers\FrontendController@reviews')->middleware(['web']);
 Route::get('/tours/{slug}','budisteikul\toursdk\Controllers\FrontendController@category')->middleware(['web']);
 Route::get('/tour/{slug}','budisteikul\toursdk\Controllers\FrontendController@product')->middleware(['web']);
 Route::get('/booking/checkout','budisteikul\toursdk\Controllers\FrontendController@checkout')->middleware(['web']);

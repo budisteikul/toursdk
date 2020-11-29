@@ -1,4 +1,4 @@
-@extends('toursdk::layouts.app')
+@extends('toursdk::layouts.frontend.app')
 @section('title','Receipt')
 @section('content')
 <section id="booking" style="background-color:#ffffff">

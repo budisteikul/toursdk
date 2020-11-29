@@ -79,7 +79,7 @@
         "processing": true,
             "serverSide": true,
             "ajax": {
-                  "url": "/review",
+                  "url": "/reviews",
                   "type": "POST",
             "headers": {
                   'X-CSRF-TOKEN': $("meta[name=csrf-token]").attr("content")

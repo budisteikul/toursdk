@@ -1,4 +1,4 @@
-@inject('BookingHelper', budisteikul\toursdk\Helpers\BookingHelper)
+@inject('ProductHelper', budisteikul\toursdk\Helpers\ProductHelper)
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -144,7 +144,7 @@ body {
         	      <tr>
         	        <td class="text-no-opacity">
                 @php
-				        $tanggal = $BookingHelper->datetotext($shoppingcart_product->date);
+				        $tanggal = $ProductHelper->datetotext($shoppingcart_product->date);
 				        $tanggal = str_ireplace("@","<br>",$tanggal);
 				        @endphp
                 {!! $tanggal !!}

@@ -4,6 +4,7 @@ namespace budisteikul\toursdk\DataTables;
 
 use budisteikul\toursdk\Models\Shoppingcart;
 use budisteikul\toursdk\Helpers\BookingHelper;
+use budisteikul\toursdk\Helpers\ProductHelper;
 use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Html\Column;
 use Yajra\DataTables\Html\Editor\Editor;
@@ -44,7 +45,7 @@ class BookingDataTable extends DataTable
                     {
                         $value .= '<b><a class="text-decoration-none" href="/snippets/pdf/ticket/'. $id->session_id .'/Ticket-'. $shoppingcart_product->product_confirmation_code .'.pdf" target="_blank">'. $shoppingcart_product->product_confirmation_code .'</a> - '.$shoppingcart_product->title.'</b> <br />';
                         if($shoppingcart_product->rate!="") $value .= $shoppingcart_product->rate .' <br />';
-                        $value .= BookingHelper::datetotext($shoppingcart_product->date) .' <br />';
+                        $value .= ProductHelper::datetotext($shoppingcart_product->date) .' <br />';
                         foreach($shoppingcart_product->shoppingcart_rates()->get() as $shoppingcart_rate)
                         {
                             if($shoppingcart_rate->type=="product")

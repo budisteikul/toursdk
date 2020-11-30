@@ -26,16 +26,16 @@ class BookingDataTable extends DataTable
                 ->addColumn('invoice', function ($id){
                     $value = '';
                     $value .= '<b><a class="text-decoration-none" href="/snippets/pdf/invoice/'. $id->session_id .'/Invoice-'. $id->confirmation_code .'.pdf" target="_blank">'. $id->confirmation_code .'</a> - INVOICE</b> <br />';
-                    $value .= ' Channel : '.$id->booking_channel.' <br />';
+                    $value .= ' <b>Channel :</b> '.$id->booking_channel.' <br />';
 
                     $name = $id->shoppingcart_questions()->select('answer')->where('type','mainContactDetails')->where('question_id','firstName')->first()->answer .' '. $id->shoppingcart_questions()->select('answer')->where('type','mainContactDetails')->where('question_id','lastName')->first()->answer;
                 
                     $email = $id->shoppingcart_questions()->select('answer')->where('type','mainContactDetails')->where('question_id','email')->first()->answer;
                     $phone = $id->shoppingcart_questions()->select('answer')->where('type','mainContactDetails')->where('question_id','phoneNumber')->first()->answer;
 
-                    if($name!='') $value .= ' Name : '.$name.' <br />';
-                    if($email!='') $value .= ' Email : '.$email.' <br />';
-                    if($phone!='') $value .= ' Phone : '.$phone.' <br />';
+                    if($name!='') $value .= ' <b>Name :</b> '.$name.' <br />';
+                    if($email!='') $value .= ' <b>Email :</b> '.$email.' <br />';
+                    if($phone!='') $value .= ' <b>Phone :</b> '.$phone.' <br />';
 
                     return $value;
                 })

@@ -26,7 +26,8 @@ class ShoppingcartController extends Controller
             switch($request->input('action'))
             {
             case 'BOOKING_CONFIRMED':
-                $shopping_carts = BookingHelper::webhook_insert_shoppingcart($data);
+                print_r($data);
+                //$shopping_carts = BookingHelper::webhook_insert_shoppingcart($data);
                 return response()->json([
                     "id" => "1",
                     "message" => 'Success'

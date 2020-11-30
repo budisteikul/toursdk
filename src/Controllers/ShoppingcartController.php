@@ -18,6 +18,37 @@ use Barryvdh\DomPDF\Facade as PDF;
 class ShoppingcartController extends Controller
 {
 
+    public function webhook($bokun_accesskey,$bokun_secretkey,Request $request)
+    {
+        if(env("BOKUN_ACCESSKEY")== $bokun_accesskey && env("BOKUN_SECRETKEY")==$bokun_secretkey)
+        {
+            $data = $request->all();
+            switch($request->input('action'))
+            {
+            case 'BOOKING_CONFIRMED':
+                $shopping_carts = BookingHelper::webhook_insert_shoppingcart($data);
+                return response()->json([
+                    "id" => "1",
+                    "message" => 'Success'
+                ]);
+            break;
+            case 'BOOKING_ITEM_CANCELLED':
+                $shopping_carts = Shoppingcart::where('confirmationCode',$data['confirmationCode'])->first();
+                $shopping_carts->booking_status = "CANCELLED";
+                $shopping_carts->save();
+                return response()->json([
+                    "id" => "1",
+                    "message" => 'Success'
+                ]);
+            break;
+            }
+        }
+        return response()->json([
+                    "id" => "2",
+                    "message" => 'Error'
+                ]);
+    }
+
     public function confirmpayment(Request $request)
     {
         $validator = Validator::make($request->all(), [

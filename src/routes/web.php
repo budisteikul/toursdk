@@ -43,4 +43,5 @@ Route::post('/snippets/activity/invoice-preview', 'budisteikul\toursdk\Controlle
 Route::post('/snippets/widget/cart/session/{id}/activity', 'budisteikul\toursdk\Controllers\ShoppingcartController@addshoppingcart');
 
 
-
+Route::post('/webhook/{bokun_accesskey}/{bokun_secretkey}', 'budisteikul\toursdk\Controllers\ShoppingcartController@webhook');
+Route::get('/webhook/{bokun_accesskey}/{bokun_secretkey}', 'budisteikul\toursdk\Controllers\ShoppingcartController@webhook');

@@ -26,15 +26,15 @@ class ShoppingcartController extends Controller
             switch($request->input('action'))
             {
             case 'BOOKING_CONFIRMED':
-                print_r($data);
-                //$shopping_carts = BookingHelper::webhook_insert_shoppingcart($data);
+                //print_r($data);
+                $shopping_carts = BookingHelper::webhook_insert_shoppingcart($data);
                 return response()->json([
                     "id" => "1",
                     "message" => 'Success'
                 ]);
             break;
             case 'BOOKING_ITEM_CANCELLED':
-                $shopping_carts = Shoppingcart::where('confirmationCode',$data['confirmationCode'])->first();
+                $shopping_carts = Shoppingcart::where('confirmationCode',$data['confirmationCode'])->firstOrFail();
                 $shopping_carts->booking_status = "CANCELLED";
                 $shopping_carts->save();
                 return response()->json([

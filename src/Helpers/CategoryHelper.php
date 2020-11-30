@@ -8,10 +8,11 @@ class CategoryHelper {
 
     public static function structure($id)
     {
-        print("<ul>");
+        
         $categories = Category::where('parent_id',$id)->get();
         foreach($categories as $category)
         {
+             print("<ul>");
              print('<li class="parent_li">');
              print('<span>'.$category->name.'</span>');
              if(@count($category->child))
@@ -19,8 +20,9 @@ class CategoryHelper {
                 self::structure($category->id);
              }
              print("</li>");
+             print("</ul>");
         }
-        print("</ul>");
+        
     }
 
     public static function getParent($id)

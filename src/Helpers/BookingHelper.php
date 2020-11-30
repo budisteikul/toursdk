@@ -213,7 +213,8 @@ class BookingHelper {
 			$shoppingcart->save();
 
 			$shoppingcart_payment = new ShoppingcartPayment();
-			$shoppingcart_payment->amount = $grand_total;
+			$shoppingcart_payment->amount = self::convert_currency($grand_total,$data['currency'],'USD');
+			$shoppingcart_payment->currency = 'USD';
 			$shoppingcart_payment->payment_status = 0;
 			$shoppingcart_payment->shoppingcart_id = $shoppingcart->id;
 			$shoppingcart_payment->save();

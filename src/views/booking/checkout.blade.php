@@ -45,7 +45,7 @@ function REMOVE(id)
 		}).done(function( data ) {
 			if(data.id=="1")
 			{
-				window.location.href = '/booking/checkout';
+				window.location.href = '{{ route('route_toursdk_booking.index') }}/checkout';
 			}
 			else
 			{

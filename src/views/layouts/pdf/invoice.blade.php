@@ -289,7 +289,7 @@ footer {
               $total = $shoppingcart->shoppingcart_payment->amount;
             }
           @endphp
-          @if($shoppingcart->bookingStatus=="CANCELLED")
+          @if($shoppingcart->booking_status=="CANCELED")
           <tr>
             <td colspan="2"></td>
             <td colspan="2">REFUNDED</td>

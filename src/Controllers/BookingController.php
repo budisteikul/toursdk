@@ -296,7 +296,7 @@ class BookingController extends Controller
                 PaypalHelper::voidPaypal($shoppingcart->shoppingcart_payment->authorization_id);
                 $shoppingcart->shoppingcart_payment->payment_status = 3;
                 $shoppingcart->shoppingcart_payment->save();
-                $shoppingcart->booking_status = 'CANCELLED';
+                $shoppingcart->booking_status = 'CANCELED';
                 $shoppingcart->save();
             }
             return response()->json([
@@ -304,6 +304,19 @@ class BookingController extends Controller
                         "message"=>'success'
                     ]);
         }
+
+        if($request->input('action')=="cancel")
+        {
+            $shoppingcart = Shoppingcart::findOrFail($id);
+            $shoppingcart->booking_status = 'CANCELED';
+            $shoppingcart->save();
+            return response()->json([
+                        "id"=>"1",
+                        "message"=>'success'
+                    ]);
+            
+        }
+
     }
 
     /**

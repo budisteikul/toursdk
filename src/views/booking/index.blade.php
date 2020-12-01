@@ -78,25 +78,43 @@
    		});	
 	}
 	
-	function EDIT(id)
-	{
-		$.fancybox.open({
-        	type: 'ajax',
-       	 	src: '{{ route('route_toursdk_booking.index') }}/'+ id +'/edit',
-			modal: true,
-   		});
-		
-	}
-
-  function SHOW()
+	function CANCEL(id)
   {
-    $.fancybox.open({
-          type: 'ajax',
-          src: '{{ route('route_toursdk_booking.index') }}/structure',
-      modal: false,
-      });
+    $.confirm({
+        title: 'Warning',
+        content: 'Are you sure?',
+        type: 'green',
+      icon: 'fa fa-ban',
+        buttons: {   
+            ok: {
+                text: "OK",
+                btnClass: 'btn-success',
+                keys: ['enter'],
+                action: function(){
+                     
+                     $.ajax({
+                        data: {
+                          "_token": $("meta[name=csrf-token]").attr("content"),
+                          "action": 'cancel',
+      
+                        },
+                        type: 'PUT',
+                        url: '{{ route('route_toursdk_booking.index') }}/'+ id
+                        }).done(function( data ) {
+                          table.ajax.reload( null, false );
+                        });
+
+                }
+            },
+            cancel: function(){
+                  console.log('the user clicked cancel');
+            }
+        }
+    });
     
   }
+
+  
 	</script>
 @endpush
 <div class="row justify-content-center">

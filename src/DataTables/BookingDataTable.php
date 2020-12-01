@@ -88,18 +88,36 @@ class BookingDataTable extends DataTable
                        
                     	}
                 	}
-                    return '-';
+                    return BookingHelper::payment_status(0);
                     //$paymentStatus = 0;
                     //$shoppingcart_payment = $id->shoppingcart_payment->first();
                     //if(isset($shoppingcart_payment)) $paymentStatus = $shoppingcart_payment->payment_status;
                     //return BookingHelper::payment_status($paymentStatus);
                 })
                 ->addColumn('action', function ($id) {
+                if(isset($id->shoppingcart_payment->payment_status))
+                {
+                    if($id->shoppingcart_payment->payment_status==1)
+                    {
+                        return '';
+                    }
+                }
+
+                if($id->booking_status=='CANCELED')
+                {
+                    $button_cancel = '';
+                }
+                else
+                {
+                    $button_cancel = '<button id="btn-edit" type="button" onClick="CANCEL(\''.$id->id.'\'); return false;" class="btn btn-sm btn-success"><i class="fa fa-ban"></i> Cancel This Booking</button>';
+                }
+                
+
                 return '
                 <div class="btn-toolbar justify-content-end">
                     <div class="btn-group mr-2 mb-2" role="group">
                         
-                        <!-- button id="btn-edit" type="button" onClick="EDIT(\''.$id->id.'\'); return false;" class="btn btn-sm btn-success"><i class="fa fa-ban"></i> Cancel This Booking</button -->
+                        '.$button_cancel.'
                         <button id="btn-del" type="button" onClick="DELETE(\''. $id->id .'\')" class="btn btn-sm btn-danger"><i class="fa fa-trash-alt"></i> Delete</button>
                         
                     </div>
@@ -116,7 +134,7 @@ class BookingDataTable extends DataTable
      */
     public function query(Shoppingcart $model)
     {
-        return $model->where('booking_status','CONFIRMED')->orWhere('booking_status','CANCELLED')->newQuery();
+        return $model->where('booking_status','CONFIRMED')->orWhere('booking_status','CANCELED')->newQuery();
     }
 
     /**

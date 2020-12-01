@@ -91,7 +91,7 @@
                 btnClass: 'btn-success',
                 keys: ['enter'],
                 action: function(){
-                     
+                     var table = $('#dataTableBuilder').DataTable();
                      $.ajax({
                         data: {
                           "_token": $("meta[name=csrf-token]").attr("content"),

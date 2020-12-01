@@ -1,4 +1,4 @@
-@inject('BookingHelper', budisteikul\toursdk\Helpers\BookingHelper)
+@inject('ProductHelper', budisteikul\toursdk\Helpers\ProductHelper)
 @extends('coresdk::layouts.app')
 @section('content')
 <script language="javascript">
@@ -100,7 +100,7 @@ function REMOVE(id)
                                 	@endif
                     			</div>
                     			<div class="col-8" style="font-size:12px; margin-left:-5px">
-                                	{{ $BookingHelper->datetotext($shoppingcart_product->date) }}
+                                	{{ $ProductHelper->datetotext($shoppingcart_product->date) }}
                                 	<br>
                                     {{ $shoppingcart_product->rate }}
                                     <br>

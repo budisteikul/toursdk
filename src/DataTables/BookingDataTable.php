@@ -68,11 +68,12 @@ class BookingDataTable extends DataTable
                     return $value;
                 })
                 ->addColumn('payment', function ($id){
-                    $payment_status = $id->shoppingcart_payment->payment_status;
-                    switch($id->shoppingcart_payment->payment_status)
-                    {
-                        case 1:
-                            return '
+                	if(isset($id->shoppingcart_payment->payment_status))
+                	{
+                   	 	switch($id->shoppingcart_payment->payment_status)
+                    	{
+                        	case 1:
+                            	return '
                 <div class="btn-toolbar justify-content-end">
                     <div class="btn-group mr-2 mb-2" role="group">
                         
@@ -81,10 +82,13 @@ class BookingDataTable extends DataTable
                         
                     </div>
                 </div>';
-                        break;
-                        default:
-                            return BookingHelper::payment_status($id->shoppingcart_payment->payment_status);
-                    }
+                        	break;
+                        	default:
+                            	return BookingHelper::payment_status($id->shoppingcart_payment->payment_status);
+                       
+                    	}
+                	}
+                    return '-';
                     //$paymentStatus = 0;
                     //$shoppingcart_payment = $id->shoppingcart_payment->first();
                     //if(isset($shoppingcart_payment)) $paymentStatus = $shoppingcart_payment->payment_status;

@@ -176,6 +176,14 @@ class BookingController extends Controller
 
     public function calendar(Request $request)
     {
+		$validator = Validator::make($request->all(), [
+                    'activityId' => 'required|integer'
+        ]);
+                
+        if ($validator->fails()) {
+                return redirect(route('route_toursdk_product.index'));
+        }
+			
         $sessionId = BookingHelper::shoppingcart_session();
 
         $id = $request->input('activityId');

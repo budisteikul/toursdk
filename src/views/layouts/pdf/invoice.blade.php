@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">   
-<title>INVOICE {{ $shoppingcart->confirmation_code }}</title>
+<title>Invoice-{{ $shoppingcart->confirmation_code }}</title>
 <style type="text/css" media="all">
 body {
   margin: 0 auto; 
@@ -179,7 +179,7 @@ footer {
        <tbody>
          <tr>
            <td style="background-color:#FFFFFF; text-align:left; padding-left:0px;">
-           <img src="data:image/png;base64, {!! base64_encode(QrCode::errorCorrection('H')->format('png')->size(111)->margin(0)->generate(url('/booking/invoice/'.$shoppingcart->id))) !!} ">
+           <img src="data:image/png;base64, {!! base64_encode(QrCode::errorCorrection('H')->format('png')->size(111)->margin(0)->generate(url('/booking/receipt/'. $shoppingcart->id .'/'.$shoppingcart->session_id))) !!} ">
            				
            </td>
            <td style="background-color:#FFFFFF; text-align:right; padding-right:0px; line-height: 18px; font-size:14px; color:#777777">

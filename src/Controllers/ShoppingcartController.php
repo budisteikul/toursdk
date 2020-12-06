@@ -35,7 +35,7 @@ class ShoppingcartController extends Controller
             break;
             case 'BOOKING_ITEM_CANCELLED':
                 $shopping_cart = Shoppingcart::where('confirmation_code',$data['confirmationCode'])->firstOrFail();
-                $shopping_cart->booking_status = "CANCELLED";
+                $shopping_cart->booking_status = "CANCELED";
                 $shopping_cart->save();
                 return response()->json([
                     "id" => "1",

@@ -120,7 +120,7 @@ body {
                     	{{ $shoppingcart_product->rate }} 
                     </div>
                     <div class="qrcode">
-						<img src="data:image/png;base64, {{ base64_encode(QrCode::errorCorrection('H')->format('png')->size(111)->margin(3)->generate(url('/booking/receipt/'. $shoppingcart_product->shoppingcart->id .'/'.$shoppingcart_product->shoppingcart->session_id))) }} "> 
+						<img src="data:image/png;base64, {{ base64_encode(QrCode::errorCorrection('H')->format('png')->size(111)->margin(0)->generate(url('/booking/receipt/'. $shoppingcart_product->shoppingcart->id .'/'.$shoppingcart_product->shoppingcart->session_id))) }} "> 
 					</div>
                     <div class="qrcode" style="margin-top:0px;">
                     	{{ $shoppingcart_product->product_confirmation_code }}

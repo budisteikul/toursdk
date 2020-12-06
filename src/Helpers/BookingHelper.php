@@ -86,14 +86,7 @@ class BookingHelper {
 				$shoppingcart_product->booking_id = $data['activityBookings'][$i]['bookingId'];
 				$shoppingcart_product->product_confirmation_code = $data['activityBookings'][$i]['productConfirmationCode'];
 				$shoppingcart_product->product_id = $data['activityBookings'][$i]['productId'];
-				if(isset($data['activityBookings'][$i]['invoice']['product']['keyPhoto']['derived'][2]['url']))
-				{
-					$shoppingcart_product->image = $data['activityBookings'][$i]['invoice']['product']['keyPhoto']['derived'][2]['url'];
-				}
-				else
-				{
-					$shoppingcart_product->image = ImageHelper::thumbnail($product);
-				}
+				$shoppingcart_product->image = ImageHelper::thumbnail($product);
 				$shoppingcart_product->title = $data['activityBookings'][$i]['product']['title'];
 				$shoppingcart_product->rate = $data['activityBookings'][$i]['rateTitle'];
 				$shoppingcart_product->date = ProductHelper::texttodate($data['activityBookings'][$i]['invoice']['dates']);

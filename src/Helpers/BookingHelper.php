@@ -867,18 +867,15 @@ class BookingHelper {
 	
 	public static function get_shoppingcart($id,$action="insert")
 	{
-		$lastsessionId = Session::get('sessionId');
-		if(Session::has('sessionId')){
-			$sessionId = Session::get('sessionId');
-		}else{
-			$sessionId = $id;
-			Session::put('sessionId',$sessionId);
-		}
-		
-		//========================================================================
 		$contents = BokunHelper::get_shoppingcart($id);
-		if($action=="insert") self::insert_shoppingcart($contents,$id);
-		if($action=="update") self::update_shoppingcart($contents,$id);
+		if($action=="insert")
+			{
+				self::insert_shoppingcart($contents,$id);
+			}
+		if($action=="update")
+			{
+				self::update_shoppingcart($contents,$id);
+			}
 	}
 	
 	public static function shoppingcart_session()

@@ -262,7 +262,15 @@ class ShoppingcartController extends Controller
     public function shoppingcart(Request $request)
     {
         $sessionId = $request->input('sessionId');
-        BookingHelper::get_shoppingcart($sessionId,"insert");
+        $shoppingcart = Shoppingcart::where('session_id',$sessionId)->where('booking_status','CART')->count();
+        if($shoppingcart > 0)
+        {
+            BookingHelper::get_shoppingcart($sessionId,"update");
+        }
+        else
+        {
+            BookingHelper::get_shoppingcart($sessionId,"insert");
+        }
         return response()->json([
                     "id" => "1",
                     "message" => 'success'

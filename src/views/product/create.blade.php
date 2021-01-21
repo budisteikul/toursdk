@@ -57,7 +57,7 @@ function STORE()
         <div class="col-md-12 pr-0 pl-0 pt-0 pb-0">
              <div class="card">
              
-	<div class="card-header">Add Product</div>
+	<div class="card-header">Create Product</div>
 	<div class="card-body">
 				
 <form onSubmit="STORE(); return false;">

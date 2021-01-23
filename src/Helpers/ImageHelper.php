@@ -51,8 +51,9 @@ class ImageHelper {
 
     public static function cover(Product $product)
     {
+        $url = '';
         $image = $product->images->sortBy('sort')->first();
-        $url = self::urlImageCloudinary($image->public_id,300,150);
+        if(isset($image)) $url = self::urlImageCloudinary($image->public_id,300,150);
         return $url;
     }
 

@@ -10,7 +10,7 @@
 	"require": {
         "budisteikul/coresdk": "dev-master",
         "cloudinary/cloudinary_php": "^1.19",
-        "barryvdh/laravel-dompdf": "^0.8.7",
+        "barryvdh/laravel-dompdf": "^0.9.0",
         "simplesoftwareio/simple-qrcode": "^2.0",
         "paypal/paypal-checkout-sdk": "^1.0"
     },

@@ -176,7 +176,7 @@ class BookingDataTable extends DataTable
             ["name" => "DT_RowIndex", "title" => "No", "data" => "DT_RowIndex", "orderable" => false, "render" => null,'searchable' => false, 'width' => '30px'],
             ["name" => "invoice", "title" => "Invoice", "data" => "invoice", "orderable" => false],
             ["name" => "product", "title" => "Product", "data" => "product", "orderable" => false],
-            ["name" => "booking_status", "title" => "Booking Status", "data" => "booking_status", "orderable" => false],
+            ["name" => "booking_status", "title" => "Status", "data" => "booking_status", "orderable" => false],
             ["name" => "payment", "title" => "Payment", "data" => "payment", "orderable" => false],
         ];
     }

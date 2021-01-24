@@ -31,7 +31,7 @@ class BookingConfirmedMail extends Mailable
     {
         $shoppingcart = $this->shoppingcart;
         $notice = '';
-        $invoice = PDF::loadView('toursdk::layouts.pdf.invoice', compact('shoppingcart','notice'))->setPaper('a4', 'portrait');
+        $invoice = PDF::setOptions(['tempDir' => storage_path(),'isRemoteEnabled' => true])->loadView('toursdk::layouts.pdf.invoice', compact('shoppingcart','notice'))->setPaper('a4', 'portrait');
 
         $mail = $this->view('toursdk::layouts.mail.booking-confirmed')
                     ->text('toursdk::layouts.mail.booking-confirmed_plain')
@@ -42,7 +42,7 @@ class BookingConfirmedMail extends Mailable
         foreach($shoppingcart->shoppingcart_products()->get() as $shoppingcart_product)
         {
             $customPaper = array(0,0,300,540);
-            $ticket = PDF::loadView('toursdk::layouts.pdf.ticket', compact('shoppingcart_product'))->setPaper($customPaper);
+            $ticket = PDF::setOptions(['tempDir' => storage_path(),'isRemoteEnabled' => true])->loadView('toursdk::layouts.pdf.ticket', compact('shoppingcart_product'))->setPaper($customPaper);
             $mail->attachData($ticket->output(), 'Ticket-'. $shoppingcart_product->product_confirmation_code .'.pdf', ['mime' => 'application/pdf']);
         }
 

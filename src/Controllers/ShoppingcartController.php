@@ -123,7 +123,7 @@ class ShoppingcartController extends Controller
         */
         //return view('toursdk::layouts.pdf.invoice', compact('shoppingcart','notice'));
         //exit();
-        $pdf = PDF::loadView('toursdk::layouts.pdf.invoice', compact('shoppingcart','notice'))->setPaper('a4', 'portrait');
+        $pdf = PDF::setOptions(['tempDir' => storage_path(),'isRemoteEnabled' => true])->loadView('toursdk::layouts.pdf.invoice', compact('shoppingcart','notice'))->setPaper('a4', 'portrait');
         return $pdf->download('Invoice-'. $shoppingcart->confirmation_code .'.pdf');
     }
     
@@ -133,7 +133,7 @@ class ShoppingcartController extends Controller
             return $query->where('session_id', $sessionId);
         })->firstOrFail();
         $customPaper = array(0,0,300,540);
-        $pdf = PDF::loadView('toursdk::layouts.pdf.ticket', compact('shoppingcart_product'))->setPaper($customPaper);
+        $pdf = PDF::setOptions(['tempDir' => storage_path(),'isRemoteEnabled' => true])->loadView('toursdk::layouts.pdf.ticket', compact('shoppingcart_product'))->setPaper($customPaper);
         return $pdf->download('Ticket-'. $shoppingcart_product->product_confirmation_code .'.pdf');
     }
 

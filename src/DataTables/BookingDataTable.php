@@ -24,49 +24,58 @@ class BookingDataTable extends DataTable
         return datatables($query)
                 ->addIndexColumn()
                 ->addColumn('invoice', function ($id){
-                    $value = '';
-                    $value .= '<b><a class="text-decoration-none" href="/snippets/pdf/invoice/'. $id->session_id .'/Invoice-'. $id->confirmation_code .'.pdf" target="_blank">'. $id->confirmation_code .'</a> - INVOICE</b> <br />';
-                    $value .= ' <b>Channel :</b> '.$id->booking_channel.' <br />';
+                    $invoice = '';
+                    $invoice .= '<b><a class="text-decoration-none" href="/snippets/pdf/invoice/'. $id->session_id .'/Invoice-'. $id->confirmation_code .'.pdf" target="_blank">'. $id->confirmation_code .'</a> - INVOICE</b> <br />';
+                    $invoice .= ' <b>Channel :</b> '.$id->booking_channel.' <br />';
 
                     $name = $id->shoppingcart_questions()->select('answer')->where('type','mainContactDetails')->where('question_id','firstName')->first()->answer .' '. $id->shoppingcart_questions()->select('answer')->where('type','mainContactDetails')->where('question_id','lastName')->first()->answer;
                 
                     $email = $id->shoppingcart_questions()->select('answer')->where('type','mainContactDetails')->where('question_id','email')->first()->answer;
                     $phone = $id->shoppingcart_questions()->select('answer')->where('type','mainContactDetails')->where('question_id','phoneNumber')->first()->answer;
 
-                    if($name!='') $value .= ' <b>Name :</b> '.$name.' <br />';
-                    if($email!='') $value .= ' <b>Email :</b> '.$email.' <br />';
-                    if($phone!='') $value .= ' <b>Phone :</b> '.$phone.' <br />';
+                    if($name!='') $invoice .= ' <b>Name :</b> '.$name.' <br />';
+                    if($email!='') $invoice .= ' <b>Email :</b> '.$email.' <br />';
+                    if($phone!='') $invoice .= ' <b>Phone :</b> '.$phone.' <br />';
 
-                    return $value;
-                })
-                ->addColumn('product', function ($id){
-                    $value = '';
+                    if($id->booking_status=="CONFIRMED")
+                    {
+                        $invoice .= ' <b>Status :</b> <span class="badge badge-success">'.$id->booking_status.'</span> <br />';
+                    }
+                    else
+                    {
+                        $invoice .= ' <b>Status :</b> <span class="badge badge-danger">'.$id->booking_status.'</span> <br />';
+                    }
+                    
+
+                    $product = '';
                     foreach($id->shoppingcart_products()->get() as $shoppingcart_product)
                     {
-                        $value .= '<b><a class="text-decoration-none" href="/snippets/pdf/ticket/'. $id->session_id .'/Ticket-'. $shoppingcart_product->product_confirmation_code .'.pdf" target="_blank">'. $shoppingcart_product->product_confirmation_code .'</a> - '.$shoppingcart_product->title.'</b> <br />';
-                        if($shoppingcart_product->rate!="") $value .= $shoppingcart_product->rate .' <br />';
-                        $value .= ProductHelper::datetotext($shoppingcart_product->date) .' <br />';
+                        $product .= '<b><a class="text-decoration-none" href="/snippets/pdf/ticket/'. $id->session_id .'/Ticket-'. $shoppingcart_product->product_confirmation_code .'.pdf" target="_blank">'. $shoppingcart_product->product_confirmation_code .'</a> - '.$shoppingcart_product->title.'</b> <br />';
+                        if($shoppingcart_product->rate!="") $product .= $shoppingcart_product->rate .' <br />';
+                        $product .= ProductHelper::datetotext($shoppingcart_product->date) .' <br />';
                         foreach($shoppingcart_product->shoppingcart_rates()->get() as $shoppingcart_rate)
                         {
                             if($shoppingcart_rate->type=="product")
                             {
-                                $value .= $shoppingcart_rate->qty .' '. $shoppingcart_rate->unit_price .'<br>';
+                                $product .= $shoppingcart_rate->qty .' '. $shoppingcart_rate->unit_price .'<br>';
                             }
                             elseif($shoppingcart_rate->type=="pickup")
                             {
-                                $value .= $shoppingcart_rate->title .'<br>';
+                                $product .= $shoppingcart_rate->title .'<br>';
                             }
                         }
 
-                        //$value = '';
+                        //$product = '';
                         foreach($id->shoppingcart_questions()->where('booking_id',$shoppingcart_product->booking_id)->whereNotNull('label')->get() as $shoppingcart_question)
                         {
-                            $value .= $shoppingcart_question->label .' : '. $shoppingcart_question->answer .'<br>';
+                            $product .= $shoppingcart_question->label .' : '. $shoppingcart_question->answer .'<br>';
                         }
-                        $value .= '<br>';
+                        $product .= '<br>';
                     }
-                    return $value;
+
+                    return $invoice .'<hr>'. $product;
                 })
+                
                 ->addColumn('payment', function ($id){
                 	if(isset($id->shoppingcart_payment->payment_status))
                 	{
@@ -175,8 +184,6 @@ class BookingDataTable extends DataTable
             ["name" => "created_at", "title" => "created_at", "data" => "created_at", "orderable" => true, "visible" => false,'searchable' => false],
             ["name" => "DT_RowIndex", "title" => "No", "data" => "DT_RowIndex", "orderable" => false, "render" => null,'searchable' => false, 'width' => '30px'],
             ["name" => "invoice", "title" => "Invoice", "data" => "invoice", "orderable" => false],
-            ["name" => "product", "title" => "Product", "data" => "product", "orderable" => false],
-            ["name" => "booking_status", "title" => "Status", "data" => "booking_status", "orderable" => false],
             ["name" => "payment", "title" => "Payment", "data" => "payment", "orderable" => false],
         ];
     }

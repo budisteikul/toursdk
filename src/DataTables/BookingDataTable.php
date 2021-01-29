@@ -118,7 +118,7 @@ class BookingDataTable extends DataTable
                 }
                 else
                 {
-                    $button_cancel = '<button id="btn-edit" type="button" onClick="CANCEL(\''.$id->id.'\'); return false;" class="btn btn-sm btn-success"><i class="fa fa-ban"></i> Cancel</button>';
+                    $button_cancel = '<button id="btn-edit" type="button" onClick="CANCEL(\''.$id->id.'\'); return false;" class="btn btn-sm btn-warning"><i class="fa fa-ban"></i> Cancel</button>';
                 }
                 
 

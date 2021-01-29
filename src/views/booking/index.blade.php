@@ -83,12 +83,12 @@
     $.confirm({
         title: 'Warning',
         content: 'Are you sure?',
-        type: 'green',
+        type: 'orange',
       icon: 'fa fa-ban',
         buttons: {   
             ok: {
                 text: "OK",
-                btnClass: 'btn-success',
+                btnClass: 'btn-warning',
                 keys: ['enter'],
                 action: function(){
                      var table = $('#dataTableBuilder').DataTable();

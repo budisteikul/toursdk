@@ -45,6 +45,8 @@ class ReviewController extends Controller
         $validator = Validator::make($request->all(), [
             'user' => ['required', 'string', 'max:255'],
             'text' => ['required'],
+            'channel_id' => ['required'],
+            'product_id' => ['required'],
         ]);
         
         if ($validator->fails()) {

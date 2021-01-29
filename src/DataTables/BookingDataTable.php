@@ -73,7 +73,7 @@ class BookingDataTable extends DataTable
                         $product .= '<br>';
                     }
 
-                    return $invoice .'<hr>'. $product;
+                    return $invoice .'<hr style="width:50%;margin-left:0px">'. $product;
                 })
                 
                 ->addColumn('payment', function ($id){

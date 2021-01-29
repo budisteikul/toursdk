@@ -19,7 +19,6 @@ use Illuminate\Support\Facades\Mail;
 use budisteikul\toursdk\Mail\BookingConfirmedMail;
 
 
-use DB;
 use budisteikul\toursdk\Models\Review;
 use budisteikul\toursdk\Models\ShoppingcartProduct;
 use budisteikul\toursdk\Models\ShoppingcartRate;

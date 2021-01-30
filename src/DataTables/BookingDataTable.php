@@ -28,12 +28,14 @@ class BookingDataTable extends DataTable
                     $invoice .= '<b><a class="text-decoration-none" href="/snippets/pdf/invoice/'. $id->session_id .'/Invoice-'. $id->confirmation_code .'.pdf" target="_blank">'. $id->confirmation_code .'</a> - INVOICE</b> <br />';
                     $invoice .= ' <b>Channel :</b> '.$id->booking_channel.' <br />';
 
-                    $name = $id->shoppingcart_questions()->select('answer')->where('type','mainContactDetails')->where('question_id','firstName')->first()->answer .' '. $id->shoppingcart_questions()->select('answer')->where('type','mainContactDetails')->where('question_id','lastName')->first()->answer;
+                    $first_name = $id->shoppingcart_questions()->select('answer')->where('type','mainContactDetails')->where('question_id','firstName')->first()->answer;
+                    $last_name = $id->shoppingcart_questions()->select('answer')->where('type','mainContactDetails')->where('question_id','lastName')->first()->answer;
+
                 
                     $email = $id->shoppingcart_questions()->select('answer')->where('type','mainContactDetails')->where('question_id','email')->first()->answer;
                     $phone = $id->shoppingcart_questions()->select('answer')->where('type','mainContactDetails')->where('question_id','phoneNumber')->first()->answer;
 
-                    if($name!='') $invoice .= ' <b>Name :</b> '.$name.' <br />';
+                    if($first_name!='' || $last_name!='') $invoice .= ' <b>Name :</b> '.$first_name.'  '. $last_name .'<br />';
                     if($email!='') $invoice .= ' <b>Email :</b> '.$email.' <br />';
                     if($phone!='') $invoice .= ' <b>Phone :</b> '.$phone.' <br />';
 

@@ -115,14 +115,12 @@ class ShoppingcartController extends Controller
         $shoppingcart = Shoppingcart::where('confirmation_code',$id)->where('session_id',$sessionId)->firstOrFail();
         $notice = '';
         
-        /*
-        if($rev_shoppingcarts->currency!='USD')
+        
+        if($rev_shoppingcarts->currency!=env("PAYPAL_CURRENCY"))
         {
-            $notice = BookClass::get_rate($rev_shoppingcarts->currency,'USD');
+            $notice .= 'Rate : '. BookingHelper::get_rate($rev_shoppingcarts->currency,env("PAYPAL_CURRENCY"));
         }
-        */
-        //return view('toursdk::layouts.pdf.invoice', compact('shoppingcart','notice'));
-        //exit();
+        
         $pdf = PDF::setOptions(['tempDir' => storage_path(),'isRemoteEnabled' => true])->loadView('toursdk::layouts.pdf.invoice', compact('shoppingcart','notice'))->setPaper('a4', 'portrait');
         return $pdf->download('Invoice-'. $shoppingcart->confirmation_code .'.pdf');
     }

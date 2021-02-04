@@ -762,8 +762,9 @@ class BookingHelper {
 		$shoppingcart->total = $grand_total;
 		$shoppingcart->save();
 
-		$shoppingcart->shoppingcart_payments->amount = self::convert_currency($grand_total,$contents->customerInvoice->currency,env("PAYPAL_CURRENCY"));
-		$shoppingcart->shoppingcart_payments->currency = env("PAYPAL_CURRENCY");
+		$shoppingcart->shoppingcart_payment->amount = self::convert_currency($grand_total,$contents->customerInvoice->currency,env("PAYPAL_CURRENCY"));
+		
+		$shoppingcart->shoppingcart_payment->currency = env("PAYPAL_CURRENCY");
 		
 		//$shoppingcart->shoppingcart_payment->amount = $grand_total;
 		//$shoppingcart->shoppingcart_payment->currency = $contents->customerInvoice->currency;

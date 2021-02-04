@@ -206,8 +206,8 @@ class BookingHelper {
 			$shoppingcart->save();
 
 			$shoppingcart_payment = new ShoppingcartPayment();
-			$shoppingcart_payment->amount = self::convert_currency($grand_total,$data['currency'],'USD');
-			$shoppingcart_payment->currency = 'USD';
+			$shoppingcart_payment->amount = self::convert_currency($grand_total,$data['currency'],env("PAYPAL_CURRENCY"));
+			$shoppingcart_payment->currency = env("PAYPAL_CURRENCY");
 			$shoppingcart_payment->payment_status = 0;
 			$shoppingcart_payment->shoppingcart_id = $shoppingcart->id;
 			$shoppingcart_payment->save();
@@ -426,10 +426,10 @@ class BookingHelper {
 
 
 		$shoppingcart_payment = new ShoppingcartPayment();
-		//$shoppingcart_payment->amount = self::convert_currency($grand_total,$contents->customerInvoice->currency,'USD');
-		//$shoppingcart_payment->currency = 'USD';
-		$shoppingcart_payment->amount = $grand_total;
-		$shoppingcart_payment->currency = $contents->customerInvoice->currency;
+		$shoppingcart_payment->amount = self::convert_currency($grand_total,$contents->customerInvoice->currency,env("PAYPAL_CURRENCY"));
+		$shoppingcart_payment->currency = env("PAYPAL_CURRENCY");
+		//$shoppingcart_payment->amount = $grand_total;
+		//$shoppingcart_payment->currency = $contents->customerInvoice->currency;
 		$shoppingcart_payment->payment_status = 0;
 		$shoppingcart_payment->shoppingcart_id = $shoppingcart->id;
 		$shoppingcart_payment->save();
@@ -485,12 +485,10 @@ class BookingHelper {
 			
 			if(isset($activityBooking->pickupQuestions))
 			{
-				//$order = 2;
+				
 				for($i=0;$i<count($activityBooking->pickupQuestions);$i++)
 				{
-					//$check_pickupQuestions = ShoppingcartQuestion::where('shoppingcart_id',$shoppingcart->id)->where('type','pickupQuestions')->first();
-					//if(!isset($check_pickupQuestions))
-					//{
+					
 					$shoppingcart_question = new ShoppingcartQuestion();
 					$shoppingcart_question->shoppingcart_id = $shoppingcart->id;
 					$shoppingcart_question->type = 'pickupQuestions';
@@ -504,14 +502,14 @@ class BookingHelper {
 					$shoppingcart_question->order = $order;
 					$shoppingcart_question->save();
 					$order += 1;
-					//}
+					
 				}
 			}
 			
 			if(isset($activityBooking->questions))
 			{
 				$questions = $activityBooking->questions;
-				//$order = 1;
+				
 				for($i=0;$i<count($questions);$i++)
 				{
 					
@@ -574,8 +572,6 @@ class BookingHelper {
 		
 
 		$shoppingcart->shoppingcart_products()->delete();
-		//$shoppingcart->shoppingcart_products()->delete();
-		//$shoppingcart->shoppingcart_payments()->delete();
 
 		$grand_total = 0;
 		$grand_subtotal = 0;
@@ -766,11 +762,11 @@ class BookingHelper {
 		$shoppingcart->total = $grand_total;
 		$shoppingcart->save();
 
-		//$shoppingcart->shoppingcart_payments->amount = self::convert_currency($grand_total,$contents->customerInvoice->currency,'USD');
-		//$shoppingcart->shoppingcart_payments->currency = 'USD';
+		$shoppingcart->shoppingcart_payments->amount = self::convert_currency($grand_total,$contents->customerInvoice->currency,env("PAYPAL_CURRENCY"));
+		$shoppingcart->shoppingcart_payments->currency = env("PAYPAL_CURRENCY");
 		
-		$shoppingcart->shoppingcart_payment->amount = $grand_total;
-		$shoppingcart->shoppingcart_payment->currency = $contents->customerInvoice->currency;
+		//$shoppingcart->shoppingcart_payment->amount = $grand_total;
+		//$shoppingcart->shoppingcart_payment->currency = $contents->customerInvoice->currency;
 		$shoppingcart->shoppingcart_payment->save();
 
 
@@ -791,12 +787,10 @@ class BookingHelper {
 			{
 				if(isset($activityBooking->pickupQuestions))
 				{
-					//$order = 2;
+					
 					for($i=0;$i<count($activityBooking->pickupQuestions);$i++)
 					{
-						//$check_pickupQuestions = ShoppingcartQuestion::where('shoppingcart_id',$shoppingcart->id)->where('type','pickupQuestions')->first();
-						//if(!isset($check_pickupQuestions))
-						//{
+						
 						$shoppingcart_question = new ShoppingcartQuestion();
 						$shoppingcart_question->shoppingcart_id = $shoppingcart->id;
 						$shoppingcart_question->type = 'pickupQuestions';
@@ -810,14 +804,14 @@ class BookingHelper {
 						$shoppingcart_question->order = $order;
 						$shoppingcart_question->save();
 						$order += 1;
-					//}
+					
 					}
 				}
 			
 				if(isset($activityBooking->questions))
 				{
 					$questions = $activityBooking->questions;
-					//$order = 1;
+					
 					for($i=0;$i<count($questions);$i++)
 					{
 					

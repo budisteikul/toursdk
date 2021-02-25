@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Mail;
 use budisteikul\toursdk\Mail\BookingConfirmedMail;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Validator;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\Exception\UnsatisfiedDependencyException;
 
@@ -923,6 +924,20 @@ class BookingHelper {
 						$status = false;
 						$array[$question->id] = array($question->label .' field is required.');
 					}
+
+				if($question->data_format=="EMAIL_ADDRESS")
+				{
+					$rules = array('email' => 'required|email');
+					$inputs = array(
+    					'email' => $request->input($question->id)
+					);
+					$validator = Validator::make($inputs, $rules);
+					if($validator->fails()) {
+    					$status = false;
+						$array[$question->id] = array('Email format not valid.');
+					}
+				}
+
             }
         return $array;
 	}

@@ -925,18 +925,22 @@ class BookingHelper {
 						$array[$question->id] = array($question->label .' field is required.');
 					}
 
-				if($question->data_format=="EMAIL_ADDRESS")
+				if($status)
 				{
-					$rules = array('email' => 'required|email');
-					$inputs = array(
-    					'email' => $request->input($question->id)
-					);
-					$validator = Validator::make($inputs, $rules);
-					if($validator->fails()) {
-    					$status = false;
-						$array[$question->id] = array('Email format not valid.');
+					if($question->data_format=="EMAIL_ADDRESS")
+					{
+						$rules = array('email' => 'email');
+						$inputs = array(
+    						'email' => $request->input($question->id)
+						);
+						$validator = Validator::make($inputs, $rules);
+						if($validator->fails()) {
+    						$status = false;
+							$array[$question->id] = array('Email format not valid.');
+						}
 					}
 				}
+				
 
             }
         return $array;

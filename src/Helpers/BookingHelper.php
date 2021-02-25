@@ -207,6 +207,11 @@ class BookingHelper {
 
 			$shoppingcart_payment = new ShoppingcartPayment();
 			$shoppingcart_payment->amount = self::convert_currency($grand_total,$data['currency'],env("PAYPAL_CURRENCY"));
+
+			$shoppingcart_payment->rate = self::convert_currency(1,env("PAYPAL_CURRENCY"),$data['currency']);
+			$shoppingcart_payment->rate_from = $data['currency'];
+			$shoppingcart_payment->rate_to = env("PAYPAL_CURRENCY");
+
 			$shoppingcart_payment->currency = env("PAYPAL_CURRENCY");
 			$shoppingcart_payment->payment_status = 0;
 			$shoppingcart_payment->shoppingcart_id = $shoppingcart->id;
@@ -428,8 +433,11 @@ class BookingHelper {
 		$shoppingcart_payment = new ShoppingcartPayment();
 		$shoppingcart_payment->amount = self::convert_currency($grand_total,$contents->customerInvoice->currency,env("PAYPAL_CURRENCY"));
 		$shoppingcart_payment->currency = env("PAYPAL_CURRENCY");
-		//$shoppingcart_payment->amount = $grand_total;
-		//$shoppingcart_payment->currency = $contents->customerInvoice->currency;
+		
+		$shoppingcart_payment->rate = self::convert_currency(1,env("PAYPAL_CURRENCY"),$contents->customerInvoice->currency);
+		$shoppingcart_payment->rate_from = $contents->customerInvoice->currency;
+		$shoppingcart_payment->rate_to = env("PAYPAL_CURRENCY");
+
 		$shoppingcart_payment->payment_status = 0;
 		$shoppingcart_payment->shoppingcart_id = $shoppingcart->id;
 		$shoppingcart_payment->save();
@@ -766,8 +774,10 @@ class BookingHelper {
 		
 		$shoppingcart->shoppingcart_payment->currency = env("PAYPAL_CURRENCY");
 		
-		//$shoppingcart->shoppingcart_payment->amount = $grand_total;
-		//$shoppingcart->shoppingcart_payment->currency = $contents->customerInvoice->currency;
+		$shoppingcart->shoppingcart_payment->rate = self::convert_currency(1,env("PAYPAL_CURRENCY"),$contents->customerInvoice->currency);
+		$shoppingcart->shoppingcart_payment->rate_from = $contents->customerInvoice->currency;
+		$shoppingcart->shoppingcart_payment->rate_to = env("PAYPAL_CURRENCY");
+
 		$shoppingcart->shoppingcart_payment->save();
 
 
@@ -977,10 +987,10 @@ class BookingHelper {
 		return $status;
 	}
 
-	public static function get_rate($from,$to)
+	public static function get_rate($shoppingcart)
 	{
-		$amount = self::convert_currency(1,$to,$from);
-		$value = '1 '. $to .' = '. $amount .' '. $from;
+		$amount = $shoppingcart->shoppingcart_payment->rate;
+		$value = '1 '. $shoppingcart->shoppingcart_payment->rate_to .' = '. $amount .' '. $shoppingcart->shoppingcart_payment->rate_from;
 		return $value;
 	}
 

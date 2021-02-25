@@ -117,7 +117,7 @@ class ShoppingcartController extends Controller
         
         if($shoppingcart->currency!=$shoppingcart->shoppingcart_payment->currency)
         {
-            $notice .= 'Rate : '. BookingHelper::get_rate($shoppingcart->currency,$shoppingcart->shoppingcart_payment->currency);
+            $notice .= 'Rate : '. BookingHelper::get_rate($shoppingcart);
         }
         
         $pdf = PDF::setOptions(['tempDir' => storage_path(),'isRemoteEnabled' => true])->loadView('toursdk::layouts.pdf.invoice', compact('shoppingcart','notice'))->setPaper('a4', 'portrait');

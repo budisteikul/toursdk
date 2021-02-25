@@ -20,12 +20,16 @@ class CreateShoppingcartPaymentsTable extends Migration
             $table->foreign('shoppingcart_id')
                     ->references('id')->on('shoppingcarts')
                     ->onDelete('cascade')->onUpdate('cascade');
-                    
+            
+            //$table->string('type')->default('PAYPAL');        
             $table->string('order_id')->nullable();
             $table->string('authorization_id')->nullable();
             $table->float('amount')->default(0);
             $table->string('currency')->default('USD');
+            //$table->float('rate')->default(0);
+
             $table->tinyInteger('payment_status')->default(1);
+            
 
             $table->timestamps(6);
         });

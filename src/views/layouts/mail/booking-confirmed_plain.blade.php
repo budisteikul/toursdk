@@ -3,6 +3,9 @@ Hi {{$shoppingcart->shoppingcart_questions()->select('answer')->where('type','ma
 Have a good day,
 Thank you for your booking with {{env('APP_NAME')}}. 
 You can find booking receipt and e-ticket on attachments and present it to our team on location 
+Follow link below to view status of your booking.
+{{ url('/booking/receipt/'.$shoppingcart->id.'/'.$shoppingcart->session_id ) }}
+
 If you have any question, feel free to contact us.
 Thanks again, and enjoy your time in Indonesia :) 
 

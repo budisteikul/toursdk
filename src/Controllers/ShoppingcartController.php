@@ -50,7 +50,7 @@ class ShoppingcartController extends Controller
                 ]);
     }
 
-    public function confirmpayment(Request $request)
+    public function confirmpaymentpaypal(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'orderID' => ['required', 'string', 'max:255'],
@@ -85,6 +85,7 @@ class ShoppingcartController extends Controller
         $shoppingcart->booking_status = 'CONFIRMED';
         $shoppingcart->save();
 
+        $shoppingcart->shoppingcart_payment->type = "PAYPAL";
         $shoppingcart->shoppingcart_payment->order_id = $orderID;
         $shoppingcart->shoppingcart_payment->authorization_id = $authorizationID;
         $shoppingcart->shoppingcart_payment->payment_status = 1;
@@ -101,7 +102,7 @@ class ShoppingcartController extends Controller
         
     }
 
-    public function createpayment(Request $request)
+    public function createpaymentpaypal(Request $request)
     {
         $sessionId = $request->header('sessionId');
         $shoppingcart = Shoppingcart::where('booking_status','CART')->where('session_id',$sessionId)->firstOrFail();

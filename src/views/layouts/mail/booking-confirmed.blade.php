@@ -199,6 +199,10 @@
                     <p>Have a good day,<br />
                       Thank you for your booking with {{env('APP_NAME')}}. <br />
                     You can find booking receipt and e-ticket  on attachments and present it  to our team on location                  <br />
+
+                    Click <a href="{{ url('/booking/receipt/'.$shoppingcart->id.'/'.$shoppingcart->session_id ) }}">here</a> to view status of your booking.
+
+                    <br />
                     If you have any question, feel free to contact us.<br />
                     Thanks again, and enjoy your time in Indonesia :)
                     <br />

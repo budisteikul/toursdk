@@ -35,8 +35,8 @@ Route::get('/snippets/pdf/ticket/{sessionId}/Ticket-{id}.pdf', 'budisteikul\tour
 Route::post('/snippets/shoppingcart', 'budisteikul\toursdk\Controllers\ShoppingcartController@shoppingcart');
 Route::post('/snippets/shoppingcart/checkout', 'budisteikul\toursdk\Controllers\ShoppingcartController@checkout');
 
-Route::post('/snippets/payment', 'budisteikul\toursdk\Controllers\ShoppingcartController@createpayment');
-Route::post('/snippets/payment/confirm', 'budisteikul\toursdk\Controllers\ShoppingcartController@confirmpayment');
+Route::post('/snippets/payment/paypal', 'budisteikul\toursdk\Controllers\ShoppingcartController@createpaymentpaypal');
+Route::post('/snippets/payment/paypal/confirm', 'budisteikul\toursdk\Controllers\ShoppingcartController@confirmpaymentpaypal');
 
 Route::post('/snippets/promocode', 'budisteikul\toursdk\Controllers\ShoppingcartController@applypromocode');
 Route::post('/snippets/promocode/remove', 'budisteikul\toursdk\Controllers\ShoppingcartController@removepromocode');

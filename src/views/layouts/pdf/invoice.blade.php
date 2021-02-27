@@ -170,6 +170,18 @@ footer {
     position: fixed;
     bottom: 0;
 }
+
+
+.label {
+  color: white;
+  padding: 8px;
+}
+
+.success {background-color: #4CAF50;} /* Green */
+.info {background-color: #2196F3;} /* Blue */
+.warning {background-color: #ff9800;} /* Orange */
+.danger {background-color: #f44336;} /* Red */
+.other {background-color: #e7e7e7; color: black;} /* Gray */
 </style>
 </head>
 <body>
@@ -216,7 +228,21 @@ footer {
                 	$min_date = $shoppingcart->shoppingcart_products()->orderBy('date','asc')->first()->date;
                 @endphp
                 <div class="date" style=" line-height: 18px; font-size:14px;">Due Date: {{ Carbon\Carbon::parse($min_date)->formatLocalized('%d %b %Y') }}</div>
-          		<div class="date" style=" line-height: 18px; font-size:14px;">Status: {{ $shoppingcart->booking_status }}</div>
+                <div class="date" style=" line-height: 18px; font-size:14px;">
+                  Status: {{ $shoppingcart->booking_status }}
+                </div>
+          		  <div class="date" style="font-size:14px;">
+                  @if($shoppingcart->shoppingcart_payment->payment_status==1)
+                    Payment: <span class="label success">PAID</span>
+                  @elseif($shoppingcart->shoppingcart_payment->payment_status==2)
+                    Payment: <span class="label success">PAID</span>
+                  @elseif($shoppingcart->shoppingcart_payment->payment_status==3)
+                    Payment: <span class="label danger">REFUNDED</span>
+                  @elseif($shoppingcart->shoppingcart_payment->payment_status==4)
+                    Payment: <span class="label warning">UNPAID</span>
+                  @endif
+                </div>
+                
         	</div>           
            </td>
          </tr>

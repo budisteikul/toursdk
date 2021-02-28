@@ -954,9 +954,9 @@ class BookingHelper {
 
 	public static function confirm_booking($shoppingcart)
 	{
-					$shoppingcart->booking_channel = "WEBSITE";
-                    $shoppingcart->booking_status = "CONFIRMED";
-                    $shoppingcart->save();
+		$shoppingcart->booking_channel = "WEBSITE";
+        $shoppingcart->booking_status = "CONFIRMED";
+        $shoppingcart->save();
 	}
 
 	public static function create_payment($shoppingcart,$payment_type="paypal")

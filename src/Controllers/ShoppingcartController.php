@@ -81,16 +81,13 @@ class ShoppingcartController extends Controller
                 ]);
         }
         
-        $shoppingcart->booking_channel = 'WEBSITE';
-        $shoppingcart->booking_status = 'CONFIRMED';
-        $shoppingcart->save();
-
-        $shoppingcart->shoppingcart_payment->type = "PAYPAL";
         $shoppingcart->shoppingcart_payment->order_id = $orderID;
         $shoppingcart->shoppingcart_payment->authorization_id = $authorizationID;
         $shoppingcart->shoppingcart_payment->payment_status = 1;
         $shoppingcart->shoppingcart_payment->save();
         
+        BookingHelper::confirm_booking($shoppingcart);
+
         BookingHelper::shoppingcart_mail($shoppingcart);
 
         BookingHelper::shoppingcart_clear($shoppingcart);                
@@ -106,8 +103,8 @@ class ShoppingcartController extends Controller
     {
         $sessionId = $request->header('sessionId');
         $shoppingcart = Shoppingcart::where('booking_status','CART')->where('session_id',$sessionId)->firstOrFail();
-        $value = number_format((float)$shoppingcart->shoppingcart_payment->amount, 2, '.', '');
-        $response = PaypalHelper::createOrder($value,'BOOKING REFERENCE: '. $shoppingcart->confirmation_code,$shoppingcart->shoppingcart_payment->currency);
+       
+        $response = BookingHelper::create_payment($shoppingcart,"paypal");
         return response()->json($response);
     }
 
@@ -137,6 +134,8 @@ class ShoppingcartController extends Controller
 
     public function checkout(Request $request)
     {
+           
+
             $validator = Validator::make($request->all(), [
                 'sessionId' => ['required', 'string', 'max:255'],
             ]);
@@ -148,6 +147,8 @@ class ShoppingcartController extends Controller
         
             $sessionId = $request->input('sessionId');
             $shoppingcart = Shoppingcart::where('booking_status','CART')->where('session_id',$sessionId)->firstOrFail();
+
+            $redirect = "";
 
             $skip_payment = $request->input('skip_payment');
             if($skip_payment=="") $skip_payment = false;
@@ -169,11 +170,39 @@ class ShoppingcartController extends Controller
                 }
                 $shoppingcart = BookingHelper::save_question($shoppingcart,$request);
                 $shoppingcart->save();
+
+                $validator = Validator::make($request->all(), [
+                    'payment_type' => ['in:paypal,bni_va,permata_va','required'],
+                ]);
+
+                if ($validator->fails()) {
+                    $errors = $validator->errors();
+                    return response()->json($errors);
+                }
+
+                //$shoppingcart->shoppingcart_payment->type = $request->input('payment_type');
+                //$shoppingcart->shoppingcart_payment->save();
+
+                //===================================================
+                if($request->input('payment_type')!="paypal")
+                {
+
+                    $shoppingcart->shoppingcart_payment->payment_status = 4;
+                    $shoppingcart->shoppingcart_payment->save();
+
+                    BookingHelper::confirm_booking($shoppingcart);
+
+                    BookingHelper::shoppingcart_clear($shoppingcart);
+
+                    $redirect = $shoppingcart->id ."/". $shoppingcart->session_id;
+                }
+                 //===================================================
             }
 
             return response()->json([
                     "id" => "1",
-                    "message" => $shoppingcart->id
+                    "message" => $shoppingcart->id,
+                    "redirect" => $redirect
                 ]);
     }
 

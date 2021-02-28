@@ -428,21 +428,6 @@ class BookingHelper {
 				'total'=>$grand_total
 			]);
 		
-		
-
-
-		$shoppingcart_payment = new ShoppingcartPayment();
-		$shoppingcart_payment->amount = self::convert_currency($grand_total,$contents->customerInvoice->currency,env("PAYPAL_CURRENCY"));
-		$shoppingcart_payment->currency = env("PAYPAL_CURRENCY");
-		
-		$shoppingcart_payment->rate = self::convert_currency(1,env("PAYPAL_CURRENCY"),$contents->customerInvoice->currency);
-		$shoppingcart_payment->rate_from = $contents->customerInvoice->currency;
-		$shoppingcart_payment->rate_to = env("PAYPAL_CURRENCY");
-
-		$shoppingcart_payment->payment_status = 0;
-		$shoppingcart_payment->shoppingcart_id = $shoppingcart->id;
-		$shoppingcart_payment->save();
-
 		// QUESTION ==============================================================================
 		// Main Question ====
 		$questions = BokunHelper::get_questionshoppingcart($id);
@@ -771,17 +756,6 @@ class BookingHelper {
 		$shoppingcart->total = $grand_total;
 		$shoppingcart->save();
 
-		$shoppingcart->shoppingcart_payment->amount = self::convert_currency($grand_total,$contents->customerInvoice->currency,env("PAYPAL_CURRENCY"));
-		
-		$shoppingcart->shoppingcart_payment->currency = env("PAYPAL_CURRENCY");
-		
-		$shoppingcart->shoppingcart_payment->rate = self::convert_currency(1,env("PAYPAL_CURRENCY"),$contents->customerInvoice->currency);
-		$shoppingcart->shoppingcart_payment->rate_from = $contents->customerInvoice->currency;
-		$shoppingcart->shoppingcart_payment->rate_to = env("PAYPAL_CURRENCY");
-
-		$shoppingcart->shoppingcart_payment->save();
-
-
 		//===============================================
 
 		
@@ -978,6 +952,42 @@ class BookingHelper {
         return $shoppingcart;
 	}
 
+	public static function confirm_booking($shoppingcart)
+	{
+					$shoppingcart->booking_channel = "WEBSITE";
+                    $shoppingcart->booking_status = "CONFIRMED";
+                    $shoppingcart->save();
+	}
+
+	public static function create_payment($shoppingcart,$payment_type="paypal")
+	{
+		$shoppingcart->shoppingcart_payment()->delete();
+
+		if($payment_type=="bni_va")
+		{
+
+		}
+		else
+		{
+			$shoppingcart_payment = new ShoppingcartPayment();
+			$shoppingcart_payment->amount = self::convert_currency($shoppingcart->total,$shoppingcart->currency,env("PAYPAL_CURRENCY"));
+			$shoppingcart_payment->currency = env("PAYPAL_CURRENCY");
+		
+			$shoppingcart_payment->rate = self::convert_currency(1,env("PAYPAL_CURRENCY"),$shoppingcart->currency);
+			$shoppingcart_payment->rate_from = $shoppingcart->currency;
+			$shoppingcart_payment->rate_to = env("PAYPAL_CURRENCY");
+
+			$shoppingcart_payment->payment_status = 0;
+			$shoppingcart_payment->shoppingcart_id = $shoppingcart->id;
+			$shoppingcart_payment->save();
+
+			$value = number_format((float)$shoppingcart->shoppingcart_payment->amount, 2, '.', '');
+        	$response = PaypalHelper::createOrder($value,'BOOKING REFERENCE: '. $shoppingcart->confirmation_code,$shoppingcart->shoppingcart_payment->currency);
+		}
+		return $response;
+	}
+
+
 	public static function remove_promocode($shoppingcart)
 	{
 		BokunHelper::get_removepromocode($shoppingcart->session_id);
@@ -1004,6 +1014,11 @@ class BookingHelper {
 			self::get_shoppingcart($shoppingcart->session_id,"update");
 		}
 		return $status;
+	}
+
+	public static function paypal_rate($shoppingcart)
+	{
+		return '1 '. env("PAYPAL_CURRENCY") .' = '. self::convert_currency(1,env("PAYPAL_CURRENCY"),$shoppingcart->currency) .' '. $shoppingcart->currency;
 	}
 
 	public static function get_rate($shoppingcart)

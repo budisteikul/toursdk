@@ -180,18 +180,12 @@ class ShoppingcartController extends Controller
                     return response()->json($errors);
                 }
 
-                //$shoppingcart->shoppingcart_payment->type = $request->input('payment_type');
-                //$shoppingcart->shoppingcart_payment->save();
-
                 //===================================================
                 if($request->input('payment_type')!="paypal")
                 {
-
-                    $shoppingcart->shoppingcart_payment->payment_status = 4;
-                    $shoppingcart->shoppingcart_payment->save();
+                    $response = BookingHelper::create_payment($shoppingcart,$request->input('payment_type'));
 
                     BookingHelper::confirm_booking($shoppingcart);
-
                     BookingHelper::shoppingcart_clear($shoppingcart);
 
                     $redirect = $shoppingcart->id ."/". $shoppingcart->session_id;

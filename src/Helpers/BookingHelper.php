@@ -963,8 +963,57 @@ class BookingHelper {
 	{
 		$shoppingcart->shoppingcart_payment()->delete();
 
+		$first_name = $shoppingcart->shoppingcart_questions()->select('answer')->where('type','mainContactDetails')->where('question_id','firstName')->first()->answer;
+		$last_name = $shoppingcart->shoppingcart_questions()->select('answer')->where('type','mainContactDetails')->where('question_id','lastName')->first()->answer;
+		$email = $shoppingcart->shoppingcart_questions()->select('answer')->where('type','mainContactDetails')->where('question_id','email')->first()->answer;
+		$phone = $shoppingcart->shoppingcart_questions()->select('answer')->where('type','mainContactDetails')->where('question_id','phoneNumber')->first()->answer;
+
+		$amount = $shoppingcart->total;
+		$order_id = $shoppingcart->confirmation_code;
+
 		if($payment_type=="bni_va")
 		{
+			
+			
+			$data = '{
+    					"payment_type": "bank_transfer",
+    					"transaction_details": {
+        					"gross_amount": '.$amount.',
+        					"order_id": "'.$order_id.'"
+    					},
+    					"customer_details": {
+        					"email": "'.$email.'",
+        					"first_name": "'.$first_name.'",
+        					"last_name": "'.$last_name.'",
+        					"phone": "'.$phone.'"
+    					},
+   						"bank_transfer":{
+     						"bank": "bni"
+  						}
+					}';
+
+			$endpoint = "https://api.sandbox.midtrans.com/v2/charge";
+			$headers = [
+          		'Accept' => 'application/jsons',
+          		'Content-Type' => 'application/json',
+          		'Authorization' => 'Basic '. base64_encode('SB-Mid-server-g9vdfHumlsp36VPA9ZHjeRpG'),
+        	];
+        	$client = new \GuzzleHttp\Client(['headers' => $headers,'http_errors' => false]);
+        	$response = $client->request('POST',$endpoint,
+    			['json' => json_decode($data)]
+			);
+			$data = $response->getBody()->getContents();
+			$contents = json_decode($data);
+			
+			$shoppingcart_payment = new ShoppingcartPayment();
+			$shoppingcart_payment->amount = $contents->gross_amount;
+			$shoppingcart_payment->currency = $contents->currency;
+			$shoppingcart_payment->order_id = $contents->transaction_id;
+			$shoppingcart_payment->authorization_id = $contents->va_numbers[0]->va_number;
+			$shoppingcart_payment->payment_status = 4;
+			$shoppingcart_payment->type = $payment_type;
+			$shoppingcart_payment->shoppingcart_id = $shoppingcart->id;
+			$shoppingcart_payment->save();
 
 		}
 		else

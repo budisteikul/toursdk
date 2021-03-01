@@ -979,7 +979,7 @@ class BookingHelper {
 					'payment_provider' => 'midtrans',
 					'amount' => $shoppingcart->total, 
 					'currency' => 'IDR', 
-					'payment_status' => 0
+					'payment_status' => 4
 				]
 			);
 

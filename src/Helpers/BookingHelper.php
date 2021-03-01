@@ -974,7 +974,7 @@ class BookingHelper {
 		if($payment_type=="bni_va")
 		{
 			
-			
+			/*
 			$data = '{
     					"payment_type": "bank_transfer",
     					"transaction_details": {
@@ -991,8 +991,19 @@ class BookingHelper {
      						"bank": "bni"
   						}
 					}';
+			*/
 
-			$endpoint = "https://api.sandbox.midtrans.com/v2/charge";
+			$data = '{
+  				"transaction_details": {
+    			"order_id": "'.$order_id.'",
+    			"gross_amount": '.$amount.'
+  				}
+			}';
+
+			//$endpoint = "https://api.sandbox.midtrans.com/v2/charge";
+
+			$endpoint = "https://app.sandbox.midtrans.com/snap/v1/transactions";
+
 			$headers = [
           		'Accept' => 'application/jsons',
           		'Content-Type' => 'application/json',
@@ -1005,6 +1016,8 @@ class BookingHelper {
 			$data = $response->getBody()->getContents();
 			$contents = json_decode($data);
 			
+			print_r($contents);
+			exit();
 			$shoppingcart_payment = new ShoppingcartPayment();
 			$shoppingcart_payment->amount = $contents->gross_amount;
 			$shoppingcart_payment->currency = $contents->currency;

@@ -108,6 +108,20 @@ class ShoppingcartController extends Controller
         return response()->json($response);
     }
 
+    public function createpaymentmidtrans(Request $request)
+    {
+        $sessionId = $request->input('sessionId');
+        $shoppingcart = Shoppingcart::where('booking_status','CART')->where('session_id',$sessionId)->firstOrFail();
+        
+        $response = BookingHelper::create_payment($shoppingcart,"midtrans");
+
+        
+        return response()->json([
+                    "id" => "1",
+                    "snapToken" => $response->snaptoken
+                ]);
+    }
+
     public function invoice($sessionId,$id)
     {
         $shoppingcart = Shoppingcart::where('confirmation_code',$id)->where('session_id',$sessionId)->firstOrFail();
@@ -148,7 +162,7 @@ class ShoppingcartController extends Controller
             $sessionId = $request->input('sessionId');
             $shoppingcart = Shoppingcart::where('booking_status','CART')->where('session_id',$sessionId)->firstOrFail();
 
-            $redirect = "";
+            
 
             $skip_payment = $request->input('skip_payment');
             if($skip_payment=="") $skip_payment = false;
@@ -171,32 +185,11 @@ class ShoppingcartController extends Controller
                 $shoppingcart = BookingHelper::save_question($shoppingcart,$request);
                 $shoppingcart->save();
 
-                $validator = Validator::make($request->all(), [
-                    'payment_type' => ['in:paypal,bni_va,permata_va','required'],
-                ]);
-
-                if ($validator->fails()) {
-                    $errors = $validator->errors();
-                    return response()->json($errors);
-                }
-
-                //===================================================
-                if($request->input('payment_type')!="paypal")
-                {
-                    $response = BookingHelper::create_payment($shoppingcart,$request->input('payment_type'));
-
-                    BookingHelper::confirm_booking($shoppingcart);
-                    BookingHelper::shoppingcart_clear($shoppingcart);
-
-                    $redirect = $shoppingcart->id ."/". $shoppingcart->session_id;
-                }
-                 //===================================================
             }
 
             return response()->json([
                     "id" => "1",
-                    "message" => $shoppingcart->id,
-                    "redirect" => $redirect
+                    "message" => ''
                 ]);
     }
 

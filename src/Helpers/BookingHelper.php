@@ -961,7 +961,7 @@ class BookingHelper {
 
 	public static function create_payment($shoppingcart,$payment_type="paypal")
 	{
-		$shoppingcart->shoppingcart_payment()->delete();
+		
 
 		$first_name = $shoppingcart->shoppingcart_questions()->select('answer')->where('type','mainContactDetails')->where('question_id','firstName')->first()->answer;
 		$last_name = $shoppingcart->shoppingcart_questions()->select('answer')->where('type','mainContactDetails')->where('question_id','lastName')->first()->answer;
@@ -971,78 +971,86 @@ class BookingHelper {
 		$amount = $shoppingcart->total;
 		$order_id = $shoppingcart->confirmation_code;
 
-		if($payment_type=="bni_va")
+		if($payment_type=="midtrans")
 		{
+			ShoppingcartPayment::updateOrCreate(
+				['shoppingcart_id' => $shoppingcart->id],
+				[
+					'payment_provider' => 'midtrans',
+					'amount' => $shoppingcart->total, 
+					'currency' => 'IDR', 
+					'payment_status' => 0
+				]
+			);
+
+			if(is_null($shoppingcart->shoppingcart_payment->snaptoken))
+			{
 			
-			/*
-			$data = '{
-    					"payment_type": "bank_transfer",
-    					"transaction_details": {
-        					"gross_amount": '.$amount.',
-        					"order_id": "'.$order_id.'"
-    					},
-    					"customer_details": {
-        					"email": "'.$email.'",
-        					"first_name": "'.$first_name.'",
-        					"last_name": "'.$last_name.'",
-        					"phone": "'.$phone.'"
-    					},
-   						"bank_transfer":{
-     						"bank": "bni"
-  						}
-					}';
-			*/
-
-			$data = '{
-  				"transaction_details": {
-    			"order_id": "'.$order_id.'",
-    			"gross_amount": '.$amount.'
-  				}
-			}';
-
-			//$endpoint = "https://api.sandbox.midtrans.com/v2/charge";
+			$data = [
+						'transaction_details' => [
+							'order_id' => $order_id,
+							'gross_amount' => $amount
+						],
+						'customer_details' => [
+							'first_name' => $first_name,
+							'last_name' => $last_name,
+							'email' => $email,
+							'phone' => $phone
+						]
+					];
 
 			$endpoint = "https://app.sandbox.midtrans.com/snap/v1/transactions";
 
 			$headers = [
           		'Accept' => 'application/jsons',
           		'Content-Type' => 'application/json',
-          		'Authorization' => 'Basic '. base64_encode('SB-Mid-server-g9vdfHumlsp36VPA9ZHjeRpG'),
+          		'Authorization' => 'Basic '. base64_encode(env('MIDTRANS_SERVER_KEY')),
         	];
         	$client = new \GuzzleHttp\Client(['headers' => $headers,'http_errors' => false]);
         	$response = $client->request('POST',$endpoint,
-    			['json' => json_decode($data)]
+    			['json' => $data]
 			);
 			$data = $response->getBody()->getContents();
-			$contents = json_decode($data);
+			$data = json_decode($data);
 			
-			print_r($contents);
-			exit();
-			$shoppingcart_payment = new ShoppingcartPayment();
-			$shoppingcart_payment->amount = $contents->gross_amount;
-			$shoppingcart_payment->currency = $contents->currency;
-			$shoppingcart_payment->order_id = $contents->transaction_id;
-			$shoppingcart_payment->authorization_id = $contents->va_numbers[0]->va_number;
-			$shoppingcart_payment->payment_status = 4;
-			$shoppingcart_payment->type = $payment_type;
-			$shoppingcart_payment->shoppingcart_id = $shoppingcart->id;
-			$shoppingcart_payment->save();
+			ShoppingcartPayment::updateOrCreate(
+				['shoppingcart_id' => $shoppingcart->id],
+				[
+					'snaptoken' => $data->token,
+					'redirect_url' => $data->redirect_url
+				]
+			);
+
+				$response = new \stdClass();
+				$response->snaptoken = $data->token;
+				$response->redirect_url = $data->redirect_url;
+
+			}
+			else
+			{
+				$response = new \stdClass();
+				$response->snaptoken = $shoppingcart->shoppingcart_payment->snaptoken;
+				$response->redirect_url = $shoppingcart->shoppingcart_payment->redirect_url;
+			}
+
+			
 
 		}
 		else
 		{
-			$shoppingcart_payment = new ShoppingcartPayment();
-			$shoppingcart_payment->amount = self::convert_currency($shoppingcart->total,$shoppingcart->currency,env("PAYPAL_CURRENCY"));
-			$shoppingcart_payment->currency = env("PAYPAL_CURRENCY");
-		
-			$shoppingcart_payment->rate = self::convert_currency(1,env("PAYPAL_CURRENCY"),$shoppingcart->currency);
-			$shoppingcart_payment->rate_from = $shoppingcart->currency;
-			$shoppingcart_payment->rate_to = env("PAYPAL_CURRENCY");
-
-			$shoppingcart_payment->payment_status = 0;
-			$shoppingcart_payment->shoppingcart_id = $shoppingcart->id;
-			$shoppingcart_payment->save();
-
+			ShoppingcartPayment::updateOrCreate(
+				['shoppingcart_id' => $shoppingcart->id],
+				[
+					'payment_provider' => 'paypal',
+					'amount' => self::convert_currency($shoppingcart->total,$shoppingcart->currency,env("PAYPAL_CURRENCY")) ,
+					'currency' => env("PAYPAL_CURRENCY"),
+					'rate' => self::convert_currency(1,env("PAYPAL_CURRENCY"),$shoppingcart->currency), 
+					'rate_from' => $shoppingcart->currency, 
+					'rate_to' => env("PAYPAL_CURRENCY"),
+					'payment_status' => 0
+				]
+			);
+			
 			$value = number_format((float)$shoppingcart->shoppingcart_payment->amount, 2, '.', '');
         	$response = PaypalHelper::createOrder($value,'BOOKING REFERENCE: '. $shoppingcart->confirmation_code,$shoppingcart->shoppingcart_payment->currency);
 		}

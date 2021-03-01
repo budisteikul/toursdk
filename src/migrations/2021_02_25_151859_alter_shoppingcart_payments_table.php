@@ -17,9 +17,9 @@ class AlterShoppingcartPaymentsTable extends Migration
             $table->float('rate')->after('currency')->default(0);
             $table->string('rate_from')->after('rate')->nullable();
             $table->string('rate_to')->after('rate_from')->nullable();
-            $table->string('type')->after('rate_to')->nullable();
-            $table->string('method')->after('type')->default('full_payment');
-            $table->float('deposit')->after('method')->default(0);
+            $table->string('payment_provider')->after('rate_to')->nullable();
+            $table->string('snaptoken')->after('payment_provider')->nullable();
+            $table->string('redirect_url')->after('snaptoken')->nullable();
         });
     }
 
@@ -34,9 +34,9 @@ class AlterShoppingcartPaymentsTable extends Migration
              $table->dropColumn('rate');
              $table->dropColumn('rate_from');
              $table->dropColumn('rate_to');
-             $table->dropColumn('type');
-             $table->dropColumn('method');
-             $table->dropColumn('deposit');
+             $table->dropColumn('payment_provider');
+             $table->dropColumn('snaptoken');
+             $table->dropColumn('redirect_url');
         });
     }
 }

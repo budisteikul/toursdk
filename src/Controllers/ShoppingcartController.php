@@ -105,23 +105,26 @@ class ShoppingcartController extends Controller
         case 'POST':
             $data = $request->all();
             
-            $shoppingcart = Shoppingcart::where('confirmation_code',$data['order_id'])->firstOrFail();
-
-            if($hash = hash('sha512', $shoppingcart->confirmation_code.$data['status_code'].$shoppingcart->shoppingcart_payment->amount.env('MIDTRANS_SERVER_KEY'))==$data['signature_key'])
+            $shoppingcart = Shoppingcart::where('confirmation_code',$data['order_id'])->first();
+            if(@count($shoppingcart))
             {
-                if($data['transaction_status']=="settlement")
+                if($hash = hash('sha512', $shoppingcart->confirmation_code.$data['status_code'].$shoppingcart->shoppingcart_payment->amount.env('MIDTRANS_SERVER_KEY'))==$data['signature_key'])
                 {
-                    $shoppingcart->shoppingcart_payment->status = 2;
-                    $shoppingcart->shoppingcart_payment->save();
-                    BookingHelper::shoppingcart_mail($shoppingcart);
-                }
-                else
-                {
-                   $shoppingcart->booking_status = 'CANCELED';
-                   $shoppingcart->save();
-                }
+                    if($data['transaction_status']=="settlement")
+                    {
+                        $shoppingcart->shoppingcart_payment->status = 2;
+                        $shoppingcart->shoppingcart_payment->save();
+                        BookingHelper::shoppingcart_mail($shoppingcart);
+                    }
+                    else
+                    {
+                    $shoppingcart->booking_status = 'CANCELED';
+                    $shoppingcart->save();
+                    }
                 
+                }
             }
+            
             
             //return redirect('/booking/receipt/'.$shoppingcart->id.'/'.$shoppingcart->session_id);
             break;

@@ -39,6 +39,7 @@ Route::post('/snippets/payment/paypal', 'budisteikul\toursdk\Controllers\Shoppin
 Route::post('/snippets/payment/paypal/confirm', 'budisteikul\toursdk\Controllers\ShoppingcartController@confirmpaymentpaypal');
 Route::post('/snippets/payment/midtrans', 'budisteikul\toursdk\Controllers\ShoppingcartController@createpaymentmidtrans');
 Route::get('/snippets/payment/midtrans/confirm', 'budisteikul\toursdk\Controllers\ShoppingcartController@confirmpaymentmidtrans');
+Route::post('/snippets/payment/midtrans/confirm', 'budisteikul\toursdk\Controllers\ShoppingcartController@confirmpaymentmidtrans');
 
 Route::post('/snippets/promocode', 'budisteikul\toursdk\Controllers\ShoppingcartController@applypromocode');
 Route::post('/snippets/promocode/remove', 'budisteikul\toursdk\Controllers\ShoppingcartController@removepromocode');

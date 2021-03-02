@@ -105,7 +105,14 @@ class ShoppingcartController extends Controller
         case 'POST':
             $data = $request->all();
             $shoppingcart = Shoppingcart::where('confirmation_code',$data['order_id'])->firstOrFail();
-            $shoppingcart->shoppingcart_payment->status = 2;
+            if($data['transaction_status']=="settlement")
+            {
+                $shoppingcart->shoppingcart_payment->status = 2;
+            }
+            else
+            {
+                $shoppingcart->shoppingcart_payment->status = 4;
+            }
             $shoppingcart->shoppingcart_payment->save();
             return redirect('/booking/receipt/'.$shoppingcart->id.'/'.$shoppingcart->session_id);
             break;

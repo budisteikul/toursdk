@@ -104,16 +104,22 @@ class ShoppingcartController extends Controller
         switch ($request->method()) {
         case 'POST':
             $data = $request->all();
+            
             $shoppingcart = Shoppingcart::where('confirmation_code',$data['order_id'])->firstOrFail();
-            if($data['transaction_status']=="settlement")
+
+            if($hash = hash('sha512', $shoppingcart->confirmation_code.$data['status_code'].$shoppingcart->shoppingcart_payment->amount.env('MIDTRANS_SERVER_KEY'))==$data['signature_key'])
             {
-                $shoppingcart->shoppingcart_payment->status = 2;
+                if($data['transaction_status']=="settlement")
+                {
+                    $shoppingcart->shoppingcart_payment->status = 2;
+                }
+                else
+                {
+                    $shoppingcart->shoppingcart_payment->status = 4;
+                }
+                $shoppingcart->shoppingcart_payment->save();
             }
-            else
-            {
-                $shoppingcart->shoppingcart_payment->status = 4;
-            }
-            $shoppingcart->shoppingcart_payment->save();
+            
             return redirect('/booking/receipt/'.$shoppingcart->id.'/'.$shoppingcart->session_id);
             break;
         default:

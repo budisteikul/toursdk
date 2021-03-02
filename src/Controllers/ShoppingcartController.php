@@ -99,6 +99,24 @@ class ShoppingcartController extends Controller
         
     }
 
+    public function confirmpaymentmidtrans(Request $request)
+    {
+        switch ($request->method()) {
+        case 'POST':
+            $data = $request->all();
+            $shoppingcart = Shoppingcart::where('confirmation_code',$data['order_id'])->firstOrFail();
+            $shoppingcart->shoppingcart_payment->status = 2;
+            $shoppingcart->shoppingcart_payment->save();
+            return redirect('/booking/receipt/'.$shoppingcart->id.'/'.$shoppingcart->session_id);
+            break;
+        default:
+            $shoppingcart = Shoppingcart::where('confirmation_code',$request->input('order_id'))->firstOrFail();
+            return redirect('/booking/receipt/'.$shoppingcart->id.'/'.$shoppingcart->session_id);
+            break;
+        }
+        
+    }
+
     public function createpaymentpaypal(Request $request)
     {
         $sessionId = $request->header('sessionId');
@@ -114,15 +132,12 @@ class ShoppingcartController extends Controller
         $shoppingcart = Shoppingcart::where('booking_status','CART')->where('session_id',$sessionId)->firstOrFail();
         
         $response = BookingHelper::create_payment($shoppingcart,"midtrans");
-
         BookingHelper::confirm_booking($shoppingcart);
-
         BookingHelper::shoppingcart_clear($shoppingcart);
-        
+
         return response()->json([
                     "id" => "1",
-                    "snapToken" => $response->snaptoken
-                ]);
+                    "redirect" => '/booking/receipt/'.$shoppingcart->id.'/'.$shoppingcart->session_id                ]);
     }
 
     public function invoice($sessionId,$id)

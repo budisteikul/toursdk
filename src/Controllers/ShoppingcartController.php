@@ -112,14 +112,14 @@ class ShoppingcartController extends Controller
                 {
                     if($data['transaction_status']=="settlement")
                     {
-                        $shoppingcart->shoppingcart_payment->status = 2;
+                        $shoppingcart->shoppingcart_payment->payment_status = 2;
                         $shoppingcart->shoppingcart_payment->save();
                         BookingHelper::shoppingcart_mail($shoppingcart);
                         return response('Success', 200)->header('Content-Type', 'text/plain');
                     }
                     else if($data['transaction_status']=="pending")
                     {
-                        $shoppingcart->shoppingcart_payment->status = 4;
+                        $shoppingcart->shoppingcart_payment->payment_status = 4;
                         $shoppingcart->shoppingcart_payment->save();
                         return response('Pending', 200)->header('Content-Type', 'text/plain');
                     }

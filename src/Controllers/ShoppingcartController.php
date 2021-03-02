@@ -126,7 +126,8 @@ class ShoppingcartController extends Controller
             }
             
             
-            //return redirect('/booking/receipt/'.$shoppingcart->id.'/'.$shoppingcart->session_id);
+            return response('Always Success', 200)
+                  ->header('Content-Type', 'text/plain');
             break;
         default:
             $shoppingcart = Shoppingcart::where('confirmation_code',$request->input('order_id'))->firstOrFail();

@@ -108,7 +108,7 @@ class ShoppingcartController extends Controller
             $shoppingcart = Shoppingcart::where('confirmation_code',$data['order_id'])->first();
             if(@count($shoppingcart))
             {
-                if($hash = hash('sha512', $shoppingcart->confirmation_code.$data['status_code'].$shoppingcart->shoppingcart_payment->amount.env('MIDTRANS_SERVER_KEY'))==$data['signature_key'])
+                if(hash('sha512', $shoppingcart->confirmation_code.$data['status_code'].$shoppingcart->shoppingcart_payment->amount.env('MIDTRANS_SERVER_KEY'))==$data['signature_key'])
                 {
                     if($data['transaction_status']=="settlement")
                     {
@@ -134,6 +134,7 @@ class ShoppingcartController extends Controller
                 else
                 {
                     print($shoppingcart->confirmation_code.$data['status_code'].$shoppingcart->shoppingcart_payment->amount.env('MIDTRANS_SERVER_KEY'));
+                    print(hash('sha512', $shoppingcart->confirmation_code.$data['status_code'].$shoppingcart->shoppingcart_payment->amount.env('MIDTRANS_SERVER_KEY')));
                     return response('Signature failed', 200)->header('Content-Type', 'text/plain');
                 }
             }

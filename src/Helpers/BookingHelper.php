@@ -999,7 +999,15 @@ class BookingHelper {
 						]
 					];
 
-			$endpoint = "https://".env('MIDTRANS_URL')."/snap/v1/transactions";
+			if(env('MIDTRANS_ENV')=="sandbox")
+			{
+				$endpoint = "https://app.sandbox.midtrans.com/snap/v1/transactions";
+			}
+			else
+			{
+				$endpoint = "https://app.midtrans.com/snap/v1/transactions";
+			}
+			
 
 			$headers = [
           		'Accept' => 'application/jsons',

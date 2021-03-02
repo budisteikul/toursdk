@@ -133,7 +133,7 @@ class ShoppingcartController extends Controller
                 }
                 else
                 {
-                    print($shoppingcart->confirmation_code.$data['status_code'].$shoppingcart->shoppingcart_payment->amount.env('MIDTRANS_SERVER_KEY'));
+                    //print($shoppingcart->confirmation_code.$data['status_code'].$shoppingcart->shoppingcart_payment->amount.env('MIDTRANS_SERVER_KEY'));
                     print(hash('sha512', $shoppingcart->confirmation_code.$data['status_code'].$shoppingcart->shoppingcart_payment->amount.env('MIDTRANS_SERVER_KEY')));
                     return response('Signature failed', 200)->header('Content-Type', 'text/plain');
                 }

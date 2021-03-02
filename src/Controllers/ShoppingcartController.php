@@ -112,12 +112,15 @@ class ShoppingcartController extends Controller
                 if($data['transaction_status']=="settlement")
                 {
                     $shoppingcart->shoppingcart_payment->status = 2;
+                    $shoppingcart->shoppingcart_payment->save();
+                    BookingHelper::shoppingcart_mail($shoppingcart);
                 }
                 else
                 {
-                    $shoppingcart->shoppingcart_payment->status = 4;
+                   $shoppingcart->booking_status = 'CANCELED';
+                   $shoppingcart->save();
                 }
-                $shoppingcart->shoppingcart_payment->save();
+                
             }
             
             return redirect('/booking/receipt/'.$shoppingcart->id.'/'.$shoppingcart->session_id);

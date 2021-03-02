@@ -123,7 +123,7 @@ class ShoppingcartController extends Controller
                 
             }
             
-            return redirect('/booking/receipt/'.$shoppingcart->id.'/'.$shoppingcart->session_id);
+            //return redirect('/booking/receipt/'.$shoppingcart->id.'/'.$shoppingcart->session_id);
             break;
         default:
             $shoppingcart = Shoppingcart::where('confirmation_code',$request->input('order_id'))->firstOrFail();

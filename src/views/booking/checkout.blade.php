@@ -1,4 +1,4 @@
-@inject('ProductHelper', budisteikul\toursdk\Helpers\ProductHelper)
+@inject('ProductHelper', 'budisteikul\toursdk\Helpers\ProductHelper')
 @extends('coresdk::layouts.app')
 @section('content')
 <script language="javascript">

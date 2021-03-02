@@ -1,4 +1,4 @@
-@inject('ImageHelper', budisteikul\toursdk\Helpers\ImageHelper)
+@inject('ImageHelper', 'budisteikul\toursdk\Helpers\ImageHelper')
 <script language="javascript">
 function UPDATE()
 {

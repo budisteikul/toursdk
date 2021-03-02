@@ -1,4 +1,4 @@
-@inject('ProductHelper', budisteikul\toursdk\Helpers\ProductHelper)
+@inject('ProductHelper', 'budisteikul\toursdk\Helpers\ProductHelper')
 <!DOCTYPE html>
 <html lang="en">
 <head>

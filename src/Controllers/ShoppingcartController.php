@@ -116,6 +116,11 @@ class ShoppingcartController extends Controller
                         $shoppingcart->shoppingcart_payment->save();
                         BookingHelper::shoppingcart_mail($shoppingcart);
                     }
+                    else if($data['transaction_status']=="pending")
+                    {
+                        $shoppingcart->shoppingcart_payment->status = 4;
+                        $shoppingcart->shoppingcart_payment->save();
+                    }
                     else
                     {
                     $shoppingcart->booking_status = 'CANCELED';

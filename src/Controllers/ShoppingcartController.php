@@ -115,34 +115,34 @@ class ShoppingcartController extends Controller
                         $shoppingcart->shoppingcart_payment->payment_status = 2;
                         $shoppingcart->shoppingcart_payment->save();
                         BookingHelper::shoppingcart_mail($shoppingcart);
-                        return response('Success', 200)->header('Content-Type', 'text/plain');
+                        
                     }
                     else if($data['transaction_status']=="pending")
                     {
                         $shoppingcart->shoppingcart_payment->payment_status = 4;
                         $shoppingcart->shoppingcart_payment->save();
-                        return response('Pending', 200)->header('Content-Type', 'text/plain');
+                        
                     }
                     else
                     {
                         $shoppingcart->booking_status = 'CANCELED';
                         $shoppingcart->save();
-                        return response('Cancel', 200)->header('Content-Type', 'text/plain');
+                        
                     }
                 
                 }
                 else
                 {
                     
-                    return response('Signature failed', 200)->header('Content-Type', 'text/plain');
+                    
                 }
             }
             else
             {
-                return response('Not found', 200)->header('Content-Type', 'text/plain');
+                
             }
             
-            
+            return response('Always Success', 200)->header('Content-Type', 'text/plain');
             break;
         default:
             $shoppingcart = Shoppingcart::where('confirmation_code',$request->input('order_id'))->firstOrFail();

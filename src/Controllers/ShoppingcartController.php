@@ -108,7 +108,7 @@ class ShoppingcartController extends Controller
             $shoppingcart = Shoppingcart::where('confirmation_code',$data['order_id'])->first();
             if(@count($shoppingcart))
             {
-                if(hash('sha512', $shoppingcart->confirmation_code.$data['status_code'].$shoppingcart->shoppingcart_payment->amount.env('MIDTRANS_SERVER_KEY'))==$data['signature_key'])
+                if(hash('sha512', $data['order_id'].$data['status_code'].$data['gross_amount'].env('MIDTRANS_SERVER_KEY'))==$data['signature_key'])
                 {
                     if($data['transaction_status']=="settlement")
                     {

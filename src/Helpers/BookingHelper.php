@@ -1165,7 +1165,27 @@ class BookingHelper {
        return $paymentStatus;
 	}
 
-	
+	public static function payment_status_public($paymentStatus)
+	{
+		switch($paymentStatus)
+                    {
+                        case 1:
+                            $paymentStatus = "PAID";
+                        break;
+                        case 2:
+                            $paymentStatus = "PAID";
+                        break;
+                        case 3:
+                            $paymentStatus = "RETURNED";
+                        break;
+                        case 4:
+                            $paymentStatus = "UNPAID";
+                        break;
+                        default:
+                            $paymentStatus = "NOT AVAILABLE";
+                    }
+       return $paymentStatus;
+	}
 
 	public static function check_shoppingcart($sessionId)
 	{

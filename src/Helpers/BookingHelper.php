@@ -1156,6 +1156,9 @@ class BookingHelper {
                         case 3:
                             $paymentStatus = "VOIDED";
                         break;
+                        case 4:
+                            $paymentStatus = "UNPAID";
+                        break;
                         default:
                             $paymentStatus = "NOT AVAILABLE";
                     }

@@ -168,6 +168,7 @@ class ShoppingcartController extends Controller
         
         $response = BookingHelper::create_payment($shoppingcart,"midtrans");
         BookingHelper::confirm_booking($shoppingcart);
+        BookingHelper::shoppingcart_mail($shoppingcart);
         BookingHelper::shoppingcart_clear($shoppingcart);
 
         return response()->json([

@@ -1170,16 +1170,16 @@ class BookingHelper {
 		switch($paymentStatus)
                     {
                         case 1:
-                            $paymentStatus = "PAID";
+                            $paymentStatus = '<span class="badge badge-success">PAID</span>';
                         break;
                         case 2:
-                            $paymentStatus = "PAID";
+                            $paymentStatus = '<span class="badge badge-success">PAID</span>';
                         break;
                         case 3:
-                            $paymentStatus = "RETURNED";
+                            $paymentStatus = '<span class="badge badge-danger">RETURNED</span>';
                         break;
                         case 4:
-                            $paymentStatus = "UNPAID";
+                            $paymentStatus = '<span class="badge badge-warning">UNPAID</span>';
                         break;
                         default:
                             $paymentStatus = "NOT AVAILABLE";

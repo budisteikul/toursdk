@@ -1,3 +1,4 @@
+@inject('BookingHelper', 'budisteikul\toursdk\Helpers\BookingHelper')
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -172,16 +173,16 @@ footer {
 }
 
 
-.label {
+.badge {
   color: white;
   padding: 8px;
 }
 
-.success {background-color: #4CAF50;} /* Green */
-.info {background-color: #2196F3;} /* Blue */
-.warning {background-color: #ff9800;} /* Orange */
-.danger {background-color: #f44336;} /* Red */
-.other {background-color: #e7e7e7; color: black;} /* Gray */
+.badge-success {background-color: #4CAF50;} /* Green */
+.badge-info {background-color: #2196F3;} /* Blue */
+.badge-warning {background-color: #ff9800;} /* Orange */
+.badge-danger {background-color: #f44336;} /* Red */
+.badge-other {background-color: #e7e7e7; color: black;} /* Gray */
 </style>
 </head>
 <body>
@@ -232,15 +233,7 @@ footer {
                   Status: {{ $shoppingcart->booking_status }}
                 </div>
           		  <div class="date" style="font-size:14px;">
-                  @if($shoppingcart->shoppingcart_payment->payment_status==1)
-                    Payment: <span class="label success">PAID</span>
-                  @elseif($shoppingcart->shoppingcart_payment->payment_status==2)
-                    Payment: <span class="label success">PAID</span>
-                  @elseif($shoppingcart->shoppingcart_payment->payment_status==3)
-                    Payment: <span class="label danger">REFUNDED</span>
-                  @elseif($shoppingcart->shoppingcart_payment->payment_status==4)
-                    Payment: <span class="label warning">UNPAID</span>
-                  @endif
+                  Payment : {!! $BookingHelper->payment_status_public($shoppingcart->shoppingcart_payment->payment_status) !!}
                 </div>
                 
         	</div>           

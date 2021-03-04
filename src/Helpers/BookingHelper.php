@@ -204,6 +204,7 @@ class BookingHelper {
 			$shoppingcart->subtotal = $grand_subtotal;
 			$shoppingcart->discount = $grand_discount;
 			$shoppingcart->total = $grand_total;
+			$shoppingcart->due_now = $grand_total;
 			$shoppingcart->save();
 
 			$shoppingcart_payment = new ShoppingcartPayment();
@@ -410,23 +411,36 @@ class BookingHelper {
 			}
 			
 			
-			
-			ShoppingcartProduct::where('id',$shoppingcart_product->id)->update([
-				'subtotal'=>$subtotal_product,
-				'discount'=>$total_discount,
-				'total'=>$total_product
-				]);
-				
+			$shoppingcart_product->subtotal = $subtotal_product;
+			$shoppingcart_product->discount = $total_discount;
+			$shoppingcart_product->total = $total_product;
+			$shoppingcart_product->save();
+	
 			$grand_discount += $total_discount;
 			$grand_subtotal += $subtotal_product;
 			$grand_total += $total_product;
 		}
 		
-		Shoppingcart::where('id',$shoppingcart->id)->update([
-				'subtotal'=>$grand_subtotal,
-				'discount'=>$grand_discount,
-				'total'=>$grand_total
-			]);
+		$shoppingcart->subtotal = $grand_subtotal;
+		$shoppingcart->discount = $grand_discount;
+		$shoppingcart->total = $grand_total;
+		//====================================================
+		if(env("DEPOSIT")=="active")
+		{
+			$due_now =  $grand_total * env("DEPOSIT_VALUE") / 100;
+			$due_on_arrival = $grand_total - $due_now;
+			$shoppingcart->due_now = $due_now;
+			$shoppingcart->due_on_arrival = $due_on_arrival;
+		}
+		else
+		{
+			$shoppingcart->due_now = $grand_total;
+		}
+		
+		//====================================================
+		$shoppingcart->save();
+
+		
 		
 		// QUESTION ==============================================================================
 		// Main Question ====
@@ -754,6 +768,19 @@ class BookingHelper {
 		$shoppingcart->subtotal = $grand_subtotal;
 		$shoppingcart->discount = $grand_discount;
 		$shoppingcart->total = $grand_total;
+		//====================================================
+		if(env("DEPOSIT")=="active")
+		{
+			$due_now =  $grand_total * env("DEPOSIT_VALUE") / 100;
+			$due_on_arrival = $grand_total - $due_now;
+			$shoppingcart->due_now = $due_now;
+			$shoppingcart->due_on_arrival = $due_on_arrival;
+		}
+		else
+		{
+			$shoppingcart->due_now = $grand_total;
+		}
+		//====================================================
 		$shoppingcart->save();
 
 		//===============================================
@@ -968,7 +995,7 @@ class BookingHelper {
 		$email = $shoppingcart->shoppingcart_questions()->select('answer')->where('type','mainContactDetails')->where('question_id','email')->first()->answer;
 		$phone = $shoppingcart->shoppingcart_questions()->select('answer')->where('type','mainContactDetails')->where('question_id','phoneNumber')->first()->answer;
 
-		$amount = $shoppingcart->total;
+		$amount = $shoppingcart->due_now;
 		$order_id = $shoppingcart->confirmation_code;
 
 		if($payment_type=="midtrans")
@@ -977,7 +1004,7 @@ class BookingHelper {
 				['shoppingcart_id' => $shoppingcart->id],
 				[
 					'payment_provider' => 'midtrans',
-					'amount' => $shoppingcart->total, 
+					'amount' => $amount, 
 					'currency' => 'IDR', 
 					'payment_status' => 4
 				]
@@ -1050,7 +1077,7 @@ class BookingHelper {
 				['shoppingcart_id' => $shoppingcart->id],
 				[
 					'payment_provider' => 'paypal',
-					'amount' => self::convert_currency($shoppingcart->total,$shoppingcart->currency,env("PAYPAL_CURRENCY")) ,
+					'amount' => self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,env("PAYPAL_CURRENCY")) ,
 					'currency' => env("PAYPAL_CURRENCY"),
 					'rate' => self::convert_currency(1,env("PAYPAL_CURRENCY"),$shoppingcart->currency), 
 					'rate_from' => $shoppingcart->currency, 
@@ -1176,7 +1203,7 @@ class BookingHelper {
                             $paymentStatus = '<span class="badge badge-success">PAID</span>';
                         break;
                         case 3:
-                            $paymentStatus = '<span class="badge badge-danger">RETURNED</span>';
+                            $paymentStatus = '<span class="badge badge-danger">REFUNDED</span>';
                         break;
                         case 4:
                             $paymentStatus = '<span class="badge badge-warning">UNPAID</span>';

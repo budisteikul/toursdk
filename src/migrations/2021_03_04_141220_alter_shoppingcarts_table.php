@@ -14,7 +14,8 @@ class AlterShoppingcartsTable extends Migration
     public function up()
     {
         Schema::table('shoppingcarts', function (Blueprint $table) {
-            $table->float('pay_on_arrival')->after('fee')->default(0);
+            $table->float('due_now')->after('total')->default(0);
+            $table->float('due_on_arrival')->after('due_now')->default(0);
         });
     }
 
@@ -26,7 +27,8 @@ class AlterShoppingcartsTable extends Migration
     public function down()
     {
         Schema::table('shoppingcarts', function (Blueprint $table) {
-            $table->dropColumn('pay_on_arrival');
+            $table->dropColumn('due_now');
+            $table->dropColumn('due_on_arrival');
         });
     }
 }

@@ -193,7 +193,7 @@ class ShoppingcartController extends Controller
     public function ticket($sessionId,$id)
     {
         $shoppingcart_product = ShoppingcartProduct::where('product_confirmation_code',$id)->whereHas('shoppingcart', function($query) use ($sessionId){
-            return $query->where('session_id', $sessionId);
+            return $query->where('session_id', $sessionId)->where('booking_status','CONFIRMED');
         })->firstOrFail();
         $customPaper = array(0,0,300,540);
         $pdf = PDF::setOptions(['tempDir' => storage_path(),'isRemoteEnabled' => true])->loadView('toursdk::layouts.pdf.ticket', compact('shoppingcart_product'))->setPaper($customPaper);

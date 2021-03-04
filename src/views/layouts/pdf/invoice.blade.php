@@ -173,16 +173,6 @@ footer {
 }
 
 
-.badge {
-  color: white;
-  padding: 8px;
-}
-
-.badge-success {background-color: #4CAF50;} /* Green */
-.badge-info {background-color: #2196F3;} /* Blue */
-.badge-warning {background-color: #ff9800;} /* Orange */
-.badge-danger {background-color: #f44336;} /* Red */
-.badge-other {background-color: #e7e7e7; color: black;} /* Gray */
 </style>
 </head>
 <body>
@@ -229,12 +219,7 @@ footer {
                 	$min_date = $shoppingcart->shoppingcart_products()->orderBy('date','asc')->first()->date;
                 @endphp
                 <div class="date" style=" line-height: 18px; font-size:14px;">Due Date: {{ Carbon\Carbon::parse($min_date)->formatLocalized('%d %b %Y') }}</div>
-                <div class="date" style=" line-height: 18px; font-size:14px;">
-                  Status: {{ $shoppingcart->booking_status }}
-                </div>
-          		  <div class="date" style="font-size:14px;">
-                  Payment : {!! $BookingHelper->payment_status_public($shoppingcart->shoppingcart_payment->payment_status) !!}
-                </div>
+               
                 
         	</div>           
            </td>
@@ -293,20 +278,13 @@ footer {
           @endif
           <tr>
             <td colspan="2"></td>
-            <td colspan="2">TOTAL ({{$shoppingcart->currency}})</td>
+            <td colspan="2">TOTAL</td>
             <td>{{ number_format((float)$total, 2, '.', '') }}</td>
           </tr>
           @php
             $refunded = $total * -1;
             $currency = $shoppingcart->currency;
-            if(!empty($shoppingcart->shoppingcart_payment->currency))
-            {
-              $currency = $shoppingcart->shoppingcart_payment->currency;
-            }
-            if(!empty($shoppingcart->shoppingcart_payment->amount))
-            {
-              $total = $shoppingcart->shoppingcart_payment->amount;
-            }
+            
           @endphp
           @if($shoppingcart->booking_status=="CANCELED")
           <tr>
@@ -316,14 +294,14 @@ footer {
           </tr>
           <tr>
             <td colspan="2"></td>
-            <td colspan="2">AMOUNT DUE ({{$currency}})</td>
+            <td colspan="2">PAID</td>
             <td>0</td>
           </tr>
           @else
           <tr>
             <td colspan="2"></td>
-            <td colspan="2">AMOUNT DUE ({{$currency}})</td>
-            <td>{{ number_format((float)$total, 2, '.', '') }}</td>
+            <td colspan="2">PAID</td>
+            <td>{{ number_format((float)$shoppingcart->due_now, 2, '.', '') }}</td>
           </tr>
           @endif
         </tfoot>

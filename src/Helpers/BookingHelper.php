@@ -2,6 +2,7 @@
 namespace budisteikul\toursdk\Helpers;
 use Illuminate\Http\Request;
 
+use budisteikul\coresdk\Helpers\GeneralHelper;
 use budisteikul\toursdk\Helpers\BokunHelper;
 use budisteikul\toursdk\Helpers\ImageHelper;
 use budisteikul\toursdk\Helpers\ProductHelper;
@@ -995,7 +996,7 @@ class BookingHelper {
 		$email = $shoppingcart->shoppingcart_questions()->select('answer')->where('type','mainContactDetails')->where('question_id','email')->first()->answer;
 		$phone = $shoppingcart->shoppingcart_questions()->select('answer')->where('type','mainContactDetails')->where('question_id','phoneNumber')->first()->answer;
 
-		$amount = $shoppingcart->due_now;
+		$amount = GeneralHelper::roundCurrency($shoppingcart->due_now,"IDR");
 		$order_id = $shoppingcart->confirmation_code;
 
 		if($payment_type=="midtrans")

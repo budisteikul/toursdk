@@ -22,6 +22,7 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\Exception\UnsatisfiedDependencyException;
+use Illuminate\Support\Facades\Cache;
 
 class BookingHelper {
 	
@@ -1004,11 +1005,11 @@ class BookingHelper {
 				]
 			);
 
-			if(is_null($shoppingcart->shoppingcart_payment->snaptoken))
-			{
-				$data = MidtransHelper::createOrder($shoppingcart);
-			
-				ShoppingcartPayment::updateOrCreate(
+			$data = Cache::store('database')->rememberForever('_midtrans_'. $shoppingcart->confirmation_code, function() use ( $shoppingcart ) {
+    			return MidtransHelper::createOrder($shoppingcart);
+			});
+
+			ShoppingcartPayment::updateOrCreate(
 					['shoppingcart_id' => $shoppingcart->id],
 					[
 						'snaptoken' => $data->token,
@@ -1016,19 +1017,9 @@ class BookingHelper {
 					]
 				);
 
-				$response = new \stdClass();
-				$response->snaptoken = $data->token;
-				$response->redirect_url = $data->redirect_url;
-
-			}
-			else
-			{
-				$response = new \stdClass();
-				$response->snaptoken = $shoppingcart->shoppingcart_payment->snaptoken;
-				$response->redirect_url = $shoppingcart->shoppingcart_payment->redirect_url;
-			}
-
-			
+			$response = new \stdClass();
+			$response->snaptoken = $data->token;
+			$response->redirect_url = $data->redirect_url;
 
 		}
 		else if($payment_type=="paypal")

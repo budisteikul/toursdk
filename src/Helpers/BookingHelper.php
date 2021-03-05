@@ -998,7 +998,7 @@ class BookingHelper {
 				['shoppingcart_id' => $shoppingcart->id],
 				[
 					'payment_provider' => 'midtrans',
-					'amount' => $amount, 
+					'amount' => self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,"IDR"), 
 					'currency' => 'IDR', 
 					'payment_status' => 4
 				]

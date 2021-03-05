@@ -253,9 +253,9 @@ footer {
                         <tr>
            				  <td class="no">{{ sprintf("%02d", $number) }}</td>
            				  <td class="desc"><h3>{{ $shoppingcart_rate->title }}</h3>{{ $shoppingcart_rate->unit_price }}</td>
-           				  <td class="unit">{{ number_format((float)$shoppingcart_rate->price, 2, '.', '') }}</td>
+           				  <td class="unit">{{ $shoppingcart_rate->price }}</td>
            				  <td class="qty">{{ $shoppingcart_rate->qty }}</td>
-           				  <td class="total">{{ number_format((float)$shoppingcart_rate->subtotal, 2, '.', '') }}</td>
+           				  <td class="total">{{ $shoppingcart_rate->subtotal }}</td>
           				</tr>
                         </tbody>
                         <?php
@@ -273,13 +273,13 @@ footer {
           <tr>
             <td colspan="2"></td>
             <td colspan="2">DISCOUNT</td>
-            <td>{{ number_format((float)$discount, 2, '.', '') }}</td>
+            <td>{{ $discount }}</td>
           </tr>
           @endif
           <tr>
             <td colspan="2"></td>
             <td colspan="2">TOTAL</td>
-            <td>{{ number_format((float)$total, 2, '.', '') }}</td>
+            <td>{{ $total }}</td>
           </tr>
           @php
             $refunded = $total * -1;
@@ -290,7 +290,7 @@ footer {
           <tr>
             <td colspan="2"></td>
             <td colspan="2">REFUNDED</td>
-            <td>{{ number_format((float)$refunded, 2, '.', '') }}</td>
+            <td>{{ $refunded }}</td>
           </tr>
           <tr>
             <td colspan="2"></td>
@@ -301,7 +301,7 @@ footer {
           <tr>
             <td colspan="2"></td>
             <td colspan="2">PAID</td>
-            <td>{{ number_format((float)$shoppingcart->due_now, 2, '.', '') }}</td>
+            <td>{{ $shoppingcart->due_now }}</td>
           </tr>
           @endif
         </tfoot>

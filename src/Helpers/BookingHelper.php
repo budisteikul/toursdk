@@ -6,6 +6,8 @@ use budisteikul\coresdk\Helpers\GeneralHelper;
 use budisteikul\toursdk\Helpers\BokunHelper;
 use budisteikul\toursdk\Helpers\ImageHelper;
 use budisteikul\toursdk\Helpers\ProductHelper;
+use budisteikul\toursdk\Helpers\PaypalHelper;
+use budisteikul\toursdk\Helpers\MidtransHelper;
 use budisteikul\toursdk\Models\Product;
 use budisteikul\toursdk\Models\Shoppingcart;
 use budisteikul\toursdk\Models\ShoppingcartProduct;
@@ -990,15 +992,6 @@ class BookingHelper {
 	public static function create_payment($shoppingcart,$payment_type="paypal")
 	{
 		
-
-		$first_name = $shoppingcart->shoppingcart_questions()->select('answer')->where('type','mainContactDetails')->where('question_id','firstName')->first()->answer;
-		$last_name = $shoppingcart->shoppingcart_questions()->select('answer')->where('type','mainContactDetails')->where('question_id','lastName')->first()->answer;
-		$email = $shoppingcart->shoppingcart_questions()->select('answer')->where('type','mainContactDetails')->where('question_id','email')->first()->answer;
-		$phone = $shoppingcart->shoppingcart_questions()->select('answer')->where('type','mainContactDetails')->where('question_id','phoneNumber')->first()->answer;
-
-		$amount = GeneralHelper::roundCurrency($shoppingcart->due_now,"IDR");
-		$order_id = $shoppingcart->confirmation_code;
-
 		if($payment_type=="midtrans")
 		{
 			ShoppingcartPayment::updateOrCreate(
@@ -1013,49 +1006,15 @@ class BookingHelper {
 
 			if(is_null($shoppingcart->shoppingcart_payment->snaptoken))
 			{
+				$data = MidtransHelper::createOrder($shoppingcart);
 			
-			$data = [
-						'transaction_details' => [
-							'order_id' => $order_id,
-							'gross_amount' => $amount
-						],
-						'customer_details' => [
-							'first_name' => $first_name,
-							'last_name' => $last_name,
-							'email' => $email,
-							'phone' => $phone
-						]
-					];
-
-			if(env('MIDTRANS_ENV')=="sandbox")
-			{
-				$endpoint = "https://app.sandbox.midtrans.com/snap/v1/transactions";
-			}
-			else
-			{
-				$endpoint = "https://app.midtrans.com/snap/v1/transactions";
-			}
-			
-
-			$headers = [
-          		'Accept' => 'application/jsons',
-          		'Content-Type' => 'application/json',
-          		'Authorization' => 'Basic '. base64_encode(env('MIDTRANS_SERVER_KEY')),
-        	];
-        	$client = new \GuzzleHttp\Client(['headers' => $headers,'http_errors' => false]);
-        	$response = $client->request('POST',$endpoint,
-    			['json' => $data]
-			);
-			$data = $response->getBody()->getContents();
-			$data = json_decode($data);
-			
-			ShoppingcartPayment::updateOrCreate(
-				['shoppingcart_id' => $shoppingcart->id],
-				[
-					'snaptoken' => $data->token,
-					'redirect_url' => $data->redirect_url
-				]
-			);
+				ShoppingcartPayment::updateOrCreate(
+					['shoppingcart_id' => $shoppingcart->id],
+					[
+						'snaptoken' => $data->token,
+						'redirect_url' => $data->redirect_url
+					]
+				);
 
 				$response = new \stdClass();
 				$response->snaptoken = $data->token;
@@ -1086,9 +1045,8 @@ class BookingHelper {
 					'payment_status' => 0
 				]
 			);
-			
-			$value = number_format((float)$shoppingcart->shoppingcart_payment->amount, 2, '.', '');
-        	$response = PaypalHelper::createOrder($value,'BOOKING REFERENCE: '. $shoppingcart->confirmation_code,$shoppingcart->shoppingcart_payment->currency);
+
+        	$response = PaypalHelper::createOrder($shoppingcart);
 		}
 		return $response;
 	}

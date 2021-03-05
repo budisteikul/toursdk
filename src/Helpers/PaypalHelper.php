@@ -47,10 +47,14 @@ class PaypalHelper {
 		  return $response->result->purchase_units[0]->amount->value;
 	}
 	
-	public static function createOrder($value,$name="Booking tour",$currency="")
+	public static function createOrder($shoppingcart)
   	{
-      if($currency=="") $currency == env("BOKUN_CURRENCY");
-    	$request = new OrdersCreateRequest();
+
+      $value = $shoppingcart->shoppingcart_payment->amount;
+      $name = "Booking reference : ". $shoppingcart->confirmation_code;
+      $currency == $shoppingcart->shoppingcart_payment->currency;
+    	
+      $request = new OrdersCreateRequest();
     	$request->prefer('return=representation');
     	$request->body = self::buildRequestBodyCreateOrder($value,$name,$currency);
     	$client = self::client();

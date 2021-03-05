@@ -87,9 +87,7 @@ class ShoppingcartController extends Controller
         $shoppingcart->shoppingcart_payment->save();
         
         BookingHelper::confirm_booking($shoppingcart);
-
         BookingHelper::shoppingcart_mail($shoppingcart);
-
         BookingHelper::shoppingcart_clear($shoppingcart);                
 
         return response()->json([
@@ -103,6 +101,7 @@ class ShoppingcartController extends Controller
     {
         switch ($request->method()) {
         case 'POST':
+        
             $data = $request->all();
             
             $shoppingcart = Shoppingcart::where('confirmation_code',$data['order_id'])->first();
@@ -129,19 +128,9 @@ class ShoppingcartController extends Controller
                         $shoppingcart->save();
                         
                     }
-                
-                }
-                else
-                {
-                    
-                    
                 }
             }
-            else
-            {
-                
-            }
-            
+
             return response('Always Success', 200)->header('Content-Type', 'text/plain');
             break;
         default:

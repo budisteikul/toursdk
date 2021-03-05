@@ -50,8 +50,8 @@ class PaypalHelper {
 	public static function createOrder($shoppingcart)
   	{
 
-      $value = $shoppingcart->shoppingcart_payment->amount;
-      $name = "Booking reference : ". $shoppingcart->confirmation_code;
+      $value = number_format((float)$shoppingcart->shoppingcart_payment->amount, 2, '.', '');
+      $name = $shoppingcart->confirmation_code;
       $currency = $shoppingcart->shoppingcart_payment->currency;
     	
       $request = new OrdersCreateRequest();
@@ -75,7 +75,7 @@ class PaypalHelper {
                 array(
                     0 =>
                         array(
-							'description' => $name,
+						'description' => $name,
                             'amount' =>
                                 array(
                                     'currency_code' => $currency,

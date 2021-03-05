@@ -1,6 +1,5 @@
 <?php
 namespace budisteikul\toursdk\Helpers;
-use budisteikul\coresdk\Helpers\GeneralHelper;
 
 class MidtransHelper {
 	
@@ -12,7 +11,8 @@ class MidtransHelper {
         $email = $shoppingcart->shoppingcart_questions()->select('answer')->where('type','mainContactDetails')->where('question_id','email')->first()->answer;
         $phone = $shoppingcart->shoppingcart_questions()->select('answer')->where('type','mainContactDetails')->where('question_id','phoneNumber')->first()->answer;
 
-        $amount = GeneralHelper::roundCurrency($shoppingcart->due_now,"IDR");
+        //$amount = GeneralHelper::roundCurrency($shoppingcart->due_now,"IDR");
+        $amount = $shoppingcart->due_now;
         $order_id = $shoppingcart->confirmation_code;
 
         if(env('MIDTRANS_ENV')=="sandbox")

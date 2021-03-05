@@ -309,7 +309,7 @@ footer {
 <div id="thanks">Thank you for your booking with {{env('APP_NAME')}}</div>   
 <div id="notices">
 <div>NOTICE:</div>
-<div class="notice"><small>&nbsp;{{$notice}}</small></div>
+<div class="notice"><small>{!! $notice !!}</small></div>
 </div>
 <footer>
 	Invoice was created on a computer and is valid without the signature and seal.

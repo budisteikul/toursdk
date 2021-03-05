@@ -175,7 +175,7 @@ class ShoppingcartController extends Controller
         
         if($shoppingcart->currency!=$shoppingcart->shoppingcart_payment->currency)
         {
-            $notice .= 'Pay : '.$shoppingcart->shoppingcart_payment->currency.' '. $shoppingcart->shoppingcart_payment->currency .'<br />';
+            $notice .= 'Pay : '.$shoppingcart->shoppingcart_payment->currency.' '. $shoppingcart->shoppingcart_payment->amount .'<br />';
             $notice .= 'Rate : '. BookingHelper::get_rate($shoppingcart) .'<br />';
         }
 

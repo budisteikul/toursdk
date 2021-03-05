@@ -35,7 +35,13 @@ class BookingConfirmedMail extends Mailable
 
         if($shoppingcart->currency!=$shoppingcart->shoppingcart_payment->currency)
         {
-            $notice .= 'Rate : '. BookingHelper::get_rate($shoppingcart);
+            $notice .= 'Pay : '.$shoppingcart->shoppingcart_payment->currency.' '. $shoppingcart->shoppingcart_payment->currency .'<br />';
+            $notice .= 'Rate : '. BookingHelper::get_rate($shoppingcart) .'<br />';
+        }
+
+        if($shoppingcart->due_on_arrival>0)
+        {
+            $notice .= 'Pay on arrival : '.$shoppingcart->currency.' '. $shoppingcart->due_on_arrival .'<br />';
         }
 
         $invoice = PDF::setOptions(['tempDir' => storage_path(),'isRemoteEnabled' => true])->loadView('toursdk::layouts.pdf.invoice', compact('shoppingcart','notice'))->setPaper('a4', 'portrait');

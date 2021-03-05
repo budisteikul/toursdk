@@ -989,7 +989,7 @@ class BookingHelper {
         $shoppingcart->save();
 	}
 
-	public static function create_payment($shoppingcart,$payment_type="paypal")
+	public static function create_payment($shoppingcart,$payment_type="none")
 	{
 		
 		if($payment_type=="midtrans")
@@ -1059,6 +1059,8 @@ class BookingHelper {
 					'payment_status' => 0
 				]
 			);
+
+			$response = "";
 		}
 		return $response;
 	}

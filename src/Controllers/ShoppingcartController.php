@@ -225,6 +225,7 @@ class ShoppingcartController extends Controller
                 $shoppingcart->booking_channel = $bookingChannel;
                 $shoppingcart->booking_status = 'CONFIRMED';
                 $shoppingcart->save();
+                BookingHelper::create_payment($shoppingcart,"none");
                 BookingHelper::shoppingcart_clear($shoppingcart);
             }
             else

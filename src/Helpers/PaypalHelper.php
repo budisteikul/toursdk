@@ -52,7 +52,7 @@ class PaypalHelper {
 
       $value = $shoppingcart->shoppingcart_payment->amount;
       $name = "Booking reference : ". $shoppingcart->confirmation_code;
-      $currency == $shoppingcart->shoppingcart_payment->currency;
+      $currency = $shoppingcart->shoppingcart_payment->currency;
     	
       $request = new OrdersCreateRequest();
     	$request->prefer('return=representation');

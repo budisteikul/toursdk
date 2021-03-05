@@ -183,41 +183,61 @@ function REMOVE(id)
 				$grand_total += $shoppingcart_product->total;
 				?>
                 
+                
                 @endforeach
                 <div class="card-body pt-0 mt-0">
-                	<hr>
-                	<div class="row mb-2">
-                		<div class="col-8">
-                    		<span style="font-size:18px">Items</span>
-                    	</div>
-                    	<div class="col-4 text-right">
-                    		<span style="font-size:18px">{{ $grand_subtotal }}</span>
-                    	</div>
-                	</div>
+                    <hr>
+                    <div class="row mb-2">
+                        <div class="col-8">
+                            <span style="font-size:18px">Items</span>
+                        </div>
+                        <div class="col-4 text-right">
+                            <span style="font-size:18px">{{ $grand_subtotal }}</span>
+                        </div>
+                    </div>
                     @if($grand_discount>0)
                     <div class="row mb-2">
-                		<div class="col-8">
-                    		<span style="font-size:18px">Discount</span>
-                    	</div>
-                    	<div class="col-4 text-right">
-                    		<span style="font-size:18px">{{ $grand_discount }}</span>
-                    	</div>
-                	</div>
+                        <div class="col-8">
+                            <span style="font-size:18px">Discount</span>
+                        </div>
+                        <div class="col-4 text-right">
+                            <span style="font-size:18px">{{ $grand_discount }}</span>
+                        </div>
+                    </div>
                     @endif
-				</div>
-                
-                <div class="card-body pt-0">
-                	<hr class="mt-0"> 
-                    <div class="row mb-4 mt-0">
-                		<div class="col-8">
-                    		<b style="font-size:18px">Total ({{$shoppingcart->currency}})</b>
-                    	</div>
-                    	<div class="col-4 text-right">
-                    	<b style="font-size:18px">{{ $grand_total }}</b>
-                    	</div>
-                	</div>
+                    <div class="row mb-2">
+                        <div class="col-8">
+                            <b style="font-size:18px">Total ({{ $shoppingcart->currency }})</b>
+                        </div>
+                        <div class="col-4 text-right">
+                            <b style="font-size:18px">{{ $grand_total }}</b>
+                        </div>
+                    </div>
                 </div>
-				</div>
+                
+                @if($shoppingcart->due_on_arrival>0)
+                <div class="card-body pt-0">
+                    <hr class="mt-0"> 
+                    <div class="row mb-2 mt-0">
+                        <div class="col-8">
+                            <b style="font-size:18px">Due now ({{ $shoppingcart->currency }})</b>
+                        </div>
+                        <div class="col-4 text-right">
+                           <b style="font-size:18px">{{ $shoppingcart->due_now }}</b>
+                        </div>
+                    </div>
+                    <div class="row mb-4 mt-0">
+                        <div class="col-8">
+                            <span style="font-size:18px">Due on arrival ({{ $shoppingcart->currency }})</span>
+                        </div>
+                        <div class="col-4 text-right">
+                            <span style="font-size:18px">{{ $shoppingcart->due_on_arrival }}</span>
+                        </div>
+                    </div>
+                </div>
+                @endif
+
+                </div>
 <!-- ################################################################### -->
 @if(!isset($shoppingcart->promo_code))
 <script language="javascript">

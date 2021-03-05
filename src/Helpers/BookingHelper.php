@@ -1031,7 +1031,7 @@ class BookingHelper {
 			
 
 		}
-		else
+		else if($payment_type=="paypal")
 		{
 			ShoppingcartPayment::updateOrCreate(
 				['shoppingcart_id' => $shoppingcart->id],
@@ -1047,6 +1047,18 @@ class BookingHelper {
 			);
 
         	$response = PaypalHelper::createOrder($shoppingcart);
+		}
+		else
+		{
+			ShoppingcartPayment::updateOrCreate(
+				['shoppingcart_id' => $shoppingcart->id],
+				[
+					'payment_provider' => 'none',
+					'amount' => $shoppingcart->due_now,
+					'currency' => "IDR",
+					'payment_status' => 0
+				]
+			);
 		}
 		return $response;
 	}

@@ -278,6 +278,9 @@ class BookingHelper {
 			$subtotal_product = 0;
 			$total_discount = 0;
 			$total_product = 0;
+
+			$extra = false;
+
 			for($z=0;$z<count($lineitems);$z++)
 			{
 					$itemBookingId = $lineitems[$z]->itemBookingId;
@@ -286,32 +289,7 @@ class BookingHelper {
 					$type_product = '';
 					$unitPrice = 'Price per booking';
 					
-					if($activity[$i]->extrasPrice>0)
-					{
-						$check_extra = false;
-						for($k=0;$k<count($activity[$i]->extraBookings);$k++)
-						{
-							if($itemBookingId[1]==$activity[$i]->extraBookings[$k]->id)
-							{
-								$check_extra = true;
-							}
-							
-						}
-						if(!$check_extra)
-						{
-							if($itemBookingId[1]!="pickup")
-							{
-								$type_product = 'product';
-								if($lineitems[$z]->title!="Passengers")
-								{
-									$unitPrice = $lineitems[$z]->title;
-								}
-							}
-						}
-					}
-					else
-					{
-						if($itemBookingId[1]!="pickup")
+					if($itemBookingId[1]!="pickup")
 						{
 							$type_product = 'product';
 							if($lineitems[$z]->title!="Passengers")
@@ -319,7 +297,7 @@ class BookingHelper {
 								$unitPrice = $lineitems[$z]->title;
 							}
 						}
-					}
+					
 					
 					if($itemBookingId[1]=="pickup"){
 						$type_product = "pickup";
@@ -333,7 +311,17 @@ class BookingHelper {
 						$shoppingcart_rate = new ShoppingcartRate();
 						
 						$shoppingcart_rate->shoppingcart_product_id = $shoppingcart_product->id;
-						$shoppingcart_rate->type = $type_product;
+
+						if($extra)
+						{
+							$shoppingcart_rate->type = "extra";
+						}
+						else
+						{
+							$shoppingcart_rate->type = $type_product;
+						}
+
+						
 						$shoppingcart_rate->title = $activity[$i]->activity->title;
 						$shoppingcart_rate->qty = $lineitems[$z]->quantity;
 						$shoppingcart_rate->price = $lineitems[$z]->unitPrice;
@@ -347,6 +335,8 @@ class BookingHelper {
 						$shoppingcart_rate->total = $total;
 						$shoppingcart_rate->save();
 						
+						$extra = true;
+
 						$subtotal_product += $subtotal;
 						$total_discount += $discount;
 						$total_product += $total;
@@ -375,44 +365,21 @@ class BookingHelper {
 						$total_product += $total;
 					}	
 					
-						if(isset($activity[$i]->pickupPlace->title))
-						{
-							$shoppingcart_question = new ShoppingcartQuestion();
-							$shoppingcart_question->shoppingcart_id = $shoppingcart->id;
-							$shoppingcart_question->type = 'pickupQuestions';
-							$shoppingcart_question->question_id = 'pickupPlace';
-							$shoppingcart_question->label = 'Pickup Place';
-							$shoppingcart_question->data_type = 'READ_ONLY';
-							$shoppingcart_question->answer = $activity[$i]->pickupPlace->title;
-							$shoppingcart_question->order = 1;
-							$shoppingcart_question->save();
-						}
+					if(isset($activity[$i]->pickupPlace->title))
+					{
+						$shoppingcart_question = new ShoppingcartQuestion();
+						$shoppingcart_question->shoppingcart_id = $shoppingcart->id;
+						$shoppingcart_question->type = 'pickupQuestions';
+						$shoppingcart_question->question_id = 'pickupPlace';
+						$shoppingcart_question->label = 'Pickup Place';
+						$shoppingcart_question->data_type = 'READ_ONLY';
+						$shoppingcart_question->answer = $activity[$i]->pickupPlace->title;
+						$shoppingcart_question->order = 1;
+						$shoppingcart_question->save();
+					}
 			}
 			
-			if($activity[$i]->extrasPrice>0)
-			{
-				for($k=0;$k<count($activity[$i]->extraBookings);$k++)
-				{	
-					$shoppingcart_rate = new ShoppingcartRate();
-					$shoppingcart_rate->shoppingcart_product_id = $shoppingcart_product->id;
-					$shoppingcart_rate->type = 'extra';
-					$shoppingcart_rate->title = $activity[$i]->extraBookings[$k]->extra->title;
-					$shoppingcart_rate->qty = 1;
-					$shoppingcart_rate->price = $activity[$i]->extraBookings[$k]->extra->price;
-					$shoppingcart_rate->unit_price = $unitPrice;
-					$subtotal = $activity[$i]->extraBookings[$k]->extra->price;
-					$discount = $subtotal - $activity[$i]->extraBookings[$k]->extra->discountedUnitPrice;
-					$total = $subtotal - $discount;
-					$shoppingcart_rate->discount = $discount;
-					$shoppingcart_rate->subtotal = $subtotal;
-					$shoppingcart_rate->total = $total;
-					$shoppingcart_rate->currency = $contents->customerInvoice->currency;
-					$shoppingcart_rate->save();
-					$subtotal_product += $subtotal;
-					$total_discount += $discount;
-					$total_product += $total;
-				}
-			}
+			
 			
 			
 			$shoppingcart_product->subtotal = $subtotal_product;
@@ -565,6 +532,8 @@ class BookingHelper {
 		}
 	}
 	
+
+
 	public static function update_shoppingcart($contents,$id)
 	{
 		$activity = $contents->activityBookings;
@@ -620,6 +589,9 @@ class BookingHelper {
 			$subtotal_product = 0;
 			$total_discount = 0;
 			$total_product = 0;
+
+			$extra = false;
+
 			for($z=0;$z<count($lineitems);$z++)
 			{
 					$itemBookingId = $lineitems[$z]->itemBookingId;
@@ -628,32 +600,7 @@ class BookingHelper {
 					$type_product = '';
 					$unitPrice = 'Price per booking';
 					
-					if($activity[$i]->extrasPrice>0)
-					{
-						$check_extra = false;
-						for($k=0;$k<count($activity[$i]->extraBookings);$k++)
-						{
-							if($itemBookingId[1]==$activity[$i]->extraBookings[$k]->id)
-							{
-								$check_extra = true;
-							}
-							
-						}
-						if(!$check_extra)
-						{
-							if($itemBookingId[1]!="pickup")
-							{
-								$type_product = 'product';
-								if($lineitems[$z]->title!="Passengers")
-								{
-									$unitPrice = $lineitems[$z]->title;
-								}
-							}
-						}
-					}
-					else
-					{
-						if($itemBookingId[1]!="pickup")
+					if($itemBookingId[1]!="pickup")
 						{
 							$type_product = 'product';
 							if($lineitems[$z]->title!="Passengers")
@@ -661,21 +608,27 @@ class BookingHelper {
 								$unitPrice = $lineitems[$z]->title;
 							}
 						}
-					}
-					
+
 					if($itemBookingId[1]=="pickup"){
 						$type_product = "pickup";
 					}
 					
-					
-					
+
+
 					if($type_product=="product")
 					{
 						
 						$shoppingcart_rate = new ShoppingcartRate();
-						
 						$shoppingcart_rate->shoppingcart_product_id = $shoppingcart_product->id;
-						$shoppingcart_rate->type = $type_product;
+						if($extra)
+						{
+							$shoppingcart_rate->type = "extra";
+						}
+						else
+						{
+							$shoppingcart_rate->type = $type_product;
+						}
+						
 						$shoppingcart_rate->title = $activity[$i]->activity->title;
 						$shoppingcart_rate->qty = $lineitems[$z]->quantity;
 						$shoppingcart_rate->price = $lineitems[$z]->unitPrice;
@@ -689,6 +642,8 @@ class BookingHelper {
 						$shoppingcart_rate->currency = $contents->customerInvoice->currency;
 						$shoppingcart_rate->save();
 						
+						$extra = true;
+
 						$subtotal_product += $subtotal;
 						$total_discount += $discount;
 						$total_product += $total;
@@ -717,44 +672,21 @@ class BookingHelper {
 						$total_product += $total;
 					}	
 					
-						if(isset($activity[$i]->pickupPlace->title))
-						{
-							$shoppingcart_question = new ShoppingcartQuestion();
-							$shoppingcart_question->shoppingcart_id = $shoppingcart->id;
-							$shoppingcart_question->type = 'pickupQuestions';
-							$shoppingcart_question->question_id = 'pickupPlace';
-							$shoppingcart_question->label = 'Pickup Place';
-							$shoppingcart_question->data_type = 'READ_ONLY';
-							$shoppingcart_question->answer = $activity[$i]->pickupPlace->title;
-							$shoppingcart_question->order = 1;
-							$shoppingcart_question->save();
-						}
+					if(isset($activity[$i]->pickupPlace->title))
+					{
+						$shoppingcart_question = new ShoppingcartQuestion();
+						$shoppingcart_question->shoppingcart_id = $shoppingcart->id;
+						$shoppingcart_question->type = 'pickupQuestions';
+						$shoppingcart_question->question_id = 'pickupPlace';
+						$shoppingcart_question->label = 'Pickup Place';
+						$shoppingcart_question->data_type = 'READ_ONLY';
+						$shoppingcart_question->answer = $activity[$i]->pickupPlace->title;
+						$shoppingcart_question->order = 1;
+						$shoppingcart_question->save();
+					}
 			}
 			
-			if($activity[$i]->extrasPrice>0)
-			{
-				for($k=0;$k<count($activity[$i]->extraBookings);$k++)
-				{	
-					$shoppingcart_rate = new ShoppingcartRate();
-					$shoppingcart_rate->shoppingcart_product_id = $shoppingcart_product->id;
-					$shoppingcart_rate->type = 'extra';
-					$shoppingcart_rate->title = $activity[$i]->extraBookings[$k]->extra->title;
-					$shoppingcart_rate->qty = 1;
-					$shoppingcart_rate->price = $activity[$i]->extraBookings[$k]->extra->price;
-					$shoppingcart_rate->unit_price = $unitPrice;
-					$subtotal = $activity[$i]->extraBookings[$k]->extra->price;
-					$discount = $subtotal - $activity[$i]->extraBookings[$k]->extra->discountedUnitPrice;
-					$total = $subtotal - $discount;
-					$shoppingcart_rate->discount = $discount;
-					$shoppingcart_rate->subtotal = $subtotal;
-					$shoppingcart_rate->total = $total;
-					$shoppingcart_rate->currency = $contents->customerInvoice->currency;
-					$shoppingcart_rate->save();
-					$subtotal_product += $subtotal;
-					$total_discount += $discount;
-					$total_product += $total;
-				}
-			}
+			
 			
 			
 			$shoppingcart_product->subtotal = $subtotal_product;
@@ -879,6 +811,10 @@ class BookingHelper {
 	public static function get_shoppingcart($id,$action="insert")
 	{
 		$contents = BokunHelper::get_shoppingcart($id);
+
+		//$contents = BokunHelper::get_checkout($id);
+		//print_r($contents);
+		//exit();
 		if($action=="insert")
 			{
 				self::insert_shoppingcart($contents,$id);

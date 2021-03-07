@@ -21,12 +21,18 @@ class CreateShoppingcartPaymentsTable extends Migration
                     ->references('id')->on('shoppingcarts')
                     ->onDelete('cascade')->onUpdate('cascade');
             
-            //$table->string('type')->default('PAYPAL');        
+                  
             $table->string('order_id')->nullable();
             $table->string('authorization_id')->nullable();
-            $table->float('amount')->default(0);
+            $table->float('amount',24,2)->default(0);
             $table->string('currency')->default('USD');
-            //$table->float('rate')->default(0);
+            
+            $table->float('rate',24,2)->default(0);
+            $table->string('rate_from')->nullable();
+            $table->string('rate_to')->nullable();
+            $table->string('payment_provider')->nullable();
+            $table->string('snaptoken')->nullable();
+            $table->string('redirect_url')->nullable();
 
             $table->tinyInteger('payment_status')->default(1);
             

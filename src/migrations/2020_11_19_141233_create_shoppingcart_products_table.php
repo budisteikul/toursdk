@@ -32,11 +32,11 @@ class CreateShoppingcartProductsTable extends Migration
             $table->dateTime('date')->nullable();
             
             $table->string('currency')->default('USD');
-            $table->float('subtotal')->default(0);
-            $table->float('discount')->default(0);
-            $table->float('tax')->default(0);
-            $table->float('fee')->default(0);
-            $table->float('total')->default(0);
+            $table->float('subtotal',24,2)->default(0);
+            $table->float('discount',24,2)->default(0);
+            $table->float('tax',24,2)->default(0);
+            $table->float('fee',24,2)->default(0);
+            $table->float('total',24,2)->default(0);
 
             $table->timestamps(6);
         });

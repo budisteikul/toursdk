@@ -8,6 +8,7 @@ use budisteikul\toursdk\Models\ShoppingcartProduct;
 use budisteikul\toursdk\Helpers\BookingHelper;
 use budisteikul\toursdk\Helpers\BokunHelper;
 use budisteikul\toursdk\Helpers\PaypalHelper;
+use budisteikul\coresdk\Helpers\GeneralHelper;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Http\Request;
 use Ramsey\Uuid\Uuid;
@@ -181,7 +182,7 @@ class ShoppingcartController extends Controller
 
         if($shoppingcart->due_on_arrival>0)
         {
-            $notice .= 'Pay on arrival : '.$shoppingcart->currency.' '. $shoppingcart->due_on_arrival .'<br />';
+            $notice .= 'Pay on arrival : '.$shoppingcart->currency.' '. GeneralHelper::numberFormat($shoppingcart->due_on_arrival) .'<br />';
         }
         
         $pdf = PDF::setOptions(['tempDir' => storage_path(),'isRemoteEnabled' => true])->loadView('toursdk::layouts.pdf.invoice', compact('shoppingcart','notice'))->setPaper('a4', 'portrait');

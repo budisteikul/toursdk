@@ -8,6 +8,7 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Barryvdh\DomPDF\Facade as PDF;
 use budisteikul\toursdk\Helpers\BookingHelper;
+use budisteikul\coresdk\Helpers\GeneralHelper;
 
 class BookingConfirmedMail extends Mailable
 {
@@ -41,7 +42,7 @@ class BookingConfirmedMail extends Mailable
 
         if($shoppingcart->due_on_arrival>0)
         {
-            $notice .= 'Pay on arrival : '.$shoppingcart->currency.' '. $shoppingcart->due_on_arrival .'<br />';
+            $notice .= 'Pay on arrival : '.$shoppingcart->currency.' '. GeneralHelper::numberFormat($shoppingcart->due_on_arrival) .'<br />';
         }
 
         $invoice = PDF::setOptions(['tempDir' => storage_path(),'isRemoteEnabled' => true])->loadView('toursdk::layouts.pdf.invoice', compact('shoppingcart','notice'))->setPaper('a4', 'portrait');

@@ -1,4 +1,5 @@
 @inject('BookingHelper', 'budisteikul\toursdk\Helpers\BookingHelper')
+@inject('GeneralHelper', 'budisteikul\coresdk\Helpers\GeneralHelper')
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -253,9 +254,9 @@ footer {
                         <tr>
            				  <td class="no">{{ sprintf("%02d", $number) }}</td>
            				  <td class="desc"><h3>{{ $shoppingcart_rate->title }}</h3>{{ $shoppingcart_rate->unit_price }}</td>
-           				  <td class="unit">{{ $shoppingcart_rate->price }}</td>
+           				  <td class="unit">{{ $GeneralHelper->numberFormat($shoppingcart_rate->price) }}</td>
            				  <td class="qty">{{ $shoppingcart_rate->qty }}</td>
-           				  <td class="total">{{ $shoppingcart_rate->subtotal }}</td>
+           				  <td class="total">{{ $GeneralHelper->numberFormat($shoppingcart_rate->subtotal) }}</td>
           				</tr>
                         </tbody>
                         <?php
@@ -273,13 +274,13 @@ footer {
           <tr>
             <td colspan="2"></td>
             <td colspan="2">DISCOUNT</td>
-            <td>{{ $discount }}</td>
+            <td>{{ $GeneralHelper->numberFormat($discount) }}</td>
           </tr>
           @endif
           <tr>
             <td colspan="2"></td>
             <td colspan="2">TOTAL</td>
-            <td>{{ $total }}</td>
+            <td>{{ $GeneralHelper->numberFormat($total) }}</td>
           </tr>
           @php
             $refunded = $total * -1;
@@ -290,7 +291,7 @@ footer {
           <tr>
             <td colspan="2"></td>
             <td colspan="2">REFUNDED</td>
-            <td>{{ $refunded }}</td>
+            <td>{{ $GeneralHelper->numberFormat($refunded) }}</td>
           </tr>
           <tr>
             <td colspan="2"></td>
@@ -301,7 +302,7 @@ footer {
           <tr>
             <td colspan="2"></td>
             <td colspan="2">PAID</td>
-            <td>{{ $shoppingcart->due_now }}</td>
+            <td>{{ $GeneralHelper->numberFormat($shoppingcart->due_now) }}</td>
           </tr>
           @endif
         </tfoot>

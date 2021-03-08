@@ -82,6 +82,7 @@ class BookingHelper {
 			$grand_total = 0;
 			$grand_subtotal = 0;
 			$grand_discount = 0;
+
 			for($i=0;$i<count($data['activityBookings']);$i++)
 			{
 				$product = Product::where('bokun_id',$data['activityBookings'][$i]['productId'])->firstOrFail();
@@ -176,7 +177,8 @@ class BookingHelper {
 					'currency'=>$data['currency'],
 					'subtotal'=>$subtotal_product,
 					'discount'=>$total_discount,
-					'total'=>$total_product
+					'total'=>$total_product,
+					'due_now'=>$total_product
 				]);
 				
 				// activity question
@@ -244,6 +246,8 @@ class BookingHelper {
 		$grand_total = 0;
 		$grand_subtotal = 0;
 		$grand_discount = 0;
+		$grand_due_now = 0;
+		$grand_due_on_arrival = 0;
 		for($i=0;$i<count($activity);$i++)
 		{
 
@@ -379,36 +383,27 @@ class BookingHelper {
 					}
 			}
 			
-			
-			
-			
 			$shoppingcart_product->subtotal = $subtotal_product;
 			$shoppingcart_product->discount = $total_discount;
 			$shoppingcart_product->total = $total_product;
+
+			$deposit = self::get_deposit($activity[$i]->activity->id,$total_product);
+			$shoppingcart_product->due_now = $deposit->due_now;
+			$shoppingcart_product->due_on_arrival = $deposit->due_on_arrival;
 			$shoppingcart_product->save();
-	
+			
 			$grand_discount += $total_discount;
 			$grand_subtotal += $subtotal_product;
 			$grand_total += $total_product;
+			$grand_due_now += $deposit->due_now;
+			$grand_due_on_arrival += $deposit->due_on_arrival;
 		}
 		
 		$shoppingcart->subtotal = $grand_subtotal;
 		$shoppingcart->discount = $grand_discount;
 		$shoppingcart->total = $grand_total;
-		//====================================================
-		if(env("DEPOSIT")=="active")
-		{
-			$due_now =  $grand_total * env("DEPOSIT_VALUE") / 100;
-			$due_on_arrival = $grand_total - $due_now;
-			$shoppingcart->due_now = $due_now;
-			$shoppingcart->due_on_arrival = $due_on_arrival;
-		}
-		else
-		{
-			$shoppingcart->due_now = $grand_total;
-		}
-		
-		//====================================================
+		$shoppingcart->due_now = $grand_due_now;
+		$shoppingcart->due_on_arrival = $grand_due_on_arrival;
 		$shoppingcart->save();
 
 		
@@ -557,6 +552,8 @@ class BookingHelper {
 		$grand_total = 0;
 		$grand_subtotal = 0;
 		$grand_discount = 0;
+		$grand_due_now = 0;
+		$grand_due_on_arrival = 0;
 		for($i=0;$i<count($activity);$i++)
 		{
 			$product = Product::where('bokun_id',$activity[$i]->activity->id)->firstOrFail();
@@ -692,11 +689,17 @@ class BookingHelper {
 			$shoppingcart_product->subtotal = $subtotal_product;
 			$shoppingcart_product->discount = $total_discount;
 			$shoppingcart_product->total = $total_product;
+
+			$deposit = self::get_deposit($activity[$i]->activity->id,$total_product);
+			$shoppingcart_product->due_now = $deposit->due_now;
+			$shoppingcart_product->due_on_arrival = $deposit->due_on_arrival;
 			$shoppingcart_product->save();
 
 			$grand_discount += $total_discount;
 			$grand_subtotal += $subtotal_product;
 			$grand_total += $total_product;
+			$grand_due_now += $deposit->due_now;
+			$grand_due_on_arrival += $deposit->due_on_arrival;
 		}
 		
 		
@@ -704,21 +707,9 @@ class BookingHelper {
 		$shoppingcart->subtotal = $grand_subtotal;
 		$shoppingcart->discount = $grand_discount;
 		$shoppingcart->total = $grand_total;
-		//====================================================
-		if(env("DEPOSIT")=="active")
-		{
-			$due_now =  $grand_total * env("DEPOSIT_VALUE") / 100;
-			$due_on_arrival = $grand_total - $due_now;
-			$shoppingcart->due_now = $due_now;
-			$shoppingcart->due_on_arrival = $due_on_arrival;
-		}
-		else
-		{
-			$shoppingcart->due_now = $grand_total;
-		}
-		//====================================================
+		$shoppingcart->due_now = $grand_due_now;
+		$shoppingcart->due_on_arrival = $grand_due_on_arrival;
 		$shoppingcart->save();
-
 		//===============================================
 
 		
@@ -808,6 +799,37 @@ class BookingHelper {
 		//===============================================
 	}
 	
+
+	public static function get_deposit($bokunId,$amount)
+	{
+		$due_now = 0;
+		$due_on_arrival = 0;
+		$dataObj = new \stdClass();
+		$product = Product::where('bokun_id',$bokunId)->first();
+		if($product->deposit_amount==0)
+		{
+			$dataObj->due_now = $amount;
+			$dataObj->due_on_arrival = 0;
+		}
+		else
+		{
+			if($product->deposit_percentage)
+			{
+				
+				$dataObj->due_now = $amount * $product->deposit_amount / 100;
+				$dataObj->due_on_arrival = $amount - $dataObj->due_now;
+			}
+			else
+			{
+				$dataObj->due_now = $product->deposit_amount;
+				$dataObj->due_on_arrival = $amount - $dataObj->due_now;
+			}
+		}
+			
+		return $dataObj;
+	}
+
+
 	public static function get_shoppingcart($id,$action="insert")
 	{
 		$contents = BokunHelper::get_shoppingcart($id);

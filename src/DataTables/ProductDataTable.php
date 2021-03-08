@@ -10,6 +10,7 @@ use Yajra\DataTables\Html\Column;
 use Yajra\DataTables\Html\Editor\Editor;
 use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
+use budisteikul\coresdk\Helpers\GeneralHelper;
 
 class ProductDataTable extends DataTable
 {
@@ -23,6 +24,16 @@ class ProductDataTable extends DataTable
     {
         return datatables($query)
                 ->addIndexColumn()
+                ->addColumn('deposit', function($id){
+                    if($id->deposit_percentage)
+                    {
+                        return $id->deposit_amount ."%";
+                    }
+                    else
+                    {
+                        return GeneralHelper::numberFormat($id->deposit_amount);
+                    }
+                })
 				->editColumn('category_id', function($id){
                     if($id->category_id>0)
                     {
@@ -109,6 +120,7 @@ class ProductDataTable extends DataTable
 			["name" => "bokun_id", "title" => "Bokun ID", "data" => "bokun_id"],
             ["name" => "name", "title" => "Name", "data" => "name"],
 			["name" => "category_id", "title" => "Category", "data" => "category_id", "orderable" => false],
+            ["name" => "deposit", "title" => "Deposit", "data" => "deposit", "orderable" => false],
         ];
     }
 

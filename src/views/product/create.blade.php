@@ -12,6 +12,7 @@ function STORE()
   		$('#span-'+ value).remove();
 	});
 	
+	
 
 	$.ajax({
 		data: {
@@ -19,6 +20,8 @@ function STORE()
 			"name": $('#name').val(),
 			"bokun_id": $('#bokun_id').val(),
 			"category_id": $('#category_id').val(),
+			"deposit_percentage": $('#deposit_percentage').is(':checked'),
+			"deposit_amount": $('#deposit_amount').val(),
 			"key": '{{ $file_key }}'
 			
         },
@@ -132,6 +135,21 @@ var uploadObj = $("#mulitplefileuploader").uploadFile(settings);
 });
 </script>
 </div>
+
+<div class="form-group">
+<div class="form-check">
+  <input class="form-check-input" type="checkbox" id="deposit_percentage">
+  <label class="form-check-label" for="deposit_percentage">
+    Deposit Percentage
+  </label>
+</div>
+</div>
+
+<div class="form-group">
+	<label for="deposit_amount">Deposit amount :</label>
+	<input type="number" id="deposit_amount" name="deposit_amount" class="form-control" placeholder="Deposit amount" autocomplete="off" value="0">
+</div> 
+
 
 	<button  class="btn btn-danger" type="button" onClick="$.fancybox.close();"><i class="fa fa-window-close"></i> Cancel</button>
 	<button id="submit" type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>

@@ -63,11 +63,17 @@ class ProductController extends Controller
 		$name =  $request->input('name');
 		$category_id =  $request->input('category_id');
         $bokun_id =  $request->input('bokun_id');
+        $deposit_percentage =  $request->input('deposit_percentage');
+        $deposit_percentage = $deposit_percentage === 'true'? true: false;
+        $deposit_amount =  $request->input('deposit_amount');
 		
+        
 		$product = new Product();
         $product->name = $name;
         $product->slug = Str::slug($name,'-');
 		$product->bokun_id = $bokun_id;
+        $product->deposit_percentage = $deposit_percentage;
+        $product->deposit_amount = $deposit_amount;
         $product->save();
 		
 		if($category_id>0)
@@ -154,10 +160,15 @@ class ProductController extends Controller
 		$name =  $request->input('name');
 		$category_id =  $request->input('category_id');
         $bokun_id =  $request->input('bokun_id');
-		
+		$deposit_percentage =  $request->input('deposit_percentage');
+        $deposit_percentage = $deposit_percentage === 'true'? true: false;
+        $deposit_amount =  $request->input('deposit_amount');
+
         $product->name = $name;
         $product->slug = Str::slug($name,'-');
 		$product->bokun_id = $bokun_id;
+        $product->deposit_percentage = $deposit_percentage;
+        $product->deposit_amount = $deposit_amount;
 		$product->category_id = 0;
         $product->save();
 		

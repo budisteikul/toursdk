@@ -1076,6 +1076,7 @@ class BookingHelper {
 		}
 		
 		$value = $amount * ($to_rate / $from_rate);
+		$value -= $value * 5 / 100;
 		$value = number_format((float)$value, 2, '.', '');	
 		return $value;
 	}

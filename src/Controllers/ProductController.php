@@ -15,6 +15,7 @@ use budisteikul\toursdk\Models\Category;
 use budisteikul\coresdk\Models\FileTemp;
 use budisteikul\toursdk\Helpers\CategoryHelper;
 use budisteikul\toursdk\Helpers\ImageHelper;
+use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
 {
@@ -147,6 +148,16 @@ class ProductController extends Controller
      */
     public function update(Request $request, Product $product)
     {
+        if($request->input('action')=="refresh")
+        {
+            DB::table('cache')->where('key',Str::snake(strtolower(env('APP_NAME'))).'_cache_bokunProductById_'. env('BOKUN_CURRENCY') .'_'. env('BOKUN_LANG') .'_'.$product->bokun_id)->delete();
+
+            return response()->json([
+                    "id" => "1",
+                    "message" => 'Success'
+                ]);
+        }
+
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255|unique:products,name,'.$product->id,
             'bokun_id' => 'required|numeric|unique:products,bokun_id,'.$product->id,

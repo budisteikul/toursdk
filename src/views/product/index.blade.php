@@ -2,13 +2,12 @@
 @section('content')
 @push('scripts')
 <script type="text/javascript">
-  function UPDATE_STATUS(id,status)
+  function REFRESH(id)
   {
       $.ajax({
       data: {
           "_token": $("meta[name=csrf-token]").attr("content"),
-          "status": status,
-          "action": "update_status"
+          "action": "refresh"
       },
       type: 'PUT',
       url: '{{ route('route_toursdk_product.index') }}/'+ id

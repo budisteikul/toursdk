@@ -153,7 +153,7 @@ class ProductController extends Controller
             
 
             $message = "not have";
-            if (Cache::has(Str::snake(strtolower(env('APP_NAME'))).'_cache_bokunProductById_'. env('BOKUN_CURRENCY') .'_'. env('BOKUN_LANG') .'_'.$product->bokun_id)) {
+            if (Cache::has('_bokunProductById_'. env('BOKUN_CURRENCY') .'_'. env('BOKUN_LANG') .'_'.$product->bokun_id)) {
                 $message = "have";
             }
 

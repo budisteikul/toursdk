@@ -151,17 +151,11 @@ class ProductController extends Controller
         if($request->input('action')=="refresh")
         {
             
-
-            $message = "not have";
-            if (Cache::store('database')->has('_bokunProductById_'. env('BOKUN_CURRENCY') .'_'. env('BOKUN_LANG') .'_'.$product->bokun_id)) {
-                $message = "have";
-            }
-
             Cache::store('database')->forget('_bokunProductById_'. env('BOKUN_CURRENCY') .'_'. env('BOKUN_LANG') .'_'.$product->bokun_id);
 
             return response()->json([
                     "id" => "1",
-                    "message" => $message
+                    "message" => 'Success'
                 ]);
         }
 

@@ -4,6 +4,8 @@
 <script type="text/javascript">
   function REFRESH(id)
   {
+      $("#refresh-"+ id).attr("disabled", true);
+      $("#refresh-"+ id).html('<i class="fa fa-spinner fa-spin"></i>');
       $.ajax({
       data: {
           "_token": $("meta[name=csrf-token]").attr("content"),
@@ -14,6 +16,8 @@
       }).done(function( data ) {
         var table = $('#dataTableBuilder').DataTable();
         table.ajax.reload( null, false );
+        $("#refresh-"+ id).html('<i class="fa fa-history"></i> Refresh');
+        $("#refresh-"+ id).attr("disabled", false);
       });
   }
 

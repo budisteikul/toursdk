@@ -150,10 +150,8 @@ class ProductController extends Controller
     {
         if($request->input('action')=="refresh")
         {
-            $currency = env("BOKUN_CURRENCY");
-            $lang = env("BOKUN_LANG");
-            Cache::forget('_bokunProductById_'. $currency .'_'. $lang .'_'.$product->bokun_id);
-            
+            Cache::forget(Str::snake(strtolower(env('APP_NAME'))).'_cache_bokunProductById_'. env('BOKUN_CURRENCY') .'_'. env('BOKUN_LANG') .'_'.$product->bokun_id);
+
             return response()->json([
                     "id" => "1",
                     "message" => 'Success'

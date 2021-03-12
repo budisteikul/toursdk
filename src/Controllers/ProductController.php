@@ -153,7 +153,7 @@ class ProductController extends Controller
             
 
             $message = "not have";
-            if (Cache::has('vertikal_trip_cache_bokunProductById_IDR_EN_6081') {
+            if (Cache::has('vertikal_trip_cache_bokunProductById_IDR_EN_6081') ){
                 $message = "have";
             }
 

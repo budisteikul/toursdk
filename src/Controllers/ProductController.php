@@ -157,7 +157,7 @@ class ProductController extends Controller
                 $message = "have";
             }
 
-            Cache::store('database')->forget(Str::snake(strtolower(env('APP_NAME'))).'_cache_bokunProductById_'. env('BOKUN_CURRENCY') .'_'. env('BOKUN_LANG') .'_'.$product->bokun_id);
+            Cache::store('database')->forget('_bokunProductById_'. env('BOKUN_CURRENCY') .'_'. env('BOKUN_LANG') .'_'.$product->bokun_id);
 
             return response()->json([
                     "id" => "1",

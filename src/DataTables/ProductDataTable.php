@@ -60,7 +60,7 @@ class ProductDataTable extends DataTable
                 <div class="btn-toolbar justify-content-end">
                     <div class="btn-group mr-2 mb-2" role="group">
                         
-                        <button id="refresh-'.$id->id.'" type="button" onClick="REFRESH(\''.$id->id.'\'); return false;" class="btn btn-sm btn-primary"><i class="fa fa-history"></i> Refresh</button>
+                        <button id="refresh-'.$id->id.'" type="button" onClick="REFRESH(\''.$id->id.'\'); return false;" class="btn btn-sm btn-primary"><i class="fas fa-sync-alt"></i></i> Refresh</button>
                         <button id="btn-edit" type="button" onClick="EDIT(\''.$id->id.'\'); return false;" class="btn btn-sm btn-success"><i class="fa fa-edit"></i> Edit</button>
                         <button id="btn-del" type="button" onClick="DELETE(\''. $id->id .'\')" class="btn btn-sm btn-danger"><i class="fa fa-trash-alt"></i> Delete</button>
                         

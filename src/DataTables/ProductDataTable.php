@@ -11,6 +11,7 @@ use Yajra\DataTables\Html\Editor\Editor;
 use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
 use budisteikul\coresdk\Helpers\GeneralHelper;
+use Illuminate\Support\Facades\Cache;
 
 class ProductDataTable extends DataTable
 {
@@ -56,11 +57,19 @@ class ProductDataTable extends DataTable
                     
                 })
 				->addColumn('action', function ($id) {
+
+                $refresh = '';
+                if(Cache::store('database')->has('_bokunProductById_'. env('BOKUN_CURRENCY') .'_'. env('BOKUN_LANG') .'_'.$id->bokun_id)){
+                    $refresh = '<button id="refresh-'.$id->id.'" type="button" onClick="REFRESH(\''.$id->id.'\'); return false;" class="btn btn-sm btn-primary"><i class="fas fa-sync-alt"></i></i> Refresh</button>'; 
+                }
+                
+                  
                 return '
                 <div class="btn-toolbar justify-content-end">
                     <div class="btn-group mr-2 mb-2" role="group">
                         
-                        <button id="refresh-'.$id->id.'" type="button" onClick="REFRESH(\''.$id->id.'\'); return false;" class="btn btn-sm btn-primary"><i class="fas fa-sync-alt"></i></i> Refresh</button>
+                        '. $refresh .'
+
                         <button id="btn-edit" type="button" onClick="EDIT(\''.$id->id.'\'); return false;" class="btn btn-sm btn-success"><i class="fa fa-edit"></i> Edit</button>
                         <button id="btn-del" type="button" onClick="DELETE(\''. $id->id .'\')" class="btn btn-sm btn-danger"><i class="fa fa-trash-alt"></i> Delete</button>
                         

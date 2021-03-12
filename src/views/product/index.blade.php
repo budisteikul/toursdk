@@ -16,8 +16,6 @@
       }).done(function( data ) {
         var table = $('#dataTableBuilder').DataTable();
         table.ajax.reload( null, false );
-        $("#refresh-"+ id).html('<i class="fas fa-sync-alt"></i> Refresh');
-        $("#refresh-"+ id).attr("disabled", false);
       });
   }
 

@@ -71,6 +71,7 @@ class ProductController extends Controller
         $deposit_percentage = $deposit_percentage === 'true'? true: false;
         $deposit_amount =  $request->input('deposit_amount');
 		
+        Cache::store('database')->forget('_bokunProductById_'. env('BOKUN_CURRENCY') .'_'. env('BOKUN_LANG') .'_'.$bokun_id);
         $content = BokunHelper::get_product($bokun_id);
         if($content=="404")
         {
@@ -186,6 +187,15 @@ class ProductController extends Controller
         $deposit_percentage = $deposit_percentage === 'true'? true: false;
         $deposit_amount =  $request->input('deposit_amount');
 
+        Cache::store('database')->forget('_bokunProductById_'. env('BOKUN_CURRENCY') .'_'. env('BOKUN_LANG') .'_'.$bokun_id);
+        $content = BokunHelper::get_product($bokun_id);
+        if($content=="404")
+        {
+            return response()->json([
+                    "bokun_id" => ["Activity not found"]
+                ]);
+        }
+        
         $product->name = $name;
         $product->slug = Str::slug($name,'-');
 		$product->bokun_id = $bokun_id;
@@ -255,7 +265,7 @@ class ProductController extends Controller
     public function destroy(Product $product)
     {
         Cache::store('database')->forget('_bokunProductById_'. env('BOKUN_CURRENCY') .'_'. env('BOKUN_LANG') .'_'.$product->bokun_id);
-        
+
         foreach($product->images as $image)
         {
             ImageHelper::deleteImageCloudinary($image->public_id);

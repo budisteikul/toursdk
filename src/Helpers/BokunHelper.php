@@ -52,10 +52,16 @@ class BokunHelper {
 			$response = $client->request($method,$endpoint.$path.$query);
 		}
 
-		$contents = $response->getBody()->getContents();
-
-		if($accept=='application/json') $contents = json_decode($contents );
 		
+		if($response->getStatusCode()=="404")
+		{
+			$contents = $response->getStatusCode();
+		}
+		else
+		{
+			$contents = $response->getBody()->getContents();
+			if($accept=='application/json') $contents = json_decode($contents );
+		}
 		return $contents;
 	}
 	

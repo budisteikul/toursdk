@@ -15,6 +15,7 @@ use budisteikul\toursdk\Models\Category;
 use budisteikul\coresdk\Models\FileTemp;
 use budisteikul\toursdk\Helpers\CategoryHelper;
 use budisteikul\toursdk\Helpers\ImageHelper;
+use budisteikul\toursdk\Helpers\BokunHelper;
 use Illuminate\Support\Facades\Cache;
 
 class ProductController extends Controller
@@ -61,6 +62,8 @@ class ProductController extends Controller
             return response()->json($errors);
         }
 		
+
+
 		$name =  $request->input('name');
 		$category_id =  $request->input('category_id');
         $bokun_id =  $request->input('bokun_id');
@@ -68,7 +71,14 @@ class ProductController extends Controller
         $deposit_percentage = $deposit_percentage === 'true'? true: false;
         $deposit_amount =  $request->input('deposit_amount');
 		
-        
+        $content = BokunHelper::get_product($bokun_id);
+        if($content=="404")
+        {
+            return response()->json([
+                    "bokun_id" => ["Activity not found"]
+                ]);
+        }
+
 		$product = new Product();
         $product->name = $name;
         $product->slug = Str::slug($name,'-');
@@ -152,7 +162,7 @@ class ProductController extends Controller
         {
             
             Cache::store('database')->forget('_bokunProductById_'. env('BOKUN_CURRENCY') .'_'. env('BOKUN_LANG') .'_'.$product->bokun_id);
-
+            BokunHelper::get_product($product->bokun_id);
             return response()->json([
                     "id" => "1",
                     "message" => 'Success'
@@ -244,6 +254,8 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
+        Cache::store('database')->forget('_bokunProductById_'. env('BOKUN_CURRENCY') .'_'. env('BOKUN_LANG') .'_'.$product->bokun_id);
+        
         foreach($product->images as $image)
         {
             ImageHelper::deleteImageCloudinary($image->public_id);

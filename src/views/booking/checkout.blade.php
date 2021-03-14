@@ -1,4 +1,5 @@
 @inject('ProductHelper', 'budisteikul\toursdk\Helpers\ProductHelper')
+@inject('GeneralHelper', 'budisteikul\toursdk\Helpers\GeneralHelper')
 @extends('coresdk::layouts.app')
 @section('content')
 <script language="javascript">
@@ -85,9 +86,9 @@ function REMOVE(id)
 									}
 									?>
                                     @if($product_discount>0)
-                                    	<strike class="text-muted">{{ $product_subtotal }}</strike><br><b>{{ $product_total }}</b>
+                                    	<strike class="text-muted">{{ $GeneralHelper->numberFormat($product_subtotal) }}</strike><br><b>{{ $GeneralHelper->numberFormat($product_total) }}</b>
                                     @else
-                    					<b>{{ $product_total }}</b>
+                    					<b>{{ $GeneralHelper->numberFormat($product_total) }}</b>
                     				@endif
                                 </div>
                 			 </div>
@@ -106,7 +107,7 @@ function REMOVE(id)
                                     <br>
                                     @foreach($shoppingcart_product->shoppingcart_rates()->where('type','product')->get() as $shoppingcart_rates)
                                     	
-                                        	{{ $shoppingcart_rates->qty }} x {{ $shoppingcart_rates->unitPrice }} ({{ $shoppingcart_rates->price }})
+                                        	{{ $shoppingcart_rates->qty }} x {{ $shoppingcart_rates->unitPrice }} ({{ $GeneralHelper->numberFormat($shoppingcart_rates->price) }})
                                     	
                                         <br>
                                     @endforeach
@@ -133,9 +134,9 @@ function REMOVE(id)
                     					</div>
                     					<div class="col-4 text-right">
                     						@if($shopppingcart_rates->discount > 0)
-                                            	<strike class="text-muted">{{ $shopppingcart_rates->subtotal }}</strike><br><b>{{ $shopppingcart_rates->total }}</b>
+                                            	<strike class="text-muted">{{ $GeneralHelper->numberFormat($shopppingcart_rates->subtotal) }}</strike><br><b>{{ $GeneralHelper->numberFormat($shopppingcart_rates->total) }}</b>
                                             @else
-                                            	<b>${{ $shopppingcart_rates->subtotal }}</b>
+                                            	<b>${{ $GeneralHelper->numberFormat($shopppingcart_rates->subtotal) }}</b>
                     						@endif
                                         </div>
                 					</div>
@@ -163,9 +164,9 @@ function REMOVE(id)
                     					</div>
                     					<div class="col-4 text-right">
                                         	@if($shopppingcart_rates->discount > 0)
-                                            	<strike class="text-muted">{{ $shopppingcart_rates->subtotal }}</strike><br><b>{{ $shopppingcart_rates->total }}</b>
+                                            	<strike class="text-muted">{{ $GeneralHelper->numberFormat($shopppingcart_rates->subtotal) }}</strike><br><b>{{ $GeneralHelper->numberFormat($shopppingcart_rates->total) }}</b>
                                             @else
-                    							<b>${{ $shoppingcart_rates->subtotal }}</b>
+                    							<b>{{ $GeneralHelper->numberFormat($shoppingcart_rates->subtotal) }}</b>
                                             @endif
                     					</div>
                 					</div>
@@ -192,7 +193,7 @@ function REMOVE(id)
                             <span style="font-size:18px">Items</span>
                         </div>
                         <div class="col-4 text-right">
-                            <span style="font-size:18px">{{ $grand_subtotal }}</span>
+                            <span style="font-size:18px">{{ $GeneralHelper->numberFormat($grand_subtotal) }}</span>
                         </div>
                     </div>
                     @if($grand_discount>0)
@@ -201,7 +202,7 @@ function REMOVE(id)
                             <span style="font-size:18px">Discount</span>
                         </div>
                         <div class="col-4 text-right">
-                            <span style="font-size:18px">{{ $grand_discount }}</span>
+                            <span style="font-size:18px">{{ $GeneralHelper->numberFormat($grand_discount) }}</span>
                         </div>
                     </div>
                     @endif
@@ -210,7 +211,7 @@ function REMOVE(id)
                             <b style="font-size:18px">Total ({{ $shoppingcart->currency }})</b>
                         </div>
                         <div class="col-4 text-right">
-                            <b style="font-size:18px">{{ $grand_total }}</b>
+                            <b style="font-size:18px">{{ $GeneralHelper->numberFormat($grand_total) }}</b>
                         </div>
                     </div>
                 </div>
@@ -223,7 +224,7 @@ function REMOVE(id)
                             <b style="font-size:18px">Due now ({{ $shoppingcart->currency }})</b>
                         </div>
                         <div class="col-4 text-right">
-                           <b style="font-size:18px">{{ $shoppingcart->due_now }}</b>
+                           <b style="font-size:18px">{{ $GeneralHelper->numberFormat($shoppingcart->due_now) }}</b>
                         </div>
                     </div>
                     <div class="row mb-4 mt-0">
@@ -231,7 +232,7 @@ function REMOVE(id)
                             <span style="font-size:18px">Due on arrival ({{ $shoppingcart->currency }})</span>
                         </div>
                         <div class="col-4 text-right">
-                            <span style="font-size:18px">{{ $shoppingcart->due_on_arrival }}</span>
+                            <span style="font-size:18px">{{ $GeneralHelper->numberFormat($shoppingcart->due_on_arrival) }}</span>
                         </div>
                     </div>
                 </div>

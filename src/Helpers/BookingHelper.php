@@ -1260,7 +1260,7 @@ class BookingHelper {
 
 	public static function cancel_booking($shoppingcart)
 	{
-		if($shoppingcart->booking_channel=="WEBSITE")
+		if($shoppingcart->booking_channel=="WEBSITE" || $shoppingcart->booking_channel=="Internal Booking")
 		{
 			foreach($shoppingcart->shoppingcart_products as $product)
 			{

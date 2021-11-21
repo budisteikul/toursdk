@@ -1258,6 +1258,17 @@ class BookingHelper {
 		
 	}
 
+	public static function cancel_booking($shoppingcart)
+	{
+		if($shoppingcart->booking_channel=="WEBSITE")
+		{
+			foreach($shoppingcart->shoppingcart_products as $product)
+			{
+				BokunHelper::get_cancelProductBooking($product->product_confirmation_code);
+			} 
+		}
+	}
+
 	public static function confirm_booking($sessionId)
 	{
 		$shoppingcart = Cache::get('_'. $sessionId);

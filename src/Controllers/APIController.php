@@ -1185,6 +1185,7 @@ class APIController extends Controller
                         $shoppingcart->booking_status = 'CANCELED';
                         $shoppingcart->save();
                         
+                        BookingHelper::cancel_booking($shoppingcart);
                     }
                 }
             }

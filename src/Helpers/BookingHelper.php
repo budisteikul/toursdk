@@ -1269,6 +1269,16 @@ class BookingHelper {
 		}
 	}
 
+	public static function set_confirmationCode($sessionId)
+	{
+		$shoppingcart = Cache::get('_'. $sessionId);
+		$confirmation_code = BokunHelper::get_confirmBooking($sessionId);
+		$shoppingcart->confirmation_code = $confirmation_code;
+        Cache::forget('_'. $sessionId);
+        Cache::add('_'. $sessionId, $shoppingcart, 172800);
+        return $shoppingcart;
+	}
+
 	public static function confirm_booking($sessionId)
 	{
 		$shoppingcart = Cache::get('_'. $sessionId);
@@ -1276,10 +1286,13 @@ class BookingHelper {
 
         Cache::forget('_'. $sessionId);
         Cache::add('_'. $sessionId, $shoppingcart, 172800);
-        
-        BokunHelper::get_confirmBooking($sessionId);
 
-        return self::confirm_transaction($sessionId);
+        $shoppingcart = self::confirm_transaction($sessionId);
+
+        BookingHelper::shoppingcart_clear($sessionId);
+        BookingHelper::shoppingcart_mail($shoppingcart);
+
+        return $shoppingcart;
 	}
 
 	public static function create_payment($sessionId,$payment_type="none")

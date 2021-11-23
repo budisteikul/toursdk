@@ -1139,12 +1139,8 @@ class APIController extends Controller
         Cache::forget('_'. $sessionId);
         Cache::add('_'. $sessionId, $shoppingcart, 172800);
         
-        $shoppingcart = BookingHelper::confirm_booking($sessionId); 
-        BookingHelper::shoppingcart_clear($sessionId);
-        BookingHelper::shoppingcart_mail($shoppingcart);
-                     
+        $shoppingcart = BookingHelper::confirm_booking($sessionId);
 
-        
         return response()->json([
                     "id" => "1",
                     "message" => "/booking/receipt/".$shoppingcart->id."/".$shoppingcart->session_id
@@ -1204,7 +1200,7 @@ class APIController extends Controller
     public function createpaymentpaypal(Request $request)
     {
         $sessionId = $request->header('sessionId');
-        
+        BookingHelper::set_confirmationCode($sessionId);
         $response = BookingHelper::create_payment($sessionId,"paypal");
         return response()->json($response);
     }
@@ -1213,20 +1209,18 @@ class APIController extends Controller
     public function createpaymentmidtrans(Request $request)
     {
         $sessionId = $request->input('sessionId');
-
         
+        BookingHelper::set_confirmationCode($sessionId);
+
         BookingHelper::create_payment($sessionId,"midtrans");
 
         $shoppingcart = BookingHelper::confirm_booking($sessionId);
-        BookingHelper::shoppingcart_clear($sessionId);
-        BookingHelper::shoppingcart_mail($shoppingcart);
-        
 
-            return response()->json([
-                "id" => "1",
-                "token" => $shoppingcart->shoppingcart_payment->snaptoken,
-                "redirect" => '/booking/receipt/'.$shoppingcart->id.'/'.$shoppingcart->session_id
-            ]);
+        return response()->json([
+            "id" => "1",
+            "token" => $shoppingcart->shoppingcart_payment->snaptoken,
+            "redirect" => '/booking/receipt/'.$shoppingcart->id.'/'.$shoppingcart->session_id
+        ]);
         
         
     }

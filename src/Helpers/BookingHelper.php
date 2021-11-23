@@ -1273,14 +1273,11 @@ class BookingHelper {
 	{
 		$shoppingcart = Cache::get('_'. $sessionId);
         $shoppingcart->booking_status = "CONFIRMED";
-        
-        $confirmation_code = BokunHelper::get_confirmBooking($sessionId);
-        $shoppingcart->confirmation_code = $confirmation_code;
-        
+
         Cache::forget('_'. $sessionId);
         Cache::add('_'. $sessionId, $shoppingcart, 172800);
-
         
+        BokunHelper::get_confirmBooking($sessionId);
 
         return self::confirm_transaction($sessionId);
 	}
@@ -1288,15 +1285,11 @@ class BookingHelper {
 	public static function create_payment($sessionId,$payment_type="none")
 	{
 		$shoppingcart = Cache::get('_'. $sessionId);
-		$shoppingcart->confirmation_code = self::get_ticket();
-		
-		
+
 		if($payment_type=="midtrans")
 		{
-				
-				
+
 				$response = MidtransHelper::createOrder($shoppingcart);
-				//print_r($response);
 				
 				$ShoppingcartPayment = (object) array(
 					'payment_provider' => 'midtrans',
@@ -1314,8 +1307,7 @@ class BookingHelper {
 					'rate_to' => NULL,
 					'payment_status' => 4,
 				);
-				//print_r($response);
-				//exit();
+
 				$shoppingcart->payment = $ShoppingcartPayment;
 				Cache::forget('_'. $sessionId);
 				Cache::add('_'. $sessionId, $shoppingcart, 172800);

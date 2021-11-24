@@ -118,8 +118,23 @@ class BokunHelper {
 			return $contents;
 	}
 
+	public static function set_mainContactQuestion($sessionId)
+	{
+		$currency = self::get_bokunCurrency();
+        $lang = self::get_bokunLang();
+        $bookingChannel = self::get_bokunBookingChannel();
+
+		$data = '{"answers":[{"questionId":"firstName","values":["VERTIKAL"]},{"questionId":"lastName","values":["TRIP"]},{"questionId":"email","values":["guide@vertikaltrip.com"]},{"questionId":"phoneNumber","values":["+62 85743112112"]}]}';
+
+		$data = json_decode($data);
+
+		$value = self::bokunWidget_connect('/widgets/'.$bookingChannel.'/checkout/mainContactAnswers?sessionId='.$sessionId.'&lang='.$lang.'&currency='.$currency,'POST', $data);
+        $value = json_decode($value);
+        return $value;
+	}
     public static function get_confirmBooking($sessionId)
 	{
+		self::set_mainContactQuestion($sessionId);
         $currency = self::get_bokunCurrency();
         $lang = self::get_bokunLang();
         $bookingChannel = self::get_bokunBookingChannel();

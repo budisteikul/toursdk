@@ -1050,7 +1050,6 @@ class BookingHelper {
 		{
 			Mail::to($email)->send(new BookingConfirmedMail($shoppingcart));
 		}
-		Mail::to(env('MAIL_FROM_ADDRESS'))->send(new BookingConfirmedMail($shoppingcart));
 	}
 
 	public static function shoppingcart_clear($sessionId)

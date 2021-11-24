@@ -1279,7 +1279,7 @@ class BookingHelper {
         return $shoppingcart;
 	}
 
-	public static function confirm_booking($sessionId)
+	public static function confirm_booking($sessionId,$sendMail=true)
 	{
 		$shoppingcart = Cache::get('_'. $sessionId);
         $shoppingcart->booking_status = "CONFIRMED";
@@ -1290,8 +1290,10 @@ class BookingHelper {
         $shoppingcart = self::confirm_transaction($sessionId);
 
         BookingHelper::shoppingcart_clear($sessionId);
-        BookingHelper::shoppingcart_mail($shoppingcart);
-
+        if($sendMail)
+        {
+        	BookingHelper::shoppingcart_mail($shoppingcart);
+        }
         return $shoppingcart;
 	}
 

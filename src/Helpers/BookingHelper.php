@@ -1167,7 +1167,11 @@ class BookingHelper {
 	{
 		$bookings = array();
 		
-		$group_shoppingcart_products = ShoppingcartProduct::where('product_id',$activityId)->whereDate('date', '>=', Carbon::now())->groupBy(['date'])->select('date')->get();
+		$group_shoppingcart_products = ShoppingcartProduct::with('shoppingcart')
+		->WhereHas('shoppingcart', function($query) {
+              $query->where('booking_status','CONFIRMED');
+            })
+		->where('product_id',$activityId)->whereYear('date','=',$year)->whereMonth('date','=',$month)->whereDate('date', '>=', Carbon::now())->groupBy(['date'])->select('date')->get();
 
 		foreach($group_shoppingcart_products as $group_shoppingcart_product)
         {
@@ -1176,6 +1180,7 @@ class BookingHelper {
             ->WhereHas('shoppingcart_product', function($query) use ($date,$activityId) {
               $query->whereDate('date','=',$date)->where(['product_id'=>$activityId]);
             })->get()->sum('people');
+
             $bookings[] = (object)[
             	"date" => $date,
             	"people" => $people,
@@ -1255,8 +1260,6 @@ class BookingHelper {
         }
     	}
 
-    	//print_r($contents);
-    	//exit();
         return $contents;
 	}
 

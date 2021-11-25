@@ -47,7 +47,7 @@ class APIController extends Controller
 
     public function test()
     {
-        BookingHelper::get_firstAvailability(7424,2021,11);
+        //BookingHelper::get_firstAvailability(7424,2021,11);
     }
 
     public function last_order($sessionId)

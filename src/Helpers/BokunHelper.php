@@ -266,13 +266,13 @@ class BokunHelper {
         if($year=="") $year = date('Y');
         if($month=="") $month = date('m');
         
-        /*
-        $value = Cache::rememberForever('_bokunCalendar_'. $year .'_'. $month .'_'.$activityId, function() use ($activityId,$currency,$lang,$year,$month) {
+        
+        $value = Cache::remember('_bokunCalendar_'. $year .'_'. $month .'_'.$activityId,7200, function() use ($activityId,$currency,$lang,$year,$month) {
     		return self::bokunWidget_connect('/snippets/activity/'.$activityId.'/calendar/json/'.$year.'/'.$month .'?lang='.$lang.'&currency='.$currency);
 		});
-		*/
 		
-		$value = self::bokunWidget_connect('/snippets/activity/'.$activityId.'/calendar/json/'.$year.'/'.$month .'?lang='.$lang.'&currency='.$currency);
+
+		//$value = self::bokunWidget_connect('/snippets/activity/'.$activityId.'/calendar/json/'.$year.'/'.$month .'?lang='.$lang.'&currency='.$currency);
 
 		$value = json_decode($value);
 		return $value;

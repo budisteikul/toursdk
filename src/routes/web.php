@@ -50,7 +50,7 @@
 	Route::get('/api/ticket/lastorder/{sessionId}', 'budisteikul\toursdk\Controllers\APIController@last_order');
 
 	
-	
+	Route::get('/test', 'budisteikul\toursdk\Controllers\APIController@test');
 	
 
 	// Webhook

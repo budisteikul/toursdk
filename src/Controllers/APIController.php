@@ -45,6 +45,16 @@ class APIController extends Controller
         $this->appUrl = env("APP_URL");
     }
 
+    public function test()
+    {
+        $shoppingcart_products = ShoppingcartProduct::groupBy('date')->whereDate('date', '>=', Carbon::now())->selectRaw('date')->get();
+        $results = $shoppingcart_products->shoppingcart_product_details()->get();
+        foreach($results as $result)
+        {
+            print($result->people .'<br />');
+        }
+    }
+
     public function last_order($sessionId)
     {
         $shoppingcarts = Shoppingcart::where('session_id', $sessionId)->orderBy('id','desc')->get();

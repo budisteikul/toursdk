@@ -1154,6 +1154,7 @@ class BookingHelper {
 	{
 		$bookings = array();
 
+		
 		/*
         $bookings[] = (object)[
             "tanggal" => '2021-11-3',

@@ -1150,6 +1150,65 @@ class BookingHelper {
         return $shoppingcart;
 	}
 
+	public static function get_calendar($activityId,$year,$month)
+	{
+		$bookings = array();
+
+		/*
+        $bookings[] = (object)[
+            "tanggal" => '2021-11-3',
+            "participants" => '2',
+        ];
+        $bookings[] = (object)[
+            "tanggal" => '2021-11-30',
+            "participants" => '4',
+        ];
+        */
+
+        $contents = BokunHelper::get_calendar($activityId,$year,$month);
+
+        if(count($bookings)>0)
+        {
+        foreach($contents->weeks as $week)
+        {
+            foreach($week->days as $day)
+            {
+                if(!$day->notInCurrentMonth)
+                {
+                    if(!$day->past)
+                    {
+                        if(!$day->pastCutoff)
+                        {
+                            if(!$day->soldOut)
+                            {
+                                foreach($bookings as $booking)
+                                {
+                                    if($booking->tanggal == $day->fullDate)
+                                    {
+                                        foreach($day->availabilities as $availability)
+                                        {
+                                            $availability->data->bookedParticipants +=  $booking->participants;
+                                            $availability->data->availabilityCount -= $booking->participants;
+
+                                            $availability->activityAvailability->bookedParticipants +=  $booking->participants;
+                                            $availability->activityAvailability->availabilityCount -= $booking->participants;
+                                        
+                                            $availability->availabilityCount -= $booking->participants;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                
+            }
+        }
+    	}
+
+        return $contents;
+	}
+
 	public static function confirm_transaction($sessionId)
 	{
 		$shoppingcart_json = Cache::get('_'. $sessionId);

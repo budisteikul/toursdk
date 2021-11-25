@@ -948,7 +948,7 @@ class APIController extends Controller
 
     public function snippetscalendar($activityId,$year,$month)
     {
-        $contents = BokunHelper::get_calendar($activityId,$year,$month);
+        $contents = BookingHelper::get_calendar($activityId,$year,$month);
         return response()->json($contents);
     }
 

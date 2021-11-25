@@ -47,11 +47,20 @@ class APIController extends Controller
 
     public function test()
     {
-        $shoppingcart_products = ShoppingcartProduct::groupBy('date')->whereDate('date', '>=', Carbon::now())->selectRaw('date')->get();
-        $results = $shoppingcart_products->shoppingcart_product_details()->get();
-        foreach($results as $result)
+        $shoppingcart_products = ShoppingcartProduct::whereDate('date', '>=', Carbon::now())->groupBy(['date'])->select('date')->get();
+        foreach($shoppingcart_products as $shoppingcart_product)
         {
-            print($result->people .'<br />');
+            $peoples = ShoppingcartProduct::whereDate('date','=',$shoppingcart_product->date);
+            foreach($peoples->shoppingcart_product_details()->get() as $people)
+            {
+                print_r($people);
+            }
+            //$aaa = $shoppingcart_product;
+            //$peoples = $shoppingcart_product->date;
+            
+            
+                //print_r($peoples);
+            
         }
     }
 

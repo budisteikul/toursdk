@@ -47,21 +47,7 @@ class APIController extends Controller
 
     public function test()
     {
-        $shoppingcart_products = ShoppingcartProduct::whereDate('date', '>=', Carbon::now())->groupBy(['date'])->select('date')->get();
-        foreach($shoppingcart_products as $shoppingcart_product)
-        {
-            $peoples = ShoppingcartProduct::whereDate('date','=',$shoppingcart_product->date);
-            foreach($peoples->shoppingcart_product_details()->get() as $people)
-            {
-                print_r($people);
-            }
-            //$aaa = $shoppingcart_product;
-            //$peoples = $shoppingcart_product->date;
-            
-            
-                //print_r($peoples);
-            
-        }
+        BookingHelper::get_firstAvailability(7424,2021,11);
     }
 
     public function last_order($sessionId)
@@ -424,7 +410,7 @@ class APIController extends Controller
             $content = BokunHelper::get_product($product->bokun_id);
             $calendar = BokunHelper::get_calendar_new($content->id);
 
-            $availability = BokunHelper::get_firstAvailability($content->id,$calendar->year,$calendar->month);
+            $availability = BookingHelper::get_firstAvailability($content->id,$calendar->year,$calendar->month);
             
             $microtime = $availability[0]['date'];
             $month = date("n",$microtime/1000);
@@ -1200,7 +1186,6 @@ class APIController extends Controller
                         $shoppingcart->booking_status = 'CANCELED';
                         $shoppingcart->save();
                         
-                        BookingHelper::cancel_booking($shoppingcart);
                     }
                 }
             }

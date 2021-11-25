@@ -148,11 +148,11 @@ class BokunHelper {
 
 	public static function get_cancelProductBooking($product_confirmation_code)
     {
-    	$data = '{"note": "test","notify": false,"refund": false,"refundAmount": 0,"remainInvoiced": false}';
-        $data = json_decode($data);
-        $value = self::bokunAPI_connect('/booking.json/cancel-product-booking/'.$product_confirmation_code,'POST', $data);
-        $value = json_decode($value);
-        return $value;
+    	//$data = '{"note": "test","notify": false,"refund": false,"refundAmount": 0,"remainInvoiced": false}';
+        //$data = json_decode($data);
+        //$value = self::bokunAPI_connect('/booking.json/cancel-product-booking/'.$product_confirmation_code,'POST', $data);
+        //$value = json_decode($value);
+        return '';
     }
 
     public static function get_currency()
@@ -266,25 +266,15 @@ class BokunHelper {
         if($year=="") $year = date('Y');
         if($month=="") $month = date('m');
         
-		$value = self::bokunWidget_connect('/snippets/activity/'.$activityId.'/calendar/json/'.$year.'/'.$month .'?lang='.$lang.'&currency='.$currency);
+        $value = Cache::rememberForever('_bokunCalendar_'. $year .'_'. $month .'_'.$activityId, function() use ($activityId,$currency,$lang,$year,$month) {
+    		return self::bokunWidget_connect('/snippets/activity/'.$activityId.'/calendar/json/'.$year.'/'.$month .'?lang='.$lang.'&currency='.$currency);
+		});
+
+		//$value = self::bokunWidget_connect('/snippets/activity/'.$activityId.'/calendar/json/'.$year.'/'.$month .'?lang='.$lang.'&currency='.$currency);
 		
 		$value = json_decode($value);
 		return $value;
 	}
-
-
-	public static function get_firstAvailability($activityId,$year,$month)
-	{
-		$availability = self::get_calendar($activityId,$year,$month);
-		$value[] = $availability->firstAvailableDay->availabilities[0]->activityAvailability;
-		$dataObj[] = [
-			'date' => $value[0]->date,
-			'localizedDate' => $value[0]->localizedDate,
-			'availabilities' => $value
-		];
-		return $dataObj;
-	}
-
 
 	public static function get_product($activityId)
 	{

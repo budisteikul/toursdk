@@ -21,6 +21,7 @@ use Illuminate\Support\Facades\Validator;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\Exception\UnsatisfiedDependencyException;
 use Illuminate\Support\Facades\Cache;
+use Carbon\Carbon;
 
 class BookingHelper {
 	
@@ -429,7 +430,7 @@ class BookingHelper {
 			$ShoppingcartProducts[] = (object) array(
 				'product_confirmation_code' => $sp_product_confirmation_code,
 				'booking_id' => $sp_booking_id,
-				'product_id' => $sp_booking_id,
+				'product_id' => $sp_product_id,
 				'image' => $sp_image,
 				'title' => $sp_title,
 				'rate' => $sp_rate,
@@ -836,7 +837,7 @@ class BookingHelper {
 			$ShoppingcartProducts[] = (object) array(
 				'product_confirmation_code' => $sp_product_confirmation_code,
 				'booking_id' => $sp_booking_id,
-				'product_id' => $sp_booking_id,
+				'product_id' => $sp_product_id,
 				'image' => $sp_image,
 				'title' => $sp_title,
 				'rate' => $sp_rate,
@@ -1150,23 +1151,68 @@ class BookingHelper {
         return $shoppingcart;
 	}
 
+	public static function get_firstAvailability($activityId,$year,$month)
+	{
+		$availability = self::get_calendar($activityId,$year,$month);
+		$value[] = $availability->firstAvailableDay->availabilities[0]->activityAvailability;
+		$dataObj[] = [
+			'date' => $value[0]->date,
+			'localizedDate' => $value[0]->localizedDate,
+			'availabilities' => $value
+		];
+		return $dataObj;
+	}
+
 	public static function get_calendar($activityId,$year,$month)
 	{
 		$bookings = array();
+		
+		$group_shoppingcart_products = ShoppingcartProduct::where('product_id',$activityId)->whereDate('date', '>=', Carbon::now())->groupBy(['date'])->select('date')->get();
+
+		foreach($group_shoppingcart_products as $group_shoppingcart_product)
+        {
+        	$date = Carbon::parse($group_shoppingcart_product->date)->format('Y-m-d');
+            $people = ShoppingcartProductDetail::with('shoppingcart_product')
+            ->WhereHas('shoppingcart_product', function($query) use ($date,$activityId) {
+              $query->whereDate('date','=',$date)->where(['product_id'=>$activityId]);
+            })->get()->sum('people');
+            $bookings[] = (object)[
+            	"date" => $date,
+            	"people" => $people,
+        	];
+        }
 
 		
-		/*
-        $bookings[] = (object)[
-            "tanggal" => '2021-11-3',
-            "participants" => '2',
-        ];
-        $bookings[] = (object)[
-            "tanggal" => '2021-11-30',
-            "participants" => '4',
-        ];
-        */
-
         $contents = BokunHelper::get_calendar($activityId,$year,$month);
+
+        $value[] = $contents->firstAvailableDay;
+        
+        if(count($bookings)>0)
+        {
+        	foreach($value as $firstDay)
+        	{
+        		foreach($bookings as $booking)
+				{
+					if($booking->date == $firstDay->fullDate)
+					{
+						foreach($firstDay->availabilities as $availability)
+                        {
+                        	$availability->data->bookedParticipants +=  $booking->people;
+							$availability->data->availabilityCount -= $booking->people;
+
+							$availability->activityAvailability->bookedParticipants +=  $booking->people;
+							$availability->activityAvailability->availabilityCount -= $booking->people;
+                                        
+							$availability->availabilityCount -= $booking->people;
+
+							if($availability->availabilityCount<=0) $firstDay->soldOut = true;
+                        }
+					}
+				}
+        	}
+        }
+
+        
 
         if(count($bookings)>0)
         {
@@ -1184,17 +1230,19 @@ class BookingHelper {
                             {
                                 foreach($bookings as $booking)
                                 {
-                                    if($booking->tanggal == $day->fullDate)
+                                    if($booking->date == $day->fullDate)
                                     {
                                         foreach($day->availabilities as $availability)
                                         {
-                                            $availability->data->bookedParticipants +=  $booking->participants;
-                                            $availability->data->availabilityCount -= $booking->participants;
+                                            $availability->data->bookedParticipants +=  $booking->people;
+                                            $availability->data->availabilityCount -= $booking->people;
 
-                                            $availability->activityAvailability->bookedParticipants +=  $booking->participants;
-                                            $availability->activityAvailability->availabilityCount -= $booking->participants;
+                                            $availability->activityAvailability->bookedParticipants +=  $booking->people;
+                                            $availability->activityAvailability->availabilityCount -= $booking->people;
                                         
-                                            $availability->availabilityCount -= $booking->participants;
+                                            $availability->availabilityCount -= $booking->people;
+
+                                            if($availability->availabilityCount<=0) $day->soldOut = true;
                                         }
                                     }
                                 }
@@ -1207,6 +1255,8 @@ class BookingHelper {
         }
     	}
 
+    	//print_r($contents);
+    	//exit();
         return $contents;
 	}
 
@@ -1317,21 +1367,13 @@ class BookingHelper {
 		
 	}
 
-	public static function cancel_booking($shoppingcart)
-	{
-		if($shoppingcart->booking_channel=="WEBSITE" || $shoppingcart->booking_channel=="Internal Booking")
-		{
-			foreach($shoppingcart->shoppingcart_products as $product)
-			{
-				BokunHelper::get_cancelProductBooking($product->product_confirmation_code);
-			} 
-		}
-	}
+	
 
 	public static function set_confirmationCode($sessionId)
 	{
 		$shoppingcart = Cache::get('_'. $sessionId);
-		$confirmation_code = BokunHelper::get_confirmBooking($sessionId);
+		//$confirmation_code = BokunHelper::get_confirmBooking($sessionId);
+		$confirmation_code = self::get_ticket();
 		$shoppingcart->confirmation_code = $confirmation_code;
         Cache::forget('_'. $sessionId);
         Cache::add('_'. $sessionId, $shoppingcart, 172800);

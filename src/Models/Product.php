@@ -13,16 +13,16 @@ class Product extends Model
 	
 	public function category()
     {
-        return $this->belongsTo('budisteikul\toursdk\Models\Category','category_id');
+        return $this->belongsTo(Category::class,'category_id');
     }
 
     public function images()
     {
-        return $this->hasMany('budisteikul\toursdk\Models\Image','product_id');
+        return $this->hasMany(Image::class,'product_id');
     }
 
     public function reviews()
     {
-        return $this->hasMany('budisteikul\toursdk\Models\Review','product_id');
+        return $this->hasMany(Review::class,'product_id');
     }
 }

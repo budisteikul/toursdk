@@ -13,12 +13,12 @@ class Review extends Model
     
     public function product()
     {
-        return $this->belongsTo('budisteikul\toursdk\Models\Product','product_id');
+        return $this->belongsTo(Product::class,'product_id');
     }
 
     public function channel()
     {
-        return $this->belongsTo('budisteikul\toursdk\Models\Channel','channel_id');
+        return $this->belongsTo(Channel::class,'channel_id');
     }
 
 }

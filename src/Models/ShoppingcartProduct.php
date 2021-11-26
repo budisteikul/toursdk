@@ -12,11 +12,11 @@ class ShoppingcartProduct extends Model
 
     public function shoppingcart()
     {
-        return $this->belongsTo('budisteikul\toursdk\Models\Shoppingcart');
+        return $this->belongsTo(Shoppingcart::class);
     }
 	
 	public function shoppingcart_product_details()
     {
-        return $this->hasMany('budisteikul\toursdk\Models\ShoppingcartProductDetail','shoppingcart_product_id');
+        return $this->hasMany(ShoppingcartProductDetail::class,'shoppingcart_product_id');
     }
 }

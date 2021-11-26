@@ -12,16 +12,16 @@ class Shoppingcart extends Model
 
     public function shoppingcart_products()
     {
-        return $this->hasMany('budisteikul\toursdk\Models\ShoppingcartProduct','shoppingcart_id','id');
+        return $this->hasMany(ShoppingcartProduct::class,'shoppingcart_id','id');
     }
 	
 	public function shoppingcart_questions()
     {
-        return $this->hasMany('budisteikul\toursdk\Models\ShoppingcartQuestion','shoppingcart_id','id');
+        return $this->hasMany(ShoppingcartQuestion::class,'shoppingcart_id','id');
     }
 	
 	public function shoppingcart_payment()
     {
-        return $this->hasOne('budisteikul\toursdk\Models\ShoppingcartPayment','shoppingcart_id','id');
+        return $this->hasOne(ShoppingcartPayment::class,'shoppingcart_id','id');
     }
 }

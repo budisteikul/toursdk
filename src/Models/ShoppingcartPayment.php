@@ -29,6 +29,6 @@ class ShoppingcartPayment extends Model
 
     public function shoppingcart()
     {
-        return $this->belongsTo('budisteikul\toursdk\Models\Shoppingcart');
+        return $this->belongsTo(Shoppingcart::class);
     }
 }

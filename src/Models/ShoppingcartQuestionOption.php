@@ -12,6 +12,6 @@ class ShoppingcartQuestionOption extends Model
 
     public function shoppingcart_question()
     {
-        return $this->belongsTo('budisteikul\toursdk\Models\ShoppingcartQuestion','shoppingcart_question_id','id');
+        return $this->belongsTo(ShoppingcartQuestion::class,'shoppingcart_question_id','id');
     }
 }

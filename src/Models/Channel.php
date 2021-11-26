@@ -13,6 +13,6 @@ class Channel extends Model
 
     public function reviews()
     {
-        return $this->hasMany('budisteikul\toursdk\Models\Review','channel_id');
+        return $this->hasMany(Review::class,'channel_id');
     }
 }

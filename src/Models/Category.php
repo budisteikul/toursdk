@@ -12,16 +12,16 @@ class Category extends Model
 
     public function child()
     {
-        return $this->hasMany('budisteikul\toursdk\Models\Category','parent_id','id');
+        return $this->hasMany(Category::class,'parent_id','id');
     }
 
     public function parent()
     {
-        return $this->belongsTo('budisteikul\toursdk\Models\Category','parent_id','id');
+        return $this->belongsTo(Category::class,'parent_id','id');
     }
 
     public function product()
     {
-        return $this->hasOne('budisteikul\toursdk\Models\Product','category_id');
+        return $this->hasOne(Product::class,'category_id');
     }
 }

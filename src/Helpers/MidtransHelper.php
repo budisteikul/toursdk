@@ -62,33 +62,29 @@ class MidtransHelper {
         return $data;
   }
 
-  public static function createOrder($shoppingcart)
+  public static function createOrder($shoppingcart,$bank_name)
   {
         //permata = permata_va
         //bni = bni_va
 
-        //{"customer_details":{"email":"budi@utomo.com","phone":"+6212345678"},"payment_params":{"card_token":"481111-1114-de462335-dec8-4c73-9462-5c344d304328","authentication":"3ds2"},"payment_type":"credit_card"}
-
-        //{"customer_details":{"email":""},"payment_type":"bca_va"}
-
         $response = new \stdClass();
 
         $data = MidtransHelper::createSnap($shoppingcart);
-        $data2 = MidtransHelper::chargeSnap($data->token,$shoppingcart,"bni_va");
+        $data2 = MidtransHelper::chargeSnap($data->token,$shoppingcart,$bank_name);
 
         
         if(isset($data2['permata_va_number']))
         {
           $response->payment_type = $data2['payment_type'];
           $response->bank_name = 'permata';
-          $response->bank_code = BookingHelper::get_bankcode($bank_name);
+          $response->bank_code = BookingHelper::get_bankcode('permata');
           $response->va_number = $data2['permata_va_number'];
         }
         else
         {
           $response->payment_type = $data2['payment_type'];
           $response->bank_name = $data2['va_numbers'][0]['bank'];
-          $response->bank_code = BookingHelper::get_bankcode($data2['va_numbers'][0]['bank']);
+          $response->bank_code = BookingHelper::get_bankcode('bni');
           $response->va_number = $data2['va_numbers'][0]['va_number'];
         }
 

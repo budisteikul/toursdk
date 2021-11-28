@@ -1401,14 +1401,15 @@ class BookingHelper {
         return $shoppingcart;
 	}
 
-	public static function create_payment($sessionId,$payment_type="none")
+	public static function create_payment($sessionId,$payment_type="none",$bank="")
 	{
 		$shoppingcart = Cache::get('_'. $sessionId);
 
 		if($payment_type=="midtrans")
 		{
 
-				$response = MidtransHelper::createOrder($shoppingcart);
+				if($bank=="") $bank = "bni_va";
+				$response = MidtransHelper::createOrder($shoppingcart,$bank);
 				
 				$ShoppingcartPayment = (object) array(
 					'payment_provider' => 'midtrans',

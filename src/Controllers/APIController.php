@@ -1165,6 +1165,7 @@ class APIController extends Controller
                     if($data['transaction_status']=="settlement")
                     {
                         $shoppingcart->booking_status = 'CONFIRMED';
+                        $shoppingcart->save();
                         $shoppingcart->shoppingcart_payment->payment_status = 2;
                         $shoppingcart->shoppingcart_payment->save();
                         BookingHelper::shoppingcart_mail($shoppingcart);

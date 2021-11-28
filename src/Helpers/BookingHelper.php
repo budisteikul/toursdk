@@ -1370,7 +1370,14 @@ class BookingHelper {
 		
 	}
 
-	
+	public static function set_bookingStatus($sessionId,$booking_status='CONFIRMED')
+	{
+		$shoppingcart = Cache::get('_'. $sessionId);
+        $shoppingcart->booking_status = $booking_status;
+        Cache::forget('_'. $sessionId);
+        Cache::add('_'. $sessionId, $shoppingcart, 172800);
+        return $shoppingcart;
+	}
 
 	public static function set_confirmationCode($sessionId)
 	{
@@ -1386,10 +1393,6 @@ class BookingHelper {
 	public static function confirm_booking($sessionId,$sendMail=true)
 	{
 		$shoppingcart = Cache::get('_'. $sessionId);
-        $shoppingcart->booking_status = "CONFIRMED";
-
-        Cache::forget('_'. $sessionId);
-        Cache::add('_'. $sessionId, $shoppingcart, 172800);
 
         $shoppingcart = self::confirm_transaction($sessionId);
 
@@ -1584,6 +1587,80 @@ class BookingHelper {
     	return $uuid;
 	}
 	
+	public static function get_bookingStatus($shoppingcart)
+	{
+		$value = '';
+		if($shoppingcart->booking_status=="CONFIRMED")
+		{
+			$value = '<span class="badge badge-success">CONFIRMED</span>';
+		}
+		else if($shoppingcart->booking_status=="PENDING")
+		{
+			$value = '<span class="badge badge-warning">PENDING</span>';
+		}
+		else
+		{
+			$value = '<span class="badge badge-danger">CANCELED</span>';
+		}
+		return $value;
+	}
+
+	public static function get_paymentStatus($shoppingcart)
+	{
+		if(isset($shoppingcart->shoppingcart_payment->payment_status))
+		{
+			if($shoppingcart->shoppingcart_payment->payment_provider=="paypal")
+            {
+            	switch($shoppingcart->shoppingcart_payment->payment_status)
+				{
+					case 1:
+						return '<div><span class="badge badge-success"><i class="fab fa-paypal"></i> PAYPAL AUTHORIZED</span></div>';
+					break;
+					case 2:
+						return '<div><span class="badge badge-success"><i class="fab fa-paypal"></i> PAYPAL CAPTURED</span></div>';
+					break;
+					case 3:
+						return '<div><span class="badge badge-warning"><i class="fab fa-paypal"></i> PAYPAL VOIDED</span></div>';
+					break;
+					default:
+						return '';
+				}
+            }
+            if($shoppingcart->shoppingcart_payment->payment_provider=="midtrans")
+            {
+            	switch($shoppingcart->shoppingcart_payment->payment_status)
+				{
+					case 2:
+						return '<div>
+								<span class="badge badge-success"><i class="fas fa-university"></i> BANK TRANSFER PAID </span>
+								</div>';
+						break;
+					case 3:
+						return '<div>
+								<span class="badge badge-warning"><i class="fas fa-university"></i> BANK TRANSFER UNPAID </span>
+								</div>';
+						break;	
+					case 4:
+						return '<div>
+								<span class="badge badge-warning"><i class="fas fa-university"></i> BANK TRANSFER UNPAID </span><br />
+								Bank Name : '. Str::upper($shoppingcart->shoppingcart_payment->bank_name) .'  <br />
+								Bank Code : '. $shoppingcart->shoppingcart_payment->bank_code .'  <br />
+								VA Number : '. $shoppingcart->shoppingcart_payment->va_number .'
+								</div>';
+						break;
+					default:
+						return '';
+				}
+            }
+            if($shoppingcart->shoppingcart_payment->payment_provider=="none")
+            {
+            	return '<div><span class="badge badge-success">CASH</span></div>';
+            }
+		}
+		
+		return '<div><span class="badge badge-danger">NOT AVAILABLE</span></div>';
+	}
+
 	public static function payment_status($paymentStatus)
 	{
 		switch($paymentStatus)
@@ -1689,7 +1766,7 @@ class BookingHelper {
 		if($email!='') $invoice .= ' <b>Email :</b> '.$email.' <br />';
 		if($phone!='') $invoice .= ' <b>Phone :</b> '.$phone.' <br />';
 
-		$invoice .= ' <b>Status :</b> '. self::booking_status($shoppingcart);
+		$invoice .= ' <b>Status :</b> '. self::get_bookingStatus($shoppingcart);
 
 		return $invoice;
 	}

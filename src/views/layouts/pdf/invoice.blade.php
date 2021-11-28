@@ -223,9 +223,7 @@ footer {
                 	$min_date = $shoppingcart->shoppingcart_products()->orderBy('date','asc')->first()->date;
                 @endphp
                 <div class="date" style=" line-height: 18px; font-size:14px;">Due Date: {{ Carbon\Carbon::parse($min_date)->formatLocalized('%d %b %Y') }}</div>
-                @if(isset($shoppingcart->shoppingcart_payment->payment_status))
-                <div class="date" style=" line-height: 18px; font-size:14px;">Status: <b>{!! $BookingHelper->payment_status_public($shoppingcart->shoppingcart_payment->payment_status) !!}</b></div>
-                @endif
+                
         	</div>           
            </td>
          </tr>

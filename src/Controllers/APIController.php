@@ -991,7 +991,8 @@ class APIController extends Controller
     {
         $shoppingcart = Shoppingcart::where('id',$id)->where('session_id', $sessionId)->where(function($query){
             return $query->where('booking_status', 'CONFIRMED')
-                         ->orWhere('booking_status', 'CANCELED');
+                         ->orWhere('booking_status', 'CANCELED')
+                         ->orWhere('booking_status', 'PENDING');
         })->firstOrFail();
         
         $invoice = 'No Documents';
@@ -1017,30 +1018,26 @@ class APIController extends Controller
 
         
         $pdfUrl = array();
-        $bank_code = null;
-        $bank_name = null;
-        $va_number = null;
         
         if($shoppingcart->shoppingcart_payment->payment_provider=="midtrans") {
             $pdfUrl = '<a target="_blank" class="text-theme" href="'.url('/api').'/pdf/instruction/'. $shoppingcart->session_id .'/Instruction-'. $shoppingcart->confirmation_code .'.pdf"><i class="fas fa-file-invoice"></i> Instruction-'. $shoppingcart->confirmation_code .'.pdf</a><br />';
-            $bank_code = $shoppingcart->shoppingcart_payment->bank_code;
-            $bank_name = strtoupper($shoppingcart->shoppingcart_payment->bank_name);
-            //$va_number = GeneralHelper::splitSpace($shoppingcart->shoppingcart_payment->va_number,4);
-            $va_number = $shoppingcart->shoppingcart_payment->va_number;
         }
 
-        $status_asText = BookingHelper::payment_status_public($shoppingcart->shoppingcart_payment->payment_status);
-        if($shoppingcart->booking_status=="CANCELED") $status_asText = '<span class="badge badge-danger">CANCELED</span>';
+        $payment_status_asText = BookingHelper::get_paymentStatus($shoppingcart);
+        $booking_status_asText = BookingHelper::get_bookingStatus($shoppingcart);
+        //$status_asText = BookingHelper::payment_status_public($shoppingcart->shoppingcart_payment->payment_status);
+        //if($shoppingcart->booking_status=="CANCELED") $status_asText = '<span class="badge badge-danger">CANCELED</span>';
 
         $main_contact = BookingHelper::get_answer_contact($shoppingcart);
         
         $dataObj = array(
             'vendor' => $this->appName,
             'booking_status' => $shoppingcart->booking_status,
+            'booking_status_asText' => $booking_status_asText,
             'confirmation_code' => $shoppingcart->confirmation_code,
             'total' => $shoppingcart->currency .' '. GeneralHelper::numberFormat($shoppingcart->due_now),
-            'status' => $shoppingcart->shoppingcart_payment->payment_status,
-            'status_asText' => $status_asText,
+            'payment_status' => $shoppingcart->shoppingcart_payment->payment_status,
+            'payment_status_asText' => $payment_status_asText,
             'firstName' => $main_contact->firstName,
             'lastName' => $main_contact->lastName,
             'phoneNumber' => $main_contact->phoneNumber,
@@ -1049,9 +1046,6 @@ class APIController extends Controller
             'tickets' => $ticket,
             'paymentProvider' => $shoppingcart->shoppingcart_payment->payment_provider,
             'pdf_url' => $pdfUrl,
-            'bank_code' => $bank_code,
-            'bank_name' => $bank_name,
-            'va_number' => $va_number,
         );
         
         return response()->json([
@@ -1144,6 +1138,8 @@ class APIController extends Controller
         Cache::forget('_'. $sessionId);
         Cache::add('_'. $sessionId, $shoppingcart, 172800);
         
+        BookingHelper::set_bookingStatus($sessionId,'CONFIRMED');
+
         $shoppingcart = BookingHelper::confirm_booking($sessionId);
 
         return response()->json([
@@ -1168,6 +1164,7 @@ class APIController extends Controller
                 {
                     if($data['transaction_status']=="settlement")
                     {
+                        $shoppingcart->booking_status = 'CONFIRMED';
                         $shoppingcart->shoppingcart_payment->payment_status = 2;
                         $shoppingcart->shoppingcart_payment->save();
                         BookingHelper::shoppingcart_mail($shoppingcart);
@@ -1175,6 +1172,7 @@ class APIController extends Controller
                     }
                     else if($data['transaction_status']=="pending")
                     {
+                        $shoppingcart->booking_status = 'PENDING';
                         $shoppingcart->shoppingcart_payment->payment_status = 4;
                         $shoppingcart->shoppingcart_payment->save();
                         
@@ -1214,6 +1212,8 @@ class APIController extends Controller
     {
         $sessionId = $request->input('sessionId');
         
+        BookingHelper::set_bookingStatus($sessionId,'PENDING');
+
         BookingHelper::set_confirmationCode($sessionId);
 
         BookingHelper::create_payment($sessionId,"midtrans");

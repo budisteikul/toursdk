@@ -1179,7 +1179,7 @@ class APIController extends Controller
                     }
                     else
                     {
-                        $shoppingcart->shoppingcart_payment->payment_status = 0;
+                        $shoppingcart->shoppingcart_payment->payment_status = 3;
                         $shoppingcart->shoppingcart_payment->save();
                         $shoppingcart->booking_status = 'CANCELED';
                         $shoppingcart->save();

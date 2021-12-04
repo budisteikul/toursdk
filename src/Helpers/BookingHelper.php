@@ -1641,12 +1641,16 @@ class BookingHelper {
 								</div>';
 						break;	
 					case 4:
-						return '<div>
-								<span class="badge badge-warning"><i class="fas fa-university"></i> BANK TRANSFER UNPAID </span><br />
-								Bank Name : '. Str::upper($shoppingcart->shoppingcart_payment->bank_name) .'  <br />
-								Bank Code : '. $shoppingcart->shoppingcart_payment->bank_code .'  <br />
-								VA Number : '. $shoppingcart->shoppingcart_payment->va_number .'
-								</div>';
+						return '
+								<div class="card mb-4">
+								<div class="card-body bg-light">
+								<span class="badge badge-warning mb-2"><i class="fas fa-university"></i> BANK TRANSFER UNPAID </span><br />
+								Nama Bank : '. Str::upper($shoppingcart->shoppingcart_payment->bank_name) .'  <br />
+								Kode Bank : '. $shoppingcart->shoppingcart_payment->bank_code .'  <br />
+								No Rekening : '. GeneralHelper::splitSpace($shoppingcart->shoppingcart_payment->va_number,4) .'
+								</div>
+								</div>
+								';
 						break;
 					default:
 						return '';
@@ -1657,7 +1661,6 @@ class BookingHelper {
             	return '<div><span class="badge badge-success">CASH</span></div>';
             }
 		}
-		
 		return '<div><span class="badge badge-danger">NOT AVAILABLE</span></div>';
 	}
 

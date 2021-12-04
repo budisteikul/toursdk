@@ -1620,7 +1620,7 @@ class BookingHelper {
 						return '<div><span class="badge badge-success"><i class="fab fa-paypal"></i> PAYPAL CAPTURED</span></div>';
 					break;
 					case 3:
-						return '<div><span class="badge badge-warning"><i class="fab fa-paypal"></i> PAYPAL VOIDED</span></div>';
+						return '<div><span class="badge badge-danger"><i class="fab fa-paypal"></i> PAYPAL VOIDED</span></div>';
 					break;
 					default:
 						return '';
@@ -1637,7 +1637,7 @@ class BookingHelper {
 						break;
 					case 3:
 						return '<div>
-								<span class="badge badge-warning"><i class="fas fa-university"></i> BANK TRANSFER UNPAID </span>
+								<span class="badge badge-danger"><i class="fas fa-university"></i> BANK TRANSFER NOT PAID </span>
 								</div>';
 						break;	
 					case 4:

@@ -123,7 +123,7 @@ html,body {
 	<span class="cls_012">{{ $GeneralHelper->splitSpace($shoppingcart->shoppingcart_payment->va_number,4) }}</span>
 </div>
 <div style="position:absolute;left:207.00px;top:694.50px" class="cls_008"><span class="cls_008">Masukkan jumlah tagihan</span></div>
-<div style="position:absolute;left:393.01px;top:694.52px" class="cls_007"><span class="cls_007">Masukkan {{count($shoppingcart->shoppingcart_payment->va_number)}} digit</span></div>
+<div style="position:absolute;left:393.01px;top:694.52px" class="cls_007"><span class="cls_007">Masukkan {{strlen($shoppingcart->shoppingcart_payment->va_number)}} digit</span></div>
 <div style="position:absolute;left:207.00px;top:709.30px" class="cls_008"><span class="cls_008">yang akan anda bayar secara</span></div>
 <div style="position:absolute;left:393.00px;top:709.32px" class="cls_007"><span class="cls_007">Nomor Rekening, lalu tekan</span></div>
 <div style="position:absolute;left:207.00px;top:724.09px" class="cls_008"><span class="cls_008">lengkap.</span></div>
@@ -152,7 +152,7 @@ html,body {
 </div>
 <div style="position:absolute;left:393.00px;top:1363.49px" class="cls_007"><span class="cls_007">Masukkan nomor</span><span class="cls_008"> {{$shoppingcart->shoppingcart_payment->bank_code}}</span><span class="cls_007"> dan</span></div>
 <div style="position:absolute;left:207.00px;top:1363.50px" class="cls_007"><span class="cls_007">Pilih </span><span class="cls_008">Antar Bank Online</span></div>
-<div style="position:absolute;left:392.99px;top:1378.29px" class="cls_007"><span class="cls_007">{{count($shoppingcart->shoppingcart_payment->va_number)}} digit Nomor Rekening, lalu</span></div>
+<div style="position:absolute;left:392.99px;top:1378.29px" class="cls_007"><span class="cls_007">{{strlen($shoppingcart->shoppingcart_payment->va_number)}} digit Nomor Rekening, lalu</span></div>
 <div style="position:absolute;left:392.99px;top:1393.49px" class="cls_007"><span class="cls_007">tekan </span><span class="cls_008">Benar</span></div>
 <div style="position:absolute;left:205.78px;top:1428.67px" class="cls_006"><span class="cls_006">5</span></div>
 <div style="position:absolute;left:392.78px;top:1428.67px" class="cls_006"><span class="cls_006">6</span></div>
@@ -197,7 +197,7 @@ html,body {
 	<span class="cls_012">{{ $GeneralHelper->splitSpace($shoppingcart->shoppingcart_payment->va_number,4) }}</span>
 </div>
 <div style="position:absolute;left:207.00px;top:2368.00px" class="cls_008"><span class="cls_008">Masukkan jumlah tagihan</span></div>
-<div style="position:absolute;left:394.00px;top:2370.00px" class="cls_007"><span class="cls_007">Masukkan {{count($shoppingcart->shoppingcart_payment->va_number)}} digit Nomor</span></div>
+<div style="position:absolute;left:394.00px;top:2370.00px" class="cls_007"><span class="cls_007">Masukkan {{strlen($shoppingcart->shoppingcart_payment->va_number)}} digit Nomor</span></div>
 <div style="position:absolute;left:483.73px;top:2370.00px" class="cls_007"></div>
 <div style="position:absolute;left:207.00px;top:2382.80px" class="cls_008"><span class="cls_008">yang akan anda bayar secara</span></div>
 <div style="position:absolute;left:393.92px;top:2384.80px" class="cls_007"><span class="cls_007">Rekening, lalu tekan</span><span class="cls_008"> Benar</span></div>

@@ -207,11 +207,11 @@ footer {
            <td style="background-color:#FFFFFF; text-align:left; padding-left:0px; padding-top:0px; width:40%">
            
          <div id="client">
-          <div class="to" style="font-size: 14px; color: #0087C3; line-height: 18px; ">INVOICE TO :</div>
-          <h2 class="name" style=" line-height: 18px; font-size:14px;">{{ $main_contact->firstName }}
+          <div class="to" style="font-size: 14px; color: #0087C3; line-height: 18px; ">INVOICE TO</div>
+          <h2 class="name" style=" line-height: 18px; font-size:14px;">Name : {{ $main_contact->firstName }}
                         {{ $main_contact->lastName }} </h2>
-          <div class="address" style=" line-height: 18px; font-size:14px;">{{ $main_contact->phoneNumber }}</div>
-          <div class="email" style=" line-height: 18px; font-size:14px;"><a href="mailto:{{ $main_contact->email }} ">{{ $main_contact->email }} </a></div>
+          <div class="address" style=" line-height: 18px; font-size:14px;">Phone : {{ $main_contact->phoneNumber }}</div>
+          <div class="email" style=" line-height: 18px; font-size:14px;">Email : <a href="mailto:{{ $main_contact->email }} ">{{ $main_contact->email }} </a></div>
         </div>
            				
            </td>
@@ -300,7 +300,7 @@ footer {
         </tfoot>
 </table>
 <div id="notices">
-<div style="font-size: 14px; color: #0087C3; line-height: 18px; ">PAYMENT :</div>  
+<div style="font-size: 14px; color: #0087C3; line-height: 18px; ">PAYMENT</div>  
 <div class="notice"><small>{!! $BookingHelper->get_paymentStatus($shoppingcart) !!}</small></div>
 </div>
 <footer>

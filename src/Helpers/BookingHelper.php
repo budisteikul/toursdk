@@ -1661,9 +1661,10 @@ class BookingHelper {
             	return '<div><span class="badge badge-success">CASH</span></div>';
             }
 		}
-		return '<div><span class="badge badge-danger">NOT AVAILABLE</span></div>';
+		return '';
 	}
 
+	/*
 	public static function payment_status($paymentStatus)
 	{
 		switch($paymentStatus)
@@ -1707,6 +1708,7 @@ class BookingHelper {
                     }
        return $paymentStatus;
 	}
+	*/
 
 	public static function get_answer($shoppingcart,$question_id)
 	{

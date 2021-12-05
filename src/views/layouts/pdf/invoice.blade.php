@@ -305,6 +305,7 @@ footer {
 <div style="font-size: 14px; color: #AAAAAA; line-height: 18px; ">PAYMENT</div>  
 <div class="notice"><small>{!! $BookingHelper->get_paymentStatus($shoppingcart) !!}</small></div>
 </div>
+<div style="display: block;"></div>
 <footer>
 	Invoice was created on a computer and is valid without the signature and seal.
 </footer>

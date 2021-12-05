@@ -155,8 +155,9 @@ h2.name {
 }
 
 #notices{
-  padding-left: 6px;
-  border-left: 6px solid #0087C3;  
+  padding: 6px 6px 6px 6px;
+  border: 1px dashed #CCCCCC;
+  width: 40%;
 }
 
 #notices .notice {
@@ -218,11 +219,11 @@ footer {
            <td style="background-color:#FFFFFF; text-align:right; padding-right:0px; padding-top:0px;">
             <div id="invoice">
           		<h1>INVOICE {{ $shoppingcart->confirmationCode }}</h1>
-          		<div class="date" style=" line-height: 18px; font-size:14px;">Date of Invoice: {{ Carbon\Carbon::parse($shoppingcart->created_at)->formatLocalized('%d %b %Y') }}</div>
+          		<div class="date" style=" line-height: 18px; font-size:14px;">Date of Invoice : {{ Carbon\Carbon::parse($shoppingcart->created_at)->formatLocalized('%d %b %Y') }}</div>
           		@php
                 	$min_date = $shoppingcart->shoppingcart_products()->orderBy('date','asc')->first()->date;
                 @endphp
-                <div class="date" style=" line-height: 18px; font-size:14px;">Due Date: {{ Carbon\Carbon::parse($min_date)->formatLocalized('%d %b %Y') }}</div>
+                <div class="date" style=" line-height: 18px; font-size:14px;">Due Date : {{ Carbon\Carbon::parse($min_date)->formatLocalized('%d %b %Y') }}</div>
                 
         	</div>           
            </td>
@@ -299,8 +300,9 @@ footer {
           
         </tfoot>
 </table>
-<div id="notices">
-<div style="font-size: 14px; color: #0087C3; line-height: 18px; ">PAYMENT</div>  
+
+<div id="notices" style="margin-top: 10px;float:right;">
+<div style="font-size: 14px; color: #AAAAAA; line-height: 18px; ">PAYMENT</div>  
 <div class="notice"><small>{!! $BookingHelper->get_paymentStatus($shoppingcart) !!}</small></div>
 </div>
 <footer>

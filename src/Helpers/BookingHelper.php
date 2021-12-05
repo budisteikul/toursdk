@@ -1694,7 +1694,11 @@ class BookingHelper {
             }
             if($shoppingcart->shoppingcart_payment->payment_provider=="none")
             {
-            	return '<div><span class="badge badge-success">CASH</span></div>';
+            	return '<div class="card mb-4">
+								<div class="card-body bg-light">
+									<span class="badge badge-success">CASH</span>
+								</div>
+						</div>';
             }
 		}
 		return '';

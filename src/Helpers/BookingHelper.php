@@ -1611,16 +1611,42 @@ class BookingHelper {
 		{
 			if($shoppingcart->shoppingcart_payment->payment_provider=="paypal")
             {
+            	$text = '';
+
+            	//if($shoppingcart->currency!=$shoppingcart->shoppingcart_payment->currency)
+            	//{
+            		$text .= '<br />Total : '.$shoppingcart->shoppingcart_payment->currency.' '. $shoppingcart->shoppingcart_payment->amount .'<br />';
+                	$text .= 'Paypal Rate : '. BookingHelper::get_rate($shoppingcart) .'<br />';
+            	//}
+
             	switch($shoppingcart->shoppingcart_payment->payment_status)
 				{
 					case 1:
-						return '<div><span class="badge badge-success"><i class="fab fa-paypal"></i> PAYPAL AUTHORIZED</span></div>';
+						return '
+								<div class="card mb-4">
+								<div class="card-body bg-light">
+									<span class="badge badge-success mb-2"><i class="fab fa-paypal"></i> PAYPAL AUTHORIZED</span>
+								'. $text .'
+								</div>
+								</div>';
 					break;
 					case 2:
-						return '<div><span class="badge badge-success"><i class="fab fa-paypal"></i> PAYPAL CAPTURED</span></div>';
+						return '
+								<div class="card mb-4">
+								<div class="card-body bg-light">
+									<span class="badge badge-success mb-2"><i class="fab fa-paypal"></i> PAYPAL CAPTURED</span>
+								'. $text .'
+								</div>
+								</div>';
 					break;
 					case 3:
-						return '<div><span class="badge badge-danger"><i class="fab fa-paypal"></i> PAYPAL VOIDED</span></div>';
+						return '
+								<div class="card mb-4">
+								<div class="card-body bg-light">
+									<span class="badge badge-danger mb-2"><i class="fab fa-paypal"></i> PAYPAL VOIDED</span>
+								'. $text .'
+								</div>
+								</div>';
 					break;
 					default:
 						return '';
@@ -1631,13 +1657,23 @@ class BookingHelper {
             	switch($shoppingcart->shoppingcart_payment->payment_status)
 				{
 					case 2:
-						return '<div>
-								<span class="badge badge-success"><i class="fas fa-university"></i> BANK TRANSFER PAID </span>
+						return '<div class="card mb-4">
+								<div class="card-body bg-light">
+								<span class="badge badge-success mb-2"><i class="fas fa-university"></i> BANK TRANSFER PAID </span><br />
+								Nama Bank : '. Str::upper($shoppingcart->shoppingcart_payment->bank_name) .'  <br />
+								Kode Bank : '. $shoppingcart->shoppingcart_payment->bank_code .'  <br />
+								No Rekening : '. GeneralHelper::splitSpace($shoppingcart->shoppingcart_payment->va_number,4) .'
+								</div>
 								</div>';
 						break;
 					case 3:
-						return '<div>
-								<span class="badge badge-danger"><i class="fas fa-university"></i> BANK TRANSFER NOT PAID </span>
+						return '<div class="card mb-4">
+								<div class="card-body bg-light">
+								<span class="badge badge-danger mb-2"><i class="fas fa-university"></i> BANK TRANSFER NOT PAID </span><br />
+								Nama Bank : '. Str::upper($shoppingcart->shoppingcart_payment->bank_name) .'  <br />
+								Kode Bank : '. $shoppingcart->shoppingcart_payment->bank_code .'  <br />
+								No Rekening : '. GeneralHelper::splitSpace($shoppingcart->shoppingcart_payment->va_number,4) .'
+								</div>
 								</div>';
 						break;	
 					case 4:

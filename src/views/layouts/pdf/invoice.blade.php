@@ -207,7 +207,7 @@ footer {
            <td style="background-color:#FFFFFF; text-align:left; padding-left:0px; padding-top:0px; width:40%">
            
          <div id="client">
-          <div class="to" style=" line-height: 18px; font-size:14px;">INVOICE TO:</div>
+          <div class="to" style="font-size: 14px; color: #0087C3; line-height: 18px; ">INVOICE TO :</div>
           <h2 class="name" style=" line-height: 18px; font-size:14px;">{{ $main_contact->firstName }}
                         {{ $main_contact->lastName }} </h2>
           <div class="address" style=" line-height: 18px; font-size:14px;">{{ $main_contact->phoneNumber }}</div>
@@ -284,35 +284,24 @@ footer {
             <td colspan="2">TOTAL</td>
             <td>{{ $GeneralHelper->numberFormat($total) }}</td>
           </tr>
-          @php
-            $refunded = $total * -1;
-            $currency = $shoppingcart->currency;
-            
-          @endphp
-          @if($shoppingcart->booking_status=="CANCELED")
+          @if($shoppingcart->due_on_arrival>0)
           <tr>
             <td colspan="2"></td>
-            <td colspan="2">REFUNDED</td>
-            <td>{{ $GeneralHelper->numberFormat($refunded) }}</td>
+            <td colspan="2">DUE ON ARRIVAL</td>
+            <td>{{ $GeneralHelper->numberFormat($shoppingcart->due_on_arrival) }}</td>
           </tr>
-          <tr>
-            <td colspan="2"></td>
-            <td colspan="2">DUE NOW</td>
-            <td>0</td>
-          </tr>
-          @else
+          @endif
           <tr>
             <td colspan="2"></td>
             <td colspan="2">DUE NOW</td>
             <td>{{ $GeneralHelper->numberFormat($shoppingcart->due_now) }}</td>
           </tr>
-          @endif
+          
         </tfoot>
 </table>
-<div id="thanks">Thank you for your booking with {{env('APP_NAME')}}</div>   
 <div id="notices">
-<div>NOTICE:</div>
-<div class="notice"><small>{!! $notice !!}</small></div>
+<div style="font-size: 14px; color: #0087C3; line-height: 18px; ">PAYMENT :</div>  
+<div class="notice"><small>{!! $BookingHelper->get_paymentStatus($shoppingcart) !!}</small></div>
 </div>
 <footer>
 	Invoice was created on a computer and is valid without the signature and seal.

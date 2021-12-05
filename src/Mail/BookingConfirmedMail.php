@@ -33,21 +33,9 @@ class BookingConfirmedMail extends Mailable
     public function build()
     {
         $shoppingcart = $this->shoppingcart;
-        $notice = '';
         $qrcode = base64_encode(QrCode::errorCorrection('H')->format('png')->size(111)->margin(0)->generate( env('APP_URL') .'/booking/receipt/'.$shoppingcart->id.'/'.$shoppingcart->session_id  ));
 
-        if($shoppingcart->currency!=$shoppingcart->shoppingcart_payment->currency)
-        {
-            $notice .= 'Pay : '.$shoppingcart->shoppingcart_payment->currency.' '. $shoppingcart->shoppingcart_payment->amount .'<br />';
-            $notice .= 'Rate : '. BookingHelper::get_rate($shoppingcart) .'<br />';
-        }
-
-        if($shoppingcart->due_on_arrival>0)
-        {
-            $notice .= 'Due on arrival : '.$shoppingcart->currency.' '. GeneralHelper::numberFormat($shoppingcart->due_on_arrival) .'<br />';
-        }
-
-        $invoice = PDF::setOptions(['tempDir' => storage_path(),'isRemoteEnabled' => true])->loadView('toursdk::layouts.pdf.invoice', compact('shoppingcart','notice','qrcode'))->setPaper('a4', 'portrait');
+        $invoice = PDF::setOptions(['tempDir' => storage_path(),'isRemoteEnabled' => true])->loadView('toursdk::layouts.pdf.invoice', compact('shoppingcart','qrcode'))->setPaper('a4', 'portrait');
 
         $mail = $this->view('toursdk::layouts.mail.booking-confirmed')
                     ->text('toursdk::layouts.mail.booking-confirmed_plain')

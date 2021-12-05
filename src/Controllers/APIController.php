@@ -1065,25 +1065,10 @@ class APIController extends Controller
     public function invoice($sessionId,$id)
     {
         $shoppingcart = Shoppingcart::where('confirmation_code',$id)->where('session_id',$sessionId)->firstOrFail();
-
-        $notice = '';
-        $qrcode = base64_encode(QrCode::errorCorrection('H')->format('png')->size(111)->margin(0)->generate( $this->appUrl .'/booking/receipt/'.$shoppingcart->id.'/'.$shoppingcart->session_id  ));
-
-        if(isset($shoppingcart->shoppingcart_payment->currency))
-        {
-            if($shoppingcart->currency!=$shoppingcart->shoppingcart_payment->currency)
-            {
-                $notice .= 'Pay : '.$shoppingcart->shoppingcart_payment->currency.' '. $shoppingcart->shoppingcart_payment->amount .'<br />';
-                $notice .= 'Paypal Rate : '. BookingHelper::get_rate($shoppingcart) .'<br />';
-            }
-        }
-
-        if($shoppingcart->due_on_arrival>0)
-        {
-            $notice .= 'Due on arrival : '.$shoppingcart->currency.' '. GeneralHelper::numberFormat($shoppingcart->due_on_arrival) .'<br />';
-        }
         
-        $pdf = PDF::setOptions(['tempDir' => storage_path(),'isRemoteEnabled' => true])->loadView('toursdk::layouts.pdf.invoice', compact('shoppingcart','notice','qrcode'))->setPaper('a4', 'portrait');
+        $qrcode = base64_encode(QrCode::errorCorrection('H')->format('png')->size(111)->margin(0)->generate( $this->appUrl .'/booking/receipt/'.$shoppingcart->id.'/'.$shoppingcart->session_id  ));
+        
+        $pdf = PDF::setOptions(['tempDir' => storage_path(),'isRemoteEnabled' => true])->loadView('toursdk::layouts.pdf.invoice', compact('shoppingcart','qrcode'))->setPaper('a4', 'portrait');
         return $pdf->download('Invoice-'. $shoppingcart->confirmation_code .'.pdf');
     }
     

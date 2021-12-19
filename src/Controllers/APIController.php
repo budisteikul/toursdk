@@ -160,24 +160,7 @@ class APIController extends Controller
         
     }
     
-    public function footer()
-    {
-        $jscript = '
-        <div id="TA_selfserveprop464" class="TA_selfserveprop">
-            <ul id="M4FDXm" class="TA_links gMaciDKq">
-            <li id="gVS5CViuw8C" class="jszmrwRlqic">
-                <a target="_blank" href="https://www.tripadvisor.com/Attraction_Review-g14782503-d17523331-Reviews-Vertikal_Trip-Yogyakarta_Yogyakarta_Region_Java.html">
-                    <img src="https://www.tripadvisor.com/img/cdsi/img2/branding/v2/Tripadvisor_lockup_horizontal_secondary_registered-11900-2.svg" alt="TripAdvisor"/>
-                </a>
-            </li>
-            </ul>
-        </div>
-        <script async src="https://www.jscache.com/wejs?wtype=selfserveprop&amp;uniq=464&amp;locationId=17523331&amp;lang=en_US&amp;rating=true&amp;nreviews=0&amp;writereviewlink=true&amp;popIdx=true&amp;iswide=true&amp;border=true&amp;display_version=2" data-loadtrk onload="this.loadtrk=true"></script>';
-        return response()->json([
-            'message' => 'success',
-            'footer' => $jscript
-        ], 200);
-    }
+    
 
     public function navbar()
     {

@@ -3,7 +3,6 @@
 	// API
 	Route::get('/api/home', 'budisteikul\toursdk\Controllers\APIController@categories');
 	Route::get('/api/navbar', 'budisteikul\toursdk\Controllers\APIController@navbar');
-	Route::get('/api/footer', 'budisteikul\toursdk\Controllers\APIController@footer');
 	Route::get('/api/tawkto/{id}', 'budisteikul\toursdk\Controllers\APIController@tawkto');
 
 	Route::post('/api/review', 'budisteikul\toursdk\Controllers\APIController@review');

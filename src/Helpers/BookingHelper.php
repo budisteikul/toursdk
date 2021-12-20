@@ -1411,7 +1411,7 @@ class BookingHelper {
 		if($payment_type=="midtrans")
 		{
 
-				if($bank=="") $bank = "bni_va";
+				if($bank=="") $bank = "permata_va";
 				$response = MidtransHelper::createOrder($shoppingcart,$bank);
 				
 				$ShoppingcartPayment = (object) array(

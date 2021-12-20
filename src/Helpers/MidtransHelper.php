@@ -62,15 +62,15 @@ class MidtransHelper {
         return $data;
   }
 
-  public static function createOrder($shoppingcart,$bank_name)
+  public static function createOrder($shoppingcart,$payment_type)
   {
         //permata = permata_va
         //bni = bni_va
 
         $response = new \stdClass();
 
-        $data = MidtransHelper::createSnap($shoppingcart);
-        $data2 = MidtransHelper::chargeSnap($data->token,$shoppingcart,$bank_name);
+        $data = MidtransHelper::createSnap($shoppingcart,$payment_type);
+        $data2 = MidtransHelper::chargeSnap($data->token,$shoppingcart,$payment_type);
 
         
         if(isset($data2['permata_va_number']))
@@ -92,7 +92,7 @@ class MidtransHelper {
         return $response;
   }
 
-	public static function createSnap($shoppingcart)
+	public static function createSnap($shoppingcart,$payment_type)
     {
         $first_name = BookingHelper::get_answer($shoppingcart,'firstName');
         $last_name = BookingHelper::get_answer($shoppingcart,'lastName');
@@ -105,7 +105,30 @@ class MidtransHelper {
 
         $endpoint = self::midtransSnapEndpoint() ."/snap/v1/transactions";
 
-        $data = [
+        if($payment_type=="permata_va")
+        {
+          $data = [
+            'transaction_details' => [
+              'order_id' => $order_id,
+              'gross_amount' => $amount
+            ],
+            'customer_details' => [
+              'first_name' => $first_name,
+              'last_name' => $last_name,
+              'email' => $email,
+              'phone' => $phone
+            ],
+            'permata_va' => [
+              'recipient_name' => $first_name .' '. $last_name
+            ],
+            'callbacks' => [
+              'finish' => '',
+            ]
+          ];
+        }
+        else
+        {
+          $data = [
             'transaction_details' => [
               'order_id' => $order_id,
               'gross_amount' => $amount
@@ -120,6 +143,7 @@ class MidtransHelper {
               'finish' => '',
             ]
           ];
+        }
 
         $headers = [
               'Accept' => 'application/jsons',

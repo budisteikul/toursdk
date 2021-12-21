@@ -679,6 +679,7 @@ class APIController extends Controller
         $shoppingcart = Cache::get('_'. $sessionId);
 
         
+        
         $dataObj = array();
         $dataObj2 = array();
         

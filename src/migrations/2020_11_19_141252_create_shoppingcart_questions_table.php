@@ -22,6 +22,7 @@ class CreateShoppingcartQuestionsTable extends Migration
                   ->onDelete('cascade')->onUpdate('cascade');
                     
             $table->string('type')->nullable();
+            $table->string('when_to_ask')->default('booking');
             $table->string('booking_id')->nullable();
             $table->string('question_id')->nullable();
             $table->string('label')->nullable();
@@ -30,9 +31,9 @@ class CreateShoppingcartQuestionsTable extends Migration
             $table->string('required')->nullable();
             $table->string('select_option')->nullable();
             $table->string('select_multiple')->nullable();
-            $table->string('help')->nullable();
+            $table->text('help')->nullable();
+            $table->text('answer')->nullable();
             $table->string('order')->nullable();
-            $table->string('answer')->nullable();
 
             $table->timestamps(6);
         });

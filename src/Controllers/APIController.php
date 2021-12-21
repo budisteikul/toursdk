@@ -653,6 +653,7 @@ class APIController extends Controller
     {
         $contents = BokunHelper::get_addshoppingcart($id,json_decode($request->getContent(), true));
         
+       
         $sessionId = $id;
         
         $value = Cache::get('_'. $id, 'empty');
@@ -678,8 +679,6 @@ class APIController extends Controller
 
         $shoppingcart = Cache::get('_'. $sessionId);
 
-        
-        
         $dataObj = array();
         $dataObj2 = array();
         

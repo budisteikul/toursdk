@@ -872,6 +872,7 @@ class BookingHelper {
 		//===============================================
 
 		$questions = BokunHelper::get_questionshoppingcart($id);
+
 		foreach($shoppingcart->questions as $key => $question)
 		{
 			if($question->type=='activityBookings')
@@ -926,10 +927,9 @@ class BookingHelper {
 
 			}
 
-			// ActivityBookings question
+			// ActivityBookings question per booking
 			if(isset($questions->checkoutOptions[$ii]->perBookingQuestions)){
 				$activityBookingId = $questions->checkoutOptions[$ii]->activityBookingDetail->activityBookingId;
-				//ShoppingcartQuestion::where('booking_id',$activityBookingId)->where('type','activityBookings')->delete();
 				for($jj = 0; $jj < count($questions->checkoutOptions[$ii]->perBookingQuestions); $jj++)
 				{
 					$activityBookingQuestion = $questions->checkoutOptions[$ii]->perBookingQuestions[$jj];

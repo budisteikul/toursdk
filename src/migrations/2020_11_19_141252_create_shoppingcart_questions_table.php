@@ -32,7 +32,7 @@ class CreateShoppingcartQuestionsTable extends Migration
             $table->string('select_option')->nullable();
             $table->string('select_multiple')->nullable();
             $table->text('help')->nullable();
-            $table->text('answer')->nullable();
+            $table->longText('answer')->nullable();
             $table->string('order')->nullable();
 
             $table->timestamps(6);

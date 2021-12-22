@@ -503,6 +503,7 @@ class BookingHelper {
 
 			$ShoppingcartQuestions[] = (object) array(
 				'type' => $scq_type,
+				'when_to_ask' => 'booking',
 				'question_id' => $scq_question_id,
 				'booking_id' => $scq_booking_id,
 				'label' => $scq_label,
@@ -542,6 +543,7 @@ class BookingHelper {
 
 					$ShoppingcartQuestions[] = (object) array(
 						'type' => $scq_type,
+						'when_to_ask' => 'booking',
 						'question_id' => $scq_question_id,
 						'booking_id' => $scq_booking_id,
 						'label' => $scq_label,
@@ -566,7 +568,6 @@ class BookingHelper {
 					$activityBookingQuestion = $questions->checkoutOptions[$ii]->perBookingQuestions[$jj];
 
 					$scq_type = 'activityBookings';
-					$scq_when_to_ask = 'booking';
 					$scq_booking_id = $activityBookingId;
 					$scq_question_id =  $activityBookingQuestion->questionId;
 					$scq_label = $activityBookingQuestion->label;
@@ -608,7 +609,7 @@ class BookingHelper {
 
 					$ShoppingcartQuestions[] = (object) array(
 						'type' => $scq_type,
-						'when_to_ask' => $scq_when_to_ask,
+						'when_to_ask' => 'booking',
 						'question_id' => $scq_question_id,
 						'booking_id' => $scq_booking_id,
 						'label' => $scq_label,
@@ -914,6 +915,7 @@ class BookingHelper {
 
 					$ShoppingcartQuestions[] = (object) array(
 						'type' => $scq_type,
+						'when_to_ask' => 'booking',
 						'question_id' => $scq_question_id,
 						'booking_id' => $scq_booking_id,
 						'label' => $scq_label,
@@ -938,7 +940,6 @@ class BookingHelper {
 					$activityBookingQuestion = $questions->checkoutOptions[$ii]->perBookingQuestions[$jj];
 					
 					$scq_type = 'activityBookings';
-					$scq_when_to_ask = 'booking';
 					$scq_booking_id = $activityBookingId;
 					$scq_question_id =  $activityBookingQuestion->questionId;
 					$scq_label = $activityBookingQuestion->label;
@@ -976,7 +977,7 @@ class BookingHelper {
 
 					$ShoppingcartQuestions[] = (object) array(
 						'type' => $scq_type,
-						'when_to_ask' => $scq_when_to_ask,
+						'when_to_ask' => 'booking',
 						'question_id' => $scq_question_id,
 						'booking_id' => $scq_booking_id,
 						'label' => $scq_label,
@@ -1328,7 +1329,7 @@ class BookingHelper {
 			$shoppingcart_question = new ShoppingcartQuestion();
 			$shoppingcart_question->shoppingcart_id = $shoppingcart->id;
 			$shoppingcart_question->type = $question->type;
-			$shoppingcart_question->when_to_ask = $question->when_to_ask;
+			if(isset($question->when_to_ask)) $shoppingcart_question->when_to_ask = $question->when_to_ask;
 			$shoppingcart_question->booking_id = $question->booking_id;
 			$shoppingcart_question->question_id = $question->question_id;
 			$shoppingcart_question->label = $question->label;

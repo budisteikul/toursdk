@@ -812,6 +812,7 @@ class APIController extends Controller
                         $dataObj7[] = array(
                             'question_id' => $shoppingcart_question->question_id,
                             'required' => $shoppingcart_question->required,
+                            'when_to_ask' => $shoppingcart_question->when_to_ask,
                             'data_type' => $shoppingcart_question->data_type,
                             'label' => $shoppingcart_question->label,
                             'help' => $shoppingcart_question->help,

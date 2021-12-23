@@ -806,7 +806,7 @@ class APIController extends Controller
                 if($shoppingcart_product->booking_id===$shoppingcart_question->booking_id)
                 {
                     //
-                    if($shoppingcart_question->booking_id!="")
+                    if($shoppingcart_question->when_to_ask=="booking")
                     {
                         
                         $dataObj7[] = array(

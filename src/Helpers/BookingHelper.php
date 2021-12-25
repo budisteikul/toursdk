@@ -877,6 +877,8 @@ class BookingHelper {
 
 		$questions = BokunHelper::get_questionshoppingcart($id);
 
+
+
 		foreach($shoppingcart->questions as $key => $question)
 		{
 			if($question->type=='activityBookings')
@@ -995,6 +997,7 @@ class BookingHelper {
 				}
 			}
 		}
+
 		$shoppingcart->questions = $ShoppingcartQuestions;
 		
 		//===========================================

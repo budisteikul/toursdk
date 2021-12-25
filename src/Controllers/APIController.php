@@ -679,8 +679,9 @@ class APIController extends Controller
 
         $shoppingcart = Cache::get('_'. $sessionId);
 
-        $dataObj = array();
-        $dataObj2 = array();
+        $dataShoppingcart = array();
+        $dataProducts = array();
+        
         
 
         foreach(collect($shoppingcart->products)->sortBy('booking_id') as $shoppingcart_product)
@@ -716,7 +717,7 @@ class APIController extends Controller
                 $product_total_asText = '<b>'.GeneralHelper::numberFormat($product_total).'</b>';
             }
 
-            $dataObj3 = array();
+            $dataPickup = array();
             foreach($shoppingcart_product->product_details as $product_detail)
             {
                 if($product_detail->type=="pickup")
@@ -730,7 +731,7 @@ class APIController extends Controller
                         $pickup_price_asText = '<b>'. GeneralHelper::numberFormat($product_detail->total) .'</b>';
                     }
 
-                    $dataObj3[] = array(
+                    $dataPickup[] = array(
                         'title' => 'Pick-up and drop-off services',
                         'price' => $pickup_price_asText,
                         'unit_price' => $product_detail->unit_price,
@@ -740,7 +741,7 @@ class APIController extends Controller
             }
 
             
-            $dataObj4 = array();
+            $dataExtra = array();
             foreach($shoppingcart_product->product_details as $product_detail)
             {
                 if($product_detail->type=="extra")
@@ -755,7 +756,7 @@ class APIController extends Controller
                         $extra_price_asText = '<b>'. GeneralHelper::numberFormat($product_detail->total) .'</b>';
                     }
 
-                    $dataObj4[] = array(
+                    $dataExtra[] = array(
                         'title' => 'Extra',
                         'price' => $extra_price_asText,
                         'unit_price' => $extra_unit_price_asText,
@@ -764,7 +765,7 @@ class APIController extends Controller
                 }
             }
 
-            $dataObj2[] = array(
+            $dataProducts[] = array(
                 'booking_id' => $shoppingcart_product->booking_id,
                 'title' => $shoppingcart_product->title,
                 'product_total' => $product_total_asText,
@@ -772,19 +773,19 @@ class APIController extends Controller
                 'date' => ProductHelper::datetotext($shoppingcart_product->date),
                 'rate' => $shoppingcart_product->rate,
                 'product_detail' => $product_detail_asText,
-                'pickups' => $dataObj3,
-                'extras' => $dataObj4,
+                'pickups' => $dataPickup,
+                'extras' => $dataExtra,
             );
             
         }    
         
            
-        $dataObj5 = array();
+        $dataMainQuestion = array();
         foreach(collect($shoppingcart->questions)->sortBy('order') as $shoppingcart_question)
         {
             if($shoppingcart_question->type=='mainContactDetails')
             {
-                $dataObj5[] = array(
+                $dataMainQuestion[] = array(
                     'question_id' => $shoppingcart_question->question_id,
                     'required' => $shoppingcart_question->required,
                     'data_format' => $shoppingcart_question->data_format,
@@ -795,21 +796,35 @@ class APIController extends Controller
         }
 
         
-        $dataObj6 = array();
+        $dataProductQuestion = array();
         foreach(collect($shoppingcart->products)->sortBy('booking_id') as $shoppingcart_product)
         {
             
-            $dataObj7 = array();
+            $dataQuestionBooking = array();
             foreach(collect($shoppingcart->questions)->sortBy('order') as $shoppingcart_question)
             {
 
                 if($shoppingcart_product->booking_id===$shoppingcart_question->booking_id)
                 {
-                    //
+                    
                     if($shoppingcart_question->when_to_ask=="booking")
                     {
                         
-                        $dataObj7[] = array(
+                        $dataQuestion_options = array();
+
+                        if($shoppingcart_question->data_type=="OPTIONS")
+                        {
+                            foreach(collect($shoppingcart_question->question_options)->sortBy('order') as $question_option)
+                            {
+                                $dataQuestion_options[] = array(
+                                    'label' => $question_option->label,
+                                    'value' => $question_option->value,
+                                    'order' => $question_option->order,
+                                );
+                            }
+                        }
+
+                        $dataQuestionBooking[] = array(
                             'question_id' => $shoppingcart_question->question_id,
                             'required' => $shoppingcart_question->required,
                             'when_to_ask' => $shoppingcart_question->when_to_ask,
@@ -818,16 +833,17 @@ class APIController extends Controller
                             'help' => $shoppingcart_question->help,
                             'answer' => $shoppingcart_question->answer,
                             'booking_id' => $shoppingcart_question->booking_id,
+                            'question_options' => $dataQuestion_options,
                         );
                     }
                 }
 
             }
 
-            $dataObj6[] = array(
+            $dataProductQuestion[] = array(
                         'title' => $shoppingcart_product->title,
                         'description' => ProductHelper::datetotext($shoppingcart_product->date),
-                        'questions' => $dataObj7
+                        'questions' => $dataQuestionBooking
                     );
 
         }
@@ -839,7 +855,7 @@ class APIController extends Controller
         
 
 
-        $dataObj[] = array(
+        $dataShoppingcart[] = array(
                 'id' => $shoppingcart->session_id,
                 'confirmation_code' => $shoppingcart->confirmation_code,
                 'promo_code' => $shoppingcart->promo_code,
@@ -850,9 +866,9 @@ class APIController extends Controller
                 'total_paypal' => BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,env("PAYPAL_CURRENCY")),
                 'due_now' => GeneralHelper::numberFormat($shoppingcart->due_now),
                 'due_on_arrival' => GeneralHelper::numberFormat($shoppingcart->due_on_arrival),
-                'products' => $dataObj2,
-                'mainQuestions' => $dataObj5,
-                'productQuestions' => $dataObj6,
+                'products' => $dataProducts,
+                'mainQuestions' => $dataMainQuestion,
+                'productQuestions' => $dataProductQuestion,
                 'rate' => BookingHelper::paypal_rate($shoppingcart),
                 'paypal_client_id' => $this->paypalClientId,
                 'paypal_currency' => $this->paypalCurrency,
@@ -862,7 +878,7 @@ class APIController extends Controller
 
         return response()->json([
             'message' => 'success',
-            'shoppingcarts' => $dataObj,
+            'shoppingcarts' => $dataShoppingcart,
         ], 200);
     }
     

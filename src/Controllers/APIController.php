@@ -858,6 +858,19 @@ class APIController extends Controller
                     if($shoppingcart_question->when_to_ask=="participant")
                     {
         
+                        $dataQuestion_options = array();
+
+                        if($shoppingcart_question->data_type=="OPTIONS")
+                        {
+                            foreach(collect($shoppingcart_question->question_options)->sortBy('order') as $question_option)
+                            {
+                                $dataQuestion_options[] = array(
+                                    'label' => $question_option->label,
+                                    'value' => $question_option->value,
+                                    'order' => $question_option->order,
+                                );
+                            }
+                        }
 
                         $dataQuestionParticipant[] = array(
                             'question_id' => $shoppingcart_question->question_id,
@@ -869,6 +882,7 @@ class APIController extends Controller
                             'help' => $shoppingcart_question->help,
                             'answer' => $shoppingcart_question->answer,
                             'booking_id' => $shoppingcart_question->booking_id,
+                            'question_options' => $dataQuestion_options,
                         );
                     }
                 }
@@ -876,7 +890,10 @@ class APIController extends Controller
             }
             
             $collection = collect($dataQuestionParticipant)->sortBy('participant_number');
-            $grouped = $collection->groupBy('participant_number');
+            //$grouped = $collection->groupBy('participant_number');
+            $grouped = $collection->groupBy(function ($item, $key) {
+                    return 'Participant '.$item['participant_number'];
+                });
             //print_r(count($grouped));
             //foreach($grouped as $pecah)
             //{
@@ -888,7 +905,7 @@ class APIController extends Controller
                         'title' => $shoppingcart_product->title,
                         'description' => ProductHelper::datetotext($shoppingcart_product->date),
                         'questions' => $dataQuestionBooking,
-                        'question_participants' => array($grouped),
+                        'question_participants' => $grouped,
                     );
             //exit();
         }

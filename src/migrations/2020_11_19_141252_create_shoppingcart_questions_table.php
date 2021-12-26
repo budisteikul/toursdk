@@ -24,6 +24,7 @@ class CreateShoppingcartQuestionsTable extends Migration
             $table->string('type')->nullable();
             $table->string('when_to_ask')->default('booking');
             $table->string('booking_id')->nullable();
+            $table->integer('participant_number')->nullable();
             $table->string('question_id')->nullable();
             $table->string('label')->nullable();
             $table->string('data_type')->nullable();

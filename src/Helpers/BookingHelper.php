@@ -626,6 +626,78 @@ class BookingHelper {
 
 				}
 			}
+
+			// ActivityBookings question per participant
+			if(isset($questions->checkoutOptions[$ii]->participants))
+			{
+				$activityBookingId = $questions->checkoutOptions[$ii]->activityBookingDetail->activityBookingId;
+				$participant_number = 1;
+				for($jj = 0; $jj < count($questions->checkoutOptions[$ii]->participants); $jj++)
+				{
+					$participantQuestions = $questions->checkoutOptions[$ii]->participants[$jj]->participantQuestions;
+					$scq_type = 'activityBookings';
+					$scq_participant_number = $participant_number;
+					//$scq_booking_id = $participantQuestions->bookingId;
+					$order = 1;
+
+					foreach($participantQuestions->questions as $question)
+					{
+						$scq_question_id =  $question->questionId;
+						$scq_label = $question->label;
+						$scq_data_format = NULL;
+						if(isset($question->dataFormat)) $scq_data_format = $question->dataFormat;
+						$scq_data_type = $question->dataType;
+						$scq_help = NULL;
+						if(isset($question->help)) $scq_help = $question->help;
+						$scq_required = $question->required;
+						$scq_select_option = $question->selectFromOptions;
+						$scq_select_multiple = $question->selectMultiple;
+
+						$ShoppingcartQuestionOptions = array();
+						if($question->selectFromOptions)
+						{
+							$order_option = 1;
+							foreach($question->answerOptions as $answerOption)
+							{
+								$scqd_label = $answerOption->label;
+								$scqd_value = $answerOption->value;
+								$scqd_order = $order_option;
+
+								$ShoppingcartQuestionOptions[] = (object) array(
+									'label' => $scqd_label,
+									'value' => $scqd_value,
+									'order' => $scqd_order,
+								);
+
+								$order_option += 1;
+							}
+						}
+						
+						$ShoppingcartQuestions[] = (object) array(
+							'type' => $scq_type,
+							'when_to_ask' => 'participant',
+							'participant_number' => $scq_participant_number,
+							'question_id' => $scq_question_id,
+							'booking_id' => $activityBookingId,
+							'label' => $scq_label,
+							'help' => $scq_help,
+							'data_type' => $scq_data_type,
+							'data_format' => $scq_data_format,
+							'required' => $scq_required,
+							'select_option' => $scq_select_option,
+							'select_multiple' => $scq_select_multiple,
+							'order' => $order,
+							'answer' => '',
+							'question_options' => $ShoppingcartQuestionOptions
+						);
+						$order += 1;
+					}
+
+					$participant_number += 1;
+					
+				}
+			}
+
 		}
 
 		
@@ -878,7 +950,6 @@ class BookingHelper {
 		$questions = BokunHelper::get_questionshoppingcart($id);
 
 
-
 		foreach($shoppingcart->questions as $key => $question)
 		{
 			if($question->type=='activityBookings')
@@ -996,10 +1067,84 @@ class BookingHelper {
 
 				}
 			}
+
+			// ActivityBookings question per participant
+			if(isset($questions->checkoutOptions[$ii]->participants))
+			{
+				$activityBookingId = $questions->checkoutOptions[$ii]->activityBookingDetail->activityBookingId;
+				$participant_number = 1;
+				for($jj = 0; $jj < count($questions->checkoutOptions[$ii]->participants); $jj++)
+				{
+					$participantQuestions = $questions->checkoutOptions[$ii]->participants[$jj]->participantQuestions;
+					$scq_type = 'activityBookings';
+					$scq_participant_number = $participant_number;
+					//$scq_booking_id = $participantQuestions->bookingId;
+					$order = 1;
+
+					foreach($participantQuestions->questions as $question)
+					{
+						$scq_question_id =  $question->questionId.'_'.$participant_number;
+						$scq_label = $question->label;
+						$scq_data_format = NULL;
+						if(isset($question->dataFormat)) $scq_data_format = $question->dataFormat;
+						$scq_data_type = $question->dataType;
+						$scq_help = NULL;
+						if(isset($question->help)) $scq_help = $question->help;
+						$scq_required = $question->required;
+						$scq_select_option = $question->selectFromOptions;
+						$scq_select_multiple = $question->selectMultiple;
+
+						$ShoppingcartQuestionOptions = array();
+						if($question->selectFromOptions)
+						{
+							$order_option = 1;
+							foreach($question->answerOptions as $answerOption)
+							{
+								$scqd_label = $answerOption->label;
+								$scqd_value = $answerOption->value;
+								$scqd_order = $order_option;
+
+								$ShoppingcartQuestionOptions[] = (object) array(
+									'label' => $scqd_label,
+									'value' => $scqd_value,
+									'order' => $scqd_order,
+								);
+
+								$order_option += 1;
+							}
+						}
+						
+						$ShoppingcartQuestions[] = (object) array(
+							'type' => $scq_type,
+							'when_to_ask' => 'participant',
+							'participant_number' => $scq_participant_number,
+							'question_id' => $scq_question_id,
+							'booking_id' => $activityBookingId,
+							'label' => $scq_label,
+							'help' => $scq_help,
+							'data_type' => $scq_data_type,
+							'data_format' => $scq_data_format,
+							'required' => $scq_required,
+							'select_option' => $scq_select_option,
+							'select_multiple' => $scq_select_multiple,
+							'order' => $order,
+							'answer' => '',
+							'question_options' => $ShoppingcartQuestionOptions
+						);
+						$order += 1;
+					}
+
+					$participant_number += 1;
+					
+				}
+			}
+
 		}
 
 		$shoppingcart->questions = $ShoppingcartQuestions;
 		
+		
+
 		//===========================================
 		Cache::forget('_'. $id);
 		Cache::add('_'. $id, $shoppingcart, 172800);

@@ -796,6 +796,7 @@ class APIController extends Controller
         }
 
         
+
         $dataProductQuestion = array();
         foreach(collect($shoppingcart->products)->sortBy('booking_id') as $shoppingcart_product)
         {
@@ -836,19 +837,63 @@ class APIController extends Controller
                             'question_options' => $dataQuestion_options,
                         );
                     }
+
+                    
+
+
                 }
 
             }
 
+            //======================================================
+            $dataQuestionParticipant = array();
+            foreach(collect($shoppingcart->questions)->sortBy('order') as $shoppingcart_question)
+            {
+                
+
+                if($shoppingcart_product->booking_id===$shoppingcart_question->booking_id)
+                {
+                    
+
+                    if($shoppingcart_question->when_to_ask=="participant")
+                    {
+        
+
+                        $dataQuestionParticipant[] = array(
+                            'question_id' => $shoppingcart_question->question_id,
+                            'required' => $shoppingcart_question->required,
+                            'when_to_ask' => $shoppingcart_question->when_to_ask,
+                            'participant_number' => $shoppingcart_question->participant_number,
+                            'data_type' => $shoppingcart_question->data_type,
+                            'label' => $shoppingcart_question->label,
+                            'help' => $shoppingcart_question->help,
+                            'answer' => $shoppingcart_question->answer,
+                            'booking_id' => $shoppingcart_question->booking_id,
+                        );
+                    }
+                }
+                
+            }
+            
+            $collection = collect($dataQuestionParticipant)->sortBy('participant_number');
+            $grouped = $collection->groupBy('participant_number');
+            //print_r(count($grouped));
+            //foreach($grouped as $pecah)
+            //{
+                //print_r($pecah);
+            //}
+            //======================================================
+
             $dataProductQuestion[] = array(
                         'title' => $shoppingcart_product->title,
                         'description' => ProductHelper::datetotext($shoppingcart_product->date),
-                        'questions' => $dataQuestionBooking
+                        'questions' => $dataQuestionBooking,
+                        'question_participants' => array($grouped),
                     );
-
+            //exit();
         }
 
-        
+        //exit();
         
         $promo_code = $shoppingcart->promo_code;
         if($promo_code=="") $promo_code = null;

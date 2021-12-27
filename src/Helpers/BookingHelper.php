@@ -1965,7 +1965,7 @@ class BookingHelper {
 
 	public static function display_invoice($shoppingcart)
 	{
-		$invoice = '<div class="card mb-4"><div class="card-body bg-light">';
+		$invoice = '<div class="card mb-2"><div class="card-body bg-light">';
 		$invoice .= '<b><a class="text-decoration-none text-theme" href="'.url('/api').'/pdf/invoice/'. $shoppingcart->session_id .'/Invoice-'. $shoppingcart->confirmation_code .'.pdf" target="_blank">'. $shoppingcart->confirmation_code .'</a> - INVOICE</b> <br />';
 		$invoice .= ' <b>Channel :</b> '.$shoppingcart->booking_channel.' <br />';
 
@@ -1993,7 +1993,7 @@ class BookingHelper {
 
 		foreach($shoppingcart->shoppingcart_products()->get() as $shoppingcart_product)
 		{
-			$product .= '<div class="card mb-4"><div class="card-body bg-light">';
+			$product .= '<div class="card mb-2"><div class="card-body bg-light">';
 
 			if($access_ticket)
 			{
@@ -2028,7 +2028,7 @@ class BookingHelper {
 				}
 			}
 
-			$product .= '<div class="card mb-4 mt-4"><div class="card-body">';
+			$product .= '<div class="card mb-2 mt-2"><div class="card-body">';
 			$product .= BookingHelper::get_answer_product($shoppingcart,$shoppingcart_product->booking_id);
 			$product .= '</div></div>';
 

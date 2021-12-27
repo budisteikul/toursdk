@@ -642,7 +642,7 @@ class BookingHelper {
 
 					foreach($participantQuestions->questions as $question)
 					{
-						$scq_question_id =  $question->questionId;
+						$scq_question_id =  $question->questionId.'_'.$participant_number;
 						$scq_label = $question->label;
 						$scq_data_format = NULL;
 						if(isset($question->dataFormat)) $scq_data_format = $question->dataFormat;
@@ -1478,6 +1478,7 @@ class BookingHelper {
 			$shoppingcart_question->shoppingcart_id = $shoppingcart->id;
 			$shoppingcart_question->type = $question->type;
 			if(isset($question->when_to_ask)) $shoppingcart_question->when_to_ask = $question->when_to_ask;
+			if(isset($question->participant_number)) $shoppingcart_question->participant_number = $question->participant_number;
 			$shoppingcart_question->booking_id = $question->booking_id;
 			$shoppingcart_question->question_id = $question->question_id;
 			$shoppingcart_question->label = $question->label;
@@ -1941,17 +1942,30 @@ class BookingHelper {
 	public static function get_answer_product($shoppingcart,$booking_id)
 	{
 		$value = '';
-		foreach($shoppingcart->shoppingcart_questions()->where('booking_id',$booking_id)->whereNotNull('label')->get() as $shoppingcart_question)
+		foreach($shoppingcart->shoppingcart_questions()->where('when_to_ask','booking')->where('booking_id',$booking_id)->whereNotNull('label')->get() as $shoppingcart_question)
 		{
 			$value .= $shoppingcart_question->label .' : '. $shoppingcart_question->answer .'<br>';
 		}
+
+		$participants = $shoppingcart->shoppingcart_questions()->where('when_to_ask','participant')->where('booking_id',$booking_id)->select('participant_number')->groupBy('participant_number')->get();
+		
+		foreach($participants as $participant)
+		{
+			$value .= '<b>Participant '. $participant->participant_number .'</b><br />';
+			foreach($shoppingcart->shoppingcart_questions()->where('when_to_ask','participant')->where('booking_id',$booking_id)->where('participant_number',$participant->participant_number)->get() as $participant_detail)
+			{
+				$value .= $participant_detail->label .' : '. $participant_detail->answer .'<br>';
+			}
+		}
+		
+		
         return $value;
 	}
 
 
 	public static function display_invoice($shoppingcart)
 	{
-		$invoice = '';
+		$invoice = '<div class="card mb-4"><div class="card-body bg-light">';
 		$invoice .= '<b><a class="text-decoration-none text-theme" href="'.url('/api').'/pdf/invoice/'. $shoppingcart->session_id .'/Invoice-'. $shoppingcart->confirmation_code .'.pdf" target="_blank">'. $shoppingcart->confirmation_code .'</a> - INVOICE</b> <br />';
 		$invoice .= ' <b>Channel :</b> '.$shoppingcart->booking_channel.' <br />';
 
@@ -1967,6 +1981,7 @@ class BookingHelper {
 		if($phone!='') $invoice .= ' <b>Phone :</b> '.$phone.' <br />';
 
 		$invoice .= ' <b>Status :</b> '. self::get_bookingStatus($shoppingcart);
+		$invoice .= '</div></div>';
 
 		return $invoice;
 	}
@@ -1978,6 +1993,8 @@ class BookingHelper {
 
 		foreach($shoppingcart->shoppingcart_products()->get() as $shoppingcart_product)
 		{
+			$product .= '<div class="card mb-4"><div class="card-body bg-light">';
+
 			if($access_ticket)
 			{
 				$product .= '<b><a target="_blank" class="text-decoration-none text-theme" href="'.url('/api').'/pdf/ticket/'. $shoppingcart->session_id .'/Ticket-'. $shoppingcart_product->product_confirmation_code .'.pdf" target="_blank">'. $shoppingcart_product->product_confirmation_code .'</a> - '.$shoppingcart_product->title.'</b> <br />';
@@ -2011,12 +2028,15 @@ class BookingHelper {
 				}
 			}
 
+			$product .= '<div class="card mb-4 mt-4"><div class="card-body">';
 			$product .= BookingHelper::get_answer_product($shoppingcart,$shoppingcart_product->booking_id);
+			$product .= '</div></div>';
 
-			$product .= '<br>';
-
+			//$product .= '<br>';
+			$product .= '</div></div>';
 		}
 
+		
 		return $product;
 	}
 

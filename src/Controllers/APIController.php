@@ -61,10 +61,10 @@ class APIController extends Controller
 
             $product = BookingHelper::display_product_detail($shoppingcart);
             
-            $receipt_page = '<a class="text-decoration-none text-theme" href="'.$this->appUrl.'/booking/receipt/'.$shoppingcart->id.'/'. $shoppingcart->session_id .'">View receipt page</a>';
+            $receipt_page = '<a class="btn btn-theme" href="'.$this->appUrl.'/booking/receipt/'.$shoppingcart->id.'/'. $shoppingcart->session_id .'">View receipt page <i class="fas fa-arrow-circle-right"></i></a>';
 
             $booking[] = array(
-                'booking' => $invoice .'<hr style="width:50%; margin-left:0px;" />'. $product . $receipt_page
+                'booking' => $invoice . $product . $receipt_page
             );
         }
 

@@ -1315,11 +1315,24 @@ class BookingHelper {
 
 	public static function get_firstAvailability($activityId,$year,$month)
 	{
+		
 		$availability = self::get_calendar($activityId,$year,$month);
-		$value[] = $availability->firstAvailableDay->availabilities[0]->activityAvailability;
+		$count_availability = count($availability->firstAvailableDay->availabilities);
+		
+		$dateObj = $availability->firstAvailableDay->dateObj;
+		$month = date("n",$dateObj/1000);
+		$year = date("Y",$dateObj/1000);
+		$day = date("d",$dateObj/1000);
+		$localizedDate = GeneralHelper::dateFormat($year.'-'.$month.'-'.$day,11);
+
+		for($i=0;$i<$count_availability;$i++)
+		{
+			$value[] = $availability->firstAvailableDay->availabilities[$i]->activityAvailability;
+		}
+		
 		$dataObj[] = [
-			'date' => $value[0]->date,
-			'localizedDate' => $value[0]->localizedDate,
+			'date' => $dateObj,
+			'localizedDate' => $localizedDate,
 			'availabilities' => $value
 		];
 		return $dataObj;

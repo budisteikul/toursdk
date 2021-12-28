@@ -1962,7 +1962,7 @@ class BookingHelper {
 			$value .= '<b>Participant '. $participant->participant_number .'</b><br />';
 			foreach($shoppingcart->shoppingcart_questions()->where('when_to_ask','participant')->where('booking_id',$booking_id)->where('participant_number',$participant->participant_number)->get() as $participant_detail)
 			{
-				$value .= $participant_detail->label .' : '. $participant_detail->answer .'<br>';
+				$value .= ''.$participant_detail->label .' : <span class="text-muted">'. $participant_detail->answer .'</span><br>';
 			}
 		}
 		

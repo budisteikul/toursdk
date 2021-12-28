@@ -1284,14 +1284,22 @@ class BookingHelper {
 
                 	foreach($question->question_options as $question_option)
                 	{
-                		if($question_option->value==$data['questions'][$question->question_id])
+                		if(isset($data['questions'][$question->question_id]))
                 		{
-                			$question_option->answer = 1;
+                			if($question_option->value==$data['questions'][$question->question_id])
+                			{
+                				$question_option->answer = 1;
+                			}
+                			else
+                			{
+                				$question_option->answer = 0;
+                			}
                 		}
                 		else
                 		{
                 			$question_option->answer = 0;
                 		}
+                		
                 	}
                     
                 }

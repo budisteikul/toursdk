@@ -805,7 +805,7 @@ class APIController extends Controller
             foreach(collect($shoppingcart->questions)->sortBy('order') as $shoppingcart_question)
             {
 
-                if($shoppingcart_product->booking_id===$shoppingcart_question->booking_id)
+                if($shoppingcart_product->booking_id==$shoppingcart_question->booking_id)
                 {
                     
                     if($shoppingcart_question->when_to_ask=="booking")
@@ -890,15 +890,9 @@ class APIController extends Controller
             }
             
             $collection = collect($dataQuestionParticipant)->sortBy('participant_number');
-            //$grouped = $collection->groupBy('participant_number');
             $grouped = $collection->groupBy(function ($item, $key) {
                     return 'Participant '.$item['participant_number'];
                 });
-            //print_r(count($grouped));
-            //foreach($grouped as $pecah)
-            //{
-                //print_r($pecah);
-            //}
             //======================================================
 
             $dataProductQuestion[] = array(

@@ -22,11 +22,13 @@ class CreateShoppingcartPaymentsTable extends Migration
                     ->onDelete('cascade')->onUpdate('cascade');
             
             $table->string('payment_provider')->nullable();
+
             $table->string('payment_type')->nullable();
             $table->string('bank_name')->nullable();
             $table->string('bank_code')->nullable();
             $table->string('va_number')->nullable();
             $table->string('snaptoken')->nullable();
+            $table->string('qrcode')->nullable();
 
             $table->string('order_id')->nullable();
             $table->string('authorization_id')->nullable();
@@ -37,6 +39,8 @@ class CreateShoppingcartPaymentsTable extends Migration
             $table->string('rate_from')->nullable();
             $table->string('rate_to')->nullable();
 
+            $table->string('link')->nullable();
+            $table->string('redirect')->nullable();
             $table->tinyInteger('payment_status')->default(1);
             
             $table->timestamps(6);

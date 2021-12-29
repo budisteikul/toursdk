@@ -257,6 +257,7 @@ class APIController extends Controller
         
         $content = BokunHelper::get_product($product->bokun_id);
 
+        
         $i = 0;
         $carouselExampleIndicators = '';
         $carouselInners = '';

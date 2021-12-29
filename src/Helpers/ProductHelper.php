@@ -65,6 +65,12 @@ class ProductHelper {
                 case 'en':
                     $hasil = 'English';
                 break;
+                case 'in':
+                    $hasil = 'Indonesian';
+                break;
+                case 'de':
+                    $hasil = 'German';
+                break;
             }
             
         }

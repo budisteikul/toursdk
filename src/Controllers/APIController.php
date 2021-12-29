@@ -747,7 +747,8 @@ class APIController extends Controller
             {
                 if($product_detail->type=="extra")
                 {
-                    $extra_unit_price_asText = '&#9642; '. $product_detail->qty .' '. $product_detail->unit_price;
+                    //$extra_unit_price_asText = '&#9642; '. $product_detail->qty .' '. $product_detail->unit_price;
+                    $extra_unit_price_asText = $product_detail->qty .' '. $product_detail->unit_price;
                     if($product_detail->discount > 0)
                     {
                         $extra_price_asText = '<strike className="text-muted">'. GeneralHelper::numberFormat($product_detail->subtotal) .'</strike><br /><b>'. GeneralHelper::numberFormat($product_detail->total) .'</b>';
@@ -757,10 +758,18 @@ class APIController extends Controller
                         $extra_price_asText = '<b>'. GeneralHelper::numberFormat($product_detail->total) .'</b>';
                     }
 
+                    /*
                     $dataExtra[] = array(
                         'title' => 'Extra',
                         'price' => $extra_price_asText,
                         'unit_price' => $extra_unit_price_asText,
+                    );
+                    */
+
+                    $dataExtra[] = array(
+                        'title' => $extra_unit_price_asText,
+                        'price' => $extra_price_asText,
+                        'unit_price' => 'Per booking',
                     );
 
                 }

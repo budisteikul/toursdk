@@ -72,13 +72,17 @@ class MidtransHelper {
         $data = MidtransHelper::createSnap($shoppingcart,$payment_type);
         $data2 = MidtransHelper::chargeSnap($data->token,$shoppingcart,$payment_type);
 
-        
         if(isset($data2['permata_va_number']))
         {
           $response->payment_type = $data2['payment_type'];
           $response->bank_name = 'permata';
           $response->bank_code = BookingHelper::get_bankcode('permata');
           $response->va_number = $data2['permata_va_number'];
+        }
+        else if($data2['payment_type']=="gopay")
+        {
+          $response->payment_type = $data2['payment_type'];
+          $response->bank_name = 'gopay';
         }
         else
         {

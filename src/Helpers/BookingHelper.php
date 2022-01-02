@@ -1591,13 +1591,25 @@ class BookingHelper {
 				if($bank=="") $bank = "permata_va";
 				$response = MidtransHelper::createOrder($shoppingcart,$bank);
 				
+				$payment_type = NULL;
+				$bank_name = NULL;
+				$bank_code = NULL;
+				$va_number = NULL;
+				$snaptoken = NULL;
+
+				if(isset($response->payment_type)) $payment_type = $response->payment_type;
+				if(isset($response->bank_name)) $bank_name = $response->bank_name;
+				if(isset($response->bank_code)) $bank_code = $response->bank_code;
+				if(isset($response->va_number)) $va_number = $response->va_number;
+				if(isset($response->snaptoken)) $snaptoken = $response->snaptoken;
+
 				$ShoppingcartPayment = (object) array(
 					'payment_provider' => 'midtrans',
-					'payment_type' => $response->payment_type,
-					'bank_name' => $response->bank_name,
-					'bank_code' => $response->bank_code,
-					'va_number' => $response->va_number,
-					'snaptoken' => $response->snaptoken,
+					'payment_type' => $payment_type,
+					'bank_name' => $bank_name,
+					'bank_code' => $bank_code,
+					'va_number' => $va_number,
+					'snaptoken' => $snaptoken,
 					'order_id' => NULL,
 					'authorization_id' => NULL,
 					'amount' => self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,"IDR"),

@@ -83,6 +83,8 @@ class MidtransHelper {
         {
           $response->payment_type = $data2['payment_type'];
           $response->bank_name = 'gopay';
+          $response->qrcode = $data2['qr_code_url'];
+          $response->link = $data2['deeplink_url'];
         }
         else
         {

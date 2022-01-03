@@ -74,22 +74,22 @@ class MidtransHelper {
 
         if(isset($data2['permata_va_number']))
         {
-          $response->payment_type = $data2['payment_type'];
+          $response->payment_type = 'bank_transfer';
           $response->bank_name = 'permata';
           $response->bank_code = BookingHelper::get_bankcode('permata');
           $response->va_number = $data2['permata_va_number'];
         }
         else if($data2['payment_type']=="gopay")
         {
-          $response->payment_type = $data2['payment_type'];
+          $response->payment_type = 'ewallet';
           $response->bank_name = 'gopay';
           $response->qrcode = $data2['qr_code_url'];
           $response->link = $data2['deeplink_url'];
         }
         else
         {
-          $response->payment_type = $data2['payment_type'];
-          $response->bank_name = $data2['va_numbers'][0]['bank'];
+          $response->payment_type = 'bank_transfer';
+          $response->bank_name = 'bni';
           $response->bank_code = BookingHelper::get_bankcode('bni');
           $response->va_number = $data2['va_numbers'][0]['va_number'];
         }

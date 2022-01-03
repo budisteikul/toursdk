@@ -1533,6 +1533,10 @@ class BookingHelper {
 		$shoppingcart_payment->bank_name = $shoppingcart_json->payment->bank_name;
 		$shoppingcart_payment->bank_code = $shoppingcart_json->payment->bank_code;
 		$shoppingcart_payment->va_number = $shoppingcart_json->payment->va_number;
+
+		if(isset($shoppingcart_json->payment->qrcode)) $shoppingcart_payment->qrcode = $shoppingcart_json->payment->qrcode;
+		if(isset($shoppingcart_json->payment->link)) $shoppingcart_payment->link = $shoppingcart_json->payment->link;
+
 		$shoppingcart_payment->order_id = $shoppingcart_json->payment->order_id;
 		$shoppingcart_payment->authorization_id = $shoppingcart_json->payment->authorization_id;
 		$shoppingcart_payment->amount = $shoppingcart_json->payment->amount;
@@ -1596,12 +1600,16 @@ class BookingHelper {
 				$bank_code = NULL;
 				$va_number = NULL;
 				$snaptoken = NULL;
+				$qrcode = NULL;
+				$link = NULL;
 
 				if(isset($response->payment_type)) $payment_type = $response->payment_type;
 				if(isset($response->bank_name)) $bank_name = $response->bank_name;
 				if(isset($response->bank_code)) $bank_code = $response->bank_code;
 				if(isset($response->va_number)) $va_number = $response->va_number;
 				if(isset($response->snaptoken)) $snaptoken = $response->snaptoken;
+				if(isset($response->qrcode)) $qrcode = $response->qrcode;
+				if(isset($response->link)) $link = $response->link;
 
 				$ShoppingcartPayment = (object) array(
 					'payment_provider' => 'midtrans',
@@ -1610,6 +1618,8 @@ class BookingHelper {
 					'bank_code' => $bank_code,
 					'va_number' => $va_number,
 					'snaptoken' => $snaptoken,
+					'qrcode' => $qrcode,
+					'link' => $link,
 					'order_id' => NULL,
 					'authorization_id' => NULL,
 					'amount' => self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,"IDR"),
@@ -1633,6 +1643,8 @@ class BookingHelper {
 				'bank_code' => NULL,
 				'va_number' => NULL,
 				'snaptoken' => NULL,
+				'qrcode' => NULL,
+				'link' => NULL,
 				'order_id' => NULL,
 				'authorization_id' => NULL,
 				'amount' => self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,env("PAYPAL_CURRENCY")),
@@ -1661,6 +1673,8 @@ class BookingHelper {
 				'bank_code' => NULL,
 				'va_number' => NULL,
 				'snaptoken' => NULL,
+				'qrcode' => NULL,
+				'link' => NULL,
 				'order_id' => NULL,
 				'authorization_id' => NULL,
 				'amount' => $shoppingcart->due_now,
@@ -1841,8 +1855,9 @@ class BookingHelper {
 						return '';
 				}
             }
-            if($shoppingcart->shoppingcart_payment->payment_provider=="midtrans")
+            if($shoppingcart->shoppingcart_payment->payment_type=="bank_transfer")
             {
+
             	switch($shoppingcart->shoppingcart_payment->payment_status)
 				{
 					case 2:
@@ -1873,6 +1888,41 @@ class BookingHelper {
 								Nama Bank : '. Str::upper($shoppingcart->shoppingcart_payment->bank_name) .'  <br />
 								Kode Bank : '. $shoppingcart->shoppingcart_payment->bank_code .'  <br />
 								No Rekening : '. GeneralHelper::splitSpace($shoppingcart->shoppingcart_payment->va_number,4) .'
+								</div>
+								</div>
+								';
+						break;
+					default:
+						return '';
+				}
+            }
+            if($shoppingcart->shoppingcart_payment->payment_type=="ewallet")
+            {
+
+            	switch($shoppingcart->shoppingcart_payment->payment_status)
+				{
+					case 2:
+						return '<div class="card mb-4">
+								<div class="card-body bg-light">
+								<span class="badge badge-success mb-2"><i class="fas fa-wallet"></i> EWALLET PAID </span><br />
+								<img width="150" src="'. $shoppingcart->shoppingcart_payment->qrcode .'"><br />
+								</div>
+								</div>';
+						break;
+					case 3:
+						return '<div class="card mb-4">
+								<div class="card-body bg-light">
+								<span class="badge badge-danger mb-2"><i class="fas fa-wallet"></i> EWALLET UNPAID </span><br />
+								<img width="150" src="'. $shoppingcart->shoppingcart_payment->qrcode .'"><br />
+								</div>
+								</div>';
+						break;	
+					case 4:
+						return '
+								<div class="card mb-4">
+								<div class="card-body bg-light">
+								<span class="badge badge-warning mb-2"><i class="fas fa-wallet"></i> EWALLET PENDING </span><br />
+								<img width="150" src="'. $shoppingcart->shoppingcart_payment->qrcode .'"><br />
 								</div>
 								</div>
 								';

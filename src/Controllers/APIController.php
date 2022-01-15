@@ -1307,11 +1307,11 @@ class APIController extends Controller
         $jscript = '
         function midtransScript()
         {
-            $("#paymentContainer").html(\'<div id=\"loader\" class=\"mb-4\"></div><div id=\"text-alert\" class=\"text-center text-theme\"></div>\');
+            $("#paymentContainer").html(\'<div id=\"loader\" class=\"mb-4\"></div><div id=\"text-alert\" class=\"text-center\"></div>\');
             $("#submitCheckout").slideUp("slow");
             $("#loader").addClass("loader");
             $("#text-alert").prepend( "Please wait and do not close the browser or refresh the page" );
-            
+
             $.ajax({
                 data: {
                     "sessionId": "'.$sessionId.'",
@@ -1338,10 +1338,8 @@ class APIController extends Controller
         jQuery(document).ready(function($) {
 
             $("#submitCheckout").slideUp("slow");  
-            $("#paymentContainer").html(\'<div id="proses"><h2>Pay with</h2><div id="paypal-button-container"></div></div><div id=\"loader\" class=\"mb-4\"></div><div id=\"text-alert\" class=\"text-center text-theme\"></div>\');
+            $("#paymentContainer").html(\'<div id="proses"><h2>Pay with</h2><div id="paypal-button-container"></div></div><div id=\"loader\" class=\"mb-4\"></div><div id=\"text-alert\" class=\"text-center\"></div>\');
            
-            
-
             paypal.Buttons({
                 createOrder: function() {
                     return fetch(\''. url('/api') .'/payment/paypal\', {

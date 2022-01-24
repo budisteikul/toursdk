@@ -48,8 +48,10 @@ class APIController extends Controller
     public function downloadQrcode($sessionId,$id)
     {
         $shoppingcart = Shoppingcart::where('confirmation_code',$id)->where('session_id',$sessionId)->first();
-        $fileQrcode = BookingHelper::downloadQrcode($shoppingcart);
-        return response()->download($fileQrcode)->deleteFileAfterSend(true);
+        $payments = $shoppingcart->shoppingcart_payment()->first();
+        return response()->streamDownload(function () use ($payments) {
+            echo file_get_contents($payments->qrcode);
+        }, $shoppingcart->confirmation_code .'.png');
     }
 
     public function last_order($sessionId)

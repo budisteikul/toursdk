@@ -26,12 +26,7 @@ use Illuminate\Support\Facades\Storage;
 
 class BookingHelper {
 	
-	public static function downloadQrcode($shoppingcart)
-	{
-		$payments = $shoppingcart->shoppingcart_payment()->first();
-		Storage::disk('local')->put('temp/'.$shoppingcart->confirmation_code.'.png', file_get_contents($payments->qrcode));
-		return storage_path('app/temp/'.$shoppingcart->confirmation_code.'.png');
-	}
+	
 
 	public static function webhook_insert_shoppingcart($data)
 	{

@@ -1914,7 +1914,7 @@ class BookingHelper {
 								<div class="card-body bg-light">
 								<span class="badge badge-success mb-2"><i class="fas fa-wallet"></i> EWALLET PAID </span><br />
 								<img width="150" src="'. $shoppingcart->shoppingcart_payment->qrcode .'"><br />
-								<a href="'. env('APP_API_URL') .'/qrcode/'.$shoppingcart->session_id.'/'. $shoppingcart->confirmation_code .'.png" class="invoice-hilang">Download QRCODE</a>
+								<a href="'. env('APP_API_URL') .'/qrcode/'.$shoppingcart->session_id.'/'. $shoppingcart->confirmation_code .'" class="invoice-hilang">Download QRCODE</a>
 								</div>
 								</div>';
 						break;
@@ -1923,7 +1923,7 @@ class BookingHelper {
 								<div class="card-body bg-light">
 								<span class="badge badge-danger mb-2"><i class="fas fa-wallet"></i> EWALLET UNPAID </span><br />
 								<img width="150" src="'. $shoppingcart->shoppingcart_payment->qrcode .'"><br />
-								<a href="'. env('APP_API_URL') .'/qrcode/'.$shoppingcart->session_id.'/'. $shoppingcart->confirmation_code .'.png" class="invoice-hilang">Download QRCODE</a>
+								<a href="'. env('APP_API_URL') .'/qrcode/'.$shoppingcart->session_id.'/'. $shoppingcart->confirmation_code .'" class="invoice-hilang">Download QRCODE</a>
 								</div>
 								</div>';
 						break;	
@@ -1933,7 +1933,7 @@ class BookingHelper {
 								<div class="card-body bg-light">
 								<span class="badge badge-warning mb-2"><i class="fas fa-wallet"></i> EWALLET PENDING </span><br />
 								<img width="150" src="'. $shoppingcart->shoppingcart_payment->qrcode .'"><br />
-								<a href="'. env('APP_API_URL') .'/qrcode/'.$shoppingcart->session_id.'/'. $shoppingcart->confirmation_code .'.png" class="invoice-hilang btn btn-success mt-2">Download QRCODE</a>
+								<a href="'. env('APP_API_URL') .'/qrcode/'.$shoppingcart->session_id.'/'. $shoppingcart->confirmation_code .'" class="invoice-hilang btn btn-success mt-2">Download QRCODE</a>
 								</div>
 								</div>
 								';

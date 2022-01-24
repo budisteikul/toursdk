@@ -25,6 +25,7 @@ use budisteikul\toursdk\Helpers\MidtransHelper;
 use Barryvdh\DomPDF\Facade as PDF;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Storage;
 
 class APIController extends Controller
 {
@@ -49,9 +50,13 @@ class APIController extends Controller
     {
         $shoppingcart = Shoppingcart::where('confirmation_code',$id)->where('session_id',$sessionId)->first();
         $payments = $shoppingcart->shoppingcart_payment()->first();
-        return response()->streamDownload(function () use ($payments) {
-            echo file_get_contents($payments->qrcode);
-        }, $shoppingcart->confirmation_code .'.png');
+
+        $contents = file_get_contents($payments->qrcode);
+        
+        $path = Storage::disk('local')->put($shoppingcart->confirmation_code .'.png', $contents);
+        //print_r($path);
+        return response()->download(storage_path('app').'/'.$shoppingcart->confirmation_code .'.png')->deleteFileAfterSend(true);
+        
     }
 
     public function last_order($sessionId)

@@ -53,9 +53,9 @@ class APIController extends Controller
 
         $contents = file_get_contents($payments->qrcode);
         
-        $path = Storage::disk('local')->put($shoppingcart->confirmation_code .'.png', $contents);
+        $path = Storage::put($shoppingcart->confirmation_code .'.png', $contents);
         //print_r($path);
-        //return response()->download(storage_path('app').'/'.$shoppingcart->confirmation_code .'.png');
+        return response()->download(storage_path('app').'/'.$shoppingcart->confirmation_code .'.png');
         
     }
 

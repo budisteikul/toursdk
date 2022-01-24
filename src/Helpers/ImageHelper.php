@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Auth;
 
 class ImageHelper {
 
+    
+
     public static function uploadQrcodeCloudinary($url)
     {
         \Cloudinary::config(array( 

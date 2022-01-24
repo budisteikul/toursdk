@@ -45,9 +45,11 @@ class APIController extends Controller
         $this->appUrl = env("APP_URL");
     }
 
-    public function test()
+    public function downloadQrcode($sessionId,$id)
     {
-        
+        $shoppingcart = Shoppingcart::where('confirmation_code',$id)->where('session_id',$sessionId)->first();
+        $fileQrcode = BookingHelper::downloadQrcode($shoppingcart);
+        return response()->download($fileQrcode)->deleteFileAfterSend(true);
     }
 
     public function last_order($sessionId)
@@ -1106,7 +1108,22 @@ class APIController extends Controller
         $pdfUrl = array();
         
         if($shoppingcart->shoppingcart_payment->payment_provider=="midtrans") {
-            $pdfUrl = '<a target="_blank" class="text-theme" href="'.url('/api').'/pdf/instruction/'. $shoppingcart->session_id .'/Instruction-'. $shoppingcart->confirmation_code .'.pdf"><i class="fas fa-file-invoice"></i> Instruction-'. $shoppingcart->confirmation_code .'.pdf</a><br />';
+            if($shoppingcart->shoppingcart_payment->payment_type=="ewallet")
+            {
+                $pdfUrl = '
+                    1.  Open your <b>E-wallet apps</b>. <br />
+                    2.  <b>Scan</b> the QR code shown on your monitor. <br />
+                    <img width="230" src="'. env('APP_URL') .'/img/qr-instruction.png">
+                    <br />
+                    3.  Check your payment details in the app, then tap <b>Pay</b>. <br />
+                    4.  Enter your <b>PIN</b>. <br />
+                    5.  Your transaction is complete. <br />';
+            }
+            else
+            {
+                $pdfUrl = '<a target="_blank" class="text-theme" href="'.url('/api').'/pdf/instruction/'. $shoppingcart->session_id .'/Instruction-'. $shoppingcart->confirmation_code .'.pdf"><i class="fas fa-file-invoice"></i> Instruction-'. $shoppingcart->confirmation_code .'.pdf</a><br />';
+            }
+            
         }
 
         $payment_status_asText = BookingHelper::get_paymentStatus($shoppingcart);

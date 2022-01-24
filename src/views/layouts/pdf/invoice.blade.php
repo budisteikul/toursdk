@@ -177,6 +177,10 @@ footer {
     bottom: 0;
 }
 
+.invoice-hilang
+{
+  display: none;
+}
 
 </style>
 </head>

@@ -46,6 +46,8 @@
 	Route::get('/api/pdf/ticket/{sessionId}/Ticket-{id}.pdf', 'budisteikul\toursdk\Controllers\APIController@ticket');
 	Route::get('/api/pdf/instruction/{sessionId}/Instruction-{id}.pdf', 'budisteikul\toursdk\Controllers\APIController@instruction');
 
+	Route::get('/api/qrcode/{sessionId}/{id}.png', 'budisteikul\toursdk\Controllers\APIController@downloadQrcode');
+
 	Route::post('/api/ticket/check', 'budisteikul\toursdk\Controllers\APIController@ticket_check');
 	Route::get('/api/ticket/lastorder/{sessionId}', 'budisteikul\toursdk\Controllers\APIController@last_order');
 

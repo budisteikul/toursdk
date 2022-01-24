@@ -22,9 +22,17 @@ use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\Exception\UnsatisfiedDependencyException;
 use Illuminate\Support\Facades\Cache;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Storage;
 
 class BookingHelper {
 	
+	public static function downloadQrcode($shoppingcart)
+	{
+		$payments = $shoppingcart->shoppingcart_payment()->first();
+		Storage::disk('local')->put('temp/'.$shoppingcart->confirmation_code.'.png', file_get_contents($payments->qrcode));
+		return storage_path('app/temp/'.$shoppingcart->confirmation_code.'.png');
+	}
+
 	public static function webhook_insert_shoppingcart($data)
 	{
 			$shoppingcart = new Shoppingcart();
@@ -1906,6 +1914,7 @@ class BookingHelper {
 								<div class="card-body bg-light">
 								<span class="badge badge-success mb-2"><i class="fas fa-wallet"></i> EWALLET PAID </span><br />
 								<img width="150" src="'. $shoppingcart->shoppingcart_payment->qrcode .'"><br />
+								<a href="'. env('APP_API_URL') .'/qrcode/'.$shoppingcart->session_id.'/'. $shoppingcart->confirmation_code .'.png" class="invoice-hilang">Download QRCODE</a>
 								</div>
 								</div>';
 						break;
@@ -1914,6 +1923,7 @@ class BookingHelper {
 								<div class="card-body bg-light">
 								<span class="badge badge-danger mb-2"><i class="fas fa-wallet"></i> EWALLET UNPAID </span><br />
 								<img width="150" src="'. $shoppingcart->shoppingcart_payment->qrcode .'"><br />
+								<a href="'. env('APP_API_URL') .'/qrcode/'.$shoppingcart->session_id.'/'. $shoppingcart->confirmation_code .'.png" class="invoice-hilang">Download QRCODE</a>
 								</div>
 								</div>';
 						break;	
@@ -1923,6 +1933,7 @@ class BookingHelper {
 								<div class="card-body bg-light">
 								<span class="badge badge-warning mb-2"><i class="fas fa-wallet"></i> EWALLET PENDING </span><br />
 								<img width="150" src="'. $shoppingcart->shoppingcart_payment->qrcode .'"><br />
+								<a href="'. env('APP_API_URL') .'/qrcode/'.$shoppingcart->session_id.'/'. $shoppingcart->confirmation_code .'.png" class="invoice-hilang btn btn-success mt-2">Download QRCODE</a>
 								</div>
 								</div>
 								';
@@ -1943,51 +1954,7 @@ class BookingHelper {
 		return '';
 	}
 
-	/*
-	public static function payment_status($paymentStatus)
-	{
-		switch($paymentStatus)
-                    {
-                        case 1:
-                            $paymentStatus = "AUTHORIZED";
-                        break;
-                        case 2:
-                            $paymentStatus = "CAPTURED";
-                        break;
-                        case 3:
-                            $paymentStatus = "VOIDED";
-                        break;
-                        case 4:
-                            $paymentStatus = "UNPAID";
-                        break;
-                        default:
-                            $paymentStatus = "NOT AVAILABLE";
-                    }
-       return $paymentStatus;
-	}
-
-	public static function payment_status_public($paymentStatus)
-	{
-		switch($paymentStatus)
-                    {
-                        case 1:
-                            $paymentStatus = '<span class="badge badge-success">PAID</span>';
-                        break;
-                        case 2:
-                            $paymentStatus = '<span class="badge badge-success">PAID</span>';
-                        break;
-                        case 3:
-                            $paymentStatus = '<span class="badge badge-danger">REFUNDED</span>';
-                        break;
-                        case 4:
-                            $paymentStatus = '<span class="badge badge-warning">UNPAID</span>';
-                        break;
-                        default:
-                            $paymentStatus = "NOT AVAILABLE";
-                    }
-       return $paymentStatus;
-	}
-	*/
+	
 
 	public static function get_answer($shoppingcart,$question_id)
 	{
@@ -2162,5 +2129,8 @@ class BookingHelper {
 		}
 		return $booking_status;
 	}
+
+
+
 }
 ?>

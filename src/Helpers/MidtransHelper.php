@@ -1,6 +1,7 @@
 <?php
 namespace budisteikul\toursdk\Helpers;
 use budisteikul\toursdk\Helpers\BookingHelper;
+use budisteikul\toursdk\Helpers\ImageHelper;
 
 class MidtransHelper {
 	
@@ -81,9 +82,12 @@ class MidtransHelper {
         }
         else if($data2['payment_type']=="gopay")
         {
+
+          $qrcode = ImageHelper::uploadQrcodeCloudinary($data2['qr_code_url']);
+
           $response->payment_type = 'ewallet';
           $response->bank_name = 'gopay';
-          $response->qrcode = $data2['qr_code_url'];
+          $response->qrcode = $qrcode['secure_url'];
           $response->link = $data2['deeplink_url'];
         }
         else

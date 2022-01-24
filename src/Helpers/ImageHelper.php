@@ -7,6 +7,17 @@ use Illuminate\Support\Facades\Auth;
 
 class ImageHelper {
 
+    public static function uploadQrcodeCloudinary($url)
+    {
+        \Cloudinary::config(array( 
+            "cloud_name" => env('CLOUDINARY_NAME'), 
+            "api_key" => env('CLOUDINARY_KEY'), 
+            "api_secret" => env('CLOUDINARY_SECRET') 
+        ));
+        $response = \Cloudinary\Uploader::upload($url, Array('unique_filename'=>true,'use_filename'=>false,'folder' => env('APP_NAME') .'/qr-code'));
+        return $response;
+    }
+
     public static function uploadImageCloudinary($file)
     {
         \Cloudinary::config(array( 

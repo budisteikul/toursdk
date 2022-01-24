@@ -1300,12 +1300,21 @@ class APIController extends Controller
     public function createpaymentmidtrans(Request $request)
     {
         $sessionId = $request->input('sessionId');
+        $paymentType = $request->input('paymentType');
         
         BookingHelper::set_bookingStatus($sessionId,'PENDING');
 
         BookingHelper::set_confirmationCode($sessionId);
 
-        BookingHelper::create_payment($sessionId,"midtrans");
+        if($paymentType=="ewallet")
+        {
+            BookingHelper::create_payment($sessionId,"midtrans","gopay");
+        }
+        else
+        {
+            BookingHelper::create_payment($sessionId,"midtrans");
+        }
+        
 
         $shoppingcart = BookingHelper::confirm_booking($sessionId);
 
@@ -1318,8 +1327,16 @@ class APIController extends Controller
         
     }
 
-    public function midtrans_jscript($sessionId)
+    public function midtrans_jscript($payment_type,$sessionId)
     {
+        if($payment_type=="bank_transfer")
+        {
+            $paymentType = $payment_type;
+        }
+        else
+        {
+            $paymentType = "ewallet";
+        }
            
         $jscript = '
         function midtransScript()
@@ -1332,6 +1349,7 @@ class APIController extends Controller
             $.ajax({
                 data: {
                     "sessionId": "'.$sessionId.'",
+                    "paymentType": "'.$paymentType.'",
                 },
                 type: \'POST\',
                 url: \''. url('/api') .'/payment/midtrans\'
@@ -1347,7 +1365,7 @@ class APIController extends Controller
 
         return response($jscript)->header('Content-Type', 'application/javascript');
     }
-
+    
     public function paypal_jscript($sessionId)
     {
         

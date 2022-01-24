@@ -55,7 +55,7 @@ class APIController extends Controller
         
         $path = Storage::disk('local')->put($shoppingcart->confirmation_code .'.png', $contents);
         //print_r($path);
-        return response()->download(storage_path('app').'/'.$shoppingcart->confirmation_code .'.png');
+        //return response()->download(storage_path('app').'/'.$shoppingcart->confirmation_code .'.png');
         
     }
 

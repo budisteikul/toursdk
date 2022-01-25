@@ -1118,13 +1118,15 @@ class APIController extends Controller
             if($shoppingcart->shoppingcart_payment->payment_type=="ewallet")
             {
                 $pdfUrl = '
+                    <div class="pl-2">
                     1.  Open your <b>E-wallet apps</b>. <br />
                     2.  <b>Scan</b> the QR code shown on your monitor. <br />
-                    <img width="230" src="'. env('APP_URL') .'/img/qr-instruction.png">
+                    <img width="230" class="mt-2 mb-2" src="'. env('APP_URL') .'/img/qr-instruction.png">
                     <br />
                     3.  Check your payment details in the app, then tap <b>Pay</b>. <br />
                     4.  Enter your <b>PIN</b>. <br />
-                    5.  Your transaction is complete. <br />';
+                    5.  Your transaction is complete. 
+                    </div>';
             }
             else
             {

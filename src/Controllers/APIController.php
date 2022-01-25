@@ -48,7 +48,7 @@ class APIController extends Controller
 
     public function downloadQrcode($sessionId,$id)
     {
-        $shoppingcart = Shoppingcart::where('confirmation_code',$id)->where('session_id',$sessionId)->first();
+        $shoppingcart = Shoppingcart::where('confirmation_code',$id)->where('session_id',$sessionId)->firstOrFail();
         $payments = $shoppingcart->shoppingcart_payment()->first();
 
         $contents = file_get_contents($payments->qrcode);

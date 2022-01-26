@@ -1887,7 +1887,7 @@ class BookingHelper {
 						return '
 								<div class="card mb-4">
 								<div class="card-body bg-light">
-								<span class="badge badge-warning mb-2"><i class="fas fa-university"></i> BANK TRANSFER PENDING </span><br />
+								<span class="badge badge-warning mb-2"><i class="fas fa-university"></i> WAITING FOR PAYMENT </span><br />
 								Nama Bank : '. Str::upper($shoppingcart->shoppingcart_payment->bank_name) .'  <br />
 								Kode Bank : '. $shoppingcart->shoppingcart_payment->bank_code .'  <br />
 								No Rekening : '. GeneralHelper::splitSpace($shoppingcart->shoppingcart_payment->va_number,4) .'
@@ -1907,18 +1907,18 @@ class BookingHelper {
 					case 2:
 						return '<div class="card mb-4">
 								<div class="card-body bg-light">
-								<span class="badge badge-success mb-2"><i class="fas fa-wallet"></i> EWALLET PAID </span><br />
-								<img width="150" src="'. $shoppingcart->shoppingcart_payment->qrcode .'"><br />
-								<a href="'. env('APP_API_URL') .'/qrcode/'.$shoppingcart->session_id.'/'. $shoppingcart->confirmation_code .'" class="invoice-hilang btn btn-success mt-2">Download QRCODE</a>
+								<span class="badge badge-success mb-2"><i class="fas fa-wallet"></i> E-WALLET PAID </span><br />
+								<img width="165" src="'. $shoppingcart->shoppingcart_payment->qrcode .'"><br />
+								<a href="'. env('APP_API_URL') .'/qrcode/'.$shoppingcart->session_id.'/'. $shoppingcart->confirmation_code .'" class="invoice-hilang btn btn-success mt-2"><i class="fas fa-download"></i> Download QRCODE</a>
 								</div>
 								</div>';
 						break;
 					case 3:
 						return '<div class="card mb-4">
 								<div class="card-body bg-light">
-								<span class="badge badge-danger mb-2"><i class="fas fa-wallet"></i> EWALLET UNPAID </span><br />
-								<img width="150" src="'. $shoppingcart->shoppingcart_payment->qrcode .'"><br />
-								<a href="'. env('APP_API_URL') .'/qrcode/'.$shoppingcart->session_id.'/'. $shoppingcart->confirmation_code .'" class="invoice-hilang btn btn-success mt-2">Download QRCODE</a>
+								<span class="badge badge-danger mb-2"><i class="fas fa-wallet"></i> E-WALLET UNPAID </span><br />
+								<img width="165" src="'. $shoppingcart->shoppingcart_payment->qrcode .'"><br />
+								<a href="'. env('APP_API_URL') .'/qrcode/'.$shoppingcart->session_id.'/'. $shoppingcart->confirmation_code .'" class="invoice-hilang btn btn-success mt-2"><i class="fas fa-download"></i> Download QRCODE</a>
 								</div>
 								</div>';
 						break;	
@@ -1926,9 +1926,9 @@ class BookingHelper {
 						return '
 								<div class="card mb-4">
 								<div class="card-body bg-light">
-								<span class="badge badge-warning mb-2"><i class="fas fa-wallet"></i> EWALLET PENDING </span><br />
-								<img width="150" src="'. $shoppingcart->shoppingcart_payment->qrcode .'"><br />
-								<a href="'. env('APP_API_URL') .'/qrcode/'.$shoppingcart->session_id.'/'. $shoppingcart->confirmation_code .'" class="invoice-hilang btn btn-success mt-2">Download QRCODE</a>
+								<span class="badge badge-warning mb-2"><i class="fas fa-wallet"></i> WAITING FOR PAYMENT </span><br />
+								<img width="165" src="'. $shoppingcart->shoppingcart_payment->qrcode .'"><br />
+								<a href="'. env('APP_API_URL') .'/qrcode/'.$shoppingcart->session_id.'/'. $shoppingcart->confirmation_code .'" class="invoice-hilang btn btn-success mt-2"><i class="fas fa-download"></i> Download QRCODE</a>
 								</div>
 								</div>
 								';
@@ -1941,7 +1941,7 @@ class BookingHelper {
             {
             	return '<div class="card mb-4">
 								<div class="card-body bg-light">
-									<span class="badge badge-success">CASH</span>
+									<span class="badge badge-success">NONE</span>
 								</div>
 						</div>';
             }

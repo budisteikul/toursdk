@@ -53,7 +53,7 @@ class APIController extends Controller
 
         $contents = file_get_contents($payments->qrcode);
         
-        $path = Storage::put($shoppingcart->confirmation_code .'.png', $contents);
+        $path = Storage::disk('local')->put($shoppingcart->confirmation_code .'.png', $contents);
         //print_r($path);
         return response()->download(storage_path('app').'/'.$shoppingcart->confirmation_code .'.png')->deleteFileAfterSend(true);
         
@@ -1119,7 +1119,7 @@ class APIController extends Controller
             {
                 $pdfUrl = '
                     <div class="pl-2">
-                    1.  Open your <b>E-wallet apps</b>. <br />
+                    1.  Open your <b>E-wallet</b> or <b>Mobile Banking</b> apps. <br />
                     2.  <b>Scan</b> the QR code shown on your monitor. <br />
                     <img width="230" class="mt-2 mb-2" src="'. env('APP_URL') .'/img/qr-instruction.png">
                     <br />

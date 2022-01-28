@@ -41,7 +41,7 @@ html,body {
 <div style="position:absolute;left:0px;top:0px">
 <img src="{{url('/img/background1.jpg')}}" width=580 height=2732></div>
 <div style="position:absolute;left:68.03px;top:25.83px" class="cls_003">
-	<img src="{{url('/img/logo-blue.png')}}" height="30" />
+	<img src="{{url('/img/logo-blue.jpg')}}" height="30" />
 </div>
 <div style="position:absolute;left:200.59px;top:66.52px" class="cls_004">
 	<span class="cls_004">{{ Carbon\Carbon::parse($shoppingcart->shoppingcart_payment->updated_at)->formatLocalized('%d %b %Y %H:%M') }}</span>

@@ -70,7 +70,7 @@ class APIController extends Controller
 
             $product = BookingHelper::display_product_detail($shoppingcart);
             
-            $receipt_page = '<a class="btn btn-theme" href="'.$this->appUrl.'/booking/receipt/'.$shoppingcart->id.'/'. $shoppingcart->session_id .'">View receipt page <i class="fas fa-arrow-circle-right"></i></a>';
+            $receipt_page = '<a onclick="window.openAppRoute(\'/booking/receipt/'.$shoppingcart->id.'/'. $shoppingcart->session_id .'\')"  class="btn btn-theme" href="javascript:void(0);">View receipt page <i class="fas fa-arrow-circle-right"></i></a>';
 
             $booking[] = array(
                 'booking' => $invoice . $product . $receipt_page

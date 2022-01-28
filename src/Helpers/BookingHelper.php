@@ -1537,6 +1537,7 @@ class BookingHelper {
 		$shoppingcart_payment->bank_code = $shoppingcart_json->payment->bank_code;
 		$shoppingcart_payment->va_number = $shoppingcart_json->payment->va_number;
 
+		if(isset($shoppingcart_json->payment->snaptoken)) $shoppingcart_payment->snaptoken = $shoppingcart_json->payment->snaptoken;
 		if(isset($shoppingcart_json->payment->qrcode)) $shoppingcart_payment->qrcode = $shoppingcart_json->payment->qrcode;
 		if(isset($shoppingcart_json->payment->link)) $shoppingcart_payment->link = $shoppingcart_json->payment->link;
 

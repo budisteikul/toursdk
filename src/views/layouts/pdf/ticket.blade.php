@@ -104,7 +104,7 @@ body {
 <div class="card aa-theme">
         <div class="card_heading">
         			<div class="card_logo">
-						<img src="{{url('/img/logo-blue.png')}}" height="35" style="max-width:200px;" />
+						<img src="{{url('/img/logo-blue.jpg')}}" height="35" style="max-width:200px;" />
 					</div>
           @php
           $image = url('/img/blank-300.jpg');

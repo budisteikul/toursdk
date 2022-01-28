@@ -195,7 +195,7 @@ footer {
            				
            </td>
            <td style="background-color:#FFFFFF; text-align:right; padding-right:0px; line-height: 18px; font-size:14px; color:#777777">
-                        <img src="{{url('/img/logo-blue.png')}}" height="30" />
+                        <img src="{{url('/img/logo-blue.jpg')}}" height="30" />
                         <div style="margin-top:3px;">Jl. Abiyoso VII No.190 Bantul ID</div>
                         <div>Telp: +62 857 43 112 112</div>
                         <div>Email: guide@vertikaltrip.com</div>

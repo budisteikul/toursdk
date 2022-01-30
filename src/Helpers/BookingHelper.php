@@ -1812,6 +1812,16 @@ class BookingHelper {
 		return $value;
 	}
 
+	public static function have_payment($shoppingcart)
+	{
+		$status = false;
+		if(isset($shoppingcart->shoppingcart_payment->payment_status))
+		{
+			$status = true;
+		}
+		return $status;
+	}
+
 	public static function get_paymentStatus($shoppingcart)
 	{
 		if(isset($shoppingcart->shoppingcart_payment->payment_status))

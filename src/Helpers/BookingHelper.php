@@ -225,11 +225,9 @@ class BookingHelper {
 			$shoppingcart_payment = new ShoppingcartPayment();
 			$shoppingcart_payment->payment_provider = 'none';
 			$shoppingcart_payment->amount = self::convert_currency($grand_total,$data['currency'],env("PAYPAL_CURRENCY"));
-
 			$shoppingcart_payment->rate = self::convert_currency(1,env("PAYPAL_CURRENCY"),$data['currency']);
 			$shoppingcart_payment->rate_from = $data['currency'];
 			$shoppingcart_payment->rate_to = env("PAYPAL_CURRENCY");
-
 			$shoppingcart_payment->currency = env("PAYPAL_CURRENCY");
 			$shoppingcart_payment->payment_status = 2;
 			$shoppingcart_payment->shoppingcart_id = $shoppingcart->id;

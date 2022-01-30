@@ -305,10 +305,13 @@ footer {
         </tfoot>
 </table>
 
+@if(isset($shoppingcart->shoppingcart_payment()->first()))
 <div id="notices" style="margin-top: 10px;float:right;">
-<div style="font-size: 14px; color: #AAAAAA; line-height: 18px; ">PAYMENT</div>  
-<div class="notice"><small>{!! $BookingHelper->get_paymentStatus($shoppingcart) !!}</small></div>
+  <div style="font-size: 14px; color: #AAAAAA; line-height: 18px; ">PAYMENT</div>  
+  <div class="notice"><small>{!! $BookingHelper->get_paymentStatus($shoppingcart) !!}</small></div>
 </div>
+@endif
+
 <div style="clear: both;"></div>
 <footer>
 	Invoice was created on a computer and is valid without the signature and seal.

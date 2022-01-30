@@ -1957,7 +1957,7 @@ class BookingHelper {
             {
             	return '<div class="card mb-4">
 								<div class="card-body bg-light">
-									<span class="badge badge-success">NONE</span>
+									<span class="badge badge-success">PAID</span>
 								</div>
 						</div>';
             }

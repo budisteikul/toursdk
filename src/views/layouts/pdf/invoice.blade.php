@@ -305,12 +305,12 @@ footer {
         </tfoot>
 </table>
 
-@if($BookingHelper->have_payment($shoppingcart))
+
 <div id="notices" style="margin-top: 10px;float:right;">
   <div style="font-size: 14px; color: #AAAAAA; line-height: 18px; ">PAYMENT</div>  
   <div class="notice"><small>{!! $BookingHelper->get_paymentStatus($shoppingcart) !!}</small></div>
 </div>
-@endif
+
 
 <div style="clear: both;"></div>
 <footer>

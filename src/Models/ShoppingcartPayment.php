@@ -33,20 +33,20 @@ class ShoppingcartPayment extends Model
         return $this->belongsTo(Shoppingcart::class);
     }
 
+    
     public static function boot()
     {
         parent::boot();
 
         self::created(function($model){
-            FirebaseHelper::upload($model->shoppingcart()->first());
+                FirebaseHelper::upload($model->shoppingcart()->first());
         });
 
         self::updated(function($model){
-            FirebaseHelper::upload($model->shoppingcart()->first());
+                FirebaseHelper::upload($model->shoppingcart()->first());
         });
 
-        self::deleted(function($model){
-            FirebaseHelper::deleted($model->shoppingcart()->first());
-        });
+        
     }
+    
 }

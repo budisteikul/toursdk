@@ -26,16 +26,5 @@ class Shoppingcart extends Model
         return $this->hasOne(ShoppingcartPayment::class,'shoppingcart_id','id');
     }
 
-    public static function boot()
-    {
-        parent::boot();
-
-        
-
-        self::updated(function($model){
-                FirebaseHelper::upload($model);
-        });
-
-        
-    }
+    
 }

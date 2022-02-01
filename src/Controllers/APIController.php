@@ -7,6 +7,7 @@ use budisteikul\toursdk\Models\Category;
 use budisteikul\toursdk\Models\Review;
 use budisteikul\toursdk\Helpers\ProductHelper;
 use budisteikul\toursdk\Helpers\BokunHelper;
+use budisteikul\toursdk\Helpers\FirebaseHelper;
 use budisteikul\toursdk\Helpers\ImageHelper;
 use budisteikul\toursdk\Helpers\GeneralHelper;
 use budisteikul\toursdk\Helpers\BookingHelper;
@@ -1090,6 +1091,11 @@ class APIController extends Controller
                          ->orWhere('booking_status', 'PENDING');
         })->firstOrFail();
         
+        
+        FirebaseHelper::upload($shoppingcart);
+
+
+
         $invoice = 'No Documents';
         try {
             if($shoppingcart->shoppingcart_payment->payment_status>0) {

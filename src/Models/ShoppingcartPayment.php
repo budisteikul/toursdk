@@ -3,6 +3,7 @@
 namespace budisteikul\toursdk\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use budisteikul\toursdk\Helpers\FirebaseHelper;
 
 class ShoppingcartPayment extends Model
 {
@@ -30,5 +31,22 @@ class ShoppingcartPayment extends Model
     public function shoppingcart()
     {
         return $this->belongsTo(Shoppingcart::class);
+    }
+
+    public static function boot()
+    {
+        parent::boot();
+
+        self::created(function($model){
+            FirebaseHelper::upload($model->shoppingcart()->first());
+        });
+
+        self::updated(function($model){
+            FirebaseHelper::upload($model->shoppingcart()->first());
+        });
+
+        self::deleted(function($model){
+            FirebaseHelper::deleted($model->shoppingcart()->first());
+        });
     }
 }

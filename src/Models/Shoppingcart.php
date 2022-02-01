@@ -3,6 +3,7 @@
 namespace budisteikul\toursdk\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use budisteikul\toursdk\Helpers\FirebaseHelper;
 
 class Shoppingcart extends Model
 {
@@ -24,4 +25,6 @@ class Shoppingcart extends Model
     {
         return $this->hasOne(ShoppingcartPayment::class,'shoppingcart_id','id');
     }
+
+    
 }

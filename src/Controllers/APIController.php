@@ -1246,7 +1246,7 @@ class APIController extends Controller
 
         $shoppingcart = BookingHelper::confirm_booking($sessionId);
 
-        FirebaseHelper::upload($shoppingcart);
+        
 
         return response()->json([
                     "id" => "1",
@@ -1292,7 +1292,7 @@ class APIController extends Controller
                         $shoppingcart->save();
                         
                     }
-                    FirebaseHelper::upload($shoppingcart);
+                    
                 }
             }
 
@@ -1478,7 +1478,7 @@ class APIController extends Controller
                 $shoppingcart = Shoppingcart::where('confirmation_code',$data['confirmationCode'])->firstOrFail();
                 $shoppingcart->booking_status = "CANCELED";
                 $shoppingcart->save();
-                FirebaseHelper::upload($shoppingcart);
+                
                 return response()->json([
                     "id" => "1",
                     "message" => 'Success'

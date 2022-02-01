@@ -5,6 +5,11 @@ use budisteikul\toursdk\Helpers\ImageHelper;
 
 class MidtransHelper {
 	
+  public static function env_midtransServerKey()
+  {
+        return env("MIDTRANS_SERVER_KEY");
+  }
+
   public static function midtransApiEndpoint()
   {
         if(env('MIDTRANS_ENV')=="production")
@@ -42,7 +47,7 @@ class MidtransHelper {
         $headers = [
               'Accept' => 'application/jsons',
               'Content-Type' => 'application/json',
-              'Authorization' => 'Basic '. base64_encode(env('MIDTRANS_SERVER_KEY')),
+              'Authorization' => 'Basic '. base64_encode(self::env_midtransServerKey()),
           ];
 
         $data = [
@@ -158,7 +163,7 @@ class MidtransHelper {
         $headers = [
               'Accept' => 'application/jsons',
               'Content-Type' => 'application/json',
-              'Authorization' => 'Basic '. base64_encode(env('MIDTRANS_SERVER_KEY')),
+              'Authorization' => 'Basic '. base64_encode(self::env_midtransServerKey()),
           ];
         
         $client = new \GuzzleHttp\Client(['headers' => $headers,'http_errors' => false]);

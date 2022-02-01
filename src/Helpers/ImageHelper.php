@@ -7,14 +7,27 @@ use Illuminate\Support\Facades\Auth;
 
 class ImageHelper {
 
-    
+    public static function env_cloudinaryName()
+    {
+        return env("CLOUDINARY_NAME");
+    }
+
+    public static function env_cloudinaryKey()
+    {
+        return env("CLOUDINARY_KEY");
+    }
+
+    public static function env_cloudinarySecret()
+    {
+        return env("CLOUDINARY_SECRET");
+    }
 
     public static function uploadQrcodeCloudinary($url)
     {
         \Cloudinary::config(array( 
-            "cloud_name" => env('CLOUDINARY_NAME'), 
-            "api_key" => env('CLOUDINARY_KEY'), 
-            "api_secret" => env('CLOUDINARY_SECRET') 
+            "cloud_name" => self::env_cloudinaryName(), 
+            "api_key" => self::env_cloudinaryKey(), 
+            "api_secret" => self::env_cloudinarySecret() 
         ));
         $response = \Cloudinary\Uploader::upload($url, Array('unique_filename'=>true,'use_filename'=>false,'folder' => env('APP_NAME') .'/qr-code'));
         return $response;
@@ -23,9 +36,9 @@ class ImageHelper {
     public static function uploadImageCloudinary($file)
     {
         \Cloudinary::config(array( 
-            "cloud_name" => env('CLOUDINARY_NAME'), 
-            "api_key" => env('CLOUDINARY_KEY'), 
-            "api_secret" => env('CLOUDINARY_SECRET') 
+            "cloud_name" => self::env_cloudinaryName(), 
+            "api_key" => self::env_cloudinaryKey(), 
+            "api_secret" => self::env_cloudinarySecret() 
         ));
         $response = \Cloudinary\Uploader::upload(storage_path('app').'/'. $file, Array('unique_filename'=>false,'use_filename'=>true,'folder' => env('APP_NAME') .'/images'));
         Storage::disk('local')->delete($file);
@@ -35,9 +48,9 @@ class ImageHelper {
     public static function deleteImageCloudinary($public_id)
     {
         \Cloudinary::config(array( 
-            "cloud_name" => env('CLOUDINARY_NAME'), 
-            "api_key" => env('CLOUDINARY_KEY'), 
-            "api_secret" => env('CLOUDINARY_SECRET') 
+            "cloud_name" => self::env_cloudinaryName(), 
+            "api_key" => self::env_cloudinaryKey(), 
+            "api_secret" => self::env_cloudinarySecret() 
         ));
         \Cloudinary\Uploader::destroy($public_id);
     }
@@ -45,9 +58,9 @@ class ImageHelper {
 	public static function urlImageCloudinary($public_id,$width=0,$height=0)
 	{
 		\Cloudinary::config(array( 
-			"cloud_name" => env('CLOUDINARY_NAME'), 
-			"api_key" => env('CLOUDINARY_KEY'), 
-			"api_secret" => env('CLOUDINARY_SECRET') 
+			"cloud_name" => self::env_cloudinaryName(), 
+			"api_key" => self::env_cloudinaryKey(), 
+			"api_secret" => self::env_cloudinarySecret() 
 		));
 
 		if($width>0 && $height>0)

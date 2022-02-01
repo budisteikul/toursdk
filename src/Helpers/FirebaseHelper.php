@@ -4,9 +4,19 @@ use budisteikul\toursdk\Helpers\BookingHelper;
 
 class FirebaseHelper {
 
+    public static function env_firebaseDatabaseUrl()
+    {
+        return env("FIREBASE_DATABASE_URL");
+    }
+
+    public static function env_firebaseDatabaseSecret()
+    {
+        return env("FIREBASE_DATABASE_SECRET");
+    }
+
 	public static function delete($shoppingcart)
 	{
-		$endpoint = "https://". env('FIREBASE_DATABASE') ."/". $shoppingcart->id .".json?auth=". env('FIREBASE_DATABASE_SECRET');
+		$endpoint = "https://". self::env_firebaseDatabaseUrl() ."/". $shoppingcart->id .".json?auth=". self::env_firebaseDatabaseSecret();
   		$client = new \GuzzleHttp\Client(['http_errors' => false]);
         $response = $client->request('DELETE',$endpoint);
 
@@ -90,7 +100,7 @@ class FirebaseHelper {
         );
         
 
-  		$endpoint = "https://". env('FIREBASE_DATABASE') ."/". $shoppingcart->id ."/". $shoppingcart->session_id .".json?auth=". env('FIREBASE_DATABASE_SECRET');
+  		$endpoint = "https://". self::env_firebaseDatabaseUrl() ."/". $shoppingcart->id ."/". $shoppingcart->session_id .".json?auth=". self::env_firebaseDatabaseSecret();
   		$client = new \GuzzleHttp\Client(['http_errors' => false]);
         $response = $client->request('PUT',$endpoint,
           ['body' => json_encode($data)]

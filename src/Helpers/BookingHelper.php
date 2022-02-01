@@ -26,7 +26,20 @@ use budisteikul\toursdk\Helpers\FirebaseHelper;
 
 class BookingHelper {
 	
-	
+	public static function env_paypalCurrency()
+    {
+        return env("PAYPAL_CURRENCY");
+    }
+
+    public static function env_bokunCurrency()
+    {
+        return env("BOKUN_CURRENCY");
+    }
+
+    public static function env_appApiUrl()
+    {
+        return env("APP_API_URL");
+    }
 
 	public static function webhook_insert_shoppingcart($data)
 	{
@@ -224,11 +237,11 @@ class BookingHelper {
 
 			$shoppingcart_payment = new ShoppingcartPayment();
 			$shoppingcart_payment->payment_provider = 'none';
-			$shoppingcart_payment->amount = self::convert_currency($grand_total,$data['currency'],env("PAYPAL_CURRENCY"));
-			$shoppingcart_payment->rate = self::convert_currency(1,env("PAYPAL_CURRENCY"),$data['currency']);
+			$shoppingcart_payment->amount = self::convert_currency($grand_total,$data['currency'],self::env_paypalCurrency());
+			$shoppingcart_payment->rate = self::convert_currency(1,self::env_paypalCurrency(),$data['currency']);
 			$shoppingcart_payment->rate_from = $data['currency'];
-			$shoppingcart_payment->rate_to = env("PAYPAL_CURRENCY");
-			$shoppingcart_payment->currency = env("PAYPAL_CURRENCY");
+			$shoppingcart_payment->rate_to = self::env_paypalCurrency();
+			$shoppingcart_payment->currency = self::env_paypalCurrency();
 			$shoppingcart_payment->payment_status = 2;
 			$shoppingcart_payment->shoppingcart_id = $shoppingcart->id;
 			$shoppingcart_payment->save();
@@ -1654,11 +1667,11 @@ class BookingHelper {
 				'link' => NULL,
 				'order_id' => NULL,
 				'authorization_id' => NULL,
-				'amount' => self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,env("PAYPAL_CURRENCY")),
-				'currency' => env("PAYPAL_CURRENCY"),
-				'rate' => self::convert_currency(1,env("PAYPAL_CURRENCY"),$shoppingcart->currency),
+				'amount' => self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,self::env_paypalCurrency()),
+				'currency' => self::env_paypalCurrency(),
+				'rate' => self::convert_currency(1,self::env_paypalCurrency(),$shoppingcart->currency),
 				'rate_from' => $shoppingcart->currency,
-				'rate_to' => env("PAYPAL_CURRENCY"),
+				'rate_to' => self::env_paypalCurrency(),
 				'payment_status' => 0,
 			);
 			
@@ -1733,8 +1746,8 @@ class BookingHelper {
 
 	public static function paypal_rate($shoppingcart)
 	{
-		$amount = 'Total : '. self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,env("PAYPAL_CURRENCY")) .' '. env("PAYPAL_CURRENCY");
-		$value = $amount .'<br />Paypal Rate : 1 '. env("PAYPAL_CURRENCY") .' = '. self::convert_currency(1,env("PAYPAL_CURRENCY"),$shoppingcart->currency) .' '. $shoppingcart->currency;
+		$amount = 'Total : '. self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,self::env_paypalCurrency()) .' '. self::env_paypalCurrency();
+		$value = $amount .'<br />Paypal Rate : 1 '. self::env_paypalCurrency() .' = '. self::convert_currency(1,self::env_paypalCurrency(),$shoppingcart->currency) .' '. $shoppingcart->currency;
 		return $value;
 	}
 
@@ -1770,12 +1783,12 @@ class BookingHelper {
 
 		if($from!=$to)
 		{
-			if($from==env("BOKUN_CURRENCY"))
+			if($from==self::env_bokunCurrency())
 			{
 				$value = ($amount / $rate);
 			}
 
-			if($to==env("BOKUN_CURRENCY"))
+			if($to==self::env_bokunCurrency())
 			{
 				$value = ($amount * $rate);
 			}
@@ -1927,7 +1940,7 @@ class BookingHelper {
 								<span class="badge badge-success mb-2">
 								<i class="fas fa-wallet"></i> E-WALLET PAID </span><br />
 								<img width="165" src="'. $shoppingcart->shoppingcart_payment->qrcode .'"><br />
-								<a href="'. env('APP_API_URL') .'/qrcode/'.$shoppingcart->session_id.'/'. $shoppingcart->confirmation_code .'" class="invoice-hilang btn btn-success mt-2"><i class="fas fa-download"></i> Download QRCODE</a>
+								<a href="'. self::env_appApiUrl() .'/qrcode/'.$shoppingcart->session_id.'/'. $shoppingcart->confirmation_code .'" class="invoice-hilang btn btn-success mt-2"><i class="fas fa-download"></i> Download QRCODE</a>
 								</div>
 								</div>';
 						break;
@@ -1937,7 +1950,7 @@ class BookingHelper {
 								<span class="badge badge-danger mb-2">
 								<i class="fas fa-wallet"></i> E-WALLET UNPAID </span><br />
 								<img width="165" src="'. $shoppingcart->shoppingcart_payment->qrcode .'"><br />
-								<a href="'. env('APP_API_URL') .'/qrcode/'.$shoppingcart->session_id.'/'. $shoppingcart->confirmation_code .'" class="invoice-hilang btn btn-success mt-2"><i class="fas fa-download"></i> Download QRCODE</a>
+								<a href="'. self::env_appApiUrl() .'/qrcode/'.$shoppingcart->session_id.'/'. $shoppingcart->confirmation_code .'" class="invoice-hilang btn btn-success mt-2"><i class="fas fa-download"></i> Download QRCODE</a>
 								</div>
 								</div>';
 						break;	
@@ -1948,7 +1961,7 @@ class BookingHelper {
 								<span class="badge badge-warning mb-2">
 								<i class="fas fa-wallet"></i> WAITING FOR PAYMENT </span><br />
 								<img width="165" src="'. $shoppingcart->shoppingcart_payment->qrcode .'"><br />
-								<a href="'. env('APP_API_URL') .'/qrcode/'.$shoppingcart->session_id.'/'. $shoppingcart->confirmation_code .'" class="invoice-hilang btn btn-success mt-2"><i class="fas fa-download"></i> Download QRCODE</a>
+								<a href="'. self::env_appApiUrl() .'/qrcode/'.$shoppingcart->session_id.'/'. $shoppingcart->confirmation_code .'" class="invoice-hilang btn btn-success mt-2"><i class="fas fa-download"></i> Download QRCODE</a>
 								</div>
 								</div>
 								';

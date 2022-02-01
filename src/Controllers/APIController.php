@@ -939,7 +939,7 @@ class APIController extends Controller
                 'subtotal' => GeneralHelper::numberFormat($shoppingcart->subtotal),
                 'discount' => GeneralHelper::numberFormat($shoppingcart->discount),
                 'total' => GeneralHelper::numberFormat($shoppingcart->total),
-                'total_paypal' => BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,env("PAYPAL_CURRENCY")),
+                'total_paypal' => BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,$this->paypalCurrency),
                 'due_now' => GeneralHelper::numberFormat($shoppingcart->due_now),
                 'due_on_arrival' => GeneralHelper::numberFormat($shoppingcart->due_on_arrival),
                 'products' => $dataProducts,
@@ -1128,7 +1128,7 @@ class APIController extends Controller
                     <div class="pl-2">
                     1.  Open your <b>E-wallet</b> or <b>Mobile Banking</b> apps. <br />
                     2.  <b>Scan</b> the QR code shown on your monitor. <br />
-                    <img width="230" class="mt-2 mb-2" src="'. env('APP_URL') .'/img/qr-instruction.png">
+                    <img width="230" class="mt-2 mb-2" src="'. $this->appUrl .'/img/qr-instruction.png">
                     <br />
                     3.  Check your payment details in the app, then tap <b>Pay</b>. <br />
                     4.  Enter your <b>PIN</b>. <br />

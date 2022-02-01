@@ -6,34 +6,34 @@ use Illuminate\Support\Facades\Cache;
 class BokunHelper {
 
 
-    public static function get_bokunBookingChannel()
+    public static function env_bokunBookingChannel()
     {
-   		return $bookingChannel = env("BOKUN_BOOKING_CHANNEL");
+   		return env("BOKUN_BOOKING_CHANNEL");
     }
-    public static function get_bokunCurrency()
+    public static function env_bokunCurrency()
     {
-   		return $currency = env("BOKUN_CURRENCY");
+   		return env("BOKUN_CURRENCY");
     }
-    public static function get_bokunLang()
+    public static function env_bokunLang()
     {
-   		return $lang = env("BOKUN_LANG");
+   		return env("BOKUN_LANG");
     }
-    public static function get_bokunEnv()
+    public static function env_bokunEnv()
     {
-   		return $env = env("BOKUN_ENV");
+   		return env("BOKUN_ENV");
     }
-    public static function get_bokunAccessKey()
+    public static function env_bokunAccessKey()
     {
-   		return $env = env("BOKUN_ACCESS_KEY");
+   		return env("BOKUN_ACCESS_KEY");
     }
-    public static function get_bokunSecretKey()
+    public static function env_bokunSecretKey()
     {
-   		return $env = env("BOKUN_SECRET_KEY");
+   		return env("BOKUN_SECRET_KEY");
     }
 
     public static function bokunAPI_connect($path, $method = 'GET', $data = "")
     {
-    		if(self::get_bokunEnv()=="production")
+    		if(self::env_bokunEnv()=="production")
 			{
 				$endpoint = "https://api.bokun.io";
 			}
@@ -42,12 +42,12 @@ class BokunHelper {
 				$endpoint = "https://api.bokuntest.com";
 			}
 
-			$currency = self::get_bokunCurrency();
-        	$lang = self::get_bokunLang();
+			$currency = self::env_bokunCurrency();
+        	$lang = self::env_bokunLang();
         	$param = '?currency='.$currency.'&lang='.$lang;
         	$date = gmdate('Y-m-d H:i:s');
-        	$bokun_accesskey = self::get_bokunAccessKey();
-        	$bokun_secretkey = self::get_bokunSecretKey();
+        	$bokun_accesskey = self::env_bokunAccessKey();
+        	$bokun_secretkey = self::env_bokunSecretKey();
 
 			$string_signature = $date.$bokun_accesskey.$method.$path.$param;
         	$sha1_signature =  hash_hmac("sha1",$string_signature, $bokun_secretkey, true);
@@ -58,7 +58,7 @@ class BokunHelper {
           		'X-Bokun-AccessKey' => $bokun_accesskey,
           		'X-Bokun-Date' => $date,
           		'X-Bokun-Signature' => $base64_signature,
-		  		'X-Bokun-Channel' => self::get_bokunBookingChannel(),
+		  		'X-Bokun-Channel' => self::env_bokunBookingChannel(),
         	];
 
         	$client = new \GuzzleHttp\Client(['headers' => $headers,'http_errors' => false]);
@@ -84,7 +84,7 @@ class BokunHelper {
     public static function bokunWidget_connect($path, $method = 'GET', $data = "")
 	{
 
-			if(self::get_bokunEnv()=="production")
+			if(self::env_bokunEnv()=="production")
 			{
 				$endpoint = "https://widgets.bokun.io";
 			}
@@ -94,7 +94,7 @@ class BokunHelper {
 			}
 			
 			$headers = [
-		  		'x-bokun-channel' => self::get_bokunBookingChannel(),
+		  		'x-bokun-channel' => self::env_bokunBookingChannel(),
 		  		'content-type' => 'application/json',
         	];
 
@@ -120,9 +120,9 @@ class BokunHelper {
 
 	public static function set_mainContactQuestion($sessionId)
 	{
-		$currency = self::get_bokunCurrency();
-        $lang = self::get_bokunLang();
-        $bookingChannel = self::get_bokunBookingChannel();
+		$currency = self::env_bokunCurrency();
+        $lang = self::env_bokunLang();
+        $bookingChannel = self::env_bokunBookingChannel();
 
 		$data = '{"answers":[{"questionId":"firstName","values":["VERTIKAL"]},{"questionId":"lastName","values":["TRIP"]},{"questionId":"email","values":["guide@vertikaltrip.com"]},{"questionId":"phoneNumber","values":["+62 85743112112"]}]}';
 
@@ -135,9 +135,9 @@ class BokunHelper {
     public static function get_confirmBooking($sessionId)
 	{
 		self::set_mainContactQuestion($sessionId);
-        $currency = self::get_bokunCurrency();
-        $lang = self::get_bokunLang();
-        $bookingChannel = self::get_bokunBookingChannel();
+        $currency = self::env_bokunCurrency();
+        $lang = self::env_bokunLang();
+        $bookingChannel = self::env_bokunBookingChannel();
 
         $data = '{"checkoutOption":"CUSTOMER_NO_PAYMENT"}';
         $data = json_decode($data);
@@ -158,9 +158,9 @@ class BokunHelper {
     public static function get_currency()
 	{
 		
-        $currency = self::get_bokunCurrency();
-        $lang = self::get_bokunLang();
-        $bookingChannel = self::get_bokunBookingChannel();
+        $currency = self::env_bokunCurrency();
+        $lang = self::env_bokunLang();
+        $bookingChannel = self::env_bokunBookingChannel();
 
         $value = Cache::remember('_bokunCurrency_'. $currency .'_'. $lang,7200, function() use ($currency,$lang,$bookingChannel)
 		{
@@ -172,9 +172,9 @@ class BokunHelper {
 
 	public static function get_removepromocode($sessionId)
 	{
-		$currency = self::get_bokunCurrency();
-        $lang = self::get_bokunLang();
-        $bookingChannel = self::get_bokunBookingChannel();
+		$currency = self::env_bokunCurrency();
+        $lang = self::env_bokunLang();
+        $bookingChannel = self::env_bokunBookingChannel();
 
         $value = self::bokunWidget_connect('/widgets/'. $bookingChannel .'/checkout/promoCode?lang='. $lang .'&currency='.$currency.'&sessionId='. $sessionId,'DELETE');
 		$value = json_decode($value);
@@ -183,9 +183,9 @@ class BokunHelper {
 
 	public static function get_applypromocode($sessionId,$id)
 	{
-		$currency = self::get_bokunCurrency();
-        $lang = self::get_bokunLang();
-        $bookingChannel = self::get_bokunBookingChannel();
+		$currency = self::env_bokunCurrency();
+        $lang = self::env_bokunLang();
+        $bookingChannel = self::env_bokunBookingChannel();
 
         $id = strtolower($id);
         $value = self::bokunWidget_connect('/widgets/'. $bookingChannel .'/checkout/promoCode/'. $id .'?lang='. $lang .'&currency='.$currency.'&sessionId='. $sessionId,'POST');
@@ -195,9 +195,9 @@ class BokunHelper {
 
 	public static function get_removeactivity($sessionId,$id)
 	{
-		$currency = self::get_bokunCurrency();
-        $lang = self::get_bokunLang();
-        $bookingChannel = self::get_bokunBookingChannel();
+		$currency = self::env_bokunCurrency();
+        $lang = self::env_bokunLang();
+        $bookingChannel = self::env_bokunBookingChannel();
 
 		$value = self::bokunWidget_connect('/widgets/'. $bookingChannel .'/shoppingCart/activity/remove/'. $id .'?lang='. $lang .'&currency='.$currency.'&sessionId='. $sessionId,'DELETE');
 		$value = json_decode($value);
@@ -209,9 +209,9 @@ class BokunHelper {
 
 	public static function get_questionshoppingcart($id)
 	{
-		$currency = self::get_bokunCurrency();
-		$lang = self::get_bokunLang();
-		$bookingChannel = self::get_bokunBookingChannel();
+		$currency = self::env_bokunCurrency();
+		$lang = self::env_bokunLang();
+		$bookingChannel = self::env_bokunBookingChannel();
 
 		$value = self::bokunWidget_connect('/widgets/'.$bookingChannel.'/checkout/cartBookingOptions?lang='.$lang.'&currency='.$currency.'&sessionId='. $id);
 		$value = json_decode($value);
@@ -220,9 +220,9 @@ class BokunHelper {
 
 	public static function get_addshoppingcart($sessionId,$data)
 	{
-		$currency = self::get_bokunCurrency();
-		$lang = self::get_bokunLang();
-		$bookingChannel = self::get_bokunBookingChannel();
+		$currency = self::env_bokunCurrency();
+		$lang = self::env_bokunLang();
+		$bookingChannel = self::env_bokunBookingChannel();
 
 		$value = self::bokunWidget_connect('/widgets/'. $bookingChannel .'/shoppingCart/activity/add?lang='. $lang .'&currency='.$currency.'&sessionId='. $sessionId,'POST',$data);
 		$value = json_decode($value);
@@ -231,8 +231,8 @@ class BokunHelper {
 
 	public static function get_invoice($data)
 	{
-		$currency = self::get_bokunCurrency();
-        $lang = self::get_bokunLang();
+		$currency = self::env_bokunCurrency();
+        $lang = self::env_bokunLang();
         
 		$value = json_decode(self::bokunWidget_connect('/snippets/activity/invoice-preview?currency='.$currency.'&lang='.$lang,'POST',$data));
 		return $value;
@@ -241,9 +241,9 @@ class BokunHelper {
 	public static function get_calendar_new($activityId,$year="",$month="")
 	{
 		
-		$currency = self::get_bokunCurrency();
-        $lang = self::get_bokunLang();
-        $bookingChannel = self::get_bokunBookingChannel();
+		$currency = self::env_bokunCurrency();
+        $lang = self::env_bokunLang();
+        $bookingChannel = self::env_bokunBookingChannel();
 
         if($year=="") $year = -1;
         if($month=="") $month = -1;
@@ -260,8 +260,8 @@ class BokunHelper {
 
 	public static function get_calendar($activityId,$year="",$month="")
 	{
-		$currency = self::get_bokunCurrency();
-        $lang = self::get_bokunLang();
+		$currency = self::env_bokunCurrency();
+        $lang = self::env_bokunLang();
 
         if($year=="") $year = date('Y');
         if($month=="") $month = date('m');
@@ -276,9 +276,9 @@ class BokunHelper {
 
 	public static function get_product($activityId)
 	{
-		$currency = self::get_bokunCurrency();
-		$lang = self::get_bokunLang();
-		$bookingChannel = self::get_bokunBookingChannel();
+		$currency = self::env_bokunCurrency();
+		$lang = self::env_bokunLang();
+		$bookingChannel = self::env_bokunBookingChannel();
 		$value = Cache::rememberForever('_bokunProductById_'. $currency .'_'. $lang .'_'.$activityId, function() use ($activityId,$currency,$lang,$bookingChannel) {
     		return self::bokunWidget_connect('/widgets/'.$bookingChannel.'/activity/'.$activityId.'?lang='.$lang.'&currency='.$currency);
 		});
@@ -288,9 +288,9 @@ class BokunHelper {
 
 	public static function get_product_pickup($activityId)
 	{
-		$currency = self::get_bokunCurrency();
-        $lang = self::get_bokunLang();
-        $bookingChannel = self::get_bokunBookingChannel();
+		$currency = self::env_bokunCurrency();
+        $lang = self::env_bokunLang();
+        $bookingChannel = self::env_bokunBookingChannel();
 
 		$value = Cache::remember('_bokunProductPickup_'. $currency .'_'. $lang .'_'. $activityId,7200, function() use ($activityId,$lang,$bookingChannel) {
     		return self::bokunWidget_connect('/widgets/'.$bookingChannel.'/activity/'.$activityId.'/pickupPlaces?selectedLang='.$lang);

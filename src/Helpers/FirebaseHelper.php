@@ -4,6 +4,16 @@ use budisteikul\toursdk\Helpers\BookingHelper;
 
 class FirebaseHelper {
 
+	public static function delete($shoppingcart)
+	{
+		$endpoint = "https://". env('FIREBASE_DATABASE') ."/". $shoppingcart->id .".json?auth=". env('FIREBASE_DATABASE_SECRET');
+  		$client = new \GuzzleHttp\Client(['http_errors' => false]);
+        $response = $client->request('DELETE',$endpoint);
+
+        $data = $response->getBody()->getContents();
+        $data = json_decode($data,true);
+	}
+
 	public static function upload($shoppingcart)
   	{
 

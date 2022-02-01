@@ -22,7 +22,7 @@ use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\Exception\UnsatisfiedDependencyException;
 use Illuminate\Support\Facades\Cache;
 use Carbon\Carbon;
-
+use budisteikul\toursdk\Helpers\FirebaseHelper;
 
 class BookingHelper {
 	
@@ -233,6 +233,8 @@ class BookingHelper {
 			$shoppingcart_payment->shoppingcart_id = $shoppingcart->id;
 			$shoppingcart_payment->save();
 			
+			FirebaseHelper::upload($shoppingcart);
+
 			return $shoppingcart;
 	}
 	
@@ -1550,6 +1552,8 @@ class BookingHelper {
 		$shoppingcart_payment->payment_status = $shoppingcart_json->payment->payment_status;
 		$shoppingcart_payment->save();
 
+		FirebaseHelper::upload($shoppingcart);
+		
 		return $shoppingcart;
 		
 	}

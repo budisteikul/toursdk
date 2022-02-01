@@ -7,7 +7,6 @@ use budisteikul\toursdk\Models\Category;
 use budisteikul\toursdk\Models\Review;
 use budisteikul\toursdk\Helpers\ProductHelper;
 use budisteikul\toursdk\Helpers\BokunHelper;
-use budisteikul\toursdk\Helpers\FirebaseHelper;
 use budisteikul\toursdk\Helpers\ImageHelper;
 use budisteikul\toursdk\Helpers\GeneralHelper;
 use budisteikul\toursdk\Helpers\BookingHelper;
@@ -27,6 +26,7 @@ use Barryvdh\DomPDF\Facade as PDF;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
+use budisteikul\toursdk\Helpers\FirebaseHelper;
 
 class APIController extends Controller
 {
@@ -1085,16 +1085,17 @@ class APIController extends Controller
 
     public function receipt($id,$sessionId)
     {
+
+
         $shoppingcart = Shoppingcart::where('id',$id)->where('session_id', $sessionId)->where(function($query){
             return $query->where('booking_status', 'CONFIRMED')
                          ->orWhere('booking_status', 'CANCELED')
                          ->orWhere('booking_status', 'PENDING');
         })->firstOrFail();
-        
-        
+
         FirebaseHelper::upload($shoppingcart);
 
-
+       
 
         $invoice = 'No Documents';
         try {
@@ -1245,6 +1246,8 @@ class APIController extends Controller
 
         $shoppingcart = BookingHelper::confirm_booking($sessionId);
 
+        FirebaseHelper::upload($shoppingcart);
+
         return response()->json([
                     "id" => "1",
                     "message" => "/booking/receipt/".$shoppingcart->id."/".$shoppingcart->session_id
@@ -1289,6 +1292,7 @@ class APIController extends Controller
                         $shoppingcart->save();
                         
                     }
+                    FirebaseHelper::upload($shoppingcart);
                 }
             }
 
@@ -1471,9 +1475,10 @@ class APIController extends Controller
                 ]);
             break;
             case 'BOOKING_ITEM_CANCELLED':
-                $shopping_cart = Shoppingcart::where('confirmation_code',$data['confirmationCode'])->firstOrFail();
-                $shopping_cart->booking_status = "CANCELED";
-                $shopping_cart->save();
+                $shoppingcart = Shoppingcart::where('confirmation_code',$data['confirmationCode'])->firstOrFail();
+                $shoppingcart->booking_status = "CANCELED";
+                $shoppingcart->save();
+                FirebaseHelper::upload($shoppingcart);
                 return response()->json([
                     "id" => "1",
                     "message" => 'Success'

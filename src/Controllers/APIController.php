@@ -1476,8 +1476,8 @@ class APIController extends Controller
             break;
             case 'BOOKING_ITEM_CANCELLED':
                 $shoppingcart = Shoppingcart::where('confirmation_code',$data['confirmationCode'])->firstOrFail();
-                $shoppingcart->booking_status = "CANCELED";
-                $shoppingcart->save();
+                
+                BookingHelper::change_booking_status($shoppingcart,"CANCELED");
                 
                 return response()->json([
                     "id" => "1",

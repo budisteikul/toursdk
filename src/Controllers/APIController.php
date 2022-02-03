@@ -1095,8 +1095,6 @@ class APIController extends Controller
 
         FirebaseHelper::upload($shoppingcart);
 
-       
-
         $invoice = 'No Documents';
         try {
             if($shoppingcart->shoppingcart_payment->payment_status>0) {
@@ -1144,9 +1142,7 @@ class APIController extends Controller
 
         $payment_status_asText = BookingHelper::get_paymentStatus($shoppingcart);
         $booking_status_asText = BookingHelper::get_bookingStatus($shoppingcart);
-        //$status_asText = BookingHelper::payment_status_public($shoppingcart->shoppingcart_payment->payment_status);
-        //if($shoppingcart->booking_status=="CANCELED") $status_asText = '<span class="badge badge-danger">CANCELED</span>';
-
+        
         $main_contact = BookingHelper::get_answer_contact($shoppingcart);
         
         $dataObj = array(

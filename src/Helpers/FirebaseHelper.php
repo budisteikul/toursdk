@@ -14,14 +14,19 @@ class FirebaseHelper {
         return env("FIREBASE_DATABASE_SECRET");
     }
 
-	public static function delete($shoppingcart)
+	public static function delete($shoppingcart,$index="")
 	{
-		$endpoint = "https://". self::env_firebaseDatabaseUrl() ."/". $shoppingcart->id .".json?auth=". self::env_firebaseDatabaseSecret();
-  		$client = new \GuzzleHttp\Client(['http_errors' => false]);
-        $response = $client->request('DELETE',$endpoint);
+        if($index=="") $index = "receipt";
 
-        $data = $response->getBody()->getContents();
-        $data = json_decode($data,true);
+        if($index=="receipt")
+        {
+		  $endpoint = "https://". self::env_firebaseDatabaseUrl() ."/receipt/".$shoppingcart->session_id .'/'. $shoppingcart->id .".json?auth=". self::env_firebaseDatabaseSecret();
+  		    $client = new \GuzzleHttp\Client(['http_errors' => false]);
+            $response = $client->request('DELETE',$endpoint);
+
+            $data = $response->getBody()->getContents();
+            $data = json_decode($data,true);
+        }
 	}
 
 	public static function upload($shoppingcart,$index="")

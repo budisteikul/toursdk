@@ -2036,6 +2036,10 @@ class BookingHelper {
 			}
 		}
 		
+		if($value!="")
+		{
+			$value = '<div class="card mb-2 mt-2"><div class="card-body"><b>Note</b><br />'.$value .'</div></div>';
+		}
 		
         return $value;
 	}
@@ -2106,17 +2110,18 @@ class BookingHelper {
 				}
 			}
 
-			$product .= '<div class="card mb-2 mt-2"><div class="card-body">';
+			
 			$product .= BookingHelper::get_answer_product($shoppingcart,$shoppingcart_product->booking_id);
-			$product .= '</div></div>';
+			
 
-			//$product .= '<br>';
+			
 			$product .= '</div></div>';
 		}
 
 		
 		return $product;
 	}
+
 
 	public static function access_ticket($shoppingcart)
 	{

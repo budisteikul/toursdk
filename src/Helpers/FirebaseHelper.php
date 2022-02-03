@@ -103,7 +103,7 @@ class FirebaseHelper {
             );
         
 
-            $endpoint = "https://". self::env_firebaseDatabaseUrl() ."/receipt/". $shoppingcart->id ."/". $shoppingcart->session_id .".json?auth=". self::env_firebaseDatabaseSecret();
+            $endpoint = "https://". self::env_firebaseDatabaseUrl() ."/receipt/". $shoppingcart->session_id ."/". $shoppingcart->id .".json?auth=". self::env_firebaseDatabaseSecret();
             $client = new \GuzzleHttp\Client(['http_errors' => false]);
             $response = $client->request('PUT',$endpoint,
             ['body' => json_encode($data)]

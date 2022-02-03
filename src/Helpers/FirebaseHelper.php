@@ -81,25 +81,26 @@ class FirebaseHelper {
             $main_contact = BookingHelper::get_answer_contact($shoppingcart);
         
             $dataObj = array(
-            'vendor' => env('APP_NAME'),
-            'booking_status' => $shoppingcart->booking_status,
-            'booking_status_asText' => $booking_status_asText,
-            'confirmation_code' => $shoppingcart->confirmation_code,
-            'total' => $shoppingcart->currency .' '. GeneralHelper::numberFormat($shoppingcart->due_now),
-            'payment_status' => $shoppingcart->shoppingcart_payment->payment_status,
-            'payment_status_asText' => $payment_status_asText,
-            'firstName' => $main_contact->firstName,
-            'lastName' => $main_contact->lastName,
-            'phoneNumber' => $main_contact->phoneNumber,
-            'email' => $main_contact->email,
-            'invoice' => $invoice,
-            'tickets' => $ticket,
-            'paymentProvider' => $shoppingcart->shoppingcart_payment->payment_provider,
-            'pdf_url' => $pdfUrl,
+                'vendor' => env('APP_NAME'),
+                'booking_status' => $shoppingcart->booking_status,
+                'booking_status_asText' => $booking_status_asText,
+                'confirmation_code' => $shoppingcart->confirmation_code,
+                'total' => $shoppingcart->currency .' '. GeneralHelper::numberFormat($shoppingcart->due_now),
+                'payment_status' => $shoppingcart->shoppingcart_payment->payment_status,
+                'payment_status_asText' => $payment_status_asText,
+                'firstName' => $main_contact->firstName,
+                'lastName' => $main_contact->lastName,
+                'phoneNumber' => $main_contact->phoneNumber,
+                'email' => $main_contact->email,
+                'invoice' => $invoice,
+                'tickets' => $ticket,
+                'paymentProvider' => $shoppingcart->shoppingcart_payment->payment_provider,
+                'pdf_url' => $pdfUrl,
             );
 
             $data = array(
-            'receipt' => $dataObj
+                'receipt' => $dataObj,
+                'message' => 'success'
             );
         
 

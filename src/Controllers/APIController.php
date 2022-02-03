@@ -1168,7 +1168,8 @@ class APIController extends Controller
         );
         
         return response()->json([
-                'receipt' => $dataObj
+                'receipt' => $dataObj,
+                'message' => "success"
             ], 200);
     }
     

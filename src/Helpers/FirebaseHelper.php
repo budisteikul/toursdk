@@ -41,6 +41,7 @@ class FirebaseHelper {
                     $invoice = '<a target="_blank" class="text-theme" href="'.url('/api').'/pdf/invoice/'. $shoppingcart->session_id .'/Invoice-'. $shoppingcart->confirmation_code .'.pdf"><i class="fas fa-file-invoice"></i> Invoice-'. $shoppingcart->confirmation_code .'.pdf</a><br />';
                 }
             } catch (Exception $e) {
+                
             }
 
             $ticket = '';

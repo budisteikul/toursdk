@@ -690,10 +690,13 @@ class APIController extends Controller
 
         $shoppingcart = Cache::get('_'. $sessionId);
 
+        if(!isset($shoppingcart->products))
+        {
+            abort(404);
+        }
+
         $dataShoppingcart = array();
         $dataProducts = array();
-        
-        
 
         foreach(collect($shoppingcart->products)->sortBy('booking_id') as $shoppingcart_product)
         {
@@ -1093,6 +1096,11 @@ class APIController extends Controller
                          ->orWhere('booking_status', 'PENDING');
         })->firstOrFail();
 
+        if(!isset($shoppingcart->shoppingcart_payment))
+        {
+            abort(404);
+        }
+
         FirebaseHelper::upload($shoppingcart);
 
         $invoice = 'No Documents';
@@ -1101,6 +1109,7 @@ class APIController extends Controller
                 $invoice = '<a target="_blank" class="text-theme" href="'.url('/api').'/pdf/invoice/'. $shoppingcart->session_id .'/Invoice-'. $shoppingcart->confirmation_code .'.pdf"><i class="fas fa-file-invoice"></i> Invoice-'. $shoppingcart->confirmation_code .'.pdf</a><br />';
             }
         } catch (Exception $e) {
+
         }
 
         $ticket = '';

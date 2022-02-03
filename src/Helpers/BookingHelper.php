@@ -22,7 +22,7 @@ use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\Exception\UnsatisfiedDependencyException;
 use Illuminate\Support\Facades\Cache;
 use Carbon\Carbon;
-
+use budisteikul\toursdk\Helpers\FirebaseHelper;
 
 class BookingHelper {
 	
@@ -2136,26 +2136,29 @@ class BookingHelper {
 		return $access;
 	}
 
-	public static function booking_status($shoppingcart)
+	public static function change_booking_status($shoppingcart,$booking_status)
 	{
-		$booking_status = '';
 
-		if($shoppingcart->booking_status=='CONFIRMED')
+		if($booking_status=="CONFIRMED")
 		{
-			$booking_status = '<span class="badge badge-success">CONFIRMED</span> <br />';
-			if(isset($shoppingcart->shoppingcart_payment->payment_status))
-			{
-				if($shoppingcart->shoppingcart_payment->payment_status==4)
-				{
-					$booking_status = '<span class="badge badge-warning">UNPAID</span> <br />';
-				}
-			}
+			$shoppingcart->booking_status = "CONFIRMED";
+			$shoppingcart->save();
+			FirebaseHelper::upload($shoppingcart);
 		}
-		else
+
+		if ($booking_status=="CANCELED")
 		{
-			$booking_status = '<span class="badge badge-danger">CANCELED</span> <br />';
+			$shoppingcart->booking_status = "CANCELED";
+			$shoppingcart->save();
+			FirebaseHelper::upload($shoppingcart);
 		}
-		return $booking_status;
+
+		if ($booking_status=="DELETED")
+		{
+			FirebaseHelper::delete($shoppingcart);
+			$shoppingcart->delete();
+		}
+		
 	}
 
 

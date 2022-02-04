@@ -64,6 +64,11 @@ class APIController extends Controller
     {
         $shoppingcarts = Shoppingcart::where('session_id', $sessionId)->orderBy('id','desc')->get();
         
+        foreach($shoppingcarts as $shoppingcart)
+        {
+            FirebaseHelper::upload($shoppingcart,"receipt");   
+        }
+        
         $booking = array();
         foreach($shoppingcarts as $shoppingcart)
         {
@@ -1101,7 +1106,7 @@ class APIController extends Controller
             abort(404);
         }
 
-        FirebaseHelper::upload($shoppingcart);
+        
 
         $invoice = 'No Documents';
         try {

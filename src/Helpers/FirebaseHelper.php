@@ -35,6 +35,11 @@ class FirebaseHelper {
 
         if($index=="receipt")
         {
+            if(!BookingHelper::have_payment($shoppingcart))
+            {
+                return "";
+            }
+
             $invoice = 'No Documents';
             try {
                 if($shoppingcart->shoppingcart_payment->payment_status>0) {

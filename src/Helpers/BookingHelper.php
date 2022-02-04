@@ -1831,7 +1831,7 @@ class BookingHelper {
 	public static function have_payment($shoppingcart)
 	{
 		$status = false;
-		if(isset($shoppingcart->shoppingcart_payment->payment_status))
+		if(isset($shoppingcart->shoppingcart_payment))
 		{
 			$status = true;
 		}
@@ -1840,7 +1840,7 @@ class BookingHelper {
 
 	public static function get_paymentStatus($shoppingcart)
 	{
-		if(isset($shoppingcart->shoppingcart_payment->payment_status))
+		if(self::have_payment($shoppingcart))
 		{
 			if($shoppingcart->shoppingcart_payment->payment_provider=="paypal")
             {

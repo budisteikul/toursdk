@@ -1101,6 +1101,7 @@ class APIController extends Controller
                          ->orWhere('booking_status', 'PENDING');
         })->firstOrFail();
 
+        
         if(!isset($shoppingcart->shoppingcart_payment))
         {
             abort(404);

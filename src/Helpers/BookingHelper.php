@@ -41,6 +41,33 @@ class BookingHelper {
         return env("APP_API_URL");
     }
 
+    public static function env_appUrl()
+    {
+        return env("APP_URL");
+    }
+
+    public static function env_appName()
+    {
+        return env("APP_NAME");
+    }
+
+    public static function env_paypalClientId()
+    {
+        return env("PAYPAL_CLIENT_ID");
+    }
+
+    public static function env_midtransClientKey()
+    {
+        return env("MIDTRANS_CLIENT_KEY");
+    }
+
+    public static function env_midtransEnv()
+    {
+        return env("MIDTRANS_ENV");
+    }
+
+    
+
 	public static function webhook_insert_shoppingcart($data)
 	{
 			$shoppingcart = new Shoppingcart();
@@ -2166,7 +2193,345 @@ class BookingHelper {
 		
 	}
 
+	public static function view_receipt($shoppingcart)
+	{
+		$invoice = 'No Documents';
+        try {
+            if($shoppingcart->shoppingcart_payment->payment_status>0) {
+                $invoice = '<a target="_blank" class="text-theme" href="'.url('/api').'/pdf/invoice/'. $shoppingcart->session_id .'/Invoice-'. $shoppingcart->confirmation_code .'.pdf"><i class="fas fa-file-invoice"></i> Invoice-'. $shoppingcart->confirmation_code .'.pdf</a><br />';
+            }
+        } catch (Exception $e) {
 
+        }
+
+        $ticket = '';
+        try {
+            if($shoppingcart->shoppingcart_payment->payment_status==2 || $shoppingcart->shoppingcart_payment->payment_status==1) {
+                foreach($shoppingcart->shoppingcart_products()->get() as $shoppingcart_product) {
+                    $ticket .= '<a target="_blank" class="text-theme" href="'.url('/api').'/pdf/ticket/'.$shoppingcart->session_id.'/Ticket-'.$shoppingcart_product->product_confirmation_code.'.pdf"><i class="fas fa-ticket-alt"></i> Ticket-'. $shoppingcart_product->product_confirmation_code .'.pdf</a>
+                                <br />';
+                }
+            }
+        } catch (Exception $e) {
+        }
+        
+        if($ticket=="") $ticket = 'No Documents <br /><small class="form-text text-muted">* Available when status is paid</small>';
+
+        
+        $pdfUrl = array();
+        
+        if($shoppingcart->shoppingcart_payment->payment_provider=="midtrans") {
+            if($shoppingcart->shoppingcart_payment->payment_type=="ewallet")
+            {
+                $pdfUrl = '
+                    <div class="pl-2">
+                    1.  Open your <b>E-wallet</b> or <b>Mobile Banking</b> apps. <br />
+                    2.  <b>Scan</b> the QR code shown on your monitor. <br />
+                    <img width="230" class="mt-2 mb-2" src="'. self::env_appUrl() .'/img/qr-instruction.png">
+                    <br />
+                    3.  Check your payment details in the app, then tap <b>Pay</b>. <br />
+                    4.  Enter your <b>PIN</b>. <br />
+                    5.  Your transaction is complete. 
+                    </div>';
+            }
+            else
+            {
+                $pdfUrl = '<a target="_blank" class="text-theme" href="'.url('/api').'/pdf/instruction/'. $shoppingcart->session_id .'/Instruction-'. $shoppingcart->confirmation_code .'.pdf"><i class="fas fa-file-invoice"></i> Instruction-'. $shoppingcart->confirmation_code .'.pdf</a><br />';
+            }
+            
+        }
+
+        $payment_status_asText = BookingHelper::get_paymentStatus($shoppingcart);
+        $booking_status_asText = BookingHelper::get_bookingStatus($shoppingcart);
+        
+        $main_contact = BookingHelper::get_answer_contact($shoppingcart);
+        
+        $dataObj = array(
+            'vendor' => self::env_appName(),
+            'booking_status' => $shoppingcart->booking_status,
+            'booking_status_asText' => $booking_status_asText,
+            'confirmation_code' => $shoppingcart->confirmation_code,
+            'total' => $shoppingcart->currency .' '. GeneralHelper::numberFormat($shoppingcart->due_now),
+            'payment_status' => $shoppingcart->shoppingcart_payment->payment_status,
+            'payment_status_asText' => $payment_status_asText,
+            'firstName' => $main_contact->firstName,
+            'lastName' => $main_contact->lastName,
+            'phoneNumber' => $main_contact->phoneNumber,
+            'email' => $main_contact->email,
+            'invoice' => $invoice,
+            'tickets' => $ticket,
+            'paymentProvider' => $shoppingcart->shoppingcart_payment->payment_provider,
+            'pdf_url' => $pdfUrl,
+        );
+
+        return $dataObj;
+	}
+
+
+	public static function view_shoppingcart($shoppingcart)
+	{
+		$dataShoppingcart = array();
+        $dataProducts = array();
+
+        foreach(collect($shoppingcart->products)->sortBy('booking_id') as $shoppingcart_product)
+        {
+            
+            $product_subtotal = 0;
+            $product_discount = 0;
+            $product_total = 0;
+            $product_detail_asText = '';
+            
+
+            foreach($shoppingcart_product->product_details as $product_detail)
+            {
+                
+                if($product_detail->type=="product")
+                {
+                    $product_subtotal += $product_detail->subtotal;
+                    $product_discount += $product_detail->discount;
+                    $product_total += $product_detail->total;
+                    $product_detail_asText .= $product_detail->qty .' x '. $product_detail->unit_price .' ('. GeneralHelper::numberFormat($product_detail->price) .') <br />';
+                }
+
+            }
+
+            
+
+            if($product_discount>0)
+            {
+                $product_total_asText = '<strike className="text-muted">'.GeneralHelper::numberFormat($product_subtotal).'</strike><br /><b>'.GeneralHelper::numberFormat($product_total).'</b>';
+            }
+            else
+            {
+                $product_total_asText = '<b>'.GeneralHelper::numberFormat($product_total).'</b>';
+            }
+
+            $dataPickup = array();
+            foreach($shoppingcart_product->product_details as $product_detail)
+            {
+                if($product_detail->type=="pickup")
+                {
+                    if($product_detail->discount > 0)
+                    {
+                        $pickup_price_asText = '<strike className="text-muted">'. GeneralHelper::numberFormat($product_detail->subtotal) .'</strike><br /><b>'. GeneralHelper::numberFormat($product_detail->total) .'</b>';
+                    }
+                    else
+                    {
+                        $pickup_price_asText = '<b>'. GeneralHelper::numberFormat($product_detail->total) .'</b>';
+                    }
+
+                    $dataPickup[] = array(
+                        'title' => 'Pick-up and drop-off services',
+                        'price' => $pickup_price_asText,
+                        'unit_price' => $product_detail->unit_price,
+                    );
+
+                }
+            }
+
+            
+            $dataExtra = array();
+            foreach($shoppingcart_product->product_details as $product_detail)
+            {
+                if($product_detail->type=="extra")
+                {
+                    //$extra_unit_price_asText = '&#9642; '. $product_detail->qty .' '. $product_detail->unit_price;
+                    $extra_unit_price_asText = $product_detail->qty .' '. $product_detail->unit_price;
+                    if($product_detail->discount > 0)
+                    {
+                        $extra_price_asText = '<strike className="text-muted">'. GeneralHelper::numberFormat($product_detail->subtotal) .'</strike><br /><b>'. GeneralHelper::numberFormat($product_detail->total) .'</b>';
+                    }
+                    else
+                    {
+                        $extra_price_asText = '<b>'. GeneralHelper::numberFormat($product_detail->total) .'</b>';
+                    }
+
+                    /*
+                    $dataExtra[] = array(
+                        'title' => 'Extra',
+                        'price' => $extra_price_asText,
+                        'unit_price' => $extra_unit_price_asText,
+                    );
+                    */
+
+                    $dataExtra[] = array(
+                        'title' => $extra_unit_price_asText,
+                        'price' => $extra_price_asText,
+                        'unit_price' => 'Per booking',
+                    );
+
+                }
+            }
+
+            $dataProducts[] = array(
+                'booking_id' => $shoppingcart_product->booking_id,
+                'title' => $shoppingcart_product->title,
+                'product_total' => $product_total_asText,
+                'image' => $shoppingcart_product->image,
+                'date' => ProductHelper::datetotext($shoppingcart_product->date),
+                'rate' => $shoppingcart_product->rate,
+                'product_detail' => $product_detail_asText,
+                'pickups' => $dataPickup,
+                'extras' => $dataExtra,
+            );
+            
+        }    
+        
+           
+        $dataMainQuestion = array();
+        foreach(collect($shoppingcart->questions)->sortBy('order') as $shoppingcart_question)
+        {
+            if($shoppingcart_question->type=='mainContactDetails')
+            {
+                $dataMainQuestion[] = array(
+                    'question_id' => $shoppingcart_question->question_id,
+                    'required' => $shoppingcart_question->required,
+                    'data_format' => $shoppingcart_question->data_format,
+                    'label' => $shoppingcart_question->label,
+                    'answer' => $shoppingcart_question->answer,
+                );
+            }
+        }
+
+        
+
+        $dataProductQuestion = array();
+        foreach(collect($shoppingcart->products)->sortBy('booking_id') as $shoppingcart_product)
+        {
+            
+            $dataQuestionBooking = array();
+            foreach(collect($shoppingcart->questions)->sortBy('order') as $shoppingcart_question)
+            {
+
+                if($shoppingcart_product->booking_id==$shoppingcart_question->booking_id)
+                {
+                    
+                    if($shoppingcart_question->when_to_ask=="booking")
+                    {
+                        
+                        $dataQuestion_options = array();
+
+                        if($shoppingcart_question->data_type=="OPTIONS")
+                        {
+                            foreach(collect($shoppingcart_question->question_options)->sortBy('order') as $question_option)
+                            {
+                                $dataQuestion_options[] = array(
+                                    'label' => $question_option->label,
+                                    'value' => $question_option->value,
+                                    'order' => $question_option->order,
+                                );
+                            }
+                        }
+
+                        $dataQuestionBooking[] = array(
+                            'question_id' => $shoppingcart_question->question_id,
+                            'required' => $shoppingcart_question->required,
+                            'when_to_ask' => $shoppingcart_question->when_to_ask,
+                            'data_type' => $shoppingcart_question->data_type,
+                            'label' => $shoppingcart_question->label,
+                            'help' => $shoppingcart_question->help,
+                            'answer' => $shoppingcart_question->answer,
+                            'booking_id' => $shoppingcart_question->booking_id,
+                            'question_options' => $dataQuestion_options,
+                        );
+                    }
+
+                    
+
+
+                }
+
+            }
+
+            //======================================================
+            $dataQuestionParticipant = array();
+            foreach(collect($shoppingcart->questions)->sortBy('order') as $shoppingcart_question)
+            {
+                
+
+                if($shoppingcart_product->booking_id===$shoppingcart_question->booking_id)
+                {
+                    
+
+                    if($shoppingcart_question->when_to_ask=="participant")
+                    {
+        
+                        $dataQuestion_options = array();
+
+                        if($shoppingcart_question->data_type=="OPTIONS")
+                        {
+                            foreach(collect($shoppingcart_question->question_options)->sortBy('order') as $question_option)
+                            {
+                                $dataQuestion_options[] = array(
+                                    'label' => $question_option->label,
+                                    'value' => $question_option->value,
+                                    'order' => $question_option->order,
+                                );
+                            }
+                        }
+
+                        $dataQuestionParticipant[] = array(
+                            'question_id' => $shoppingcart_question->question_id,
+                            'required' => $shoppingcart_question->required,
+                            'when_to_ask' => $shoppingcart_question->when_to_ask,
+                            'participant_number' => $shoppingcart_question->participant_number,
+                            'data_type' => $shoppingcart_question->data_type,
+                            'label' => $shoppingcart_question->label,
+                            'help' => $shoppingcart_question->help,
+                            'answer' => $shoppingcart_question->answer,
+                            'booking_id' => $shoppingcart_question->booking_id,
+                            'question_options' => $dataQuestion_options,
+                        );
+                    }
+                }
+                
+            }
+            
+            $collection = collect($dataQuestionParticipant)->sortBy('participant_number');
+            $grouped = $collection->groupBy(function ($item, $key) {
+                    return 'Participant '.$item['participant_number'];
+                });
+            //======================================================
+
+            $dataProductQuestion[] = array(
+                        'title' => $shoppingcart_product->title,
+                        'description' => ProductHelper::datetotext($shoppingcart_product->date),
+                        'questions' => $dataQuestionBooking,
+                        'question_participants' => $grouped,
+                    );
+            //exit();
+        }
+
+        //exit();
+        
+        $promo_code = $shoppingcart->promo_code;
+        if($promo_code=="") $promo_code = null;
+        
+
+
+        $dataShoppingcart[] = array(
+                'id' => $shoppingcart->session_id,
+                'confirmation_code' => $shoppingcart->confirmation_code,
+                'promo_code' => $shoppingcart->promo_code,
+                'currency' => $shoppingcart->currency,
+                'subtotal' => GeneralHelper::numberFormat($shoppingcart->subtotal),
+                'discount' => GeneralHelper::numberFormat($shoppingcart->discount),
+                'total' => GeneralHelper::numberFormat($shoppingcart->total),
+                'total_paypal' => BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,self::env_paypalCurrency()),
+                'due_now' => GeneralHelper::numberFormat($shoppingcart->due_now),
+                'due_on_arrival' => GeneralHelper::numberFormat($shoppingcart->due_on_arrival),
+                'products' => $dataProducts,
+                'mainQuestions' => $dataMainQuestion,
+                'productQuestions' => $dataProductQuestion,
+                'rate' => BookingHelper::paypal_rate($shoppingcart),
+                'paypal_client_id' => self::env_paypalClientId(),
+                'paypal_currency' => self::env_paypalCurrency(),
+                'midtrans_env' => self::env_midtransEnv(),
+                'midtrans_client_key' => self::env_midtransClientKey(),
+            );
+
+        return $dataShoppingcart;
+	}
 
 }
 ?>

@@ -1,6 +1,7 @@
 <?php
 namespace budisteikul\toursdk\Helpers;
 use budisteikul\toursdk\Helpers\BookingHelper;
+use budisteikul\toursdk\Models\Shoppingcart;
 
 class FirebaseHelper {
 
@@ -21,6 +22,7 @@ class FirebaseHelper {
         if($index=="receipt")
         {
             self::connect("receipt/".$shoppingcart->session_id .'/'. $shoppingcart->id,"","DELETE");
+            self::upload($shoppingcart,"last_order");
         }
 	}
 
@@ -53,6 +55,37 @@ class FirebaseHelper {
   	{
         if($index=="") $index = "receipt";
 
+        if($index=="last_order")
+        {
+            $shoppingcarts = Shoppingcart::where('session_id', $shoppingcart->session_id )->orderBy('id','desc')->get();
+
+            if($shoppingcarts->isEmpty())
+            {
+                return "";
+            }
+
+            $booking = array();
+            foreach($shoppingcarts as $shoppingcart)
+            {
+                $invoice = BookingHelper::display_invoice($shoppingcart);
+
+                $product = BookingHelper::display_product_detail($shoppingcart);
+            
+                $receipt_page = '<a onclick="window.openAppRoute(\'/booking/receipt/'.$shoppingcart->id.'/'. $shoppingcart->session_id .'\')"  class="btn btn-theme" href="javascript:void(0);">View receipt page <i class="fas fa-arrow-circle-right"></i></a>';
+
+                $booking[] = array(
+                    'booking' => $invoice . $product . $receipt_page
+                );
+            }
+            
+            $data = array(
+                'receipt' => $booking,
+                'message' => 'success'
+            );
+
+            FirebaseHelper::connect('last_order/'.$shoppingcart->session_id,$data,"PUT");
+        }
+
         if($index=="receipt")
         {
             if(!BookingHelper::have_payment($shoppingcart))
@@ -68,6 +101,7 @@ class FirebaseHelper {
             );
             
             self::connect('receipt/'.$shoppingcart->session_id ."/". $shoppingcart->id,$data,"PUT");
+            self::upload($shoppingcart,"last_order");
             return "";
         }
   		

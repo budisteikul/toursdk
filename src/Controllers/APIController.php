@@ -3,13 +3,14 @@
 namespace budisteikul\toursdk\Controllers;
 use App\Http\Controllers\Controller;
 
-use budisteikul\toursdk\Models\Category;
-use budisteikul\toursdk\Models\Review;
 use budisteikul\toursdk\Helpers\ProductHelper;
 use budisteikul\toursdk\Helpers\BokunHelper;
 use budisteikul\toursdk\Helpers\ImageHelper;
 use budisteikul\toursdk\Helpers\GeneralHelper;
 use budisteikul\toursdk\Helpers\BookingHelper;
+use budisteikul\toursdk\Helpers\ContentHelper;
+use budisteikul\toursdk\Models\Category;
+use budisteikul\toursdk\Models\Review;
 use budisteikul\toursdk\Models\Product;
 use budisteikul\toursdk\Models\Channel;
 use budisteikul\toursdk\Models\Page;
@@ -177,7 +178,7 @@ class APIController extends Controller
     public function categories()
     {
 
-        $dataObj = BookingHelper::view_categories();
+        $dataObj = ContentHelper::view_categories();
 
         return response()->json([
             'message' => 'success',
@@ -190,7 +191,7 @@ class APIController extends Controller
     {
         $category = Category::where('slug',$slug)->firstOrFail();
         
-        $dataObj = BookingHelper::view_category($category);
+        $dataObj = ContentHelper::view_category($category);
 
         return response()->json([
             'message' => 'success',
@@ -215,7 +216,7 @@ class APIController extends Controller
 
         $product = Product::where('slug',$slug)->firstOrFail();
 
-        $dataObj = BookingHelper::view_product($product);
+        $dataObj = ContentHelper::view_product($product);
 
         
         return response()->json([
@@ -498,7 +499,7 @@ class APIController extends Controller
             abort(404);
         }
 
-        $dataShoppingcart = BookingHelper::view_shoppingcart($shoppingcart);
+        $dataShoppingcart = ContentHelper::view_shoppingcart($shoppingcart);
 
         return response()->json([
             'message' => 'success',
@@ -638,7 +639,7 @@ class APIController extends Controller
             abort(404);
         }
         
-        $booking = BookingHelper::view_last_order($shoppingcarts);
+        $booking = ContentHelper::view_last_order($shoppingcarts);
         
         $data = array(
                 'receipt' => $booking,
@@ -669,7 +670,7 @@ class APIController extends Controller
             abort(404);
         }
         
-        $dataObj = BookingHelper::view_receipt($shoppingcart);
+        $dataObj = ContentHelper::view_receipt($shoppingcart);
 
         $data = array(
                 'receipt' => $dataObj,

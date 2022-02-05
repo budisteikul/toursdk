@@ -74,18 +74,14 @@ class APIController extends Controller
             FirebaseHelper::upload($shoppingcart,"receipt");   
         }
         
-        $booking = BookingHelper::last_order($shoppingcarts);
-
-        //=================================================================
-        //$dataShoppingcart = BookingHelper::view_shoppingcart($shoppingcart);
+        $booking = BookingHelper::view_last_order($shoppingcarts);
         
         $data = array(
                 'receipt' => $booking,
                 'message' => 'success'
             );
+
         FirebaseHelper::connect('last_order/'.$sessionId,$data,"PUT");
-        
-        //=================================================================
 
         return response()->json([
                 'message' => 'success',
@@ -974,17 +970,16 @@ class APIController extends Controller
                     else if($data['transaction_status']=="pending")
                     {
                         $shoppingcart->booking_status = 'PENDING';
+                        $shoppingcart->save();
                         $shoppingcart->shoppingcart_payment->payment_status = 4;
                         $shoppingcart->shoppingcart_payment->save();
-                        
                     }
                     else
                     {
-                        $shoppingcart->shoppingcart_payment->payment_status = 3;
-                        $shoppingcart->shoppingcart_payment->save();
                         $shoppingcart->booking_status = 'CANCELED';
                         $shoppingcart->save();
-                        
+                        $shoppingcart->shoppingcart_payment->payment_status = 3;
+                        $shoppingcart->shoppingcart_payment->save();
                     }
                     
                 }

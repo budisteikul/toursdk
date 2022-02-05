@@ -2176,7 +2176,6 @@ class BookingHelper {
 			$shoppingcart->booking_status = "CONFIRMED";
 			$shoppingcart->save();
 			FirebaseHelper::upload($shoppingcart);
-			FirebaseHelper::upload($shoppingcart,"last_order");
 		}
 
 		if ($booking_status=="CANCELED")
@@ -2184,14 +2183,12 @@ class BookingHelper {
 			$shoppingcart->booking_status = "CANCELED";
 			$shoppingcart->save();
 			FirebaseHelper::upload($shoppingcart);
-			FirebaseHelper::upload($shoppingcart,"last_order");
 		}
 
 		if ($booking_status=="DELETED")
 		{
 			FirebaseHelper::delete($shoppingcart);
 			$shoppingcart->delete();
-			FirebaseHelper::upload($shoppingcart,"last_order");
 		}
 		
 	}
@@ -2536,7 +2533,7 @@ class BookingHelper {
         return $dataShoppingcart;
 	}
 
-	public static function last_order($shoppingcarts)
+	public static function view_last_order($shoppingcarts)
 	{
 		$booking = array();
         foreach($shoppingcarts as $shoppingcart)

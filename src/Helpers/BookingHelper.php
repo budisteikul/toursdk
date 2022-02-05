@@ -2,11 +2,13 @@
 namespace budisteikul\toursdk\Helpers;
 use Illuminate\Http\Request;
 
+
 use budisteikul\toursdk\Helpers\BokunHelper;
 use budisteikul\toursdk\Helpers\ImageHelper;
 use budisteikul\toursdk\Helpers\ProductHelper;
 use budisteikul\toursdk\Helpers\PaypalHelper;
 use budisteikul\toursdk\Helpers\MidtransHelper;
+use budisteikul\toursdk\Models\Category;
 use budisteikul\toursdk\Models\Product;
 use budisteikul\toursdk\Models\Shoppingcart;
 use budisteikul\toursdk\Models\ShoppingcartProduct;
@@ -14,15 +16,17 @@ use budisteikul\toursdk\Models\ShoppingcartProductDetail;
 use budisteikul\toursdk\Models\ShoppingcartQuestion;
 use budisteikul\toursdk\Models\ShoppingcartQuestionOption;
 use budisteikul\toursdk\Models\ShoppingcartPayment;
-use Illuminate\Support\Facades\Mail;
 use budisteikul\toursdk\Mail\BookingConfirmedMail;
+use budisteikul\toursdk\Helpers\FirebaseHelper;
+
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Validator;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\Exception\UnsatisfiedDependencyException;
 use Illuminate\Support\Facades\Cache;
 use Carbon\Carbon;
-use budisteikul\toursdk\Helpers\FirebaseHelper;
+
 
 class BookingHelper {
 	
@@ -1873,11 +1877,9 @@ class BookingHelper {
             {
             	$text = '';
 
-            	//if($shoppingcart->currency!=$shoppingcart->shoppingcart_payment->currency)
-            	//{
-            		$text .= '<br />Total : '.$shoppingcart->shoppingcart_payment->currency.' '. $shoppingcart->shoppingcart_payment->amount .'<br />';
-                	$text .= 'Paypal Rate : '. BookingHelper::get_rate($shoppingcart) .'<br />';
-            	//}
+            	$text .= '<br />Total : '.$shoppingcart->shoppingcart_payment->currency.' '. $shoppingcart->shoppingcart_payment->amount .'<br />';
+				$text .= 'Paypal Rate : '. BookingHelper::get_rate($shoppingcart) .'<br />';
+            	
 
             	switch($shoppingcart->shoppingcart_payment->payment_status)
 				{
@@ -2335,7 +2337,7 @@ class BookingHelper {
             {
                 if($product_detail->type=="extra")
                 {
-                    //$extra_unit_price_asText = '&#9642; '. $product_detail->qty .' '. $product_detail->unit_price;
+                    
                     $extra_unit_price_asText = $product_detail->qty .' '. $product_detail->unit_price;
                     if($product_detail->discount > 0)
                     {
@@ -2346,13 +2348,7 @@ class BookingHelper {
                         $extra_price_asText = '<b>'. GeneralHelper::numberFormat($product_detail->total) .'</b>';
                     }
 
-                    /*
-                    $dataExtra[] = array(
-                        'title' => 'Extra',
-                        'price' => $extra_price_asText,
-                        'unit_price' => $extra_unit_price_asText,
-                    );
-                    */
+                    
 
                     $dataExtra[] = array(
                         'title' => $extra_unit_price_asText,
@@ -2443,7 +2439,7 @@ class BookingHelper {
 
             }
 
-            //======================================================
+            
             $dataQuestionParticipant = array();
             foreach(collect($shoppingcart->questions)->sortBy('order') as $shoppingcart_question)
             {
@@ -2491,7 +2487,7 @@ class BookingHelper {
             $grouped = $collection->groupBy(function ($item, $key) {
                     return 'Participant '.$item['participant_number'];
                 });
-            //======================================================
+            
 
             $dataProductQuestion[] = array(
                         'title' => $shoppingcart_product->title,
@@ -2499,7 +2495,7 @@ class BookingHelper {
                         'questions' => $dataQuestionBooking,
                         'question_participants' => $grouped,
                     );
-            //exit();
+            
         }
 
         //exit();
@@ -2551,6 +2547,229 @@ class BookingHelper {
         return $booking;
 	}
 
+	public static function view_categories()
+	{
+		$dataObj = array();
+        $categories = Category::get();
+        foreach($categories as $category)
+        {
+            $dataObj2 = array();
+            foreach($category->product()->orderBy('id','asc')->get() as $product)
+            {
+                
+                $content = BokunHelper::get_product($product->bokun_id);
+                $cover = ImageHelper::cover($product);
+                $dataObj2[] = array(
+                    'id' => $product->id,
+                    'cover' => $cover,
+                    'name' => $product->name,
+                    'slug' => $product->slug,
+                    'excerpt' => $content->excerpt,
+                    'duration' => $content->durationText,
+                    'currency' => $content->nextDefaultPriceMoney->currency,
+                    'amount' => GeneralHelper::numberFormat($content->nextDefaultPriceMoney->amount),
+                );
+                
+            }
+
+            $dataObj[] = array(
+                'id' => $category->id,
+                'name' => $category->name,
+                'slug' => $category->slug,
+                'products' => $dataObj2,
+            );
+
+
+        }
+        return $dataObj;
+	}
+
+	public static function view_category($category)
+	{
+		$products = ProductHelper::getProductByCategory($category->id);
+
+		$dataObj = array();
+        $dataObj2 = array();
+        foreach($products as $product)
+        {
+            
+            $content = BokunHelper::get_product($product->bokun_id);
+            
+            $cover = ImageHelper::cover($product);
+            $dataObj2[] = array(
+                'id' => $product->id,
+                'cover' => $cover,
+                'name' => $product->name,
+                'slug' => $product->slug,
+                'excerpt' => $content->excerpt,
+                'duration' => $content->durationText,
+                'currency' => $content->nextDefaultPriceMoney->currency,
+                'amount' => GeneralHelper::numberFormat($content->nextDefaultPriceMoney->amount),
+            );
+            
+        }
+        
+        $dataObj[] = array(
+                'id' => $category->id,
+                'name' => $category->name,
+                'slug' => $category->slug,
+                'products' => $dataObj2,
+            );
+
+        return $dataObj;
+	}
+
+	public static function view_product($product)
+	{
+		$dataObj = array();
+        $dataObj2 = array();
+        $dataObj3 = array();
+        $dataObj4 = array();
+        $dataObj5 = array();
+        
+        $content = BokunHelper::get_product($product->bokun_id);
+
+        
+        $i = 0;
+        $carouselExampleIndicators = '';
+        $carouselInners = '';
+        foreach($product->images->sortBy('sort') as $image)
+        {
+            $active = '';
+            if($i==0) $active = 'active';
+
+            $carouselInners .= '<div class="carousel-item '.$active.'"><img class="d-block w-100" src="'.ImageHelper::urlImageCloudinary($image->public_id,600,400).'" alt="'.$product->name.'"  /></div>';
+
+            $carouselExampleIndicators .= '<li data-target="#carouselExampleIndicators" data-slide-to="'.$i.'"></li>';
+
+            $i++;
+        }
+
+        $image = '
+        <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+            <ol class="carousel-indicators">
+                '.$carouselExampleIndicators.'
+            </ol>
+
+            <div class="carousel-inner">
+                '.$carouselInners.'
+            </div>
+          
+            <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="sr-only">Previous</span>
+            </a>
+            <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="sr-only">Next</span>
+            </a>
+        </div>';
+
+        $pickup = '';
+        if($content->meetingType=='PICK_UP' || $content->meetingType=='MEET_ON_LOCATION_OR_PICK_UP')
+        {
+            $pickup = BokunHelper::get_product_pickup($content->id);
+        }
+
+
+        if(!empty($pickup))
+        {
+            for($i=0;$i<count($pickup);$i++)
+            {
+                $dataObj3[] = array(
+                            'title' => $pickup[$i]->title,
+                        );
+            }
+        }
+
+
+        if(!empty($content->startPoints))
+        {
+            $dataObj2[] = array(
+                            'title' => $content->startPoints[0]->title,
+                            'addressLine1' => $content->startPoints[0]->address->addressLine1,
+                            'addressLine2' => $content->startPoints[0]->address->addressLine2,
+                            'addressLine3' => $content->startPoints[0]->address->addressLine3,
+                            'city' => $content->startPoints[0]->address->city,
+                            'state' => $content->startPoints[0]->address->state,
+                            'postalCode' => $content->startPoints[0]->address->postalCode,
+                            'countryCode' => $content->startPoints[0]->address->countryCode,
+                            'latitude' => $content->startPoints[0]->address->geoPoint->latitude,
+                            'longitude' => $content->startPoints[0]->address->geoPoint->longitude
+                        );
+        }
+
+        $difficultyLevel = '';
+        if($content->difficultyLevel!="") $difficultyLevel = ProductHelper::lang('dificulty',$content->difficultyLevel);
+
+        $productCategory = ProductHelper::lang('type',$content->productCategory);
+
+        if(!empty($content->guidanceTypes))
+        {
+            if($content->guidanceTypes[0]->guidanceType=="GUIDED")
+            {
+                for($i=0;$i<count($content->guidanceTypes[0]->languages);$i++)
+                {
+                    $dataObj4[] = array(
+                            'language' => ProductHelper::lang('language',$content->guidanceTypes[0]->languages[$i]),
+                        );
+                    
+                }
+            }
+        }
+
+
+        if(!empty($content->agendaItems))
+        {
+            foreach($content->agendaItems as $agendaItem)
+            {
+                $dataObj5[] = array(
+                    'title' => $agendaItem->title,
+                    'body' => $agendaItem->body,
+                );
+            }
+        }
+
+        $excerpt = null;
+        $included = null;
+        $excluded = null;
+        $requirements = null;
+        $attention = null;
+        $durationText = null;
+        $privateActivity = null;
+        $description = null;
+
+        if($content->excerpt!="") $excerpt = $content->excerpt;
+        if($content->included!="") $included = $content->included;
+        if($content->excluded!="") $excluded = $content->excluded;
+        if($content->requirements!="") $requirements = $content->requirements;
+        if($content->attention!="") $attention = $content->attention;
+        if($content->durationText!="") $durationText = $content->durationText;
+        if($content->privateActivity!="") $privateActivity = $content->privateActivity;
+        if($content->description!="") $description = $content->description;
+
+        $dataObj[] = array(
+                'id' => $product->id,
+                'name' => $product->name,
+                'durationText' => $durationText,
+                'difficultyLevel' => $difficultyLevel,
+                'privateActivity' => $privateActivity,
+                'excerpt' => $excerpt,
+                'startPoints' => $dataObj2,
+                'description' => $description,
+                'included' => $included,
+                'excluded' => $excluded,
+                'requirements' => $requirements,
+                'attention' => $attention,
+                'pickupPlaces' => $dataObj3,
+                'productCategory' => $productCategory,
+                'guidanceTypes' => $dataObj4,
+                'agendaItems' => $dataObj5,
+                'images' => $image,
+            );
+
+        return $dataObj;
+	}
 
 }
 ?>

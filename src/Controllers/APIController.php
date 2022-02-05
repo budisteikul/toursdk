@@ -47,20 +47,6 @@ class APIController extends Controller
         $this->appUrl = env("APP_URL");
     }
 
-    public function downloadQrcode($sessionId,$id)
-    {
-        $shoppingcart = Shoppingcart::where('confirmation_code',$id)->where('session_id',$sessionId)->firstOrFail();
-        $payments = $shoppingcart->shoppingcart_payment()->first();
-
-        $contents = file_get_contents($payments->qrcode);
-        
-        $path = Storage::disk('local')->put($shoppingcart->confirmation_code .'.png', $contents);
-        //print_r($path);
-        return response()->download(storage_path('app').'/'.$shoppingcart->confirmation_code .'.png')->deleteFileAfterSend(true);
-        
-    }
-
-    
 
     public function product_add(Request $request)
     {
@@ -79,6 +65,51 @@ class APIController extends Controller
         return response()->json([
                 'message' => 'success'
             ], 200);
+    }
+
+    public function downloadQrcode($sessionId,$id)
+    {
+        $shoppingcart = Shoppingcart::where('confirmation_code',$id)->where('session_id',$sessionId)->firstOrFail();
+        
+        $payments = $shoppingcart->shoppingcart_payment()->first();
+
+        $contents = file_get_contents($payments->qrcode);
+        
+        $path = Storage::disk('local')->put($shoppingcart->confirmation_code .'.png', $contents);
+        
+        return response()->download(storage_path('app').'/'.$shoppingcart->confirmation_code .'.png')->deleteFileAfterSend(true);
+    }
+
+    public function instruction($sessionId,$id)
+    {
+        $shoppingcart = Shoppingcart::where('confirmation_code',$id)->where('session_id',$sessionId)->firstOrFail();
+        
+        $customPaper = array(0,0,430,2032);
+        $pdf = PDF::setOptions(['tempDir' => storage_path(),'isRemoteEnabled' => true])->loadView('toursdk::layouts.manual.bank_transfer', compact('shoppingcart'))->setPaper($customPaper,'portrait');
+        return $pdf->download('Instruction-'. $shoppingcart->confirmation_code .'.pdf');
+    }
+
+    public function invoice($sessionId,$id)
+    {
+        $shoppingcart = Shoppingcart::where('confirmation_code',$id)->where('session_id',$sessionId)->firstOrFail();
+        
+        $qrcode = base64_encode(QrCode::errorCorrection('H')->format('png')->size(111)->margin(0)->generate( $this->appUrl .'/booking/receipt/'.$shoppingcart->id.'/'.$shoppingcart->session_id  ));
+        
+        $pdf = PDF::setOptions(['tempDir' => storage_path(),'isRemoteEnabled' => true])->loadView('toursdk::layouts.pdf.invoice', compact('shoppingcart','qrcode'))->setPaper('a4', 'portrait');
+        return $pdf->download('Invoice-'. $shoppingcart->confirmation_code .'.pdf');
+    }
+    
+    public function ticket($sessionId,$id)
+    {
+        $shoppingcart_product = ShoppingcartProduct::where('product_confirmation_code',$id)->whereHas('shoppingcart', function($query) use ($sessionId){
+            return $query->where('session_id', $sessionId)->where('booking_status','CONFIRMED');
+        })->firstOrFail();
+        
+        $customPaper = array(0,0,300,540);
+        $qrcode = base64_encode(QrCode::errorCorrection('H')->format('png')->size(111)->margin(0)->generate( $this->appUrl .'/booking/receipt/'.$shoppingcart_product->shoppingcart->id.'/'.$shoppingcart_product->shoppingcart->session_id  ));
+
+        $pdf = PDF::setOptions(['tempDir' => storage_path(),'isRemoteEnabled' => true])->loadView('toursdk::layouts.pdf.ticket', compact('shoppingcart_product','qrcode'))->setPaper($customPaper);
+        return $pdf->download('Ticket-'. $shoppingcart_product->product_confirmation_code .'.pdf');
     }
 
     public function ticket_check(Request $request)
@@ -103,51 +134,6 @@ class APIController extends Controller
                 ], 200);
         }
     }
-    
-    public function categories()
-    {
-
-        $dataObj = array();
-        $categories = Category::get();
-        foreach($categories as $category)
-        {
-            $dataObj2 = array();
-            foreach($category->product()->orderBy('id','asc')->get() as $product)
-            {
-                
-                $content = BokunHelper::get_product($product->bokun_id);
-                $cover = ImageHelper::cover($product);
-                $dataObj2[] = array(
-                    'id' => $product->id,
-                    'cover' => $cover,
-                    'name' => $product->name,
-                    'slug' => $product->slug,
-                    'excerpt' => $content->excerpt,
-                    'duration' => $content->durationText,
-                    'currency' => $content->nextDefaultPriceMoney->currency,
-                    'amount' => GeneralHelper::numberFormat($content->nextDefaultPriceMoney->amount),
-                );
-                
-            }
-
-            $dataObj[] = array(
-                'id' => $category->id,
-                'name' => $category->name,
-                'slug' => $category->slug,
-                'products' => $dataObj2,
-            );
-
-
-        }
-
-        return response()->json([
-            'message' => 'success',
-            'categories' => $dataObj
-        ], 200);
-        
-    }
-    
-    
 
     public function navbar()
     {
@@ -179,40 +165,33 @@ class APIController extends Controller
         return response($jscript)->header('Content-Type', 'application/javascript');
     }
 
+    public function review_count()
+    {
+        $count = Review::count();
+        return response()->json([
+            'message' => 'success',
+            'count' => $count
+        ], 200);
+    }
+ 
+    public function categories()
+    {
+
+        $dataObj = BookingHelper::view_categories();
+
+        return response()->json([
+            'message' => 'success',
+            'categories' => $dataObj
+        ], 200);
+        
+    }
+
     public function category($slug)
     {
         $category = Category::where('slug',$slug)->firstOrFail();
-        $products = ProductHelper::getProductByCategory($category->id);
         
-        $dataObj = array();
-        $dataObj2 = array();
-        foreach($products as $product)
-        {
-            
-            $content = BokunHelper::get_product($product->bokun_id);
-            
-            $cover = ImageHelper::cover($product);
-            $dataObj2[] = array(
-                'id' => $product->id,
-                'cover' => $cover,
-                'name' => $product->name,
-                'slug' => $product->slug,
-                'excerpt' => $content->excerpt,
-                'duration' => $content->durationText,
-                'currency' => $content->nextDefaultPriceMoney->currency,
-                'amount' => GeneralHelper::numberFormat($content->nextDefaultPriceMoney->amount),
-            );
-            
-        }
-        
-        $dataObj[] = array(
-                'id' => $category->id,
-                'name' => $category->name,
-                'slug' => $category->slug,
-                'products' => $dataObj2,
-            );
+        $dataObj = BookingHelper::view_category($category);
 
-        
         return response()->json([
             'message' => 'success',
             'category' => $dataObj,
@@ -236,152 +215,7 @@ class APIController extends Controller
 
         $product = Product::where('slug',$slug)->firstOrFail();
 
-        $dataObj = array();
-        $dataObj2 = array();
-        $dataObj3 = array();
-        $dataObj4 = array();
-        $dataObj5 = array();
-        
-        $content = BokunHelper::get_product($product->bokun_id);
-
-        
-        $i = 0;
-        $carouselExampleIndicators = '';
-        $carouselInners = '';
-        foreach($product->images->sortBy('sort') as $image)
-        {
-            $active = '';
-            if($i==0) $active = 'active';
-
-            $carouselInners .= '<div class="carousel-item '.$active.'"><img class="d-block w-100" src="'.ImageHelper::urlImageCloudinary($image->public_id,600,400).'" alt="'.$product->name.'"  /></div>';
-
-            $carouselExampleIndicators .= '<li data-target="#carouselExampleIndicators" data-slide-to="'.$i.'"></li>';
-
-            $i++;
-        }
-
-        $image = '
-        <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
-            <ol class="carousel-indicators">
-                '.$carouselExampleIndicators.'
-            </ol>
-
-            <div class="carousel-inner">
-                '.$carouselInners.'
-            </div>
-          
-            <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="sr-only">Previous</span>
-            </a>
-            <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="sr-only">Next</span>
-            </a>
-        </div>';
-
-        $pickup = '';
-        if($content->meetingType=='PICK_UP' || $content->meetingType=='MEET_ON_LOCATION_OR_PICK_UP')
-        {
-            $pickup = BokunHelper::get_product_pickup($content->id);
-        }
-
-
-        if(!empty($pickup))
-        {
-            for($i=0;$i<count($pickup);$i++)
-            {
-                $dataObj3[] = array(
-                            'title' => $pickup[$i]->title,
-                        );
-            }
-        }
-
-
-        if(!empty($content->startPoints))
-        {
-            $dataObj2[] = array(
-                            'title' => $content->startPoints[0]->title,
-                            'addressLine1' => $content->startPoints[0]->address->addressLine1,
-                            'addressLine2' => $content->startPoints[0]->address->addressLine2,
-                            'addressLine3' => $content->startPoints[0]->address->addressLine3,
-                            'city' => $content->startPoints[0]->address->city,
-                            'state' => $content->startPoints[0]->address->state,
-                            'postalCode' => $content->startPoints[0]->address->postalCode,
-                            'countryCode' => $content->startPoints[0]->address->countryCode,
-                            'latitude' => $content->startPoints[0]->address->geoPoint->latitude,
-                            'longitude' => $content->startPoints[0]->address->geoPoint->longitude
-                        );
-        }
-
-        $difficultyLevel = '';
-        if($content->difficultyLevel!="") $difficultyLevel = ProductHelper::lang('dificulty',$content->difficultyLevel);
-
-        $productCategory = ProductHelper::lang('type',$content->productCategory);
-
-        if(!empty($content->guidanceTypes))
-        {
-            if($content->guidanceTypes[0]->guidanceType=="GUIDED")
-            {
-                for($i=0;$i<count($content->guidanceTypes[0]->languages);$i++)
-                {
-                    $dataObj4[] = array(
-                            'language' => ProductHelper::lang('language',$content->guidanceTypes[0]->languages[$i]),
-                        );
-                    
-                }
-            }
-        }
-
-
-        if(!empty($content->agendaItems))
-        {
-            foreach($content->agendaItems as $agendaItem)
-            {
-                $dataObj5[] = array(
-                    'title' => $agendaItem->title,
-                    'body' => $agendaItem->body,
-                );
-            }
-        }
-
-        $excerpt = null;
-        $included = null;
-        $excluded = null;
-        $requirements = null;
-        $attention = null;
-        $durationText = null;
-        $privateActivity = null;
-        $description = null;
-
-        if($content->excerpt!="") $excerpt = $content->excerpt;
-        if($content->included!="") $included = $content->included;
-        if($content->excluded!="") $excluded = $content->excluded;
-        if($content->requirements!="") $requirements = $content->requirements;
-        if($content->attention!="") $attention = $content->attention;
-        if($content->durationText!="") $durationText = $content->durationText;
-        if($content->privateActivity!="") $privateActivity = $content->privateActivity;
-        if($content->description!="") $description = $content->description;
-
-        $dataObj[] = array(
-                'id' => $product->id,
-                'name' => $product->name,
-                'durationText' => $durationText,
-                'difficultyLevel' => $difficultyLevel,
-                'privateActivity' => $privateActivity,
-                'excerpt' => $excerpt,
-                'startPoints' => $dataObj2,
-                'description' => $description,
-                'included' => $included,
-                'excluded' => $excluded,
-                'requirements' => $requirements,
-                'attention' => $attention,
-                'pickupPlaces' => $dataObj3,
-                'productCategory' => $productCategory,
-                'guidanceTypes' => $dataObj4,
-                'agendaItems' => $dataObj5,
-                'images' => $image,
-            );
+        $dataObj = BookingHelper::view_product($product);
 
         
         return response()->json([
@@ -575,14 +409,7 @@ class APIController extends Controller
       return response($jscript)->header('Content-Type', 'application/javascript');
     }
 
-    public function review_count()
-    {
-        $count = Review::count();
-        return response()->json([
-            'message' => 'success',
-            'count' => $count
-        ], 200);
-    }
+    
 
     public function review(Request $request)
     {
@@ -671,16 +498,7 @@ class APIController extends Controller
             abort(404);
         }
 
-        //=================================================================
         $dataShoppingcart = BookingHelper::view_shoppingcart($shoppingcart);
-        /*
-        $data = array(
-                'receipt' => $dataShoppingcart,
-                'message' => 'success'
-            );
-        FirebaseHelper::connect('shoppingcart/'.$shoppingcart->session_id,$data,"PUT");
-        */
-        //=================================================================
 
         return response()->json([
             'message' => 'success',
@@ -866,37 +684,7 @@ class APIController extends Controller
             ], 200);
     }
     
-    public function instruction($sessionId,$id)
-    {
-        $shoppingcart = Shoppingcart::where('confirmation_code',$id)->where('session_id',$sessionId)->firstOrFail();
-        
-        $customPaper = array(0,0,430,2032);
-        $pdf = PDF::setOptions(['tempDir' => storage_path(),'isRemoteEnabled' => true])->loadView('toursdk::layouts.manual.bank_transfer', compact('shoppingcart'))->setPaper($customPaper,'portrait');
-        return $pdf->download('Instruction-'. $shoppingcart->confirmation_code .'.pdf');
-    }
-
-    public function invoice($sessionId,$id)
-    {
-        $shoppingcart = Shoppingcart::where('confirmation_code',$id)->where('session_id',$sessionId)->firstOrFail();
-        
-        $qrcode = base64_encode(QrCode::errorCorrection('H')->format('png')->size(111)->margin(0)->generate( $this->appUrl .'/booking/receipt/'.$shoppingcart->id.'/'.$shoppingcart->session_id  ));
-        
-        $pdf = PDF::setOptions(['tempDir' => storage_path(),'isRemoteEnabled' => true])->loadView('toursdk::layouts.pdf.invoice', compact('shoppingcart','qrcode'))->setPaper('a4', 'portrait');
-        return $pdf->download('Invoice-'. $shoppingcart->confirmation_code .'.pdf');
-    }
     
-    public function ticket($sessionId,$id)
-    {
-        $shoppingcart_product = ShoppingcartProduct::where('product_confirmation_code',$id)->whereHas('shoppingcart', function($query) use ($sessionId){
-            return $query->where('session_id', $sessionId)->where('booking_status','CONFIRMED');
-        })->firstOrFail();
-        
-        $customPaper = array(0,0,300,540);
-        $qrcode = base64_encode(QrCode::errorCorrection('H')->format('png')->size(111)->margin(0)->generate( $this->appUrl .'/booking/receipt/'.$shoppingcart_product->shoppingcart->id.'/'.$shoppingcart_product->shoppingcart->session_id  ));
-
-        $pdf = PDF::setOptions(['tempDir' => storage_path(),'isRemoteEnabled' => true])->loadView('toursdk::layouts.pdf.ticket', compact('shoppingcart_product','qrcode'))->setPaper($customPaper);
-        return $pdf->download('Ticket-'. $shoppingcart_product->product_confirmation_code .'.pdf');
-    }
 
     public function confirmpaymentpaypal(Request $request)
     {

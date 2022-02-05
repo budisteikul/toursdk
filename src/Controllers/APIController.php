@@ -64,12 +64,28 @@ class APIController extends Controller
     {
         $shoppingcarts = Shoppingcart::where('session_id', $sessionId)->orderBy('id','desc')->get();
         
+        if($shoppingcarts->isEmpty())
+        {
+            abort(404);
+        }
+
         foreach($shoppingcarts as $shoppingcart)
         {
             FirebaseHelper::upload($shoppingcart,"receipt");   
         }
         
         $booking = BookingHelper::last_order($shoppingcarts);
+
+        //=================================================================
+        //$dataShoppingcart = BookingHelper::view_shoppingcart($shoppingcart);
+        
+        $data = array(
+                'receipt' => $booking,
+                'message' => 'success'
+            );
+        FirebaseHelper::connect('last_order/'.$sessionId,$data,"PUT");
+        
+        //=================================================================
 
         return response()->json([
                 'message' => 'success',

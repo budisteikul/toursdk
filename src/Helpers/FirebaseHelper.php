@@ -1,6 +1,7 @@
 <?php
 namespace budisteikul\toursdk\Helpers;
 use budisteikul\toursdk\Helpers\BookingHelper;
+use budisteikul\toursdk\Helpers\ContentHelper;
 use budisteikul\toursdk\Models\Shoppingcart;
 
 class FirebaseHelper {
@@ -63,9 +64,9 @@ class FirebaseHelper {
             $booking = array();
             foreach($shoppingcarts as $shoppingcart)
             {
-                $invoice = BookingHelper::display_invoice($shoppingcart);
+                $invoice = ContentHelper::view_invoice($shoppingcart);
 
-                $product = BookingHelper::display_product_detail($shoppingcart);
+                $product = ContentHelper::view_product_detail($shoppingcart);
             
                 $receipt_page = '<a onclick="window.openAppRoute(\'/booking/receipt/'.$shoppingcart->id.'/'. $shoppingcart->session_id .'\')"  class="btn btn-theme" href="javascript:void(0);">View receipt page <i class="fas fa-arrow-circle-right"></i></a>';
 
@@ -89,7 +90,7 @@ class FirebaseHelper {
                 return "";
             }
 
-            $dataObj = BookingHelper::view_receipt($shoppingcart); 
+            $dataObj = ContentHelper::view_receipt($shoppingcart); 
 
             $data = array(
                 'receipt' => $dataObj,

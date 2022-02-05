@@ -15,17 +15,6 @@ class FirebaseHelper {
         return env("FIREBASE_DATABASE_SECRET");
     }
 
-	public static function delete($shoppingcart,$index="")
-	{
-        if($index=="") $index = "receipt";
-
-        if($index=="receipt")
-        {
-            self::connect("receipt/".$shoppingcart->session_id .'/'. $shoppingcart->id,"","DELETE");
-            self::upload($shoppingcart,"last_order");
-        }
-	}
-
     public static function connect($path,$data="",$method="PUT")
     {
         if($method=="PUT")
@@ -50,6 +39,17 @@ class FirebaseHelper {
         }
             
     }
+    
+	public static function delete($shoppingcart,$index="")
+	{
+        if($index=="") $index = "receipt";
+
+        if($index=="receipt")
+        {
+            self::connect("receipt/".$shoppingcart->session_id .'/'. $shoppingcart->id,"","DELETE");
+            self::upload($shoppingcart,"last_order");
+        }
+	}
 
 	public static function upload($shoppingcart,$index="")
   	{
@@ -57,12 +57,8 @@ class FirebaseHelper {
 
         if($index=="last_order")
         {
-            $shoppingcarts = Shoppingcart::where('session_id', $shoppingcart->session_id )->orderBy('id','desc')->get();
 
-            if($shoppingcarts->isEmpty())
-            {
-                return "";
-            }
+            $shoppingcarts = Shoppingcart::where('session_id', $shoppingcart->session_id )->orderBy('id','desc')->get();
 
             $booking = array();
             foreach($shoppingcarts as $shoppingcart)

@@ -60,35 +60,7 @@ class APIController extends Controller
         
     }
 
-    public function last_order($sessionId)
-    {
-        $shoppingcarts = Shoppingcart::where('session_id', $sessionId)->orderBy('id','desc')->get();
-        
-        if($shoppingcarts->isEmpty())
-        {
-            abort(404);
-        }
-
-        foreach($shoppingcarts as $shoppingcart)
-        {
-            FirebaseHelper::upload($shoppingcart,"receipt");   
-        }
-        
-        $booking = BookingHelper::view_last_order($shoppingcarts);
-        
-        $data = array(
-                'receipt' => $booking,
-                'message' => 'success'
-            );
-
-        FirebaseHelper::connect('last_order/'.$sessionId,$data,"PUT");
-
-        return response()->json([
-                'message' => 'success',
-                'booking' => $booking
-            ], 200);
-        
-    }
+    
 
     public function product_add(Request $request)
     {
@@ -839,6 +811,31 @@ class APIController extends Controller
             ], 200);
     }
 
+    public function last_order($sessionId)
+    {
+        $shoppingcarts = Shoppingcart::where('session_id', $sessionId)->orderBy('id','desc')->get();
+        
+        if($shoppingcarts->isEmpty())
+        {
+            abort(404);
+        }
+        
+        $booking = BookingHelper::view_last_order($shoppingcarts);
+        
+        $data = array(
+                'receipt' => $booking,
+                'message' => 'success'
+            );
+
+        FirebaseHelper::connect('last_order/'.$sessionId,$data,"PUT");
+
+        return response()->json([
+                'message' => 'success',
+                'booking' => $booking
+            ], 200);
+        
+    }
+
     public function receipt($id,$sessionId)
     {
 
@@ -855,6 +852,13 @@ class APIController extends Controller
         }
         
         $dataObj = BookingHelper::view_receipt($shoppingcart);
+
+        $data = array(
+                'receipt' => $dataObj,
+                'message' => 'success'
+            );
+
+        FirebaseHelper::connect('receipt/'.$shoppingcart->session_id ."/". $shoppingcart->id,$data,"PUT");
         
         return response()->json([
                 'receipt' => $dataObj,
@@ -935,8 +939,6 @@ class APIController extends Controller
         BookingHelper::set_bookingStatus($sessionId,'CONFIRMED');
 
         $shoppingcart = BookingHelper::confirm_booking($sessionId);
-
-        
 
         return response()->json([
                     "id" => "1",

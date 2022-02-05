@@ -2533,5 +2533,24 @@ class BookingHelper {
         return $dataShoppingcart;
 	}
 
+	public static function last_order($shoppingcarts)
+	{
+		$booking = array();
+        foreach($shoppingcarts as $shoppingcart)
+        {
+            $invoice = BookingHelper::display_invoice($shoppingcart);
+
+            $product = BookingHelper::display_product_detail($shoppingcart);
+            
+            $receipt_page = '<a onclick="window.openAppRoute(\'/booking/receipt/'.$shoppingcart->id.'/'. $shoppingcart->session_id .'\')"  class="btn btn-theme" href="javascript:void(0);">View receipt page <i class="fas fa-arrow-circle-right"></i></a>';
+
+            $booking[] = array(
+                'booking' => $invoice . $product . $receipt_page
+            );
+        }
+        return $booking;
+	}
+
+
 }
 ?>

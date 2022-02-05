@@ -699,8 +699,17 @@ class APIController extends Controller
             abort(404);
         }
 
+        //=================================================================
         $dataShoppingcart = BookingHelper::view_shoppingcart($shoppingcart);
-        
+        /*
+        $data = array(
+                'receipt' => $dataShoppingcart,
+                'message' => 'success'
+            );
+        FirebaseHelper::connect('shoppingcart/'.$shoppingcart->session_id,$data,"PUT");
+        */
+        //=================================================================
+
         return response()->json([
             'message' => 'success',
             'shoppingcarts' => $dataShoppingcart,
@@ -712,12 +721,10 @@ class APIController extends Controller
     {
         $data = json_decode($request->getContent(), true);
 
-
         $validator = Validator::make($data, [
             'bookingId' => ['required', 'integer'],
             'sessionId' => ['required', 'string', 'max:255'],
         ]);
-
 
         if ($validator->fails()) {
             $errors = $validator->errors();
@@ -729,9 +736,9 @@ class APIController extends Controller
          
         BookingHelper::remove_activity($sessionId,$bookingId);
         
-            return response()->json([
-                    "message" => "success"
-                ]);
+        return response()->json([
+            "message" => "success"
+        ]);
     }
 
     public function removepromocode(Request $request)

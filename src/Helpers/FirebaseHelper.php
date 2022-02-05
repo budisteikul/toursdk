@@ -53,18 +53,6 @@ class FirebaseHelper {
   	{
         if($index=="") $index = "receipt";
 
-        if($index=="shoppingcart")
-        {
-            $dataObj = BookingHelper::view_shoppingcart($shoppingcart); 
-
-            $data = array(
-                'receipt' => $dataObj,
-                'message' => 'success'
-            );
-
-            self::connect('shoppingcart/'.$shoppingcart->session_id,$data,"PUT");
-        }
-
         if($index=="receipt")
         {
             if(!BookingHelper::have_payment($shoppingcart))
@@ -80,6 +68,7 @@ class FirebaseHelper {
             );
             
             self::connect('receipt/'.$shoppingcart->session_id ."/". $shoppingcart->id,$data,"PUT");
+            return "";
         }
   		
   	}

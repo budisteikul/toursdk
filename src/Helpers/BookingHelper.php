@@ -1914,17 +1914,14 @@ class BookingHelper {
             }
             if($shoppingcart->shoppingcart_payment->payment_type=="bank_transfer")
             {
-
+            	$main_contact = self::get_answer_contact($shoppingcart);
             	switch($shoppingcart->shoppingcart_payment->payment_status)
 				{
 					case 2:
 						return '<div class="card mb-4">
 								<div class="card-body bg-light">
 								<span class="badge badge-success mb-2">
-								<i class="fas fa-university"></i> BANK TRANSFER PAID </span><br />
-								Nama Bank : '. Str::upper($shoppingcart->shoppingcart_payment->bank_name) .'  <br />
-								Kode Bank : '. $shoppingcart->shoppingcart_payment->bank_code .'  <br />
-								No Rekening : '. GeneralHelper::splitSpace($shoppingcart->shoppingcart_payment->va_number,4) .'
+								<i class="fas fa-university"></i> BANK TRANSFER PAID </span>
 								</div>
 								</div>';
 						break;
@@ -1932,10 +1929,7 @@ class BookingHelper {
 						return '<div class="card mb-4">
 								<div class="card-body bg-light">
 								<span class="badge badge-danger mb-2">
-								<i class="fas fa-university"></i> BANK TRANSFER UNPAID </span><br />
-								Nama Bank : '. Str::upper($shoppingcart->shoppingcart_payment->bank_name) .'  <br />
-								Kode Bank : '. $shoppingcart->shoppingcart_payment->bank_code .'  <br />
-								No Rekening : '. GeneralHelper::splitSpace($shoppingcart->shoppingcart_payment->va_number,4) .'
+								<i class="fas fa-university"></i> BANK TRANSFER UNPAID </span>
 								</div>
 								</div>';
 						break;	
@@ -1945,9 +1939,9 @@ class BookingHelper {
 								<div class="card-body bg-light">
 								<span class="badge badge-warning mb-2">
 								<i class="fas fa-university"></i> WAITING FOR PAYMENT </span><br />
-								Nama Bank : '. Str::upper($shoppingcart->shoppingcart_payment->bank_name) .'  <br />
-								Kode Bank : '. $shoppingcart->shoppingcart_payment->bank_code .'  <br />
-								No Rekening : '. GeneralHelper::splitSpace($shoppingcart->shoppingcart_payment->va_number,4) .'
+								Bank Name : <b>'. Str::upper($shoppingcart->shoppingcart_payment->bank_name) .' BANK ('. $shoppingcart->shoppingcart_payment->bank_code .')</b> <br />
+								Account Number : <b>'. GeneralHelper::splitSpace($shoppingcart->shoppingcart_payment->va_number,4) .'</b> <br />
+								Under the Name (of) : <b>'. Str::lower($main_contact->firstName) .' '. Str::lower($main_contact->lastName) .'</b>
 								</div>
 								</div>
 								';
@@ -1965,9 +1959,7 @@ class BookingHelper {
 						return '<div class="card mb-4">
 								<div class="card-body bg-light">
 								<span class="badge badge-success mb-2">
-								<i class="fas fa-wallet"></i> E-WALLET PAID </span><br />
-								<img width="165" src="'. $shoppingcart->shoppingcart_payment->qrcode .'"><br />
-								<a href="'. self::env_appApiUrl() .'/qrcode/'.$shoppingcart->session_id.'/'. $shoppingcart->confirmation_code .'" class="invoice-hilang btn btn-success mt-2"><i class="fas fa-download"></i> Download QRCODE</a>
+								<i class="fas fa-wallet"></i> E-WALLET PAID </span>
 								</div>
 								</div>';
 						break;
@@ -1975,9 +1967,7 @@ class BookingHelper {
 						return '<div class="card mb-4">
 								<div class="card-body bg-light">
 								<span class="badge badge-danger mb-2">
-								<i class="fas fa-wallet"></i> E-WALLET UNPAID </span><br />
-								<img width="165" src="'. $shoppingcart->shoppingcart_payment->qrcode .'"><br />
-								<a href="'. self::env_appApiUrl() .'/qrcode/'.$shoppingcart->session_id.'/'. $shoppingcart->confirmation_code .'" class="invoice-hilang btn btn-success mt-2"><i class="fas fa-download"></i> Download QRCODE</a>
+								<i class="fas fa-wallet"></i> E-WALLET UNPAID </span>
 								</div>
 								</div>';
 						break;	
@@ -1989,6 +1979,7 @@ class BookingHelper {
 								<i class="fas fa-wallet"></i> WAITING FOR PAYMENT </span><br />
 								<img width="165" src="'. $shoppingcart->shoppingcart_payment->qrcode .'"><br />
 								<a href="'. self::env_appApiUrl() .'/qrcode/'.$shoppingcart->session_id.'/'. $shoppingcart->confirmation_code .'" class="invoice-hilang btn btn-success mt-2"><i class="fas fa-download"></i> Download QRCODE</a>
+
 								</div>
 								</div>
 								';

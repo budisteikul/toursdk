@@ -87,9 +87,7 @@ class MidtransHelper {
         }
         else if($data2['payment_type']=="gopay")
         {
-
           $qrcode = ImageHelper::uploadQrcodeCloudinary($data2['qr_code_url']);
-
           $response->payment_type = 'ewallet';
           $response->bank_name = 'gopay';
           $response->qrcode = $qrcode['secure_url'];
@@ -98,9 +96,9 @@ class MidtransHelper {
         else
         {
           $response->payment_type = 'bank_transfer';
-          $response->bank_name = 'bni';
-          $response->bank_code = BookingHelper::get_bankcode('bni');
-          $response->va_number = $data2['va_numbers'][0]['va_number'];
+          $response->bank_name = 'permata';
+          $response->bank_code = BookingHelper::get_bankcode('permata');
+          $response->va_number = $data2['permata_va_number'];
         }
 
         $response->snaptoken = $data->token;

@@ -1894,7 +1894,9 @@ class BookingHelper {
 						return '
 								<div class="card mb-4">
 								<div class="card-body bg-light">
-									<span class="badge badge-success mb-2"><i class="fab fa-paypal"></i> PAYPAL CAPTURED</span>
+									<center>
+										<img width="165" src="'. url('') .'/img/paid.png"><br />
+									</center>
 								'. $text .'
 								</div>
 								</div>';
@@ -1920,8 +1922,9 @@ class BookingHelper {
 					case 2:
 						return '<div class="card mb-4">
 								<div class="card-body bg-light">
-								<span class="badge badge-success mb-2">
-								<i class="fas fa-university"></i> BANK TRANSFER PAID </span>
+								<center>
+									<img width="165" src="'. url('') .'/img/paid.png"><br />
+								</center>
 								</div>
 								</div>';
 						break;
@@ -1958,8 +1961,9 @@ class BookingHelper {
 					case 2:
 						return '<div class="card mb-4">
 								<div class="card-body bg-light">
-								<span class="badge badge-success mb-2">
-								<i class="fas fa-wallet"></i> E-WALLET PAID </span>
+								<center>
+									<img width="165" src="'. url('') .'/img/paid.png"><br />
+								</center>
 								</div>
 								</div>';
 						break;
@@ -1979,7 +1983,6 @@ class BookingHelper {
 								<i class="fas fa-wallet"></i> WAITING FOR PAYMENT </span><br />
 								<img width="165" src="'. $shoppingcart->shoppingcart_payment->qrcode .'"><br />
 								<a href="'. self::env_appApiUrl() .'/qrcode/'.$shoppingcart->session_id.'/'. $shoppingcart->confirmation_code .'" class="invoice-hilang btn btn-success mt-2"><i class="fas fa-download"></i> Download QRCODE</a>
-
 								</div>
 								</div>
 								';

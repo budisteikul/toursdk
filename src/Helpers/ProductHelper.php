@@ -27,17 +27,14 @@ class ProductHelper {
         if($type=='categories')
         {
             $hasil = str_ireplace("_"," ",ucwords(strtolower($str)));
-            
         }
         if($type=='dificulty')
         {
             $hasil = str_ireplace("_"," ",ucwords(strtolower($str)));
-            
         }
         if($type=='accessibility')
         {
             $hasil = str_ireplace("_"," ",ucwords(strtolower($str)));
-            
         }
         if($type=='type')
         {

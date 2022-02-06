@@ -6,44 +6,14 @@ use Illuminate\Http\Request;
 use budisteikul\toursdk\Helpers\BokunHelper;
 use budisteikul\toursdk\Helpers\ImageHelper;
 use budisteikul\toursdk\Helpers\ProductHelper;
-use budisteikul\toursdk\Helpers\PaypalHelper;
-use budisteikul\toursdk\Helpers\MidtransHelper;
 use budisteikul\toursdk\Helpers\BookingHelper;
 use budisteikul\toursdk\Models\Category;
-use budisteikul\toursdk\Models\Product;
-use budisteikul\toursdk\Models\Shoppingcart;
-use budisteikul\toursdk\Models\ShoppingcartProduct;
-use budisteikul\toursdk\Models\ShoppingcartProductDetail;
-use budisteikul\toursdk\Models\ShoppingcartQuestion;
-use budisteikul\toursdk\Models\ShoppingcartQuestionOption;
-use budisteikul\toursdk\Models\ShoppingcartPayment;
-use budisteikul\toursdk\Mail\BookingConfirmedMail;
-use budisteikul\toursdk\Helpers\FirebaseHelper;
-
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Validator;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\Exception\UnsatisfiedDependencyException;
-use Illuminate\Support\Facades\Cache;
-use Carbon\Carbon;
-
 
 class ContentHelper {
 
 	public static function env_paypalCurrency()
     {
         return env("PAYPAL_CURRENCY");
-    }
-
-    public static function env_bokunCurrency()
-    {
-        return env("BOKUN_CURRENCY");
-    }
-
-    public static function env_appApiUrl()
-    {
-        return env("APP_API_URL");
     }
 
     public static function env_appUrl()

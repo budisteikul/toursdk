@@ -71,20 +71,15 @@ class APIController extends Controller
     public function downloadQrcode($sessionId,$id)
     {
         $shoppingcart = Shoppingcart::where('confirmation_code',$id)->where('session_id',$sessionId)->firstOrFail();
-        
         $payments = $shoppingcart->shoppingcart_payment()->first();
-
         $contents = file_get_contents($payments->qrcode);
-        
         $path = Storage::disk('local')->put($shoppingcart->confirmation_code .'.png', $contents);
-        
         return response()->download(storage_path('app').'/'.$shoppingcart->confirmation_code .'.png')->deleteFileAfterSend(true);
     }
 
     public function instruction($sessionId,$id)
     {
         $shoppingcart = Shoppingcart::where('confirmation_code',$id)->where('session_id',$sessionId)->firstOrFail();
-        
         $customPaper = array(0,0,430,2032);
         $pdf = PDF::setOptions(['tempDir' => storage_path(),'isRemoteEnabled' => true])->loadView('toursdk::layouts.manual.bank_transfer', compact('shoppingcart'))->setPaper($customPaper,'portrait');
         return $pdf->download('Instruction-'. $shoppingcart->confirmation_code .'.pdf');
@@ -93,9 +88,7 @@ class APIController extends Controller
     public function invoice($sessionId,$id)
     {
         $shoppingcart = Shoppingcart::where('confirmation_code',$id)->where('session_id',$sessionId)->firstOrFail();
-        
         $qrcode = base64_encode(QrCode::errorCorrection('H')->format('png')->size(111)->margin(0)->generate( $this->appUrl .'/booking/receipt/'.$shoppingcart->id.'/'.$shoppingcart->session_id  ));
-        
         $pdf = PDF::setOptions(['tempDir' => storage_path(),'isRemoteEnabled' => true])->loadView('toursdk::layouts.pdf.invoice', compact('shoppingcart','qrcode'))->setPaper('a4', 'portrait');
         return $pdf->download('Invoice-'. $shoppingcart->confirmation_code .'.pdf');
     }
@@ -105,10 +98,8 @@ class APIController extends Controller
         $shoppingcart_product = ShoppingcartProduct::where('product_confirmation_code',$id)->whereHas('shoppingcart', function($query) use ($sessionId){
             return $query->where('session_id', $sessionId)->where('booking_status','CONFIRMED');
         })->firstOrFail();
-        
         $customPaper = array(0,0,300,540);
         $qrcode = base64_encode(QrCode::errorCorrection('H')->format('png')->size(111)->margin(0)->generate( $this->appUrl .'/booking/receipt/'.$shoppingcart_product->shoppingcart->id.'/'.$shoppingcart_product->shoppingcart->session_id  ));
-
         $pdf = PDF::setOptions(['tempDir' => storage_path(),'isRemoteEnabled' => true])->loadView('toursdk::layouts.pdf.ticket', compact('shoppingcart_product','qrcode'))->setPaper($customPaper);
         return $pdf->download('Ticket-'. $shoppingcart_product->product_confirmation_code .'.pdf');
     }
@@ -118,8 +109,6 @@ class APIController extends Controller
         $data = json_decode($request->getContent(), true);
         $confirmation_code = strtoupper(trim($data['confirmation_code']));
         $shoppingcart = Shoppingcart::where('confirmation_code',$confirmation_code)->first();
-        
-
         if($shoppingcart)
         {
             return response()->json([
@@ -152,15 +141,15 @@ class APIController extends Controller
         $jscript = '
         function tawktoScript()
         {
-        var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
-        (function(){
-        var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
-        s1.async=true;
-        s1.src=\'https://embed.tawk.to/'. $id .'/default\';
-        s1.charset=\'UTF-8\';
-        s1.setAttribute(\'crossorigin\',\'*\');
-        s0.parentNode.insertBefore(s1,s0);
-        })();
+            var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+            (function(){
+                var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+                s1.async=true;
+                s1.src=\'https://embed.tawk.to/'. $id .'/default\';
+                s1.charset=\'UTF-8\';
+                s1.setAttribute(\'crossorigin\',\'*\');
+                s0.parentNode.insertBefore(s1,s0);
+            })();
         }
         ';
         return response($jscript)->header('Content-Type', 'application/javascript');
@@ -202,10 +191,12 @@ class APIController extends Controller
     public function page($slug)
     {
         $page = Page::where('slug',$slug)->firstOrFail();
+
         $dataObj[] = array(
             'title' => $page->title,
             'content' => $page->content,
         );
+
         return response()->json([
                 'page' => $dataObj
             ], 200);
@@ -213,11 +204,9 @@ class APIController extends Controller
 
     public function product($slug)
     {
-
         $product = Product::where('slug',$slug)->firstOrFail();
 
         $dataObj = ContentHelper::view_product($product);
-
         
         return response()->json([
             'message' => 'success',
@@ -468,8 +457,7 @@ class APIController extends Controller
     public function addshoppingcart($id,Request $request)
     {
         $contents = BokunHelper::get_addshoppingcart($id,json_decode($request->getContent(), true));
-        
-       
+
         $sessionId = $id;
         
         $value = Cache::get('_'. $id, 'empty');
@@ -479,7 +467,6 @@ class APIController extends Controller
         }
         else
         {
-
             BookingHelper::get_shoppingcart($sessionId,"update",$contents);
         }
 
@@ -622,9 +609,6 @@ class APIController extends Controller
             }
             $shoppingcart = BookingHelper::save_question_json($sessionId,$data);
             
-            
-
-
             return response()->json([
                 'message' => 'success',
             ], 200);
@@ -664,7 +648,6 @@ class APIController extends Controller
                          ->orWhere('booking_status', 'PENDING');
         })->firstOrFail();
 
-        
         if(!isset($shoppingcart->shoppingcart_payment))
         {
             abort(404);

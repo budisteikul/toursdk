@@ -70,8 +70,6 @@ class BookingHelper {
         return env("MIDTRANS_ENV");
     }
 
-    
-
 	public static function webhook_insert_shoppingcart($data)
 	{
 			$shoppingcart = new Shoppingcart();
@@ -790,7 +788,6 @@ class BookingHelper {
 		
 		unset($shoppingcart->products);
 		
-
 		$grand_total = 0;
 		$grand_subtotal = 0;
 		$grand_discount = 0;
@@ -2071,10 +2068,6 @@ class BookingHelper {
 		
         return $value;
 	}
-
-
-	
-
 
 	public static function access_ticket($shoppingcart)
 	{

@@ -1920,7 +1920,7 @@ class BookingHelper {
 					case 2:
 						return '<div class="card mb-4">
 								<div class="card-body bg-light">
-								<span class="badge badge-success mb-2" style="font-size:20px;">
+								<span class="badge badge-success" style="font-size:20px;">
 								<i class="fas fa-university"></i> BANK TRANSFER PAID </span>
 								</div>
 								</div>';
@@ -1928,7 +1928,7 @@ class BookingHelper {
 					case 3:
 						return '<div class="card mb-4">
 								<div class="card-body bg-light">
-								<span class="badge badge-danger mb-2" style="font-size:20px;">
+								<span class="badge badge-danger" style="font-size:20px;">
 								<i class="fas fa-university"></i> BANK TRANSFER UNPAID </span>
 								</div>
 								</div>';
@@ -1958,7 +1958,7 @@ class BookingHelper {
 					case 2:
 						return '<div class="card mb-4">
 								<div class="card-body bg-light">
-								<span class="badge badge-success mb-2" style="font-size:20px;">
+								<span class="badge badge-success" style="font-size:20px;">
 								<i class="fas fa-wallet"></i> E-WALLET PAID </span>
 								</div>
 								</div>';
@@ -1966,7 +1966,7 @@ class BookingHelper {
 					case 3:
 						return '<div class="card mb-4">
 								<div class="card-body bg-light">
-								<span class="badge badge-danger mb-2" style="font-size:20px;">
+								<span class="badge badge-danger" style="font-size:20px;">
 								<i class="fas fa-wallet"></i> E-WALLET UNPAID </span>
 								</div>
 								</div>';

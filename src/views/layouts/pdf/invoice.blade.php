@@ -182,6 +182,21 @@ footer {
   display: none;
 }
 
+.invoice-color-danger
+{
+  color: #d9534f;
+}
+
+.invoice-color-success
+{
+  color: #5cb85c;
+}
+
+.invoice-color-warning
+{
+  color: #f0ad4e;
+}
+
 </style>
 </head>
 <body>

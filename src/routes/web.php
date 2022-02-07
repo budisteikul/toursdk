@@ -51,7 +51,7 @@
 	Route::post('/api/ticket/check', 'budisteikul\toursdk\Controllers\APIController@ticket_check');
 	Route::get('/api/ticket/lastorder/{sessionId}', 'budisteikul\toursdk\Controllers\APIController@last_order');
 
-	Route::get('/test', 'budisteikul\toursdk\Controllers\APIController@test');
+	Route::post('/test', 'budisteikul\toursdk\Controllers\APIController@test');
 	
 	// Webhook
 	Route::post('/webhook/{webhook_app}', 'budisteikul\toursdk\Controllers\APIController@webhook');

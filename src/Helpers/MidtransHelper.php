@@ -2,6 +2,7 @@
 namespace budisteikul\toursdk\Helpers;
 use budisteikul\toursdk\Helpers\BookingHelper;
 use budisteikul\toursdk\Helpers\ImageHelper;
+use Carbon\Carbon;
 
 class MidtransHelper {
 	
@@ -38,8 +39,6 @@ class MidtransHelper {
 
   public static function chargeSnap($token,$shoppingcart,$payment_type="other_va")
   {
-        
-
         $email = BookingHelper::get_answer($shoppingcart,'email');
       
         $endpoint = self::midtransSnapEndpoint() ."/snap/v2/transactions/". $token ."/charge";
@@ -107,12 +106,33 @@ class MidtransHelper {
 
 	public static function createSnap($shoppingcart,$payment_type)
     {
+        $date_arr = array();
+        foreach($shoppingcart->products as $product)
+        {
+            $date_arr[] = $product->date;
+            
+        }
+
+        usort($date_arr, function($a, $b) {
+
+            $dateTimestamp1 = strtotime($a);
+            $dateTimestamp2 = strtotime($b);
+
+            return $dateTimestamp1 < $dateTimestamp2 ? -1: 1;
+        });
+
+        $date1 = Carbon::now();
+        $date2 = Carbon::parse($date_arr[0]);
+        $mins  = $date2->diffInMinutes($date1, true);
+        if($mins<=15) $mins = 15;
+
+        $date_now = Carbon::parse($date1)->formatLocalized('%Y-%m-%d %H:%M:%S +0700');
+
         $first_name = BookingHelper::get_answer($shoppingcart,'firstName');
         $last_name = BookingHelper::get_answer($shoppingcart,'lastName');
         $email = BookingHelper::get_answer($shoppingcart,'email');
         $phone = BookingHelper::get_answer($shoppingcart,'phoneNumber');
 
-        
         $amount = $shoppingcart->due_now;
         $order_id = $shoppingcart->confirmation_code;
 
@@ -134,6 +154,11 @@ class MidtransHelper {
             'permata_va' => [
               'recipient_name' => $first_name .' '. $last_name
             ],
+            'expiry'=> [
+              'start_time' => $date_now,
+              'unit' => 'minutes',
+              'duration' => $mins
+            ],
             'callbacks' => [
               'finish' => '',
             ]
@@ -151,6 +176,11 @@ class MidtransHelper {
               'last_name' => $last_name,
               'email' => $email,
               'phone' => $phone
+            ],
+            'expiry'=> [
+              'start_time' => $date_now,
+              'unit' => 'minutes',
+              'duration' => $mins
             ],
             'callbacks' => [
               'finish' => '',

@@ -34,9 +34,10 @@ use Illuminate\Support\Facades\Storage;
 
 class APIController extends Controller
 {
-    public function test()
+    public function test(Request $request)
     {
-        print("aaaaa");
+
+            
     }
     
     public function __construct()

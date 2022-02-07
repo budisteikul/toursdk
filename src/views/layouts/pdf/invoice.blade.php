@@ -185,16 +185,19 @@ footer {
 .invoice-color-danger
 {
   color: #d9534f;
+  font-weight: bold;
 }
 
 .invoice-color-success
 {
   color: #5cb85c;
+  font-weight: bold;
 }
 
 .invoice-color-warning
 {
   color: #f0ad4e;
+  font-weight: bold;
 }
 
 </style>

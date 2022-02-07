@@ -1941,7 +1941,8 @@ class BookingHelper {
 								<i class="fas fa-university"></i> WAITING FOR PAYMENT </span><br />
 								Bank Name : <b>'. Str::upper($shoppingcart->shoppingcart_payment->bank_name) .' BANK ('. $shoppingcart->shoppingcart_payment->bank_code .')</b> <br />
 								Account Number : <b>'. GeneralHelper::splitSpace($shoppingcart->shoppingcart_payment->va_number,4) .'</b> <br />
-								Under the Name (of) : <b>'. Str::lower($main_contact->firstName) .' '. Str::lower($main_contact->lastName) .'</b>
+								Under the Name (of) : <b>'. Str::lower($main_contact->firstName) .' '. Str::lower($main_contact->lastName) .'</b><br />
+								<small>Payment automatically detected by system in real time</small>
 								</div>
 								</div>
 								';
@@ -1978,7 +1979,8 @@ class BookingHelper {
 								<span class="badge badge-warning mb-2 invoice-color-warning" style="font-size:20px;">
 								<i class="fas fa-wallet"></i> WAITING FOR PAYMENT </span><br />
 								<img width="165" src="'. $shoppingcart->shoppingcart_payment->qrcode .'"><br />
-								<a href="'. self::env_appApiUrl() .'/qrcode/'.$shoppingcart->session_id.'/'. $shoppingcart->confirmation_code .'" class="invoice-hilang btn btn-success mt-2"><i class="fas fa-download"></i> Download QRCODE</a>
+								<a href="'. self::env_appApiUrl() .'/qrcode/'.$shoppingcart->session_id.'/'. $shoppingcart->confirmation_code .'" class="invoice-hilang btn btn-success mt-2"><i class="fas fa-download"></i> Download QRCODE</a><br />
+								<small>Payment automatically detected by system in real time</small>
 								</div>
 								</div>
 								';

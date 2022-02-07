@@ -1250,7 +1250,10 @@ class BookingHelper {
 		$email = $shoppingcart->shoppingcart_questions()->select('answer')->where('type','mainContactDetails')->where('question_id','email')->first()->answer;
 		if($email!="")
 		{
-			Mail::to($email)->send(new BookingConfirmedMail($shoppingcart));
+			try {
+				Mail::to($email)->send(new BookingConfirmedMail($shoppingcart));
+				} catch (Exception $e) {
+        	}
 		}
 	}
 

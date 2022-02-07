@@ -34,7 +34,11 @@ use Illuminate\Support\Facades\Storage;
 
 class APIController extends Controller
 {
-
+    public function test()
+    {
+        print("aaaaa");
+    }
+    
     public function __construct()
     {
         $this->bookingChannelUUID = env("BOKUN_BOOKING_CHANNEL");

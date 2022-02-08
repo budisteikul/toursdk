@@ -1243,8 +1243,6 @@ class BookingHelper {
 			
 	}
 	
-	
-
 	public static function shoppingcart_mail($shoppingcart)
 	{
 		$email = $shoppingcart->shoppingcart_questions()->select('answer')->where('type','mainContactDetails')->where('question_id','email')->first()->answer;

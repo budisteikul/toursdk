@@ -2,13 +2,13 @@
 
 namespace budisteikul\toursdk\Mail;
 
+use budisteikul\toursdk\Helpers\BookingHelper;
+use budisteikul\toursdk\Helpers\GeneralHelper;
+
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
-use Barryvdh\DomPDF\Facade as PDF;
-use budisteikul\toursdk\Helpers\BookingHelper;
-use budisteikul\toursdk\Helpers\GeneralHelper;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class BookingConfirmedMail extends Mailable
@@ -33,9 +33,8 @@ class BookingConfirmedMail extends Mailable
     public function build()
     {
         $shoppingcart = $this->shoppingcart;
-        $qrcode = base64_encode(QrCode::errorCorrection('H')->format('png')->size(111)->margin(0)->generate( env('APP_URL') .'/booking/receipt/'.$shoppingcart->id.'/'.$shoppingcart->session_id  ));
-
-        $invoice = PDF::setOptions(['tempDir' => storage_path(),'isRemoteEnabled' => true])->loadView('toursdk::layouts.pdf.invoice', compact('shoppingcart','qrcode'))->setPaper('a4', 'portrait');
+        
+        $invoice = BookingHelper::create_invoice_pdf($shoppingcart);
 
         $mail = $this->view('toursdk::layouts.mail.booking-confirmed')
                     ->text('toursdk::layouts.mail.booking-confirmed_plain')
@@ -45,8 +44,9 @@ class BookingConfirmedMail extends Mailable
 
         if($shoppingcart->shoppingcart_payment->payment_provider=="midtrans" && $shoppingcart->shoppingcart_payment->payment_type=="bank_transfer")
         {
-            $customPaper = array(0,0,430,2032);
-            $instruction = PDF::setOptions(['tempDir' => storage_path(),'isRemoteEnabled' => true])->loadView('toursdk::layouts.manual.bank_transfer', compact('shoppingcart','qrcode'))->setPaper($customPaper,'portrait');
+            
+            $instruction = BookingHelper::create_instruction_pdf($shoppingcart);
+
             $mail->attachData($instruction->output(), 'Instruction-'. $shoppingcart->confirmation_code .'.pdf', ['mime' => 'application/pdf']);
         }
 
@@ -54,8 +54,9 @@ class BookingConfirmedMail extends Mailable
         {
             foreach($shoppingcart->shoppingcart_products()->get() as $shoppingcart_product)
             {
-                $customPaper = array(0,0,300,540);
-                $ticket = PDF::setOptions(['tempDir' => storage_path(),'isRemoteEnabled' => true])->loadView('toursdk::layouts.pdf.ticket', compact('shoppingcart_product','qrcode'))->setPaper($customPaper);
+                
+                $ticket = BookingHelper::create_ticket_pdf($shoppingcart_product);
+                
                 $mail->attachData($ticket->output(), 'Ticket-'. $shoppingcart_product->product_confirmation_code .'.pdf', ['mime' => 'application/pdf']);
             }
         }

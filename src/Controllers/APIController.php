@@ -89,7 +89,7 @@ class APIController extends Controller
     {
         $shoppingcart = Shoppingcart::where('confirmation_code',$id)->where('session_id',$sessionId)->firstOrFail();
         $customPaper = array(0,0,430,2032);
-        $pdf = PDF::setOptions(['tempDir' => storage_path(),'isRemoteEnabled' => true])->loadView('toursdk::layouts.manual.bank_transfer', compact('shoppingcart'))->setPaper($customPaper,'portrait');
+        $pdf = PDF::setOptions(['tempDir' => storage_path(),'fontDir' => storage_path(),'fontCache' => storage_path(),'isRemoteEnabled' => true])->loadView('toursdk::layouts.manual.bank_transfer', compact('shoppingcart'))->setPaper($customPaper,'portrait');
         return $pdf->download('Instruction-'. $shoppingcart->confirmation_code .'.pdf');
     }
 
@@ -97,7 +97,7 @@ class APIController extends Controller
     {
         $shoppingcart = Shoppingcart::where('confirmation_code',$id)->where('session_id',$sessionId)->firstOrFail();
         $qrcode = base64_encode(QrCode::errorCorrection('H')->format('png')->size(111)->margin(0)->generate( $this->appUrl .'/booking/receipt/'.$shoppingcart->id.'/'.$shoppingcart->session_id  ));
-        $pdf = PDF::setOptions(['tempDir' => storage_path(),'isRemoteEnabled' => true])->loadView('toursdk::layouts.pdf.invoice', compact('shoppingcart','qrcode'))->setPaper('a4', 'portrait');
+        $pdf = PDF::setOptions(['tempDir' =>  storage_path(),'fontDir' => storage_path(),'fontCache' => storage_path(),'isRemoteEnabled' => true])->loadView('toursdk::layouts.pdf.invoice', compact('shoppingcart','qrcode'))->setPaper('a4', 'portrait');
         return $pdf->download('Invoice-'. $shoppingcart->confirmation_code .'.pdf');
     }
     
@@ -108,7 +108,7 @@ class APIController extends Controller
         })->firstOrFail();
         $customPaper = array(0,0,300,540);
         $qrcode = base64_encode(QrCode::errorCorrection('H')->format('png')->size(111)->margin(0)->generate( $this->appUrl .'/booking/receipt/'.$shoppingcart_product->shoppingcart->id.'/'.$shoppingcart_product->shoppingcart->session_id  ));
-        $pdf = PDF::setOptions(['tempDir' => storage_path(),'isRemoteEnabled' => true])->loadView('toursdk::layouts.pdf.ticket', compact('shoppingcart_product','qrcode'))->setPaper($customPaper);
+        $pdf = PDF::setOptions(['tempDir' => storage_path(),'fontDir' => storage_path(),'fontCache' => storage_path(),'isRemoteEnabled' => true])->loadView('toursdk::layouts.pdf.ticket', compact('shoppingcart_product','qrcode'))->setPaper($customPaper);
         return $pdf->download('Ticket-'. $shoppingcart_product->product_confirmation_code .'.pdf');
     }
 

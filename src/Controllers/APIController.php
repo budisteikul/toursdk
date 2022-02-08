@@ -27,7 +27,7 @@ use Yajra\DataTables\Facades\DataTables;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Validator;
 use Barryvdh\DomPDF\Facade as PDF;
-use SimpleSoftwareIO\QrCode\Facades\QrCode;
+
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 

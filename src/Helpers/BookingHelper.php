@@ -29,6 +29,7 @@ use Ramsey\Uuid\Exception\UnsatisfiedDependencyException;
 use Illuminate\Support\Facades\Cache;
 use Carbon\Carbon;
 use Barryvdh\DomPDF\Facade as PDF;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class BookingHelper {
 	

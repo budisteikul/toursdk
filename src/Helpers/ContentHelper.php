@@ -382,12 +382,12 @@ class ContentHelper {
         {
             $invoice = self::view_invoice($shoppingcart);
 
-            $product = self::view_product_detail($shoppingcart);
+            //$product = self::view_product_detail($shoppingcart);
             
             $receipt_page = '<a onclick="window.openAppRoute(\'/booking/receipt/'.$shoppingcart->id.'/'. $shoppingcart->session_id .'\')"  class="btn btn-theme" href="javascript:void(0);">View receipt page <i class="fas fa-arrow-circle-right"></i></a>';
 
             $booking[] = array(
-                'booking' => $invoice . $product . $receipt_page
+                'booking' => $invoice . $receipt_page
             );
         }
         return $booking;

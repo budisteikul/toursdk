@@ -619,9 +619,15 @@ class ContentHelper {
 
 	public static function view_invoice($shoppingcart)
 	{
-		$invoice = '<div class="card mb-2"><div class="card-body bg-light">';
-		$invoice .= '<b><a class="text-decoration-none text-theme" href="'.url('/api').'/pdf/invoice/'. $shoppingcart->session_id .'/Invoice-'. $shoppingcart->confirmation_code .'.pdf" target="_blank">'. $shoppingcart->confirmation_code .'</a> - INVOICE</b> <br />';
-		$invoice .= ' <b>Channel :</b> '.$shoppingcart->booking_channel.' <br />';
+		$invoice = '<div class="card mb-2"><div class="card-body bg-light" style="overflow-x:hidden;white-space: nowrap;">';
+		$invoice1 = '<b><a class="text-decoration-none text-theme" href="'.url('/api').'/pdf/invoice/'. $shoppingcart->session_id .'/Invoice-'. $shoppingcart->confirmation_code .'.pdf" target="_blank">'. $shoppingcart->confirmation_code .'</a> - INVOICE</b>';
+
+        
+
+        $invoice .= '<table class="table-responsive-sm table-borderless ">';
+        $invoice .= '<tbody><tr><td colspan="3">'.$invoice1.'</td></tr>';
+        $invoice .= '';
+        $invoice .= '<tr><th>Channel</th><td>:</td><td>'.$shoppingcart->booking_channel.'</td></tr>';
 
 		$main_contact = BookingHelper::get_answer_contact($shoppingcart);
 
@@ -630,11 +636,13 @@ class ContentHelper {
 		$email = $main_contact->email;
 		$phone = $main_contact->phoneNumber;
 
-		if($first_name!='' || $last_name!='') $invoice .= ' <b>Name :</b> '.$first_name.'  '. $last_name .'<br />';
-		if($email!='') $invoice .= ' <b>Email :</b> '.$email.' <br />';
-		if($phone!='') $invoice .= ' <b>Phone :</b> '.$phone.' <br />';
+		if($first_name!='' || $last_name!='') $invoice .= '<tr><th>Name</th><td>:</td><td>'.$first_name.'  '. $last_name .'</td></tr>';
+		if($email!='') $invoice .= '<tr valign="top"><th>Email</th><td>:</td><td>'.$email.'</td></tr>';
+		if($phone!='') $invoice .= '<tr><th>Phone</th><td>:</td><td>'.$phone.'</td></tr>';
 
-		$invoice .= ' <b>Status :</b> '. BookingHelper::get_bookingStatus($shoppingcart);
+		$invoice .= '<tr><th>Status</th><td>:</td><td>'. BookingHelper::get_bookingStatus($shoppingcart) .'</td></tr> ';
+        $invoice .= '</tbody>';
+        $invoice .= '</table>';
 		$invoice .= '</div></div>';
 
 		return $invoice;

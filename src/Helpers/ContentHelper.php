@@ -654,11 +654,11 @@ class ContentHelper {
 		{
 			$product .= '<div class="card mb-2"><div class="card-body bg-light">';
 
-			$product .= '<b>'.$shoppingcart_product->title.'</b> <br />';
+			$product .= '<h5>'.$shoppingcart_product->title.'</h5>';
 			
-
+            $product .= ProductHelper::datetotext($shoppingcart_product->date) .' <br />';
 			if($shoppingcart_product->rate!="") $product .= $shoppingcart_product->rate .' <br />';
-			$product .= ProductHelper::datetotext($shoppingcart_product->date) .' <br />';
+			
 
 			foreach($shoppingcart_product->shoppingcart_product_details()->get() as $shoppingcart_product_detail)
 			{

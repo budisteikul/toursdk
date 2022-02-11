@@ -2054,7 +2054,7 @@ class BookingHelper {
 		
 		if($value!="")
 		{
-			$value = '<div class="card mb-2 mt-2"><div class="card-body"><b>Note</b><br />'.$value .'</div></div>';
+			$value = '<div class="card mb-2 mt-4"><div class="card-body"><b>Note</b><br />'.$value .'</div></div>';
 		}
 		
         return $value;

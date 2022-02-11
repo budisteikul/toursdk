@@ -634,7 +634,7 @@ class APIController extends Controller
                 'message' => 'success'
             );
 
-        FirebaseHelper::connect('last_order/'.$sessionId,$data,"PUT");
+       
 
         return response()->json([
                 'message' => 'success',

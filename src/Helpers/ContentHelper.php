@@ -382,12 +382,12 @@ class ContentHelper {
         {
             $invoice = self::view_invoice($shoppingcart);
 
-            //$product = self::view_product_detail($shoppingcart);
+            $product = self::view_product_detail($shoppingcart);
             
             $receipt_page = '<a onclick="window.openAppRoute(\'/booking/receipt/'.$shoppingcart->id.'/'. $shoppingcart->session_id .'\')"  class="btn btn-theme" href="javascript:void(0);">View receipt page <i class="fas fa-arrow-circle-right"></i></a>';
 
             $booking[] = array(
-                'booking' => $invoice . $receipt_page
+                'booking' => $product . $receipt_page
             );
         }
         return $booking;
@@ -619,15 +619,14 @@ class ContentHelper {
 
 	public static function view_invoice($shoppingcart)
 	{
-		$invoice = '<div class="card mb-2"><div class="card-body bg-light" style="overflow-x:hidden;white-space: nowrap;">';
+		$invoice = '<div class="card mb-2"><div class="card-body bg-light">';
 		$invoice1 = '<b><a class="text-decoration-none text-theme" href="'.url('/api').'/pdf/invoice/'. $shoppingcart->session_id .'/Invoice-'. $shoppingcart->confirmation_code .'.pdf" target="_blank">'. $shoppingcart->confirmation_code .'</a> - INVOICE</b>';
 
         
 
-        $invoice .= '<table class="table-responsive-sm table-borderless ">';
-        $invoice .= '<tbody><tr><td colspan="3">'.$invoice1.'</td></tr>';
-        $invoice .= '';
-        $invoice .= '<tr><th>Channel</th><td>:</td><td>'.$shoppingcart->booking_channel.'</td></tr>';
+        
+        $invoice .= $invoice1.'</br>';
+        $invoice .= 'Channel : '.$shoppingcart->booking_channel.'</br>';
 
 		$main_contact = BookingHelper::get_answer_contact($shoppingcart);
 
@@ -636,13 +635,11 @@ class ContentHelper {
 		$email = $main_contact->email;
 		$phone = $main_contact->phoneNumber;
 
-		if($first_name!='' || $last_name!='') $invoice .= '<tr><th>Name</th><td>:</td><td>'.$first_name.'  '. $last_name .'</td></tr>';
-		if($email!='') $invoice .= '<tr valign="top"><th>Email</th><td>:</td><td>'.$email.'</td></tr>';
-		if($phone!='') $invoice .= '<tr><th>Phone</th><td>:</td><td>'.$phone.'</td></tr>';
+		if($first_name!='' || $last_name!='') $invoice .= 'Name : '.$first_name.'  '. $last_name .'</br>';
+		if($email!='') $invoice .= 'Email : '.$email .'</br>';
+		if($phone!='') $invoice .= 'Phone : '.$phone .'</br>';
 
-		$invoice .= '<tr><th>Status</th><td>:</td><td>'. BookingHelper::get_bookingStatus($shoppingcart) .'</td></tr> ';
-        $invoice .= '</tbody>';
-        $invoice .= '</table>';
+		$invoice .= 'Status : '. BookingHelper::get_bookingStatus($shoppingcart) .'</br>';
 		$invoice .= '</div></div>';
 
 		return $invoice;
@@ -651,20 +648,13 @@ class ContentHelper {
 	public static function view_product_detail($shoppingcart)
 	{
 		$product = '';
-		$access_ticket = BookingHelper::access_ticket($shoppingcart);
+		//$access_ticket = BookingHelper::access_ticket($shoppingcart);
 
 		foreach($shoppingcart->shoppingcart_products()->get() as $shoppingcart_product)
 		{
 			$product .= '<div class="card mb-2"><div class="card-body bg-light">';
 
-			if($access_ticket)
-			{
-				$product .= '<b><a target="_blank" class="text-decoration-none text-theme" href="'.url('/api').'/pdf/ticket/'. $shoppingcart->session_id .'/Ticket-'. $shoppingcart_product->product_confirmation_code .'.pdf" target="_blank">'. $shoppingcart_product->product_confirmation_code .'</a> - '.$shoppingcart_product->title.'</b> <br />';
-			}
-			else
-			{
-				$product .= '<b>'.$shoppingcart_product->title.'</b> <br />';
-			}
+			$product .= '<b>'.$shoppingcart_product->title.'</b> <br />';
 			
 
 			if($shoppingcart_product->rate!="") $product .= $shoppingcart_product->rate .' <br />';

@@ -9,5 +9,5 @@ class Vendor extends Model
     protected $table = 'vendors';
     protected $keyType = 'string';
     protected $dateFormat = 'Y-m-d H:i:s.u';
-    protected $fillable = ['name','phone','email','account_holder','account_number','bank_code'];
+    protected $fillable = ['name','contact_person','phone','email','account_holder','account_number','bank_code'];
 }

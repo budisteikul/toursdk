@@ -15,7 +15,14 @@ class CreateVendorsTable extends Migration
     {
         Schema::create('vendors', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
+            $table->string('name')->nullable();
+            $table->string('contact_person')->nullable();
+            $table->string('phone')->nullable();
+            $table->string('email')->nullable();
+            $table->string('bank_code')->nullable();
+            $table->string('account_holder')->nullable();
+            $table->string('account_number')->nullable();
+            $table->timestamps(6);
         });
     }
 

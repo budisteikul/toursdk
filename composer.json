@@ -9,7 +9,7 @@
     ],
 	"require": {
         "cloudinary/cloudinary_php": "^1.19",
-        "barryvdh/laravel-dompdf": "^0.9.0",
+        "barryvdh/laravel-dompdf": "^1.0",
         "simplesoftwareio/simple-qrcode": "^2.0",
         "paypal/paypal-checkout-sdk": "^1.0",
         "yajra/laravel-datatables-oracle": "^9.9"

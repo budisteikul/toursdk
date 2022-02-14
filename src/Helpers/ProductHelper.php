@@ -22,6 +22,12 @@ class ProductHelper {
         return $products;
     }
 
+    public static function have_review($product){
+        $status = false;
+        if($product->reviews()->exists()) $status = true;
+        return $status;
+    }
+
     public static function lang($type,$str){
         $hasil = '';
         if($type=='categories')

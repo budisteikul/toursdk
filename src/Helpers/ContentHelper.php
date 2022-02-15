@@ -400,7 +400,7 @@ class ContentHelper {
         foreach($categories as $category)
         {
             $dataObj2 = array();
-            foreach($category->product()->orderBy('id','asc')->get() as $product)
+            foreach($category->product()->orderBy('updated_at','desc')->get() as $product)
             {
                 
                 $content = BokunHelper::get_product($product->bokun_id);

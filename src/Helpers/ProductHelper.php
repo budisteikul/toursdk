@@ -18,7 +18,7 @@ class ProductHelper {
                 array_push($array,$product->id);
             }
         }
-        $products = Product::orderBy('id','asc')->findMany($array);
+        $products = Product::orderBy('updated_at','desc')->findMany($array);
         return $products;
     }
 

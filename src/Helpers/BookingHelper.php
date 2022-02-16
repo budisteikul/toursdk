@@ -8,6 +8,7 @@ use budisteikul\toursdk\Helpers\ImageHelper;
 use budisteikul\toursdk\Helpers\ProductHelper;
 use budisteikul\toursdk\Helpers\PaypalHelper;
 use budisteikul\toursdk\Helpers\MidtransHelper;
+use budisteikul\toursdk\Helpers\OyHelper;
 use budisteikul\toursdk\Helpers\FirebaseHelper;
 use budisteikul\toursdk\Helpers\GeneralHelper;
 use budisteikul\toursdk\Models\Category;
@@ -1637,7 +1638,78 @@ class BookingHelper {
 	{
 		$shoppingcart = Cache::get('_'. $sessionId);
 
-		if($payment_type=="midtrans")
+		if($payment_type=="oyindonesia")
+		{
+				$response = OyHelper::createPaymentLink($shoppingcart);
+
+				$url = NULL;
+				$payment_link_id = NULL;
+				if(isset($response->url)) $url = $response->url;
+				if(isset($response->payment_link_id)) $payment_link_id = $response->payment_link_id;
+
+				$ShoppingcartPayment = (object) array(
+					'payment_provider' => 'oyindonesia',
+					'payment_type' => "payment_link",
+					'bank_name' => "OY Indonesia",
+					'bank_code' => NULL,
+					'va_number' => NULL,
+					'snaptoken' => $payment_link_id,
+					'qrcode' => NULL,
+					'link' => $url,
+					'order_id' => NULL,
+					'authorization_id' => NULL,
+					'amount' => self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,"IDR"),
+					'currency' => 'IDR',
+					'rate' => 1,
+					'rate_from' => NULL,
+					'rate_to' => NULL,
+					'payment_status' => 4,
+				);
+
+				//$response = OyHelper::createVA($shoppingcart,$bank);
+
+				/*
+				$id = NULL;
+				$payment_type = NULL;
+				$bank_name = NULL;
+				$bank_code = NULL;
+				$va_number = NULL;
+				$snaptoken = NULL;
+				$qrcode = NULL;
+				$link = NULL;
+
+				if(isset($response->id)) $id = $response->id;
+				if(isset($response->payment_type)) $payment_type = $response->payment_type;
+				if(isset($response->bank_name)) $bank_name = $bank;
+				if(isset($response->bank_code)) $bank_code = $response->bank_code;
+				if(isset($response->va_number)) $va_number = $response->va_number;
+
+				$ShoppingcartPayment = (object) array(
+					'payment_provider' => 'oyindonesia',
+					'payment_type' => "bank_transfer",
+					'bank_name' => $bank,
+					'bank_code' => $bank_code,
+					'va_number' => $va_number,
+					'snaptoken' => $snaptoken,
+					'qrcode' => $qrcode,
+					'link' => $link,
+					'order_id' => $id,
+					'authorization_id' => NULL,
+					'amount' => self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,"IDR"),
+					'currency' => 'IDR',
+					'rate' => 1,
+					'rate_from' => NULL,
+					'rate_to' => NULL,
+					'payment_status' => 4,
+				);
+				*/
+
+				$shoppingcart->payment = $ShoppingcartPayment;
+				Cache::forget('_'. $sessionId);
+				Cache::add('_'. $sessionId, $shoppingcart, 172800);
+
+		}
+		else if($payment_type=="midtrans")
 		{
 
 				if($bank=="") $bank = "permata_va";

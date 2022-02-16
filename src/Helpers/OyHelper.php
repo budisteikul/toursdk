@@ -16,11 +16,6 @@ class OyHelper {
         return env("OY_USERNAME");
   }
 
-  public static function env_appName()
-  {
-        return env("APP_NAME");
-  }
-
   public static function oyApiEndpoint()
   {
         if(env('OY_ENV')=="production")
@@ -71,8 +66,8 @@ class OyHelper {
           'recipient_bank' => $disbursement->bank_code,
           'recipient_account' => $disbursement->account_number,
           'amount' => $disbursement->amount,
-          'note' => self::env_appName(),
-          'partner_trx_id' => $disbursement->id,
+          'note' => $disbursement->reference,
+          'partner_trx_id' => $disbursement->transaction_id,
         ];
 
         $client = new \GuzzleHttp\Client(['headers' => $headers,'http_errors' => false]);

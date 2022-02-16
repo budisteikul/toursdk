@@ -2,6 +2,7 @@
 namespace budisteikul\toursdk\Helpers;
 use budisteikul\toursdk\Helpers\BookingHelper;
 use budisteikul\toursdk\Helpers\ImageHelper;
+use budisteikul\toursdk\Models\Disbursement;
 use Carbon\Carbon;
 
 class OyHelper {
@@ -27,6 +28,14 @@ class OyHelper {
             $endpoint = "https://api-stg.oyindonesia.com";
         }
         return $endpoint;
+  }
+
+  public static function get_transaction_id(){
+      $uuid = "DISB-". date('Ymd') . rand(100,999);
+      while( Disbursement::where('transaction_id','=',$uuid)->first() ){
+          $uuid = "DISB-". date('Ymd') . rand(100,999);
+      }
+      return $uuid;
   }
 
   public static function bankCode($bank_name)

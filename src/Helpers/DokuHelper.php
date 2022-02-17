@@ -84,11 +84,38 @@ class DokuHelper {
           			'email' => $email
           		]
         	];
+        	$targetPath = '/doku-virtual-account/v2/payment-code';
+  		}
+  		else if ($bank=="permata")
+  		{
+  			$data = [
+          		'order' => [
+          			'invoice_number' => $shoppingcart->confirmation_code,
+          			'amount' => $shoppingcart->total
+          			],
+          		'virtual_account_info' => [
+          			'billing_type' => 'FIX_BILL',
+          			'expired_time' => $mins,
+          			'reusable_status' => false,
+          			'ref_info' => [
+          				'ref_name' => $first_name .' '. $last_name,
+          				'ref_value' => self::env_appName()
+          			]
+          		],
+          		'customer' => [
+          			'name' => $first_name .' '. $last_name,
+          			'email' => $email
+          		]
+        	];
+        	$targetPath = '/permata-virtual-account/v2/payment-code';
   		}
   		else
   		{
   			return "";
   		}
+
+  		$url = self::dokuApiEndpoint();
+        $endpoint = $url . $targetPath;
 
   		$requestId = rand(1, 100000);
 
@@ -96,9 +123,7 @@ class DokuHelper {
         $dateTime = date(DATE_ISO8601, strtotime($dateTime));
         $dateTimeFinal = substr($dateTime, 0, 19) . "Z";
 
-        $url = self::dokuApiEndpoint();
-        $targetPath = '/doku-virtual-account/v2/payment-code';
-        $endpoint = $url . $targetPath;
+        
 
         //create signature
         $header = array();
@@ -113,7 +138,7 @@ class DokuHelper {
               'Request-Id' => $requestId,
               'Client-Id' => self::env_dokuClientId(),
               'Request-Timestamp' => $dateTimeFinal,
-              'Request-Target' => $path,
+              'Request-Target' => $targetPath,
           ];
 
         $client = new \GuzzleHttp\Client(['headers' => $headers,'http_errors' => false]);
@@ -123,6 +148,7 @@ class DokuHelper {
 
         $data = $response->getBody()->getContents();
         $data = json_decode($data);
+        
         
         return $data;
   	}

@@ -1643,6 +1643,21 @@ class BookingHelper {
 		{
 				$va_number = NULL;
 				$link = NULL;
+				$bank_name = NULL;
+				$bank_code = NULL;
+
+				if($bank=="doku")
+					{
+						$bank_code = "899";
+						$bank_name = "doku";
+					}
+
+				if($bank=="permata")
+					{
+						$bank_code = "013";
+						$bank_name = "permata";
+					}
+
 				$response = DokuHelper::createVA($shoppingcart,$bank);
 				if(isset($response->virtual_account_info->virtual_account_number)) $va_number = $response->virtual_account_info->virtual_account_number;
 				if(isset($response->virtual_account_info->how_to_pay_page)) $link = $response->virtual_account_info->how_to_pay_page;
@@ -1650,8 +1665,8 @@ class BookingHelper {
 				$ShoppingcartPayment = (object) array(
 					'payment_provider' => 'doku',
 					'payment_type' => "bank_transfer",
-					'bank_name' => "DOKU",
-					'bank_code' => NULL,
+					'bank_name' => $bank_name,
+					'bank_code' => $bank_code,
 					'va_number' => $va_number,
 					'snaptoken' => NULL,
 					'qrcode' => NULL,
@@ -1665,6 +1680,10 @@ class BookingHelper {
 					'rate_to' => NULL,
 					'payment_status' => 4,
 				);
+
+				$shoppingcart->payment = $ShoppingcartPayment;
+				Cache::forget('_'. $sessionId);
+				Cache::add('_'. $sessionId, $shoppingcart, 172800);
 
 		}
 		else if($payment_type=="oyindonesia")

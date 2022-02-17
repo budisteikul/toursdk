@@ -88,6 +88,11 @@ class DokuHelper {
   		}
   		else if ($bank=="permata")
   		{
+            $ref_info[] = array(
+                'ref_name' => $first_name .' '. $last_name,
+                'ref_value' => self::env_appName()
+            );
+
   			$data = [
           		'order' => [
           			'invoice_number' => $shoppingcart->confirmation_code,
@@ -97,10 +102,7 @@ class DokuHelper {
           			'billing_type' => 'FIX_BILL',
           			'expired_time' => $mins,
           			'reusable_status' => false,
-          			'ref_info' => [
-          				'ref_name' => $first_name .' '. $last_name,
-          				'ref_value' => self::env_appName()
-          			]
+          			'ref_info' => $ref_info
           		],
           		'customer' => [
           			'name' => $first_name .' '. $last_name,
@@ -114,6 +116,8 @@ class DokuHelper {
   			return "";
   		}
 
+        //print_r($data);
+        //exit();
   		$url = self::dokuApiEndpoint();
         $endpoint = $url . $targetPath;
 
@@ -149,7 +153,8 @@ class DokuHelper {
         $data = $response->getBody()->getContents();
         $data = json_decode($data);
         
-        
+        //print_r($data);
+        //exit();
         return $data;
   	}
 

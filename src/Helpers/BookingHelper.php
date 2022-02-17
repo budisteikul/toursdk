@@ -9,6 +9,7 @@ use budisteikul\toursdk\Helpers\ProductHelper;
 use budisteikul\toursdk\Helpers\PaypalHelper;
 use budisteikul\toursdk\Helpers\MidtransHelper;
 use budisteikul\toursdk\Helpers\OyHelper;
+use budisteikul\toursdk\Helpers\DokuHelper;
 use budisteikul\toursdk\Helpers\FirebaseHelper;
 use budisteikul\toursdk\Helpers\GeneralHelper;
 use budisteikul\toursdk\Models\Category;
@@ -1638,7 +1639,35 @@ class BookingHelper {
 	{
 		$shoppingcart = Cache::get('_'. $sessionId);
 
-		if($payment_type=="oyindonesia")
+		if($payment_type=="doku")
+		{
+				$va_number = NULL;
+				$link = NULL;
+				$response = DokuHelper::createVA($shoppingcart,$bank);
+				if(isset($response->virtual_account_info->virtual_account_number)) $va_number = $response->virtual_account_info->virtual_account_number;
+				if(isset($response->virtual_account_info->how_to_pay_page)) $link = $response->virtual_account_info->how_to_pay_page;
+
+				$ShoppingcartPayment = (object) array(
+					'payment_provider' => 'doku',
+					'payment_type' => "bank_transfer",
+					'bank_name' => "DOKU",
+					'bank_code' => NULL,
+					'va_number' => $va_number,
+					'snaptoken' => NULL,
+					'qrcode' => NULL,
+					'link' => $link,
+					'order_id' => NULL,
+					'authorization_id' => NULL,
+					'amount' => self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,"IDR"),
+					'currency' => 'IDR',
+					'rate' => 1,
+					'rate_from' => NULL,
+					'rate_to' => NULL,
+					'payment_status' => 4,
+				);
+
+		}
+		else if($payment_type=="oyindonesia")
 		{
 				$response = OyHelper::createPaymentLink($shoppingcart);
 

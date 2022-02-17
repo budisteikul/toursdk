@@ -1,7 +1,6 @@
 <?php
 namespace budisteikul\toursdk\Helpers;
 use budisteikul\toursdk\Helpers\BookingHelper;
-use budisteikul\toursdk\Helpers\ImageHelper;
 use budisteikul\toursdk\Models\Disbursement;
 use Carbon\Carbon;
 
@@ -17,9 +16,14 @@ class OyHelper {
         return env("OY_USERNAME");
   }
 
+  public static function env_oyEnv()
+  {
+        return env("OY_ENV");
+  }
+
   public static function oyApiEndpoint()
   {
-        if(env('OY_ENV')=="production")
+        if(self::env_oyEnv()=="production")
         {
             $endpoint = "https://partner.oyindonesia.com";
         }

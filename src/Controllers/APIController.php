@@ -728,6 +728,11 @@ class APIController extends Controller
         $data = $request->all();
         $confirmation_code = $data['order']['invoice_number'];
         $transaction_status = $data['transaction']['status'];
+
+        print_r($data);
+        print_r($confirmation_code);
+        print_r($transaction_status);
+
         $shoppingcart = Shoppingcart::where('confirmation_code',$confirmation_code)->first();
         if($shoppingcart!==null)
         {

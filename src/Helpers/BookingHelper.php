@@ -1646,21 +1646,12 @@ class BookingHelper {
 				$bank_name = NULL;
 				$bank_code = NULL;
 
-				if($bank=="doku")
-					{
-						$bank_code = "899";
-						$bank_name = "doku";
-					}
-
-				if($bank=="permata")
-					{
-						$bank_code = "013";
-						$bank_name = "permata";
-					}
 
 				$response = DokuHelper::createVA($shoppingcart,$bank);
 				if(isset($response->virtual_account_info->virtual_account_number)) $va_number = $response->virtual_account_info->virtual_account_number;
 				if(isset($response->virtual_account_info->how_to_pay_page)) $link = $response->virtual_account_info->how_to_pay_page;
+				if(isset($response->virtual_account_info->bank_name)) $bank_name = $response->virtual_account_info->bank_name;
+				if(isset($response->virtual_account_info->bank_code)) $bank_code = $response->virtual_account_info->bank_code;
 
 				$ShoppingcartPayment = (object) array(
 					'payment_provider' => 'doku',

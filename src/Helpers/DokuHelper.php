@@ -84,14 +84,12 @@ class DokuHelper {
           			'email' => $email
           		]
         	];
+            $bank_code = "899";
+            $bank_name = "doku";
         	$targetPath = '/doku-virtual-account/v2/payment-code';
   		}
   		else if ($bank=="permata")
   		{
-            $ref_info[] = array(
-                'ref_name' => $first_name .' '. $last_name,
-                'ref_value' => self::env_appName()
-            );
 
   			$data = [
           		'order' => [
@@ -101,23 +99,67 @@ class DokuHelper {
           		'virtual_account_info' => [
           			'billing_type' => 'FIX_BILL',
           			'expired_time' => $mins,
-          			'reusable_status' => false,
-          			'ref_info' => $ref_info
+          			'reusable_status' => false
           		],
           		'customer' => [
           			'name' => $first_name .' '. $last_name,
           			'email' => $email
           		]
         	];
+            $bank_code = "013";
+            $bank_name = "permata";
         	$targetPath = '/permata-virtual-account/v2/payment-code';
   		}
+        else if ($bank=="danamon")
+        {
+
+            $data = [
+                'order' => [
+                    'invoice_number' => $shoppingcart->confirmation_code,
+                    'amount' => $shoppingcart->total
+                    ],
+                'virtual_account_info' => [
+                    'billing_type' => 'FULL_PAYMENT',
+                    'expired_time' => $mins,
+                    'reusable_status' => false
+                ],
+                'customer' => [
+                    'name' => $first_name .' '. $last_name,
+                    'email' => $email
+                ]
+            ];
+            $bank_code = "011";
+            $bank_name = "danamon";
+            $targetPath = '/danamon-virtual-account/v2/payment-code';
+        }
+        else if ($bank=="mandiri")
+        {
+
+            $data = [
+                'order' => [
+                    'invoice_number' => $shoppingcart->confirmation_code,
+                    'amount' => $shoppingcart->total
+                    ],
+                'virtual_account_info' => [
+                    'billing_type' => 'FIX_BILL',
+                    'expired_time' => $mins,
+                    'reusable_status' => false
+                ],
+                'customer' => [
+                    'name' => $first_name .' '. $last_name,
+                    'email' => $email
+                ]
+            ];
+            $bank_code = "008";
+            $bank_name = "mandiri";
+            $targetPath = '/mandiri-virtual-account/v2/payment-code';
+        }
   		else
   		{
   			return "";
   		}
 
-        //print_r($data);
-        //exit();
+        
   		$url = self::dokuApiEndpoint();
         $endpoint = $url . $targetPath;
 
@@ -152,9 +194,10 @@ class DokuHelper {
 
         $data = $response->getBody()->getContents();
         $data = json_decode($data);
+
+        $data->virtual_account_info->bank_code = $bank_code;
+        $data->virtual_account_info->bank_name = $bank_name;
         
-        //print_r($data);
-        //exit();
         return $data;
   	}
 

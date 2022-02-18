@@ -67,8 +67,6 @@ class ContentHelper {
 
         
         $pdfUrl = array();
-        
-        
         if($shoppingcart->shoppingcart_payment->payment_type=="ewallet")
         {
                 $pdfUrl = '
@@ -82,6 +80,7 @@ class ContentHelper {
                     5.  Your transaction is complete. 
                     </div>';
         }
+
         if($shoppingcart->shoppingcart_payment->payment_type=="bank_transfer")
         {
                 $pdfUrl = '<a target="_blank" class="text-theme" href="'.url('/api').'/pdf/instruction/'. $shoppingcart->session_id .'/Instruction-'. $shoppingcart->confirmation_code .'.pdf"><i class="fas fa-file-invoice"></i> Instruction-'. $shoppingcart->confirmation_code .'.pdf</a><br />';

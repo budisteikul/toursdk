@@ -42,7 +42,7 @@ class BookingConfirmedMail extends Mailable
                     ->with('shoppingcart',$shoppingcart)
                     ->attachData($invoice->output(), 'Invoice-'. $shoppingcart->confirmation_code .'.pdf', ['mime' => 'application/pdf']);
 
-        if($shoppingcart->shoppingcart_payment->payment_provider=="midtrans" && $shoppingcart->shoppingcart_payment->payment_type=="bank_transfer")
+        if($shoppingcart->shoppingcart_payment->payment_type=="bank_transfer")
         {
             
             $instruction = BookingHelper::create_instruction_pdf($shoppingcart);

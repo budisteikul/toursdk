@@ -68,9 +68,9 @@ class ContentHelper {
         
         $pdfUrl = array();
         
-        if($shoppingcart->shoppingcart_payment->payment_provider=="midtrans") {
-            if($shoppingcart->shoppingcart_payment->payment_type=="ewallet")
-            {
+        
+        if($shoppingcart->shoppingcart_payment->payment_type=="ewallet")
+        {
                 $pdfUrl = '
                     <div class="pl-2">
                     1.  Open your <b>E-wallet</b> or <b>Mobile Banking</b> apps. <br />
@@ -81,12 +81,10 @@ class ContentHelper {
                     4.  Enter your <b>PIN</b>. <br />
                     5.  Your transaction is complete. 
                     </div>';
-            }
-            else
-            {
+        }
+        if($shoppingcart->shoppingcart_payment->payment_type=="bank_transfer")
+        {
                 $pdfUrl = '<a target="_blank" class="text-theme" href="'.url('/api').'/pdf/instruction/'. $shoppingcart->session_id .'/Instruction-'. $shoppingcart->confirmation_code .'.pdf"><i class="fas fa-file-invoice"></i> Instruction-'. $shoppingcart->confirmation_code .'.pdf</a><br />';
-            }
-            
         }
 
         $payment_status_asText = BookingHelper::get_paymentStatus($shoppingcart);

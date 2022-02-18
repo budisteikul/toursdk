@@ -817,35 +817,7 @@ class APIController extends Controller
     }
 
 
-    public function createpaymentmidtrans(Request $request)
-    {
-        $sessionId = $request->input('sessionId');
-        $paymentType = $request->input('paymentType');
-        
-        BookingHelper::set_bookingStatus($sessionId,'PENDING');
-
-        BookingHelper::set_confirmationCode($sessionId);
-
-        if($paymentType=="ewallet")
-        {
-            BookingHelper::create_payment($sessionId,"midtrans","gopay");
-        }
-        else
-        {
-            BookingHelper::create_payment($sessionId,"midtrans");
-        }
-        
-
-        $shoppingcart = BookingHelper::confirm_booking($sessionId);
-
-        return response()->json([
-            "id" => "1",
-            "token" => $shoppingcart->shoppingcart_payment->snaptoken,
-            "redirect" => '/booking/receipt/'.$shoppingcart->id.'/'.$shoppingcart->session_id
-        ]);
-        
-        
-    }
+    
 
     public function createpayment(Request $request)
     {
@@ -862,7 +834,7 @@ class APIController extends Controller
         }
         else
         {
-            BookingHelper::create_payment($sessionId,"midtrans");
+            BookingHelper::create_payment($sessionId,"doku","doku");
         }
         
 
@@ -916,44 +888,7 @@ class APIController extends Controller
         return response($jscript)->header('Content-Type', 'application/javascript');
     }
 
-    public function midtrans_jscript($payment_type,$sessionId)
-    {
-        if($payment_type=="bank_transfer")
-        {
-            $paymentType = $payment_type;
-        }
-        else
-        {
-            $paymentType = "ewallet";
-        }
-           
-        $jscript = '
-        function midtransScript()
-        {
-            $("#paymentContainer").html(\'<div id=\"loader\" class=\"mb-4\"></div><div id=\"text-alert\" class=\"text-center\"></div>\');
-            $("#submitCheckout").slideUp("slow");
-            $("#loader").addClass("loader");
-            $("#text-alert").prepend( "Please wait and do not close the browser or refresh the page" );
-
-            $.ajax({
-                data: {
-                    "sessionId": "'.$sessionId.'",
-                    "paymentType": "'.$paymentType.'",
-                },
-                type: \'POST\',
-                url: \''. url('/api') .'/payment/midtrans\'
-            }).done(function( data ) {
-                if(data.id=="1")
-                {
-                    window.openAppRoute(data.redirect);
-                }
-            });
-
-        } 
-        ';
-
-        return response($jscript)->header('Content-Type', 'application/javascript');
-    }
+    
     
     public function paypal_jscript($sessionId)
     {

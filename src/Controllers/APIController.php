@@ -729,37 +729,44 @@ class APIController extends Controller
         $confirmation_code = $data['order']['invoice_number'];
         $transaction_status = $data['transaction']['status'];
 
-        print_r($data);
-        print_r($confirmation_code);
-        print_r($transaction_status);
-
         $shoppingcart = Shoppingcart::where('confirmation_code',$confirmation_code)->first();
         if($shoppingcart!==null)
         {
             if($transaction_status=="SUCCESS")
             {
+                if($shoppingcart->booking_status!="CONFIRMED")
+                {
                         $shoppingcart->booking_status = 'CONFIRMED';
                         $shoppingcart->save();
                         $shoppingcart->shoppingcart_payment->payment_status = 2;
                         $shoppingcart->shoppingcart_payment->save();
                         BookingHelper::shoppingcart_mail($shoppingcart);
+                }
+                        
             }
             else if ($transaction_status=="PENDING")
             {
+                if($shoppingcart->booking_status!="PENDING")
+                {
                         $shoppingcart->booking_status = 'PENDING';
                         $shoppingcart->save();
                         $shoppingcart->shoppingcart_payment->payment_status = 4;
                         $shoppingcart->shoppingcart_payment->save();
+                }
+                        
             }
             else
             {
+                if($shoppingcart->booking_status!="CANCELED")
+                {
                         $shoppingcart->booking_status = 'CANCELED';
                         $shoppingcart->save();
                         $shoppingcart->shoppingcart_payment->payment_status = 3;
                         $shoppingcart->shoppingcart_payment->save();
+                }
             }
         }
-        return response('Always Success', 200)->header('Content-Type', 'text/plain');
+        return response('', 200)->header('Content-Type', 'text/plain');
     }
 
     public function confirmpaymentmidtrans(Request $request)
@@ -777,32 +784,43 @@ class APIController extends Controller
                 {
                     if($data['transaction_status']=="settlement")
                     {
-                        $shoppingcart->booking_status = 'CONFIRMED';
-                        $shoppingcart->save();
-                        $shoppingcart->shoppingcart_payment->payment_status = 2;
-                        $shoppingcart->shoppingcart_payment->save();
-                        BookingHelper::shoppingcart_mail($shoppingcart);
+                        if($shoppingcart->booking_status!="CONFIRMED")
+                        {
+                            $shoppingcart->booking_status = 'CONFIRMED';
+                            $shoppingcart->save();
+                            $shoppingcart->shoppingcart_payment->payment_status = 2;
+                            $shoppingcart->shoppingcart_payment->save();
+                            BookingHelper::shoppingcart_mail($shoppingcart);
+                        }
+                        
                         
                     }
                     else if($data['transaction_status']=="pending")
                     {
-                        $shoppingcart->booking_status = 'PENDING';
-                        $shoppingcart->save();
-                        $shoppingcart->shoppingcart_payment->payment_status = 4;
-                        $shoppingcart->shoppingcart_payment->save();
+                        if($shoppingcart->booking_status!="PENDING")
+                        {
+                            $shoppingcart->booking_status = 'PENDING';
+                            $shoppingcart->save();
+                            $shoppingcart->shoppingcart_payment->payment_status = 4;
+                            $shoppingcart->shoppingcart_payment->save();
+                        }
                     }
                     else
                     {
-                        $shoppingcart->booking_status = 'CANCELED';
-                        $shoppingcart->save();
-                        $shoppingcart->shoppingcart_payment->payment_status = 3;
-                        $shoppingcart->shoppingcart_payment->save();
+                        if($shoppingcart->booking_status!="CANCELED")
+                        {
+                            $shoppingcart->booking_status = 'CANCELED';
+                            $shoppingcart->save();
+                            $shoppingcart->shoppingcart_payment->payment_status = 3;
+                            $shoppingcart->shoppingcart_payment->save();
+                        }
+                        
                     }
                     
                 }
             }
 
-            return response('Always Success', 200)->header('Content-Type', 'text/plain');
+            return response('', 200)->header('Content-Type', 'text/plain');
             break;
 
         default:

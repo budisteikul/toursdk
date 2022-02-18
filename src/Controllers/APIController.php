@@ -729,7 +729,7 @@ class APIController extends Controller
         $confirmation_code = $data['order']['invoice_number'];
         $transaction_status = $data['transaction']['status'];
         $shoppingcart = Shoppingcart::where('confirmation_code',$confirmation_code)->first();
-        if(@count($shoppingcart))
+        if($shoppingcart!==null)
         {
             if($transaction_status=="SUCCESS")
             {
@@ -766,7 +766,7 @@ class APIController extends Controller
             $data = $request->all();
             
             $shoppingcart = Shoppingcart::where('confirmation_code',$data['order_id'])->first();
-            if(@count($shoppingcart))
+            if($shoppingcart!==null)
             {
                 if(hash('sha512', $data['order_id'].$data['status_code'].$data['gross_amount'].$this->midtransServerKey)==$data['signature_key'])
                 {

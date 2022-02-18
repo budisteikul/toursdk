@@ -2060,7 +2060,7 @@ class BookingHelper {
 								<i class="fas fa-university"></i> WAITING FOR PAYMENT </span><br />
 								Bank Name : <b>'. Str::upper($shoppingcart->shoppingcart_payment->bank_name) .' BANK ('. $shoppingcart->shoppingcart_payment->bank_code .')</b> <br />
 								Account Number : <b>'. GeneralHelper::splitSpace($shoppingcart->shoppingcart_payment->va_number,4) .'</b> <br />
-								Under the Name (of) : <b>'. Str::lower($main_contact->firstName) .' '. Str::lower($main_contact->lastName) .'</b>
+								Under the Name (of) : <b>VT '. Str::lower($main_contact->firstName) .' '. Str::lower($main_contact->lastName) .'</b>
 								</div>
 								</div>
 								';

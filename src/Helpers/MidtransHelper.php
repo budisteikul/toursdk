@@ -152,7 +152,7 @@ class MidtransHelper {
               'phone' => $phone
             ],
             'permata_va' => [
-              'recipient_name' => $first_name .' '. $last_name
+              'recipient_name' => 'VT '. $first_name .' '. $last_name
             ],
             'expiry'=> [
               'start_time' => $date_now,

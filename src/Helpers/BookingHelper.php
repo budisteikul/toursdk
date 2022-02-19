@@ -1297,7 +1297,7 @@ class BookingHelper {
 				//{
 					if($question->question_id=="firstName")
 						{
-							$rules = array('firstName' => 'alpha');
+							$rules = array('firstName' => 'regex:/^[\pL\s]+$/u');
 
 							$inputs = array(
     							'firstName' => $data['questions'][$question->question_id]
@@ -1311,7 +1311,7 @@ class BookingHelper {
 
 					if($question->question_id=="lastName")
 						{
-							$rules = array('lastName' => 'alpha');
+							$rules = array('lastName' => 'regex:/^[\pL\s]+$/u');
 
 							$inputs = array(
     							'lastName' => $data['questions'][$question->question_id]

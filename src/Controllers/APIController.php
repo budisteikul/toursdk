@@ -772,13 +772,13 @@ class APIController extends Controller
     public function confirmpaymentoy(Request $request)
     {
         $data = $request->all();
-        $transaction_status = $data['success'];
+        $transaction_status = $data['settlement_status'];
         $confirmation_code = $data['partner_trx_id'];
 
         $shoppingcart = Shoppingcart::where('confirmation_code',$confirmation_code)->first();
         if($shoppingcart!==null)
         {
-            if($transaction_status)
+            if($transaction_status=="SUCCESS")
             {
                 BookingHelper::confirm_payment($shoppingcart,"CONFIRMED");
             }

@@ -1821,8 +1821,8 @@ class BookingHelper {
 		}
 		else if($payment_type=="midtrans")
 		{
-
-				if($bank=="") $bank = "permata_va";
+				//permata or gopay
+				if($bank=="") $bank = "permata";
 				$response = MidtransHelper::createOrder($shoppingcart,$bank);
 				
 				$payment_type = NULL;
@@ -1966,20 +1966,6 @@ class BookingHelper {
 		$amount = $shoppingcart->shoppingcart_payment->rate;
 		$value = '1 '. $shoppingcart->shoppingcart_payment->rate_to .' = '. $amount .' '. $shoppingcart->shoppingcart_payment->rate_from;
 		return $value;
-	}
-
-	public static function get_bankcode($bank)
-	{
-		$bank = strtolower($bank);
-		switch($bank)
-		{
-			case "permata":
-				$bank_code = "013";
-			break;
-			default:
-				$bank_code = '009';
-		}
-		return $bank_code;
 	}
 
 	public static function convert_currency($amount,$from,$to)

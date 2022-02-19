@@ -37,9 +37,36 @@ class MidtransHelper {
         return $endpoint;
   }
 
-  public static function chargeSnap($token,$shoppingcart,$payment_type="other_va")
+  public static function chargeSnap($token,$shoppingcart,$bank)
   {
-        $email = BookingHelper::get_answer($shoppingcart,'email');
+
+        if($bank=="permata")
+        {
+          $payment_type = "permata_va";
+        }
+        else if($bank=="gopay")
+        {
+          $payment_type = "gopay";
+        }
+        else if($bank=="bni")
+        {
+          $payment_type = "bni_va";
+        }
+        else if($bank=="mandiri")
+        {
+          $payment_type = "echannel";
+        }
+        else
+        {
+          return "";
+        }
+
+        $data = [
+              'customer_details' => [
+                'email' => BookingHelper::get_answer($shoppingcart,'email'),
+               ],
+              'payment_type' => $payment_type
+            ];
       
         $endpoint = self::midtransSnapEndpoint() ."/snap/v2/transactions/". $token ."/charge";
 
@@ -48,13 +75,6 @@ class MidtransHelper {
               'Content-Type' => 'application/json',
               'Authorization' => 'Basic '. base64_encode(self::env_midtransServerKey()),
           ];
-
-        $data = [
-          'customer_details' => [
-            'email' => $email,
-          ],
-          'payment_type' => $payment_type
-        ];
 
         $client = new \GuzzleHttp\Client(['headers' => $headers,'http_errors' => false]);
         $response = $client->request('POST',$endpoint,
@@ -67,24 +87,26 @@ class MidtransHelper {
         return $data;
   }
 
-  public static function createOrder($shoppingcart,$payment_type)
+  public static function createOrder($shoppingcart,$bank)
   {
         //permata = permata_va
         //bni = bni_va
 
         $response = new \stdClass();
 
-        $data = MidtransHelper::createSnap($shoppingcart,$payment_type);
-        $data2 = MidtransHelper::chargeSnap($data->token,$shoppingcart,$payment_type);
+        $data = MidtransHelper::createSnap($shoppingcart,$bank);
+        $data2 = MidtransHelper::chargeSnap($data->token,$shoppingcart,$bank);
 
-        if(isset($data2['permata_va_number']))
+        
+
+        if($bank=="permata")
         {
           $response->payment_type = 'bank_transfer';
           $response->bank_name = 'permata';
-          $response->bank_code = BookingHelper::get_bankcode('permata');
+          $response->bank_code = '013';
           $response->va_number = $data2['permata_va_number'];
         }
-        else if($data2['payment_type']=="gopay")
+        else if($bank=="gopay")
         {
           $qrcode = ImageHelper::uploadQrcodeCloudinary($data2['qr_code_url']);
           $response->payment_type = 'ewallet';
@@ -92,19 +114,30 @@ class MidtransHelper {
           $response->qrcode = $qrcode['secure_url'];
           $response->link = $data2['deeplink_url'];
         }
-        else
+        else if($bank=="mandiri")
+        {
+          $response->payment_type = 'bank_transfer';
+          $response->bank_name = 'mandiri';
+          $response->bank_code = '008';
+          $response->va_number = $data2['biller_code'].$data2['bill_key'];
+        }
+        else if($bank=="bni")
         {
           $response->payment_type = 'bank_transfer';
           $response->bank_name = 'bni';
-          $response->bank_code = BookingHelper::get_bankcode('bni');
+          $response->bank_code = '009';
           $response->va_number = $data2['va_numbers'][0]['va_number'];
+        }
+        else
+        {
+          return "";
         }
 
         $response->snaptoken = $data->token;
         return $response;
   }
 
-	public static function createSnap($shoppingcart,$payment_type)
+	public static function createSnap($shoppingcart,$bank)
     {
         $date_arr = array();
         foreach($shoppingcart->products as $product)
@@ -138,7 +171,7 @@ class MidtransHelper {
 
         $endpoint = self::midtransSnapEndpoint() ."/snap/v1/transactions";
 
-        if($payment_type=="permata_va")
+        if($bank=="permata")
         {
           $data = [
             'transaction_details' => [
@@ -164,7 +197,7 @@ class MidtransHelper {
             ]
           ];
         }
-        else
+        else if($bank=="bni")
         {
           $data = [
             'transaction_details' => [
@@ -186,6 +219,56 @@ class MidtransHelper {
               'finish' => '',
             ]
           ];
+        }
+        else if($bank=="mandiri")
+        {
+          $data = [
+            'transaction_details' => [
+              'order_id' => $order_id,
+              'gross_amount' => $amount
+            ],
+            'customer_details' => [
+              'first_name' => $first_name,
+              'last_name' => $last_name,
+              'email' => $email,
+              'phone' => $phone
+            ],
+            'expiry'=> [
+              'start_time' => $date_now,
+              'unit' => 'minutes',
+              'duration' => $mins
+            ],
+            'callbacks' => [
+              'finish' => '',
+            ]
+          ];
+        }
+        else if($bank=="gopay")
+        {
+          $data = [
+            'transaction_details' => [
+              'order_id' => $order_id,
+              'gross_amount' => $amount
+            ],
+            'customer_details' => [
+              'first_name' => $first_name,
+              'last_name' => $last_name,
+              'email' => $email,
+              'phone' => $phone
+            ],
+            'expiry'=> [
+              'start_time' => $date_now,
+              'unit' => 'minutes',
+              'duration' => $mins
+            ],
+            'callbacks' => [
+              'finish' => '',
+            ]
+          ];
+        }
+        else
+        {
+          return "";
         }
 
         $headers = [

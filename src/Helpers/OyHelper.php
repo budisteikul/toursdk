@@ -44,7 +44,6 @@ class OyHelper {
 
   public static function bankCode($bank_name)
   {
-    if($bank_name=="") $bank_name = "btpn";
     switch($bank_name)
     {
       case "btpn":
@@ -56,11 +55,15 @@ class OyHelper {
       case "cimbniaga":
         $bank_code = "022";
       break;
-       case "mandiri":
+      case "mandiri":
         $bank_code = "008";
       break;
-      default :
-        $bank_code = "213";
+      case "permata":
+        $bank_code = "013";
+      break;
+      case "bni":
+        $bank_code = "009";
+      break;
     }
     return $bank_code;
   }

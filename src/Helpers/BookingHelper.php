@@ -1750,6 +1750,8 @@ class BookingHelper {
 		}
 		else if($payment_type=="oyindonesia")
 		{
+			if($bank=="payment_link")
+			{
 				$response = OyHelper::createPaymentLink($shoppingcart);
 
 				$url = NULL;
@@ -1775,10 +1777,11 @@ class BookingHelper {
 					'rate_to' => NULL,
 					'payment_status' => 4,
 				);
-
-				//$response = OyHelper::createVA($shoppingcart,$bank);
-
-				/*
+			}
+			else
+			{
+				$response = OyHelper::createVA($shoppingcart,$bank);
+				
 				$id = NULL;
 				$payment_type = NULL;
 				$bank_name = NULL;
@@ -1812,11 +1815,12 @@ class BookingHelper {
 					'rate_to' => NULL,
 					'payment_status' => 4,
 				);
-				*/
+				
+			}
 
-				$shoppingcart->payment = $ShoppingcartPayment;
-				Cache::forget('_'. $sessionId);
-				Cache::add('_'. $sessionId, $shoppingcart, 172800);
+			$shoppingcart->payment = $ShoppingcartPayment;
+			Cache::forget('_'. $sessionId);
+			Cache::add('_'. $sessionId, $shoppingcart, 172800);
 
 		}
 		else if($payment_type=="midtrans")

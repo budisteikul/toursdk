@@ -1291,13 +1291,43 @@ class BookingHelper {
 					}
             	}
 
-            	if($status)
-				{
-					if($question->data_format=="EMAIL_ADDRESS")
+            	
+
+            	//if($status)
+				//{
+					if($question->question_id=="firstName")
+						{
+							$rules = array('firstName' => 'alpha');
+
+							$inputs = array(
+    							'firstName' => $data['questions'][$question->question_id]
+							);
+							$validator = Validator::make($inputs, $rules);
+							if($validator->fails()) {
+    							$status = false;
+								$array[$question->question_id] = array('Please use alphabetic characters only');
+							}
+						}
+
+					if($question->question_id=="lastName")
+						{
+							$rules = array('lastName' => 'alpha');
+
+							$inputs = array(
+    							'lastName' => $data['questions'][$question->question_id]
+							);
+							$validator = Validator::make($inputs, $rules);
+							if($validator->fails()) {
+    							$status = false;
+								$array[$question->question_id] = array('Please use alphabetic characters only');
+							}
+						}
+
+					if($question->question_id=="email")
 						{
 							$rules = array('email' => 'email');
 							$inputs = array(
-    						'email' => $data['questions'][$question->question_id]
+    							'email' => $data['questions'][$question->question_id]
 							);
 							$validator = Validator::make($inputs, $rules);
 							if($validator->fails()) {
@@ -1305,7 +1335,8 @@ class BookingHelper {
 								$array[$question->question_id] = array('Email format not valid.');
 							}
 						}
-				}
+
+				//}
 		}
 
 		

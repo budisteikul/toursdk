@@ -36,6 +36,38 @@ class APIController extends Controller
 {
     public function test(Request $request)
     {
+        $data = [
+            'transaction_details' => [
+              'order_id' => '$order_id',
+              'gross_amount' => '$amount'
+            ],
+            'customer_details' => [
+              'first_name' => '$first_name',
+              'last_name' => '$last_name',
+              'email' => '$email',
+              'phone' => '$phone'
+            ],
+            'expiry'=> [
+              'start_time' => '$date_now',
+              'unit' => 'minutes',
+              'duration' => '$mins'
+            ],
+            'callbacks' => [
+              'finish' => '',
+            ]
+          ];
+
+        //$data->permata_va->recipient_name = 'nama';
+        
+        $data2 = [
+            'permata_va' => [
+                'recipient_name' => 'nama'
+            ]
+        ];
+
+        $data = array_merge($data,$data2);
+        print_r($data);
+        /*
         $var1 = "";
         $var2 = "";
         $var3 = "";
@@ -51,6 +83,7 @@ class APIController extends Controller
         print_r($var1);
         print_r($var2);
         print_r($var3);
+        */
     }
     
     public function __construct()

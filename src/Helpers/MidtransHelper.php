@@ -171,104 +171,36 @@ class MidtransHelper {
 
         $endpoint = self::midtransSnapEndpoint() ."/snap/v1/transactions";
 
+        $data = [
+            'transaction_details' => [
+              'order_id' => $order_id,
+              'gross_amount' => $amount
+            ],
+            'customer_details' => [
+              'first_name' => $first_name,
+              'last_name' => $last_name,
+              'email' => $email,
+              'phone' => $phone
+            ],
+            'expiry'=> [
+              'start_time' => $date_now,
+              'unit' => 'minutes',
+              'duration' => $mins
+            ],
+            'callbacks' => [
+              'finish' => '',
+            ]
+          ];
+
         if($bank=="permata")
         {
-          $data = [
-            'transaction_details' => [
-              'order_id' => $order_id,
-              'gross_amount' => $amount
-            ],
-            'customer_details' => [
-              'first_name' => $first_name,
-              'last_name' => $last_name,
-              'email' => $email,
-              'phone' => $phone
-            ],
-            'permata_va' => [
-              'recipient_name' => $first_name .' '. $last_name
-            ],
-            'expiry'=> [
-              'start_time' => $date_now,
-              'unit' => 'minutes',
-              'duration' => $mins
-            ],
-            'callbacks' => [
-              'finish' => '',
-            ]
-          ];
-        }
-        else if($bank=="bni")
-        {
-          $data = [
-            'transaction_details' => [
-              'order_id' => $order_id,
-              'gross_amount' => $amount
-            ],
-            'customer_details' => [
-              'first_name' => $first_name,
-              'last_name' => $last_name,
-              'email' => $email,
-              'phone' => $phone
-            ],
-            'expiry'=> [
-              'start_time' => $date_now,
-              'unit' => 'minutes',
-              'duration' => $mins
-            ],
-            'callbacks' => [
-              'finish' => '',
-            ]
-          ];
-        }
-        else if($bank=="mandiri")
-        {
-          $data = [
-            'transaction_details' => [
-              'order_id' => $order_id,
-              'gross_amount' => $amount
-            ],
-            'customer_details' => [
-              'first_name' => $first_name,
-              'last_name' => $last_name,
-              'email' => $email,
-              'phone' => $phone
-            ],
-            'expiry'=> [
-              'start_time' => $date_now,
-              'unit' => 'minutes',
-              'duration' => $mins
-            ],
-            'callbacks' => [
-              'finish' => '',
-            ]
-          ];
-        }
-        else if($bank=="gopay")
-        {
-          $data = [
-            'transaction_details' => [
-              'order_id' => $order_id,
-              'gross_amount' => $amount
-            ],
-            'customer_details' => [
-              'first_name' => $first_name,
-              'last_name' => $last_name,
-              'email' => $email,
-              'phone' => $phone
-            ],
-            'expiry'=> [
-              'start_time' => $date_now,
-              'unit' => 'minutes',
-              'duration' => $mins
-            ],
-            'callbacks' => [
-              'finish' => '',
-            ]
-          ];
-        }
-        else
-        {
-          return "";
+            $data_permata = [
+              'permata_va' => [
+                'recipient_name' => 'nama'
+              ]
+            ];
+
+            $data = array_merge($data,$data_permata);
         }
 
         $headers = [

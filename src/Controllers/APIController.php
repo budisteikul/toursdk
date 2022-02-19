@@ -36,7 +36,21 @@ class APIController extends Controller
 {
     public function test(Request $request)
     {
-        
+        $var1 = "";
+        $var2 = "";
+        $var3 = "";
+
+
+        $aaa = "bbb";
+        $bbb = explode("-",$aaa);
+
+        if(isset($bbb[0])) $var1 = $bbb[0];
+        if(isset($bbb[1])) $var2 = $bbb[1];
+        if(isset($bbb[2])) $var3 = $bbb[2];
+
+        print_r($var1);
+        print_r($var2);
+        print_r($var3);
     }
     
     public function __construct()

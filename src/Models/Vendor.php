@@ -13,6 +13,9 @@ class Vendor extends Model
 
     public function scopeWhereLike($query, $column, $value)
 	{
+		return $query->whereRaw('LOWER('. $column .') LIKE (?)',['%'.$value.'%']);
+		
+		/*
 		if(env('DB_CONNECTION')=="pgsql")
 		{
 			return $query->where($column, 'ILIKE', '%'.$value.'%');
@@ -21,7 +24,7 @@ class Vendor extends Model
 		{
 			return $query->where($column, 'LIKE', '%'.$value.'%');
 		}
-    	
+    	*/
 	}
 
 }

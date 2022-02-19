@@ -747,36 +747,15 @@ class APIController extends Controller
         {
             if($transaction_status=="SUCCESS")
             {
-                if($shoppingcart->booking_status!="CONFIRMED")
-                {
-                        $shoppingcart->booking_status = 'CONFIRMED';
-                        $shoppingcart->save();
-                        $shoppingcart->shoppingcart_payment->payment_status = 2;
-                        $shoppingcart->shoppingcart_payment->save();
-                        BookingHelper::shoppingcart_mail($shoppingcart);
-                }
-                        
+                BookingHelper::confirm_payment($shoppingcart,"CONFIRMED");
             }
             else if ($transaction_status=="PENDING")
             {
-                if($shoppingcart->booking_status!="PENDING")
-                {
-                        $shoppingcart->booking_status = 'PENDING';
-                        $shoppingcart->save();
-                        $shoppingcart->shoppingcart_payment->payment_status = 4;
-                        $shoppingcart->shoppingcart_payment->save();
-                }
-                        
+                 BookingHelper::confirm_payment($shoppingcart,"PENDING");      
             }
             else
             {
-                if($shoppingcart->booking_status!="CANCELED")
-                {
-                        $shoppingcart->booking_status = 'CANCELED';
-                        $shoppingcart->save();
-                        $shoppingcart->shoppingcart_payment->payment_status = 3;
-                        $shoppingcart->shoppingcart_payment->save();
-                }
+                 BookingHelper::confirm_payment($shoppingcart,"CANCELED");
             }
         }
         return response('OK', 200)->header('Content-Type', 'text/plain');
@@ -797,37 +776,15 @@ class APIController extends Controller
                 {
                     if($data['transaction_status']=="settlement")
                     {
-                        if($shoppingcart->booking_status!="CONFIRMED")
-                        {
-                            $shoppingcart->booking_status = 'CONFIRMED';
-                            $shoppingcart->save();
-                            $shoppingcart->shoppingcart_payment->payment_status = 2;
-                            $shoppingcart->shoppingcart_payment->save();
-                            BookingHelper::shoppingcart_mail($shoppingcart);
-                        }
-                        
-                        
+                         BookingHelper::confirm_payment($shoppingcart,"CONFIRMED");
                     }
                     else if($data['transaction_status']=="pending")
                     {
-                        if($shoppingcart->booking_status!="PENDING")
-                        {
-                            $shoppingcart->booking_status = 'PENDING';
-                            $shoppingcart->save();
-                            $shoppingcart->shoppingcart_payment->payment_status = 4;
-                            $shoppingcart->shoppingcart_payment->save();
-                        }
+                         BookingHelper::confirm_payment($shoppingcart,"PENDING");
                     }
                     else
                     {
-                        if($shoppingcart->booking_status!="CANCELED")
-                        {
-                            $shoppingcart->booking_status = 'CANCELED';
-                            $shoppingcart->save();
-                            $shoppingcart->shoppingcart_payment->payment_status = 3;
-                            $shoppingcart->shoppingcart_payment->save();
-                        }
-                        
+                         BookingHelper::confirm_payment($shoppingcart,"CANCELED");
                     }
                     
                 }
@@ -870,7 +827,7 @@ class APIController extends Controller
         }
         else
         {
-            BookingHelper::create_payment($sessionId,"doku","mandiri");
+            BookingHelper::create_payment($sessionId,"midtrans","permata_va");
         }
         
         $shoppingcart = BookingHelper::confirm_booking($sessionId);

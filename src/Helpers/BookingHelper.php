@@ -1666,6 +1666,46 @@ class BookingHelper {
         return $shoppingcart;
 	}
 
+	public static function confirm_payment($shoppingcart,$status)
+	{
+		if($status=="CONFIRMED")
+		{
+			if($shoppingcart->booking_status!="CONFIRMED")
+			{
+				$shoppingcart->booking_status = 'CONFIRMED';
+				$shoppingcart->save();
+				$shoppingcart->shoppingcart_payment->payment_status = 2;
+				$shoppingcart->shoppingcart_payment->save();
+				self::shoppingcart_mail($shoppingcart);
+			}
+		}
+
+		if($status=="PENDING")
+		{
+			if($shoppingcart->booking_status!="PENDING")
+			{
+				$shoppingcart->booking_status = 'PENDING';
+				$shoppingcart->save();
+				$shoppingcart->shoppingcart_payment->payment_status = 4;
+				$shoppingcart->shoppingcart_payment->save();
+			}
+		}
+
+		if($status=="CANCELED")
+		{
+			if($shoppingcart->booking_status!="CANCELED")
+			{
+				$shoppingcart->booking_status = 'CANCELED';
+				$shoppingcart->save();
+				$shoppingcart->shoppingcart_payment->payment_status = 3;
+				$shoppingcart->shoppingcart_payment->save();
+			}
+		}
+
+		return $shoppingcart;
+		
+	}
+
 	public static function create_payment($sessionId,$payment_type="none",$bank="")
 	{
 		$shoppingcart = Cache::get('_'. $sessionId);

@@ -820,7 +820,7 @@ class APIController extends Controller
                 }
             }
 
-            return response('', 200)->header('Content-Type', 'text/plain');
+            return response('OK', 200)->header('Content-Type', 'text/plain');
             break;
 
         default:

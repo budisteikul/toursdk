@@ -43,6 +43,7 @@
 	Route::post('/api/payment/midtrans/confirm', 'budisteikul\toursdk\Controllers\APIController@confirmpaymentmidtrans');
 	//Route::get('/api/payment/midtrans/{payment_type}/jscript/{sessionId}', 'budisteikul\toursdk\Controllers\APIController@payment_jscript');
 
+
 	Route::get('/api/payment/{payment_type}/jscript/{sessionId}', 'budisteikul\toursdk\Controllers\APIController@payment_jscript');
 	Route::post('/api/payment', 'budisteikul\toursdk\Controllers\APIController@createpayment');
 

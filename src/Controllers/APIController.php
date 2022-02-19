@@ -36,11 +36,7 @@ class APIController extends Controller
 {
     public function test(Request $request)
     {
-        $array = array();
-        $array['aaa'] = array('notif1');
-        $array['bbbb'] = array('notif2');
-        print_r($array);
-            
+        
     }
     
     public function __construct()

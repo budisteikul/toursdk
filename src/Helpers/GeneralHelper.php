@@ -67,8 +67,10 @@ class GeneralHelper {
         
     }
 
-    public static function splitSpace($string,$number)
+    public static function splitSpace($string,$number=4,$first=0)
     {
+        $front = substr($string,0,$first);
+        $string = substr($string,$first);
         $value = "";
         $max_string = strlen($string);
         $mod = $max_string % $number;
@@ -78,7 +80,7 @@ class GeneralHelper {
             $value .= substr($string, $j, $number) .' ';
             $j += $number;
         }
-        return trim($value);
+        return trim($front .' '. $value);
     }
 
     public static function formatRupiah($angka)

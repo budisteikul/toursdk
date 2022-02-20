@@ -52,7 +52,7 @@ class OyHelper {
       case "bri":
         $bank_code = "002";
       break;
-      case "cimbniaga":
+      case "cimb":
         $bank_code = "022";
       break;
       case "mandiri":

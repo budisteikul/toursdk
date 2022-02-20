@@ -61,6 +61,21 @@ class DokuHelper {
             $bank_code = "008";
             $bank_name = "mandiri";
         }
+        else if ($bank=="bri")
+        {
+            $bank_code = "002";
+            $bank_name = "bri";
+        }
+        else if ($bank=="danamon")
+        {
+            $bank_code = "011";
+            $bank_name = "bri";
+        }
+        else if ($bank=="cimb")
+        {
+            $bank_code = "022";
+            $bank_name = "cimb niaga";
+        }
         else
         {
             $bank_code = "899";
@@ -68,7 +83,7 @@ class DokuHelper {
         }
 
         $data1 = self::createSnap($shoppingcart);
-        $data2 = self::createCharge($data1->response->payment->token_id,$bank_name);
+        $data2 = self::createCharge($data1->response->payment->token_id,$bank);
 
         $response = new \stdClass();
         $response->virtual_account_info = new \stdClass();

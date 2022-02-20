@@ -75,8 +75,8 @@ class GeneralHelper {
         $j = 0;
         for($i=0;$i<$max_string;$i++)
         {
-            $value .= substr($string, $j, 4) .' ';
-            $j += 4;
+            $value .= substr($string, $j, $number) .' ';
+            $j += $number;
         }
         return trim($value);
     }

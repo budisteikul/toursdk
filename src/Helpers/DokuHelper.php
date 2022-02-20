@@ -39,6 +39,154 @@ class DokuHelper {
         return $endpoint;
   	}
 
+    public static function createVaViaPaymentLink($shoppingcart,$bank)
+    {
+        if($bank=="doku")
+        {
+            $bank_code = "899";
+            $bank_name = "doku";
+        }
+        else if ($bank=="permata")
+        {
+            $bank_code = "013";
+            $bank_name = "permata";
+        }
+        else if ($bank=="danamon")
+        {
+            $bank_code = "011";
+            $bank_name = "danamon";
+        }
+        else if ($bank=="mandiri")
+        {
+            $bank_code = "008";
+            $bank_name = "mandiri";
+        }
+        else
+        {
+            $bank_code = "899";
+            $bank_name = "doku";
+        }
+
+        $data1 = self::createSnap($shoppingcart);
+        $data2 = self::createCharge($data1->response->payment->token_id,$bank_name);
+
+        $response = new \stdClass();
+        $response->virtual_account_info = new \stdClass();
+        $response->virtual_account_info->virtual_account_number = $data2->payment_code;
+        $response->virtual_account_info->how_to_pay_page = $data2->how_to_pay_url;
+        $response->virtual_account_info->bank_name = $bank_name;
+        $response->virtual_account_info->bank_code = $bank_code;
+
+        return $response;
+    }
+
+    public static function createCharge($token,$bank)
+    {
+        $data = [
+            'token_id' => $token,
+            'lang' => 'en',
+            'bank' => $bank
+        ];
+        $targetPath = '/checkout/v1/payment/'.$token.'/generate-code';
+        $url = self::dokuApiEndpoint();
+        $endpoint = $url . $targetPath;
+
+        $headers = [
+              'Accept' => 'application/jsons',
+              'Content-Type' => 'application/json'
+          ];
+
+        $client = new \GuzzleHttp\Client(['headers' => $headers,'http_errors' => false]);
+        $response = $client->request('POST',$endpoint,
+          ['json' => $data]
+        );
+
+        $data = $response->getBody()->getContents();
+        $data = json_decode($data);
+
+        return $data;
+    }
+
+    public static function createSnap($shoppingcart)
+    {
+        $first_name = BookingHelper::get_answer($shoppingcart,'firstName');
+        $last_name = BookingHelper::get_answer($shoppingcart,'lastName');
+        $email = BookingHelper::get_answer($shoppingcart,'email');
+        $phone = BookingHelper::get_answer($shoppingcart,'phoneNumber');
+
+        $date_arr = array();
+        foreach($shoppingcart->products as $product)
+        {
+            $date_arr[] = $product->date;
+            
+        }
+
+        usort($date_arr, function($a, $b) {
+
+            $dateTimestamp1 = strtotime($a);
+            $dateTimestamp2 = strtotime($b);
+
+            return $dateTimestamp1 < $dateTimestamp2 ? -1: 1;
+        });
+
+        $date1 = Carbon::now();
+        $date2 = Carbon::parse($date_arr[0]);
+        $mins  = $date2->diffInMinutes($date1, true);
+        if($mins<=60) $mins = 60;
+
+        $data = [
+            'order' => [
+                'invoice_number' => $shoppingcart->confirmation_code,
+                'amount' => $shoppingcart->total
+             ],
+             'payment' => [
+                'payment_due_date' => $mins
+             ],
+             'customer' => [
+                'id' => $shoppingcart->confirmation_code,
+                'name' => $first_name .' '. $last_name,
+                'email' => $email,
+                'phone' => $phone
+             ]
+        ];
+
+        $targetPath = '/checkout/v1/payment';
+
+        $url = self::dokuApiEndpoint();
+        $endpoint = $url . $targetPath;
+
+        $requestId = rand(1, 100000);
+
+        $dateTime = gmdate("Y-m-d H:i:s");
+        $dateTime = date(DATE_ISO8601, strtotime($dateTime));
+        $dateTimeFinal = substr($dateTime, 0, 19) . "Z";
+
+        //create signature
+        $header = array();
+        $header['Client-Id'] = self::env_dokuClientId();
+        $header['Request-Id'] = $requestId;
+        $header['Request-Timestamp'] = $dateTimeFinal;
+        $signature = self::generateSignature($header, $targetPath, json_encode($data), self::env_dokuSecretKey());
+
+        $headers = [
+              'Signature' => $signature,
+              'Request-Id' => $requestId,
+              'Client-Id' => self::env_dokuClientId(),
+              'Request-Timestamp' => $dateTimeFinal
+          ];
+
+        $client = new \GuzzleHttp\Client(['headers' => $headers,'http_errors' => false]);
+        $response = $client->request('POST',$endpoint,
+          ['json' => $data]
+        );
+
+        $data = $response->getBody()->getContents();
+        $data = json_decode($data);
+
+        return $data;
+
+    }
+
   	public static function createVA($shoppingcart,$bank="")
   	{
   		$first_name = BookingHelper::get_answer($shoppingcart,'firstName');

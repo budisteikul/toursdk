@@ -36,8 +36,15 @@ class APIController extends Controller
 {
     public function test(Request $request)
     {
-        $value = Cache::get('OY_VER-20220220264');
-        print_r($value);
+        $response = new \stdClass();
+        
+        $response->virtual_account_info = new \stdClass();
+        $response->virtual_account_info->virtual_account_number = 'aaaa';
+        $response->virtual_account_info->how_to_pay_page = 'bbbb';
+        $response->virtual_account_info->bank_name = 'cccc';
+        $response->virtual_account_info->bank_code = 'dddd';
+
+        print_r($response);
     }
     
     public function __construct()

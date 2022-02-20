@@ -1718,7 +1718,8 @@ class BookingHelper {
 				$bank_code = NULL;
 
 
-				$response = DokuHelper::createVA($shoppingcart,$bank);
+				$response = DokuHelper::createVaViaPaymentLink($shoppingcart,$bank);
+
 				if(isset($response->virtual_account_info->virtual_account_number)) $va_number = $response->virtual_account_info->virtual_account_number;
 				if(isset($response->virtual_account_info->how_to_pay_page)) $link = $response->virtual_account_info->how_to_pay_page;
 				if(isset($response->virtual_account_info->bank_name)) $bank_name = $response->virtual_account_info->bank_name;

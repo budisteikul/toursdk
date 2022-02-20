@@ -347,7 +347,12 @@ class ContentHelper {
         $promo_code = $shoppingcart->promo_code;
         if($promo_code=="") $promo_code = null;
         
-
+        $payment_enable = 'bank_transfer,ewallet,paypal';
+        if($shoppingcart->due_now>=2000000)
+        {
+            $payment_enable = 'bank_transfer,paypal';
+        }
+        
 
         $dataShoppingcart[] = array(
                 'id' => $shoppingcart->session_id,
@@ -366,8 +371,7 @@ class ContentHelper {
                 'rate' => BookingHelper::paypal_rate($shoppingcart),
                 'paypal_client_id' => self::env_paypalClientId(),
                 'paypal_currency' => self::env_paypalCurrency(),
-                'midtrans_env' => self::env_midtransEnv(),
-                'midtrans_client_key' => self::env_midtransClientKey(),
+                'payment_enable' => $payment_enable
             );
 
         return $dataShoppingcart;

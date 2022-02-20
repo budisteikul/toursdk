@@ -217,6 +217,8 @@ class OyHelper {
 
         $data = $response->getBody()->getContents();
         $data = json_decode($data);
+
+
         return $data;
 
   }

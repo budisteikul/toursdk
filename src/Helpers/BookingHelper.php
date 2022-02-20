@@ -2108,9 +2108,8 @@ class BookingHelper {
 								<div class="card-body bg-light">
 								<span class="badge badge-warning mb-2 invoice-color-warning" style="font-size:20px;">
 								<i class="fas fa-university"></i> WAITING FOR PAYMENT </span><br />
-								Bank Name : <b>'. Str::upper($shoppingcart->shoppingcart_payment->bank_name) .' BANK ('. $shoppingcart->shoppingcart_payment->bank_code .')</b> <br />
+								Bank Name : <b>'. Str::upper($shoppingcart->shoppingcart_payment->bank_name) .' ('. $shoppingcart->shoppingcart_payment->bank_code .')</b> <br />
 								Account Number : <b>'. GeneralHelper::splitSpace($shoppingcart->shoppingcart_payment->va_number,4) .'</b> <br />
-								Under the Name (of) : <b>'. Str::upper($main_contact->firstName) .' '. Str::upper($main_contact->lastName) .'</b><br />
 								Total Bill : <b>'. GeneralHelper::formatRupiah($shoppingcart->shoppingcart_payment->amount) .'</b><br />
 								</div>
 								</div>

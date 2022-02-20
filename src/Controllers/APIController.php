@@ -835,7 +835,7 @@ class APIController extends Controller
         }
         else
         {
-            BookingHelper::create_payment($sessionId,"doku","mandiri");
+            BookingHelper::create_payment($sessionId,"midtrans","permata");
         }
         
         $shoppingcart = BookingHelper::confirm_booking($sessionId);

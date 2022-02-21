@@ -2001,9 +2001,9 @@ class BookingHelper {
 	}
 	
 	public static function get_ticket(){
-    	$uuid = "VER-". date('Ymd') . rand(100,999);
+    	$uuid = "VER-". date('YmdHi') . rand(10,99);
     	while( Shoppingcart::where('confirmation_code','=',$uuid)->first() ){
-        	$uuid = "VER-". date('Ymd') . rand(100,999);
+        	$uuid = "VER-". date('YmdHi') . rand(10,99);
     	}
     	return $uuid;
 	}

@@ -227,7 +227,7 @@ footer {
 <table border="0" cellspacing="0" cellpadding="0" style="margin-bottom:20px; margin-top:0px;">
        <tbody>
          <tr>
-           <td style="background-color:#FFFFFF; text-align:left; padding-left:0px; padding-top:0px; width:40%">
+           <td style="background-color:#FFFFFF; text-align:left; padding-left:0px; padding-top:0px; ">
            
          <div id="client">
           <div class="to" style="font-size: 14px; color: #0087C3; line-height: 18px; ">INVOICE TO</div>
@@ -240,8 +240,12 @@ footer {
            </td>
            <td style="background-color:#FFFFFF; text-align:right; padding-right:0px; padding-top:0px;">
             <div id="invoice">
-          		<h1>INVOICE {{ $shoppingcart->confirmationCode }}</h1>
-          		<div class="date" style=" line-height: 18px; font-size:14px;">Date of Invoice : {{ Carbon\Carbon::parse($shoppingcart->created_at)->formatLocalized('%d %b %Y') }}</div>
+          		<h1>INVOICE</h1>
+              <div class="date" style=" line-height: 18px; font-size:14px;">
+                No : <b>{{ $shoppingcart->confirmation_code }}</b>
+              </div>
+          		<div class="date" style=" line-height: 18px; font-size:14px;">
+                Date of Invoice : {{ Carbon\Carbon::parse($shoppingcart->created_at)->formatLocalized('%d %b %Y') }}</div>
           		@php
                 	$min_date = $shoppingcart->shoppingcart_products()->orderBy('date','asc')->first()->date;
                 @endphp

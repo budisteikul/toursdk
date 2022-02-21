@@ -97,8 +97,6 @@ class MidtransHelper {
         $data = MidtransHelper::createSnap($shoppingcart,$bank);
         $data2 = MidtransHelper::chargeSnap($data->token,$shoppingcart,$bank);
 
-        
-
         if($bank=="permata")
         {
           $response->payment_type = 'bank_transfer';

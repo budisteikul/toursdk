@@ -22,7 +22,6 @@ use budisteikul\toursdk\Models\ShoppingcartQuestionOption;
 use budisteikul\toursdk\Models\ShoppingcartPayment;
 use budisteikul\toursdk\Mail\BookingConfirmedMail;
 
-
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Validator;

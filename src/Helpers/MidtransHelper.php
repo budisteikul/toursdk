@@ -194,7 +194,7 @@ class MidtransHelper {
         {
             $data_permata = [
               'permata_va' => [
-                'recipient_name' => 'nama'
+                'recipient_name' => $first_nama .' '. $last_name
               ]
             ];
 

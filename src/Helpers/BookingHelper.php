@@ -1750,24 +1750,31 @@ class BookingHelper {
 		}
 		else if($payment_type=="oyindonesia")
 		{
-				$response = OyHelper::createSnap($shoppingcart);
-				/*
-				$response = OyHelper::createPaymentLink($shoppingcart);
+				$va_number = NULL;
+				$bank_name = NULL;
+				$bank_code = NULL;
+				$qrcode = NULL;
+				$payment_type = NULL;
+				$link = NULL;
 
-				$url = NULL;
-				$payment_link_id = NULL;
-				if(isset($response->url)) $url = $response->url;
-				if(isset($response->payment_link_id)) $payment_link_id = $response->payment_link_id;
+				$response = OyHelper::createPayment($shoppingcart,$bank);
+
+				if(isset($response->va_number)) $va_number = $response->va_number;
+				if(isset($response->link)) $link = $response->link;
+				if(isset($response->bank_code)) $bank_code = $response->bank_code;
+				if(isset($response->bank_name)) $bank_name = $response->bank_name;
+				if(isset($response->qrcode)) $qrcode = $response->qrcode;
+				if(isset($response->payment_type)) $payment_type = $response->payment_type;
 
 				$ShoppingcartPayment = (object) array(
 					'payment_provider' => 'oyindonesia',
-					'payment_type' => "payment_link",
-					'bank_name' => "OY Indonesia",
-					'bank_code' => NULL,
-					'va_number' => NULL,
-					'snaptoken' => $payment_link_id,
-					'qrcode' => NULL,
-					'link' => $url,
+					'payment_type' => $payment_type,
+					'bank_name' => $bank_name,
+					'bank_code' => $bank_code,
+					'va_number' => $va_number,
+					'snaptoken' => NULL,
+					'qrcode' => $qrcode,
+					'link' => $link,
 					'order_id' => NULL,
 					'authorization_id' => NULL,
 					'amount' => self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,"IDR"),
@@ -1777,49 +1784,10 @@ class BookingHelper {
 					'rate_to' => NULL,
 					'payment_status' => 4,
 				);
-				
-				
-				$response = OyHelper::createVA($shoppingcart,$bank);
-				
-				$id = NULL;
-				$payment_type = NULL;
-				$bank_name = NULL;
-				$bank_code = NULL;
-				$va_number = NULL;
-				$snaptoken = NULL;
-				$qrcode = NULL;
-				$link = NULL;
 
-				if(isset($response->id)) $id = $response->id;
-				if(isset($response->payment_type)) $payment_type = $response->payment_type;
-				if(isset($response->bank_name)) $bank_name = $bank;
-				if(isset($response->bank_code)) $bank_code = $response->bank_code;
-				if(isset($response->va_number)) $va_number = $response->va_number;
-
-				$ShoppingcartPayment = (object) array(
-					'payment_provider' => 'oyindonesia',
-					'payment_type' => "bank_transfer",
-					'bank_name' => $bank,
-					'bank_code' => $bank_code,
-					'va_number' => $va_number,
-					'snaptoken' => $snaptoken,
-					'qrcode' => $qrcode,
-					'link' => $link,
-					'order_id' => $id,
-					'authorization_id' => NULL,
-					'amount' => self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,"IDR"),
-					'currency' => 'IDR',
-					'rate' => 1,
-					'rate_from' => NULL,
-					'rate_to' => NULL,
-					'payment_status' => 4,
-				);
-				*/
-			
-
-			$shoppingcart->payment = $ShoppingcartPayment;
-			Cache::forget('_'. $sessionId);
-			Cache::add('_'. $sessionId, $shoppingcart, 172800);
+				$shoppingcart->payment = $ShoppingcartPayment;
+				Cache::forget('_'. $sessionId);
+				Cache::add('_'. $sessionId, $shoppingcart, 172800);
 
 		}
 		else if($payment_type=="midtrans")

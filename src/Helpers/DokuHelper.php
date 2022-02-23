@@ -152,7 +152,7 @@ class DokuHelper {
         $data = [
             'order' => [
                 'invoice_number' => $shoppingcart->confirmation_code,
-                'amount' => $shoppingcart->total
+                'amount' => $shoppingcart->due_now
              ],
              'payment' => [
                 'payment_due_date' => $mins
@@ -234,7 +234,7 @@ class DokuHelper {
   			$data = [
           		'order' => [
           			'invoice_number' => $shoppingcart->confirmation_code,
-          			'amount' => $shoppingcart->total
+          			'amount' => $shoppingcart->due_now
           			],
           		'virtual_account_info' => [
           			'billing_type' => 'FIX_BILL',
@@ -257,7 +257,7 @@ class DokuHelper {
   			$data = [
           		'order' => [
           			'invoice_number' => $shoppingcart->confirmation_code,
-          			'amount' => $shoppingcart->total
+          			'amount' => $shoppingcart->due_now
           			],
           		'virtual_account_info' => [
           			'billing_type' => 'FIX_BILL',
@@ -279,7 +279,7 @@ class DokuHelper {
             $data = [
                 'order' => [
                     'invoice_number' => $shoppingcart->confirmation_code,
-                    'amount' => $shoppingcart->total
+                    'amount' => $shoppingcart->due_now
                     ],
                 'virtual_account_info' => [
                     'billing_type' => 'FULL_PAYMENT',
@@ -301,7 +301,7 @@ class DokuHelper {
             $data = [
                 'order' => [
                     'invoice_number' => $shoppingcart->confirmation_code,
-                    'amount' => $shoppingcart->total
+                    'amount' => $shoppingcart->due_now
                     ],
                 'virtual_account_info' => [
                     'billing_type' => 'FIX_BILL',

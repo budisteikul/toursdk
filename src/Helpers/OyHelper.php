@@ -98,6 +98,123 @@ class OyHelper {
        
   }
 
+  public static function createCharge($shoppingcart,$token,$bank)
+  {
+        $first_name = BookingHelper::get_answer($shoppingcart,'firstName');
+        $last_name = BookingHelper::get_answer($shoppingcart,'lastName');
+        $email = BookingHelper::get_answer($shoppingcart,'email');
+        $phone = BookingHelper::get_answer($shoppingcart,'phoneNumber');
+
+        switch($bank)
+        {
+          case "permata":
+            $device_id = 'f825fcf1-2b97-400e-87c2-f8d945949d0c';
+            $card_sender = '013';
+          break;
+          case "mandiri":
+            $device_id = 'e93daa2d-1ad3-48a6-b054-54440222ed8c';
+            $card_sender = '008';
+          break;
+          default:
+            $device_id = NULL;
+            $card_sender = NULL;
+        }
+
+        if($bank=="qris")
+        {
+            $data = [
+                'tx_id' => $token,
+                'amount' => $shoppingcart->due_now,
+                'sender_name' => $first_name .' '. $last_name,
+                'sender_phone' => $phone,
+                'sender_notes' => null,
+                'sender_email' => null,
+                'email_active' => false,
+                'card_sender' => 'qris_shopee'
+            ];
+
+            $endpoint = 'https://checkout-stg.oyindonesia.com/b2x/v2/pay/qris/create';
+        }
+        else
+        {
+            $data = [
+                'amount' => $shoppingcart->due_now,
+                'admin_fee' => 0,
+                'sender_phone' => $phone,
+                'sender_notes' => null,
+                'sender_email' => null,
+                'sender_name' => $first_name .' '. $last_name,
+                'card_sender' => $card_sender,
+                'device_id' => $device_id,
+                'payment_method' => 'VA',
+                'email_active' => false
+            ];
+
+            $endpoint = 'https://checkout-stg.oyindonesia.com/b2x/v2/pay/enc/'. $token;
+        }
+        
+  }
+
+  public static function createSnap($shoppingcart)
+  {
+        $first_name = BookingHelper::get_answer($shoppingcart,'firstName');
+        $last_name = BookingHelper::get_answer($shoppingcart,'lastName');
+        $email = BookingHelper::get_answer($shoppingcart,'email');
+        $phone = BookingHelper::get_answer($shoppingcart,'phoneNumber');
+
+        $date_arr = array();
+        foreach($shoppingcart->products as $product)
+        {
+            $date_arr[] = $product->date;
+            
+        }
+
+        usort($date_arr, function($a, $b) {
+
+            $dateTimestamp1 = strtotime($a);
+            $dateTimestamp2 = strtotime($b);
+
+            return $dateTimestamp1 < $dateTimestamp2 ? -1: 1;
+        });
+
+        $date = Carbon::parse($date_arr[0])->formatLocalized('%Y-%m-%d %H:%M:%S');
+
+        $endpoint = self::oyApiEndpoint() ."/api/payment-checkout/create-v2";
+        $headers = [
+              'Cache-Control' => 'no-cache',
+              'Content-Type' => 'application/json',
+              'x-oy-username' => self::env_oyUsername(),
+              'x-api-key' => self::env_oyApiKey(),
+          ];
+
+        $data = [
+          'partner_tx_id' => $shoppingcart->confirmation_code,
+          'sender_name' => $first_name .' '. $last_name,
+          'amount' => $shoppingcart->due_now,
+          'email' => null,
+          'phone_number' => $phone,
+          'username_display' => "VERTIKAL TRIP",
+          'is_open' => false,
+          'list_disabled_payment_methods' => "EWALLET,CREDIT_CARD",
+          'expiration' => $date,
+          'due_date' => $date,
+        ];
+
+        $client = new \GuzzleHttp\Client(['headers' => $headers,'http_errors' => false]);
+        $response = $client->request('POST',$endpoint,
+          ['json' => $data]
+        );
+
+        $data = $response->getBody()->getContents();
+        $data = json_decode($data);
+        
+        $response = new \stdClass();
+        $response->snaptoken = $data->url;
+        $response->link = $data->payment_link_id;
+
+        return $response;
+  }
+
   public static function createPaymentLink($shoppingcart)
   {
 

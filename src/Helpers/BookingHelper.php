@@ -1750,6 +1750,7 @@ class BookingHelper {
 		}
 		else if($payment_type=="oyindonesia")
 		{
+				$response = OyHelper::createSnap($shoppingcart);
 				/*
 				$response = OyHelper::createPaymentLink($shoppingcart);
 
@@ -1776,7 +1777,7 @@ class BookingHelper {
 					'rate_to' => NULL,
 					'payment_status' => 4,
 				);
-				*/
+				
 				
 				$response = OyHelper::createVA($shoppingcart,$bank);
 				
@@ -1813,7 +1814,7 @@ class BookingHelper {
 					'rate_to' => NULL,
 					'payment_status' => 4,
 				);
-				
+				*/
 			
 
 			$shoppingcart->payment = $ShoppingcartPayment;

@@ -37,14 +37,18 @@ class APIController extends Controller
     public function test(Request $request)
     {
         $response = new \stdClass();
-        
-        $response->virtual_account_info = new \stdClass();
-        $response->virtual_account_info->virtual_account_number = 'aaaa';
-        $response->virtual_account_info->how_to_pay_page = 'bbbb';
-        $response->virtual_account_info->bank_name = 'cccc';
-        $response->virtual_account_info->bank_code = 'dddd';
+        $response->a = 'aaa';
+        $response->b = 'bbb';
 
-        print_r($response);
+        $response2 = new \stdClass();
+        $response2->a = 'aaa2';
+        $response2->b = 'bbb2';
+
+        $response3 = new \stdClass();
+        $response3->aaa = $response;
+        $response3->bbb = $response2;
+
+        print_r($response3->aaa->b);
     }
     
     public function __construct()

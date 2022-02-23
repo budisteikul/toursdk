@@ -14,11 +14,40 @@ class PaypalHelper {
         return new PayPalHttpClient(self::environment());
     }
 	
+	public static function paypalApiEndpoint()
+  	{
+        if(self::env_paypalEnv()=="production")
+        {
+            $endpoint = "https://api.paypal.com";
+        }
+        else
+        {
+            $endpoint = "https://api.sandbox.paypal.com";
+        }
+        return $endpoint;
+  	}
+
+  	public static function env_paypalEnv()
+  {
+        return env("PAYPAL_ENV");
+  }
+
+  	public static function env_paypalClientId()
+  	{
+  		return env("PAYPAL_CLIENT_ID");
+  	}
+
+  	public static function env_paypalClientSecret()
+  	{
+  		return env("PAYPAL_CLIENT_SECRET");
+  	}
+
 	public static function environment()
     {
-        $clientId = env("PAYPAL_CLIENT_ID");
-        $clientSecret = env("PAYPAL_CLIENT_SECRET");
-		if(env("PAYPAL_ENV")=="production")
+        $clientId = self::env_paypalClientId();
+        $clientSecret = self::env_paypalClientSecret();
+
+		if(self::env_paypalEnv()=="production")
 			{
         		return new ProductionEnvironment($clientId, $clientSecret);
 			}
@@ -32,37 +61,23 @@ class PaypalHelper {
     {
 		  $client = self::client();
 		  $response = $client->execute(new OrdersGetRequest($id));
-		  /*
-		  print "Status Code: {$response->statusCode}\n";
-    	print "Status: {$response->result->status}\n";
-    	print "Order ID: {$response->result->id}\n";
-    	print "Intent: {$response->result->intent}\n";
-    	print "Links:\n";
-    	foreach($response->result->links as $link)
-    	{
-      		print "\t{$link->rel}: {$link->href}\tCall Type: {$link->method}\n";
-    	}
-    	print "Gross Amount: {$response->result->purchase_units[0]->amount->currency_code} {$response->result->purchase_units[0]->amount->value}\n";
-		  */
 		  return $response->result->purchase_units[0]->amount->value;
 	}
 	
-	public static function createOrder($shoppingcart)
-  	{
-
-      $value = number_format((float)$shoppingcart->payment->amount, 2, '.', '');
-      $name = $shoppingcart->confirmation_code;
-      $currency = $shoppingcart->payment->currency;
+	public static function createPayment($data)
+	{
+		$value = number_format((float)$data->transaction->amount, 2, '.', '');
+      	$name = $data->transaction->id;
+      	$currency = $data->transaction->currency;
     	
-      $request = new OrdersCreateRequest();
+      	$request = new OrdersCreateRequest();
     	$request->prefer('return=representation');
     	$request->body = self::buildRequestBodyCreateOrder($value,$name,$currency);
     	$client = self::client();
     	$response = $client->execute($request);
     	return $response;
-  	}
-	
-	
+	}
+
 	public static function buildRequestBodyCreateOrder($value,$name,$currency)
     {
         return array(
@@ -92,23 +107,7 @@ class PaypalHelper {
     	$request->body = self::buildRequestBodyCapture();
     	$client = self::client();
     	$response = $client->execute($request);
-    	/*
-		if ($debug)
-    	{
-      		print "Status Code: {$response->statusCode}\n";
-      		print "Status: {$response->result->status}\n";
-      		print "Capture ID: {$response->result->id}\n";
-      		print "Links:\n";
-      		foreach($response->result->links as $link)
-      		{
-        		print "\t{$link->rel}: {$link->href}\tCall Type: {$link->method}\n";
-      		}
-      		// To toggle printing the whole response body comment/uncomment
-      		// the follwowing line
-      		echo json_encode($response->result, JSON_PRETTY_PRINT), "\n";
-    	}
-   	  */
-	  return $response->result->status;
+	  	return $response->result->status;
 	}
 	
 	public static function buildRequestBodyCapture()
@@ -118,31 +117,30 @@ class PaypalHelper {
 	
 	public static function voidPaypal($id)
   	{
-			$PAYPAL_CLIENT = env("PAYPAL_CLIENT_ID");
-			$PAYPAL_SECRET = env("PAYPAL_CLIENT_SECRET");
+			$PAYPAL_CLIENT = self::env_paypalClientId();
+			$PAYPAL_SECRET = self::env_paypalClientSecret();
 
-			// 1b. Point your server to the PayPal API
-			if(env("PAYPAL_ENV")=="production")
+			if(self::env_paypalEnv()=="production")
 			{
-				$PAYPAL_OAUTH_API         = 'https://api.paypal.com/v1/oauth2/token/';
-				$PAYPAL_AUTHORIZATION_API = 'https://api.paypal.com/v2/payments/authorizations/';
+				$PAYPAL_OAUTH_API         = self::paypalApiEndpoint() .'/v1/oauth2/token/';
+				$PAYPAL_AUTHORIZATION_API = self::paypalApiEndpoint() .'/v2/payments/authorizations/';
 			}
 			else
 			{
-				$PAYPAL_OAUTH_API         = 'https://api.sandbox.paypal.com/v1/oauth2/token/';
-				$PAYPAL_AUTHORIZATION_API = 'https://api.sandbox.paypal.com/v2/payments/authorizations/';
+				$PAYPAL_OAUTH_API         = self::paypalApiEndpoint() .'/v1/oauth2/token/';
+				$PAYPAL_AUTHORIZATION_API = self::paypalApiEndpoint() .'/v2/payments/authorizations/';
 			}
 			
 			$basicAuth = base64_encode($PAYPAL_CLIENT.':'.$PAYPAL_SECRET);
-    	$headers = [
+    		$headers = [
           		'Accept' => 'application/json',
           		'Authorization' => 'Basic '.$basicAuth,
-        		];
+			];
 			$client = new \GuzzleHttp\Client(['headers' => $headers]);
-    	$response = $client->request('POST', $PAYPAL_OAUTH_API,[
-			'form_params' => [
-        		'grant_type' => 'client_credentials',
-    		]
+    		$response = $client->request('POST', $PAYPAL_OAUTH_API,[
+				'form_params' => [
+        			'grant_type' => 'client_credentials',
+    			]
 			]);
 			
 			$data = json_decode($response->getBody(), true);
@@ -153,7 +151,7 @@ class PaypalHelper {
           		'Authorization' => 'Bearer '.$access_token,
         		];
 			$client = new \GuzzleHttp\Client(['headers' => $headers]);
-    	$response = $client->request('POST', $PAYPAL_AUTHORIZATION_API . $id.'/void');
+    		$response = $client->request('POST', $PAYPAL_AUTHORIZATION_API . $id.'/void');
 			
   	}
 }

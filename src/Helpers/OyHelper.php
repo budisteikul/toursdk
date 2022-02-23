@@ -22,6 +22,11 @@ class OyHelper {
         return env("OY_ENV");
   }
 
+  public static function env_appName()
+  {
+        return env("APP_NAME");
+  }
+
   public static function oyApiEndpoint()
   {
         if(self::env_oyEnv()=="production")
@@ -35,7 +40,6 @@ class OyHelper {
         return $endpoint;
   }
 
-  //https://pay-stg.oyindonesia.com/909feb39-7d71-4a84-af7b-3f30da24b93c
   public static function oyLink($token)
   {
         if(self::env_oyEnv()=="production")
@@ -71,30 +75,37 @@ class OyHelper {
       return $uuid;
   }
 
-  public static function bankCode($bank_name)
+  public static function bankCode($bank)
   {
-    switch($bank_name)
+    $data = new \stdClass();
+    switch($bank)
     {
       case "btpn":
-        $bank_code = "213";
+        $data->bank_name = "Jenius (BTPN)";
+        $data->bank_code = "213";
       break;
       case "bri":
-        $bank_code = "002";
+        $data->bank_name = "bri";
+        $data->bank_code = "002";
       break;
       case "cimb":
-        $bank_code = "022";
+        $data->bank_name = "cimb niaga";
+        $data->bank_code = "022";
       break;
       case "mandiri":
-        $bank_code = "008";
+        $data->bank_name = "mandiri";
+        $data->bank_code = "008";
       break;
       case "permata":
-        $bank_code = "013";
+        $data->bank_name = "permata";
+        $data->bank_code = "013";
       break;
       case "bni":
-        $bank_code = "009";
+        $data->bank_name = "bni";
+        $data->bank_code = "009";
       break;
     }
-    return $bank_code;
+    return $data;
   }
 
   public static function createDisbursement($disbursement)
@@ -127,14 +138,14 @@ class OyHelper {
        
   }
 
-  public static function createPayment($shoppingcart,$bank)
+  public static function createPayment($data,$bank)
   {
         $response = new \stdClass();
 
         if($bank=="qris")
         {
-          $data1 = self::createSnap($shoppingcart);
-          $data2 = self::createCharge($shoppingcart,$data1->snaptoken,$bank);
+          $data1 = self::createSnap($data);
+          $data2 = self::createCharge($data,$data1->snaptoken,$bank);
           $qrcode = ImageHelper::uploadQrcodeCloudinary($data2->data->qris_url);
           $response->payment_type = 'ewallet';
           $response->bank_name = 'shopeepay';
@@ -143,11 +154,11 @@ class OyHelper {
         }
         else
         {
-          $data1 = self::createSnap($shoppingcart);
-          $data2 = self::createCharge($shoppingcart,$data1->snaptoken,$bank);
+          $data1 = self::createSnap($data);
+          $data2 = self::createCharge($data,$data1->snaptoken,$bank);
           $data3 = self::status($data1->snaptoken);
           $response->payment_type = 'bank_transfer';
-          $response->bank_name = $bank;
+          $response->bank_name = self::bankCode($bank)->bank_name;
           $response->bank_code = $data3->data->sender_bank;
           $response->va_number = $data3->data->va_number;
           $response->link = self::oyLink($data1->snaptoken);
@@ -175,24 +186,17 @@ class OyHelper {
         return $data;
   }
 
-  public static function createCharge($shoppingcart,$token,$bank)
+  public static function createCharge($data,$token,$bank)
   {
-        $first_name = BookingHelper::get_answer($shoppingcart,'firstName');
-        $last_name = BookingHelper::get_answer($shoppingcart,'lastName');
-        $email = BookingHelper::get_answer($shoppingcart,'email');
-        $phone = BookingHelper::get_answer($shoppingcart,'phoneNumber');
-
-        
-
         if($bank=="qris")
         {
             $data = [
                 'tx_id' => $token,
-                'amount' => $shoppingcart->due_now,
-                'sender_name' => $first_name .' '. $last_name,
-                'sender_phone' => $phone,
-                'sender_notes' => null,
-                'sender_email' => null,
+                'amount' => $data->transaction->amount,
+                'sender_name' => $data->contact->name,
+                'sender_phone' => NULL,
+                'sender_notes' => NULL,
+                'sender_email' => NULL,
                 'email_active' => false,
                 'card_sender' => 'qris_shopee'
             ];
@@ -216,13 +220,13 @@ class OyHelper {
         else
         {
             $data = [
-                'amount' => $shoppingcart->due_now,
+                'amount' => $data->transaction->amount,
                 'admin_fee' => 0,
-                'sender_phone' => $phone,
-                'sender_notes' => null,
-                'sender_email' => null,
-                'sender_name' => $first_name .' '. $last_name,
-                'card_sender' => self::bankCode($bank),
+                'sender_phone' => NULL,
+                'sender_notes' => NULL,
+                'sender_email' => NULL,
+                'sender_name' => $data->contact->name,
+                'card_sender' => self::bankCode($bank)->bank_code,
                 'device_id' => NULL,
                 'payment_method' => 'VA',
                 'email_active' => false
@@ -248,30 +252,8 @@ class OyHelper {
         return $data;
   }
 
-  public static function createSnap($shoppingcart)
+  public static function createSnap($data)
   {
-        $first_name = BookingHelper::get_answer($shoppingcart,'firstName');
-        $last_name = BookingHelper::get_answer($shoppingcart,'lastName');
-        $email = BookingHelper::get_answer($shoppingcart,'email');
-        $phone = BookingHelper::get_answer($shoppingcart,'phoneNumber');
-
-        $date_arr = array();
-        foreach($shoppingcart->products as $product)
-        {
-            $date_arr[] = $product->date;
-            
-        }
-
-        usort($date_arr, function($a, $b) {
-
-            $dateTimestamp1 = strtotime($a);
-            $dateTimestamp2 = strtotime($b);
-
-            return $dateTimestamp1 < $dateTimestamp2 ? -1: 1;
-        });
-
-        $date = Carbon::parse($date_arr[0])->formatLocalized('%Y-%m-%d %H:%M:%S');
-
         $endpoint = self::oyApiEndpoint() ."/api/payment-checkout/create-v2";
         $headers = [
               'Cache-Control' => 'no-cache',
@@ -281,16 +263,16 @@ class OyHelper {
           ];
 
         $data = [
-          'partner_tx_id' => $shoppingcart->confirmation_code,
-          'sender_name' => $first_name .' '. $last_name,
-          'amount' => $shoppingcart->due_now,
+          'partner_tx_id' => $data->transaction->id,
+          'sender_name' => $data->contact->name,
+          'amount' => $data->transaction->amount,
           'email' => null,
-          'phone_number' => $phone,
-          'username_display' => "VERTIKAL TRIP",
+          'phone_number' => null,
+          'username_display' => self::env_appName(),
           'is_open' => false,
           'list_disabled_payment_methods' => "EWALLET,CREDIT_CARD",
-          'expiration' => $date,
-          'due_date' => $date,
+          'expiration' => $data->transaction->date_expired,
+          'due_date' => $data->transaction->date_expired,
         ];
 
         $client = new \GuzzleHttp\Client(['headers' => $headers,'http_errors' => false]);

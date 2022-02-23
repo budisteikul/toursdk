@@ -37,35 +37,43 @@ class MidtransHelper {
         return $endpoint;
   }
 
-  public static function chargeSnap($token,$shoppingcart,$bank)
+  public static function bankCode($bank)
+    {
+        $data = new \stdClass();
+        switch($bank)
+        {
+            case "mandiri":
+                $data->bank_name = "mandiri bill";
+                $data->bank_code = "";
+                $data->bank_payment_type = "echannel";
+            break;
+            case "permata":
+                $data->bank_name = "permata";
+                $data->bank_code = "013";
+                $data->bank_payment_type = "permata_va";
+            break;
+            case "bni":
+                $data->bank_name = "bni";
+                $data->bank_code = "009";
+                $data->bank_payment_type = "bni_va";
+            break;
+            case "gopay":
+                $data->bank_name = "qris (gopay)";
+                $data->bank_code = "";
+                $data->bank_payment_type = "gopay";
+            break;
+        }
+
+        return $data;
+    }
+
+  public static function chargeSnap($token,$data,$bank)
   {
-
-        if($bank=="permata")
-        {
-          $payment_type = "permata_va";
-        }
-        else if($bank=="gopay")
-        {
-          $payment_type = "gopay";
-        }
-        else if($bank=="bni")
-        {
-          $payment_type = "bni_va";
-        }
-        else if($bank=="mandiri")
-        {
-          $payment_type = "echannel";
-        }
-        else
-        {
-          return "";
-        }
-
         $data = [
               'customer_details' => [
-                'email' => BookingHelper::get_answer($shoppingcart,'email'),
+                'email' => $data->contact->email,
                ],
-              'payment_type' => $payment_type
+              'payment_type' => self::bankCode($bank)->bank_payment_type
             ];
       
         $endpoint = self::midtransSnapEndpoint() ."/snap/v2/transactions/". $token ."/charge";
@@ -87,37 +95,34 @@ class MidtransHelper {
         return $data;
   }
 
-  public static function createOrder($shoppingcart,$bank)
+  public static function createPayment($data,$bank)
   {
-        //permata = permata_va
-        //bni = bni_va
+        $data1 = MidtransHelper::createSnap($data,$bank);
+        
+        $data2 = MidtransHelper::chargeSnap($data1->token,$data,$bank);
 
         $response = new \stdClass();
-
-        $data = MidtransHelper::createSnap($shoppingcart,$bank);
-        $data2 = MidtransHelper::chargeSnap($data->token,$shoppingcart,$bank);
-
         if($bank=="permata")
         {
           $response->payment_type = 'bank_transfer';
-          $response->bank_name = 'permata';
-          $response->bank_code = '013';
+          $response->bank_name = self::bankCode($bank)->bank_name;
+          $response->bank_code = self::bankCode($bank)->bank_code;
           $response->va_number = $data2['permata_va_number'];
         }
         else if($bank=="gopay")
         {
           $qrcode = ImageHelper::uploadQrcodeCloudinary($data2['qr_code_url']);
           $response->payment_type = 'ewallet';
-          $response->bank_name = 'gopay';
+          $response->bank_name = self::bankCode($bank)->bank_name;
           $response->qrcode = $qrcode['secure_url'];
           $response->link = $data2['deeplink_url'];
         }
         else if($bank=="mandiri")
         {
           $response->payment_type = 'bank_transfer';
-          $response->bank_name = 'mandiri';
-          $response->bank_code = '008';
-          $response->va_number = $data2['biller_code'].$data2['bill_key'];
+          $response->bank_name = self::bankCode($bank)->bank_name;
+          $response->bank_code = $data2['biller_code'];
+          $response->va_number = $data2['bill_key'];
         }
         else if($bank=="bni")
         {
@@ -131,59 +136,30 @@ class MidtransHelper {
           return "";
         }
 
-        $response->snaptoken = $data->token;
+        $response->snaptoken = $data1->token;
         return $response;
   }
 
-	public static function createSnap($shoppingcart,$bank)
+	public static function createSnap($data,$bank)
     {
-        $date_arr = array();
-        foreach($shoppingcart->products as $product)
-        {
-            $date_arr[] = $product->date;
-            
-        }
-
-        usort($date_arr, function($a, $b) {
-
-            $dateTimestamp1 = strtotime($a);
-            $dateTimestamp2 = strtotime($b);
-
-            return $dateTimestamp1 < $dateTimestamp2 ? -1: 1;
-        });
-
-        $date1 = Carbon::now();
-        $date2 = Carbon::parse($date_arr[0]);
-        $mins  = $date2->diffInMinutes($date1, true);
-        if($mins<=15) $mins = 15;
-
-        $date_now = Carbon::parse($date1)->formatLocalized('%Y-%m-%d %H:%M:%S +0700');
-
-        $first_name = BookingHelper::get_answer($shoppingcart,'firstName');
-        $last_name = BookingHelper::get_answer($shoppingcart,'lastName');
-        $email = BookingHelper::get_answer($shoppingcart,'email');
-        $phone = BookingHelper::get_answer($shoppingcart,'phoneNumber');
-
-        $amount = $shoppingcart->due_now;
-        $order_id = $shoppingcart->confirmation_code;
-
+        
         $endpoint = self::midtransSnapEndpoint() ."/snap/v1/transactions";
 
-        $data = [
+        $data_post = [
             'transaction_details' => [
-              'order_id' => $order_id,
-              'gross_amount' => $amount
+              'order_id' => $data->transaction->id,
+              'gross_amount' => $data->transaction->amount
             ],
             'customer_details' => [
-              'first_name' => $first_name,
-              'last_name' => $last_name,
-              'email' => $email,
-              'phone' => $phone
+              'first_name' => $data->contact->first_name,
+              'last_name' => $data->contact->last_name,
+              'email' => $data->contact->email,
+              'phone' => $data->contact->phone
             ],
             'expiry'=> [
-              'start_time' => $date_now,
+              'start_time' => $data->transaction->date_now,
               'unit' => 'minutes',
-              'duration' => $mins
+              'duration' => $data->transaction->mins_expired
             ],
             'callbacks' => [
               'finish' => '',
@@ -194,11 +170,11 @@ class MidtransHelper {
         {
             $data_permata = [
               'permata_va' => [
-                'recipient_name' => $first_nama .' '. $last_name
+                'recipient_name' => $data->contact->name
               ]
             ];
 
-            $data = array_merge($data,$data_permata);
+            $data_post = array_merge($data_post,$data_permata);
         }
 
         $headers = [
@@ -209,7 +185,7 @@ class MidtransHelper {
         
         $client = new \GuzzleHttp\Client(['headers' => $headers,'http_errors' => false]);
         $response = $client->request('POST',$endpoint,
-          ['json' => $data]
+          ['json' => $data_post]
         );
 
         $data = $response->getBody()->getContents();

@@ -1705,194 +1705,154 @@ class BookingHelper {
 		
 	}
 
-	public static function create_payment($sessionId,$payment_type="none",$bank="")
+	public static function create_payment($sessionId,$payment_provider="none",$bank="")
 	{
 		$shoppingcart = Cache::get('_'. $sessionId);
 
-		if($payment_type=="doku")
+		$first_name = BookingHelper::get_answer($shoppingcart,'firstName');
+        $last_name = BookingHelper::get_answer($shoppingcart,'lastName');
+        $email = BookingHelper::get_answer($shoppingcart,'email');
+        $phone = BookingHelper::get_answer($shoppingcart,'phoneNumber');
+
+        $contact = new \stdClass();
+        $contact->first_name = $first_name;
+        $contact->last_name = $last_name;
+        $contact->name = $first_name .' '. $last_name;
+        $contact->email = $email;
+        $contact->phone = $phone;
+
+        $date_arr = array();
+        foreach($shoppingcart->products as $product)
+        {
+            $date_arr[] = $product->date;
+            
+        }
+
+        usort($date_arr, function($a, $b) {
+            $dateTimestamp1 = strtotime($a);
+            $dateTimestamp2 = strtotime($b);
+            return $dateTimestamp1 < $dateTimestamp2 ? -1: 1;
+        });
+
+        $date1 = Carbon::now();
+        $date2 = Carbon::parse($date_arr[0]);
+        $mins_expired  = $date2->diffInMinutes($date1, true);
+        $date_expired = Carbon::parse($date_arr[0])->formatLocalized('%Y-%m-%d %H:%M:%S');
+        $date_now = Carbon::parse($date1)->formatLocalized('%Y-%m-%d %H:%M:%S +0700');
+
+        $transaction = new \stdClass();
+        $transaction->id = $shoppingcart->confirmation_code;
+        $transaction->amount = $shoppingcart->due_now;
+        $transaction->bank = $bank;
+        $transaction->mins_expired = $mins_expired;
+        $transaction->date_expired = $date_expired;
+        $transaction->date_now = $date_now;
+
+        $data = new \stdClass();
+        $data->contact = $contact;
+        $data->transaction = $transaction;
+
+        $response = NULL;
+        $payment_type = NULL;
+		$bank_name = NULL;
+		$bank_code = NULL;
+		$va_number = NULL;
+		$snaptoken = NULL;
+		$qrcode = NULL;
+		$link = NULL;
+		$redirect = NULL;
+		$order_id = NULL;
+		$authorization_id = NULL;
+		$amount = NULL;
+		$currency = NULL;
+		$rate = NULL;
+		$rate_from = NULL;
+		$rate_to = NULL;
+		$payment_status = NULL;
+
+		switch($payment_provider)
 		{
-				$va_number = NULL;
-				$link = NULL;
-				$bank_name = NULL;
-				$bank_code = NULL;
+			case "oyindonesia":
+				$response = OyHelper::createPayment($data,$bank);
+				$amount = $shoppingcart->due_now;
+				$currency = 'IDR';
+				$rate = 1;
+				$payment_status = 4;
+			break;
+			case "doku":
+				$response = DokuHelper::createPayment($data,$bank);
+				$amount = $shoppingcart->due_now;
+				$currency = 'IDR';
+				$rate = 1;
+				$payment_status = 4;
+			break;
+			case "midtrans":
+				$response = MidtransHelper::createPayment($data,$bank);
+				$amount = $shoppingcart->due_now;
+				$currency = 'IDR';
+				$rate = 1;
+				$payment_status = 4;
+			break;
+			case "paypal":
+				$payment_provider = 'paypal';
+				//	convert currency to USD
+				$amount = self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,self::env_paypalCurrency());
+				$currency = self::env_paypalCurrency();
+				$rate = self::convert_currency(1,self::env_paypalCurrency(),$shoppingcart->currency);
+				$rate_from = $shoppingcart->currency;
+				$rate_to = self::env_paypalCurrency();
 
+				$data->transaction->amount = $amount;
+				$data->transaction->currency = $currency;
+				$data->transaction->rate = $rate;
+				$data->transaction->rate_from = $rate_from;
+				$data->transaction->rate_to = $rate_to;
 
-				$response = DokuHelper::createVaViaPaymentLink($shoppingcart,$bank);
+				$payment_status = 0;
 
-				if(isset($response->virtual_account_info->virtual_account_number)) $va_number = $response->virtual_account_info->virtual_account_number;
-				if(isset($response->virtual_account_info->how_to_pay_page)) $link = $response->virtual_account_info->how_to_pay_page;
-				if(isset($response->virtual_account_info->bank_name)) $bank_name = $response->virtual_account_info->bank_name;
-				if(isset($response->virtual_account_info->bank_code)) $bank_code = $response->virtual_account_info->bank_code;
-
-				$ShoppingcartPayment = (object) array(
-					'payment_provider' => 'doku',
-					'payment_type' => "bank_transfer",
-					'bank_name' => $bank_name,
-					'bank_code' => $bank_code,
-					'va_number' => $va_number,
-					'snaptoken' => NULL,
-					'qrcode' => NULL,
-					'link' => $link,
-					'order_id' => NULL,
-					'authorization_id' => NULL,
-					'amount' => self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,"IDR"),
-					'currency' => 'IDR',
-					'rate' => 1,
-					'rate_from' => NULL,
-					'rate_to' => NULL,
-					'payment_status' => 4,
-				);
-
-				$shoppingcart->payment = $ShoppingcartPayment;
-				Cache::forget('_'. $sessionId);
-				Cache::add('_'. $sessionId, $shoppingcart, 172800);
-
+				$response = PaypalHelper::createPayment($data);
+			break;
+			default:
+				$payment_provider = 'none';
+				$amount = $shoppingcart->due_now;
+				$currency = 'IDR';
+				$rate = 1;
+				$payment_status = 0;
 		}
-		else if($payment_type=="oyindonesia")
-		{
-				$va_number = NULL;
-				$bank_name = NULL;
-				$bank_code = NULL;
-				$qrcode = NULL;
-				$payment_type = NULL;
-				$link = NULL;
 
-				$response = OyHelper::createPayment($shoppingcart,$bank);
+		if(isset($response->payment_type)) $payment_type = $response->payment_type;
+		if(isset($response->bank_name)) $bank_name = $response->bank_name;
+		if(isset($response->bank_code)) $bank_code = $response->bank_code;
+		if(isset($response->va_number)) $va_number = $response->va_number;
+		if(isset($response->snaptoken)) $snaptoken = $response->snaptoken;
+		if(isset($response->qrcode)) $qrcode = $response->qrcode;
+		if(isset($response->link)) $link = $response->link;
+		if(isset($response->redirect)) $redirect = $response->redirect;
 
-				if(isset($response->va_number)) $va_number = $response->va_number;
-				if(isset($response->link)) $link = $response->link;
-				if(isset($response->bank_code)) $bank_code = $response->bank_code;
-				if(isset($response->bank_name)) $bank_name = $response->bank_name;
-				if(isset($response->qrcode)) $qrcode = $response->qrcode;
-				if(isset($response->payment_type)) $payment_type = $response->payment_type;
+		$ShoppingcartPayment = (object) array(
+			'payment_provider' => $payment_provider,
+			'payment_type' => $payment_type,
+			'bank_name' => $bank_name,
+			'bank_code' => $bank_code,
+			'va_number' => $va_number,
+			'snaptoken' => $snaptoken,
+			'qrcode' => $qrcode,
+			'link' => $link,
+			'redirect' => $redirect,
+			'order_id' => $order_id,
+			'authorization_id' => $authorization_id,
+			'amount' => $amount,
+			'currency' => $currency,
+			'rate' => $rate,
+			'rate_from' => $rate_from,
+			'rate_to' => $rate_to,
+			'payment_status' => $payment_status,
+		);
 
-				$ShoppingcartPayment = (object) array(
-					'payment_provider' => 'oyindonesia',
-					'payment_type' => $payment_type,
-					'bank_name' => $bank_name,
-					'bank_code' => $bank_code,
-					'va_number' => $va_number,
-					'snaptoken' => NULL,
-					'qrcode' => $qrcode,
-					'link' => $link,
-					'order_id' => NULL,
-					'authorization_id' => NULL,
-					'amount' => self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,"IDR"),
-					'currency' => 'IDR',
-					'rate' => 1,
-					'rate_from' => NULL,
-					'rate_to' => NULL,
-					'payment_status' => 4,
-				);
+		$shoppingcart->payment = $ShoppingcartPayment;
+		Cache::forget('_'. $sessionId);
+		Cache::add('_'. $sessionId, $shoppingcart, 172800);
 
-				$shoppingcart->payment = $ShoppingcartPayment;
-				Cache::forget('_'. $sessionId);
-				Cache::add('_'. $sessionId, $shoppingcart, 172800);
-
-		}
-		else if($payment_type=="midtrans")
-		{
-				//permata or gopay
-				if($bank=="") $bank = "permata";
-				$response = MidtransHelper::createOrder($shoppingcart,$bank);
-				
-				$payment_type = NULL;
-				$bank_name = NULL;
-				$bank_code = NULL;
-				$va_number = NULL;
-				$snaptoken = NULL;
-				$qrcode = NULL;
-				$link = NULL;
-
-				if(isset($response->payment_type)) $payment_type = $response->payment_type;
-				if(isset($response->bank_name)) $bank_name = $response->bank_name;
-				if(isset($response->bank_code)) $bank_code = $response->bank_code;
-				if(isset($response->va_number)) $va_number = $response->va_number;
-				if(isset($response->snaptoken)) $snaptoken = $response->snaptoken;
-				if(isset($response->qrcode)) $qrcode = $response->qrcode;
-				if(isset($response->link)) $link = $response->link;
-
-				$ShoppingcartPayment = (object) array(
-					'payment_provider' => 'midtrans',
-					'payment_type' => $payment_type,
-					'bank_name' => $bank_name,
-					'bank_code' => $bank_code,
-					'va_number' => $va_number,
-					'snaptoken' => $snaptoken,
-					'qrcode' => $qrcode,
-					'link' => $link,
-					'order_id' => NULL,
-					'authorization_id' => NULL,
-					'amount' => self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,"IDR"),
-					'currency' => 'IDR',
-					'rate' => 1,
-					'rate_from' => NULL,
-					'rate_to' => NULL,
-					'payment_status' => 4,
-				);
-
-				$shoppingcart->payment = $ShoppingcartPayment;
-				Cache::forget('_'. $sessionId);
-				Cache::add('_'. $sessionId, $shoppingcart, 172800);
-		}
-		else if($payment_type=="paypal")
-		{
-			$ShoppingcartPayment = (object) array(
-				'payment_provider' => 'paypal',
-				'payment_type' => NULL,
-				'bank_name' => NULL,
-				'bank_code' => NULL,
-				'va_number' => NULL,
-				'snaptoken' => NULL,
-				'qrcode' => NULL,
-				'link' => NULL,
-				'order_id' => NULL,
-				'authorization_id' => NULL,
-				'amount' => self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,self::env_paypalCurrency()),
-				'currency' => self::env_paypalCurrency(),
-				'rate' => self::convert_currency(1,self::env_paypalCurrency(),$shoppingcart->currency),
-				'rate_from' => $shoppingcart->currency,
-				'rate_to' => self::env_paypalCurrency(),
-				'payment_status' => 0,
-			);
-			
-			$shoppingcart->payment = $ShoppingcartPayment;
-
-			Cache::forget('_'. $sessionId);
-			Cache::add('_'. $sessionId, $shoppingcart, 172800);
-			
-			
-			$shoppingcart = Cache::get('_'. $sessionId);
-			$response = PaypalHelper::createOrder($shoppingcart);
-		}
-		else
-		{
-			$ShoppingcartPayment = (object) array(
-				'payment_provider' => 'none',
-				'payment_type' => NULL,
-				'bank_name' => NULL,
-				'bank_code' => NULL,
-				'va_number' => NULL,
-				'snaptoken' => NULL,
-				'qrcode' => NULL,
-				'link' => NULL,
-				'order_id' => NULL,
-				'authorization_id' => NULL,
-				'amount' => $shoppingcart->due_now,
-				'currency' => 'IDR',
-				'rate' => 1,
-				'rate_from' => NULL,
-				'rate_to' => NULL,
-				'payment_status' => 0,
-			);
-
-			$shoppingcart->payment = $ShoppingcartPayment;
-			Cache::forget('_'. $sessionId);
-			Cache::add('_'. $sessionId, $shoppingcart, 172800);
-
-			
-			$response = Cache::get('_'. $sessionId);
-		}
 		return $response;
 	}
 

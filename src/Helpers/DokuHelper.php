@@ -39,58 +39,59 @@ class DokuHelper {
         return $endpoint;
   	}
 
-    public static function createVaViaPaymentLink($shoppingcart,$bank)
+    public static function bankCode($bank)
     {
-        if($bank=="doku")
+        $data = new \stdClass();
+        switch($bank)
         {
-            $bank_code = "899";
-            $bank_name = "doku";
-        }
-        else if ($bank=="permata")
-        {
-            $bank_code = "013";
-            $bank_name = "permata";
-        }
-        else if ($bank=="danamon")
-        {
-            $bank_code = "011";
-            $bank_name = "danamon";
-        }
-        else if ($bank=="mandiri")
-        {
-            $bank_code = "008";
-            $bank_name = "mandiri";
-        }
-        else if ($bank=="bri")
-        {
-            $bank_code = "002";
-            $bank_name = "bri";
-        }
-        else if ($bank=="danamon")
-        {
-            $bank_code = "011";
-            $bank_name = "bri";
-        }
-        else if ($bank=="cimb")
-        {
-            $bank_code = "022";
-            $bank_name = "cimb niaga";
-        }
-        else
-        {
-            $bank_code = "899";
-            $bank_name = "doku";
+            case "doku":
+                $data->bank_name = "doku";
+                $data->bank_code = "899";
+            break;
+            case "bri":
+                $data->bank_name = "bri";
+                $data->bank_code = "002";
+            break;
+            case "cimb":
+                $data->bank_name = "cimb niaga";
+                $data->bank_code = "022";
+            break;
+            case "mandiri":
+                $data->bank_name = "mandiri";
+                $data->bank_code = "008";
+            break;
+            case "permata":
+                $data->bank_name = "permata";
+                $data->bank_code = "013";
+            break;
+            case "bni":
+                $data->bank_name = "bni";
+                $data->bank_code = "009";
+            break;
+            case "danamon":
+                $data->bank_name = "danamon";
+                $data->bank_code = "011";
+            break;
+            case "mandirisyariah":
+                $data->bank_name = "bsi";
+                $data->bank_code = "451";
+            break;   
         }
 
-        $data1 = self::createSnap($shoppingcart);
+        return $data;
+    }
+
+    public static function createPayment($data,$bank)
+    {
+        $data1 = self::createSnap($data);
         $data2 = self::createCharge($data1->response->payment->token_id,$bank);
 
         $response = new \stdClass();
-        $response->virtual_account_info = new \stdClass();
-        $response->virtual_account_info->virtual_account_number = $data2->payment_code;
-        $response->virtual_account_info->how_to_pay_page = $data2->how_to_pay_url;
-        $response->virtual_account_info->bank_name = $bank_name;
-        $response->virtual_account_info->bank_code = $bank_code;
+        $response->payment_type = 'bank_transfer';
+        $response->bank_name = self::bankCode($bank)->bank_name;
+        $response->bank_code = self::bankCode($bank)->bank_code;
+        $response->va_number = $data2->payment_code;
+        $response->link = $data2->how_to_pay_url;
 
         return $response;
     }
@@ -122,46 +123,22 @@ class DokuHelper {
         return $data;
     }
 
-    public static function createSnap($shoppingcart)
+    public static function createSnap($data)
     {
-        $first_name = BookingHelper::get_answer($shoppingcart,'firstName');
-        $last_name = BookingHelper::get_answer($shoppingcart,'lastName');
-        $email = BookingHelper::get_answer($shoppingcart,'email');
-        $phone = BookingHelper::get_answer($shoppingcart,'phoneNumber');
-
-        $date_arr = array();
-        foreach($shoppingcart->products as $product)
-        {
-            $date_arr[] = $product->date;
-            
-        }
-
-        usort($date_arr, function($a, $b) {
-
-            $dateTimestamp1 = strtotime($a);
-            $dateTimestamp2 = strtotime($b);
-
-            return $dateTimestamp1 < $dateTimestamp2 ? -1: 1;
-        });
-
-        $date1 = Carbon::now();
-        $date2 = Carbon::parse($date_arr[0]);
-        $mins  = $date2->diffInMinutes($date1, true);
-        if($mins<=60) $mins = 60;
 
         $data = [
             'order' => [
-                'invoice_number' => $shoppingcart->confirmation_code,
-                'amount' => $shoppingcart->due_now
+                'invoice_number' => $data->transaction->id,
+                'amount' => $data->transaction->amount
              ],
              'payment' => [
-                'payment_due_date' => $mins
+                'payment_due_date' => $data->transaction->mins_expired
              ],
              'customer' => [
-                'id' => $shoppingcart->confirmation_code,
-                'name' => $first_name .' '. $last_name,
-                'email' => $email,
-                'phone' => $phone
+                'id' => $data->transaction->id,
+                'name' => $data->contact->name,
+                'email' => $data->contact->email,
+                'phone' => $data->contact->phone
              ]
         ];
 
@@ -201,168 +178,6 @@ class DokuHelper {
         return $data;
 
     }
-
-  	public static function createVA($shoppingcart,$bank="")
-  	{
-  		$first_name = BookingHelper::get_answer($shoppingcart,'firstName');
-        $last_name = BookingHelper::get_answer($shoppingcart,'lastName');
-        $email = BookingHelper::get_answer($shoppingcart,'email');
-        $phone = BookingHelper::get_answer($shoppingcart,'phoneNumber');
-
-        $date_arr = array();
-        foreach($shoppingcart->products as $product)
-        {
-            $date_arr[] = $product->date;
-            
-        }
-
-        usort($date_arr, function($a, $b) {
-
-            $dateTimestamp1 = strtotime($a);
-            $dateTimestamp2 = strtotime($b);
-
-            return $dateTimestamp1 < $dateTimestamp2 ? -1: 1;
-        });
-
-        $date1 = Carbon::now();
-        $date2 = Carbon::parse($date_arr[0]);
-        $mins  = $date2->diffInMinutes($date1, true);
-        if($mins<=60) $mins = 60;
-
-  		if($bank=="doku")
-  		{
-  			$data = [
-          		'order' => [
-          			'invoice_number' => $shoppingcart->confirmation_code,
-          			'amount' => $shoppingcart->due_now
-          			],
-          		'virtual_account_info' => [
-          			'billing_type' => 'FIX_BILL',
-          			'expired_time' => $mins,
-          			'reusable_status' => false,
-          			'info1' => self::env_appName()
-          		],
-          		'customer' => [
-          			'name' => $first_name .' '. $last_name,
-          			'email' => $email
-          		]
-        	];
-            $bank_code = "899";
-            $bank_name = "doku";
-        	$targetPath = '/doku-virtual-account/v2/payment-code';
-  		}
-  		else if ($bank=="permata")
-  		{
-
-  			$data = [
-          		'order' => [
-          			'invoice_number' => $shoppingcart->confirmation_code,
-          			'amount' => $shoppingcart->due_now
-          			],
-          		'virtual_account_info' => [
-          			'billing_type' => 'FIX_BILL',
-          			'expired_time' => $mins,
-          			'reusable_status' => false
-          		],
-          		'customer' => [
-          			'name' => $first_name .' '. $last_name,
-          			'email' => $email
-          		]
-        	];
-            $bank_code = "013";
-            $bank_name = "permata";
-        	$targetPath = '/permata-virtual-account/v2/payment-code';
-  		}
-        else if ($bank=="danamon")
-        {
-
-            $data = [
-                'order' => [
-                    'invoice_number' => $shoppingcart->confirmation_code,
-                    'amount' => $shoppingcart->due_now
-                    ],
-                'virtual_account_info' => [
-                    'billing_type' => 'FULL_PAYMENT',
-                    'expired_time' => $mins,
-                    'reusable_status' => false
-                ],
-                'customer' => [
-                    'name' => $first_name .' '. $last_name,
-                    'email' => $email
-                ]
-            ];
-            $bank_code = "011";
-            $bank_name = "danamon";
-            $targetPath = '/danamon-virtual-account/v2/payment-code';
-        }
-        else if ($bank=="mandiri")
-        {
-
-            $data = [
-                'order' => [
-                    'invoice_number' => $shoppingcart->confirmation_code,
-                    'amount' => $shoppingcart->due_now
-                    ],
-                'virtual_account_info' => [
-                    'billing_type' => 'FIX_BILL',
-                    'expired_time' => $mins,
-                    'reusable_status' => false
-                ],
-                'customer' => [
-                    'name' => $first_name .' '. $last_name,
-                    'email' => $email
-                ]
-            ];
-            $bank_code = "008";
-            $bank_name = "mandiri";
-            $targetPath = '/mandiri-virtual-account/v2/payment-code';
-        }
-  		else
-  		{
-  			return "";
-  		}
-
-        
-  		$url = self::dokuApiEndpoint();
-        $endpoint = $url . $targetPath;
-
-  		$requestId = rand(1, 100000);
-
-  		$dateTime = gmdate("Y-m-d H:i:s");
-        $dateTime = date(DATE_ISO8601, strtotime($dateTime));
-        $dateTimeFinal = substr($dateTime, 0, 19) . "Z";
-
-        
-
-        //create signature
-        $header = array();
-        $header['Client-Id'] = self::env_dokuClientId();
-        $header['Request-Id'] = $requestId;
-        $header['Request-Timestamp'] = $dateTimeFinal;
-        $signature = self::generateSignature($header, $targetPath, json_encode($data), self::env_dokuSecretKey());
-
-  		$headers = [
-              'Content-Type' => 'application/json',
-              'Signature' => $signature,
-              'Request-Id' => $requestId,
-              'Client-Id' => self::env_dokuClientId(),
-              'Request-Timestamp' => $dateTimeFinal,
-              'Request-Target' => $targetPath,
-          ];
-
-        $client = new \GuzzleHttp\Client(['headers' => $headers,'http_errors' => false]);
-        $response = $client->request('POST',$endpoint,
-          ['json' => $data]
-        );
-
-        $data = $response->getBody()->getContents();
-        $data = json_decode($data);
-
-        $data->virtual_account_info->bank_code = $bank_code;
-        $data->virtual_account_info->bank_name = $bank_name;
-        
-        return $data;
-  	}
 
 	public static function generateSignature($headers, $targetPath, $body, $secret)
     {

@@ -10,55 +10,55 @@ use PayPalCheckoutSdk\Orders\OrdersCreateRequest;
 class PaypalHelper {
 	
 	public static function client()
-    {
-        return new PayPalHttpClient(self::environment());
-    }
+  {
+    return new PayPalHttpClient(self::environment());
+  }
 	
 	public static function paypalApiEndpoint()
-  	{
-        if(self::env_paypalEnv()=="production")
-        {
-            $endpoint = "https://api.paypal.com";
-        }
-        else
-        {
-            $endpoint = "https://api.sandbox.paypal.com";
-        }
-        return $endpoint;
-  	}
+  {
+    if(self::env_paypalEnv()=="production")
+    {
+      $endpoint = "https://api.paypal.com";
+    }
+    else
+    {
+      $endpoint = "https://api.sandbox.paypal.com";
+    }
+    return $endpoint;
+  }
 
-  	public static function env_paypalEnv()
+  public static function env_paypalEnv()
   {
         return env("PAYPAL_ENV");
   }
 
-  	public static function env_paypalClientId()
-  	{
+  public static function env_paypalClientId()
+  {
   		return env("PAYPAL_CLIENT_ID");
-  	}
+  }
 
-  	public static function env_paypalClientSecret()
-  	{
+  public static function env_paypalClientSecret()
+  {
   		return env("PAYPAL_CLIENT_SECRET");
-  	}
+  }
 
 	public static function environment()
-    {
+  {
         $clientId = self::env_paypalClientId();
         $clientSecret = self::env_paypalClientSecret();
 
-		if(self::env_paypalEnv()=="production")
-			{
+		    if(self::env_paypalEnv()=="production")
+			  {
         		return new ProductionEnvironment($clientId, $clientSecret);
-			}
-			else
-			{
-				return new SandboxEnvironment($clientId, $clientSecret);
-			}
-    }
+			  }
+			  else
+			  {
+				    return new SandboxEnvironment($clientId, $clientSecret);
+  			}
+  }
 	
 	public static function getOrder($id)
-    {
+  {
 		  $client = self::client();
 		  $response = $client->execute(new OrdersGetRequest($id));
 		  return $response->result->purchase_units[0]->amount->value;
@@ -66,11 +66,11 @@ class PaypalHelper {
 	
 	public static function createPayment($data)
 	{
-		$value = number_format((float)$data->transaction->amount, 2, '.', '');
-      	$name = $data->transaction->id;
-      	$currency = $data->transaction->currency;
+      $value = number_format((float)$data->transaction->amount, 2, '.', '');
+      $name = $data->transaction->id;
+      $currency = $data->transaction->currency;
     	
-      	$request = new OrdersCreateRequest();
+      $request = new OrdersCreateRequest();
     	$request->prefer('return=representation');
     	$request->body = self::buildRequestBodyCreateOrder($value,$name,$currency);
     	$client = self::client();
@@ -79,7 +79,7 @@ class PaypalHelper {
 	}
 
 	public static function buildRequestBodyCreateOrder($value,$name,$currency)
-    {
+  {
         return array(
             'intent' => 'AUTHORIZE',
             'application_context' =>
@@ -99,11 +99,11 @@ class PaypalHelper {
                         )
                 )
         );
-    }
+  }
 	
 	public static function captureAuth($id)
-    {
-		$request = new AuthorizationsCaptureRequest($id);
+  {
+		  $request = new AuthorizationsCaptureRequest($id);
     	$request->body = self::buildRequestBodyCapture();
     	$client = self::client();
     	$response = $client->execute($request);
@@ -116,7 +116,7 @@ class PaypalHelper {
   	}
 	
 	public static function voidPaypal($id)
-  	{
+  {
 			$PAYPAL_CLIENT = self::env_paypalClientId();
 			$PAYPAL_SECRET = self::env_paypalClientSecret();
 
@@ -153,6 +153,6 @@ class PaypalHelper {
 			$client = new \GuzzleHttp\Client(['headers' => $headers]);
     		$response = $client->request('POST', $PAYPAL_AUTHORIZATION_API . $id.'/void');
 			
-  	}
+  }
 }
 ?>

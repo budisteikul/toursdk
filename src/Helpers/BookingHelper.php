@@ -1773,29 +1773,28 @@ class BookingHelper {
 		switch($payment_provider)
 		{
 			case "oyindonesia":
-				$response = OyHelper::createPayment($data,$bank);
 				$amount = $shoppingcart->due_now;
 				$currency = 'IDR';
 				$rate = 1;
 				$payment_status = 4;
+				$response = OyHelper::createPayment($data,$bank);
 			break;
 			case "doku":
-				$response = DokuHelper::createPayment($data,$bank);
 				$amount = $shoppingcart->due_now;
 				$currency = 'IDR';
 				$rate = 1;
 				$payment_status = 4;
+				$response = DokuHelper::createPayment($data,$bank);
 			break;
 			case "midtrans":
-				$response = MidtransHelper::createPayment($data,$bank);
 				$amount = $shoppingcart->due_now;
 				$currency = 'IDR';
 				$rate = 1;
 				$payment_status = 4;
+				$response = MidtransHelper::createPayment($data,$bank);
 			break;
 			case "paypal":
 				$payment_provider = 'paypal';
-				//	convert currency to USD
 				$amount = self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,self::env_paypalCurrency());
 				$currency = self::env_paypalCurrency();
 				$rate = self::convert_currency(1,self::env_paypalCurrency(),$shoppingcart->currency);
@@ -1804,9 +1803,6 @@ class BookingHelper {
 
 				$data->transaction->amount = $amount;
 				$data->transaction->currency = $currency;
-				$data->transaction->rate = $rate;
-				$data->transaction->rate_from = $rate_from;
-				$data->transaction->rate_to = $rate_to;
 
 				$payment_status = 0;
 

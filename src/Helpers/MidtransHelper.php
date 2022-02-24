@@ -1,6 +1,5 @@
 <?php
 namespace budisteikul\toursdk\Helpers;
-use budisteikul\toursdk\Helpers\BookingHelper;
 use budisteikul\toursdk\Helpers\ImageHelper;
 use Carbon\Carbon;
 

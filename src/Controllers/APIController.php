@@ -828,18 +828,34 @@ class APIController extends Controller
     {
         $sessionId = $request->input('sessionId');
         $paymentType = $request->input('paymentType');
-        
-        BookingHelper::set_bookingStatus($sessionId,'PENDING');
 
-        BookingHelper::set_confirmationCode($sessionId);
+        $paymentType_arr = explode("|",$paymentType);
 
-        if($paymentType=="ewallet")
+        $payment_type = NULL;
+        $payment_provider = NULL;
+        $payment_bank = NULL;
+
+        if(isset($paymentType_arr[0])) $payment_type = $paymentType_arr[0];
+        if(isset($paymentType_arr[1])) $payment_provider = $paymentType_arr[1];
+        if(isset($paymentType_arr[2])) $payment_bank = $paymentType_arr[2];
+
+        if($payment_type=="ewallet")
         {
+            BookingHelper::set_bookingStatus($sessionId,'PENDING');
+            BookingHelper::set_confirmationCode($sessionId);
             BookingHelper::create_payment($sessionId,"midtrans","gopay");
+        }
+        else if($payment_type=="bank_transfer")
+        {
+            BookingHelper::set_bookingStatus($sessionId,'PENDING');
+            BookingHelper::set_confirmationCode($sessionId);
+            BookingHelper::create_payment($sessionId,$payment_provider,$payment_bank);
         }
         else
         {
-            BookingHelper::create_payment($sessionId,"midtrans","permata");
+            return response()->json([
+                'status' => 'error'
+            ]);
         }
         
         $shoppingcart = BookingHelper::confirm_booking($sessionId);
@@ -855,13 +871,39 @@ class APIController extends Controller
 
     public function payment_jscript($payment_type,$sessionId)
     {
+
+        $paymentType_arr = explode("|",$payment_type);
+
+        $payment_type = NULL;
+        $payment_provider = NULL;
+        $payment_bank = NULL;
+
+        if(isset($paymentType_arr[0])) $payment_type = $paymentType_arr[0];
+        if(isset($paymentType_arr[1])) $payment_provider = $paymentType_arr[1];
+        if(isset($paymentType_arr[2])) $payment_bank = $paymentType_arr[2];
+
+        
+
         if($payment_type=="bank_transfer")
         {
-            $paymentType = $payment_type;
+            if($payment_provider==NULL || $payment_bank==NULL)
+            {
+                $paymentType = "bank_transfer";
+            }
+            else
+            {
+                $paymentType = $payment_type .'|'. $payment_provider .'|'. $payment_bank;
+            }
+        }
+        else if($payment_type=="ewallet")
+        {
+            $paymentType = "ewallet";
         }
         else
         {
-            $paymentType = "ewallet";
+            return response()->json([
+                'status' => 'error'
+            ]);
         }
            
         $jscript = '

@@ -41,6 +41,8 @@ class ContentHelper {
         return env("MIDTRANS_ENV");
     }
 
+
+
 	public static function view_receipt($shoppingcart)
 	{
 		$invoice = 'No Documents';
@@ -83,6 +85,18 @@ class ContentHelper {
 
         if($shoppingcart->shoppingcart_payment->payment_type=="bank_transfer")
         {
+                /*
+                if($shoppingcart->shoppingcart_payment->bank_code=="008")
+                {
+                    $pdfUrl = '<a target="_blank" class="text-theme" href="'.self::env_appUrl().'/page/how-to-pay-mandiri-virtual-account"> aaaa</a><br />';
+                }
+
+                if($shoppingcart->shoppingcart_payment->bank_code=="011")
+                {
+                    $pdfUrl = '<a target="_blank" class="text-theme" href="'.self::env_appUrl().'/page/how-to-pay-danamon-virtual-account"> aaaa</a><br />';
+                }
+                */
+
                 $pdfUrl = '<a target="_blank" class="text-theme" href="'.url('/api').'/pdf/instruction/'. $shoppingcart->session_id .'/Instruction-'. $shoppingcart->confirmation_code .'.pdf"><i class="fas fa-file-invoice"></i> Instruction-'. $shoppingcart->confirmation_code .'.pdf</a><br />';
                
         }

@@ -72,7 +72,7 @@ class DokuHelper {
             break;
             case "mandirisyariah":
                 $data->bank_name = "bsi";
-                $data->bank_code = "451";
+                $data->bank_code = "451900";
             break;   
         }
 

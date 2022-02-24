@@ -1,6 +1,5 @@
 <?php
 namespace budisteikul\toursdk\Helpers;
-use budisteikul\toursdk\Models\Disbursement;
 use budisteikul\toursdk\Helpers\ImageHelper;
 use Carbon\Carbon;
 
@@ -65,14 +64,6 @@ class OyHelper {
         return $endpoint;
   }
 
-
-  public static function get_transaction_id(){
-      $uuid = "DISB-". date('Ymd') . rand(100,999);
-      while( Disbursement::where('transaction_id','=',$uuid)->first() ){
-          $uuid = "DISB-". date('Ymd') . rand(100,999);
-      }
-      return $uuid;
-  }
 
   public static function bankCode($bank)
   {

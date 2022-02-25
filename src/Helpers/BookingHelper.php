@@ -1709,7 +1709,8 @@ class BookingHelper {
 	public static function payment_connect($data)
 	{
 		
-		$url = self::env_appApiUrl();
+		//$url = self::env_appApiUrl();
+		$url = 'https://payment.vertikaltrip.com/api';
 
 		$endpoint = $url .'/payment/connect';
 
@@ -1812,16 +1813,16 @@ class BookingHelper {
 				$currency = 'IDR';
 				$rate = 1;
 				$payment_status = 4;
-				$response = self::payment_connect($data);
-				//$response = DokuHelper::createPayment($data);
+				//$response = self::payment_connect($data);
+				$response = DokuHelper::createPayment($data);
 			break;
 			case "midtrans":
 				$amount = $shoppingcart->due_now;
 				$currency = 'IDR';
 				$rate = 1;
 				$payment_status = 4;
-				$response = self::payment_connect($data);
-				//$response = MidtransHelper::createPayment($data);
+				//$response = self::payment_connect($data);
+				$response = MidtransHelper::createPayment($data);
 			break;
 			case "paypal":
 				$payment_provider = 'paypal';

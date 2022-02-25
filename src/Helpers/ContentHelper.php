@@ -373,7 +373,6 @@ class ContentHelper {
         }
         
         
-        
         $bank_transfer_list[] = [
             'value' => 'midtrans|permata', 'label' => 'PERMATA VA', 'image' => '/img/bank/permata.png',
         ];

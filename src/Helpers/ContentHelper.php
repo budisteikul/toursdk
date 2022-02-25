@@ -394,9 +394,11 @@ class ContentHelper {
             'value' => 'doku-mandirisyariah', 'label' => 'BSI VA', 'image' => '/img/bank/bsi.png',
         ];
 
+        /*
         $bank_transfer_list[] = [
             'value' => 'oyindonesia-btpn', 'label' => 'JENIUS (BTPN) VA', 'image' => '/img/bank/jenius.png',
         ];
+        */
 
         $bank_transfer_list[] = [
             'value' => 'doku-doku', 'label' => 'DOKU VA', 'image' => '/img/bank/doku.png',

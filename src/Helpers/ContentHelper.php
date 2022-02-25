@@ -90,19 +90,13 @@ class ContentHelper {
 
         if($shoppingcart->shoppingcart_payment->payment_type=="bank_transfer")
         {
-                /*
-                if($shoppingcart->shoppingcart_payment->bank_code=="008")
+               
+                if($shoppingcart->shoppingcart_payment->payment_status==4)
                 {
-                    $pdfUrl = '<a target="_blank" class="text-theme" href="'.self::env_appUrl().'/page/how-to-pay-mandiri-virtual-account"> aaaa</a><br />';
+                    $pdfUrl = '<a target="_blank" class="text-theme" href="'.url('/api').'/pdf/manual/'. $shoppingcart->session_id .'/Manual-'. $shoppingcart->confirmation_code .'.pdf"><i class="fas fa-file-invoice"></i> Manual-'. $shoppingcart->confirmation_code .'.pdf</a><br />';
+                    
                 }
-
-                if($shoppingcart->shoppingcart_payment->bank_code=="011")
-                {
-                    $pdfUrl = '<a target="_blank" class="text-theme" href="'.self::env_appUrl().'/page/how-to-pay-danamon-virtual-account"> aaaa</a><br />';
-                }
-                */
-
-                $pdfUrl = '<a target="_blank" class="text-theme" href="'.url('/api').'/pdf/instruction/'. $shoppingcart->session_id .'/Instruction-'. $shoppingcart->confirmation_code .'.pdf"><i class="fas fa-file-invoice"></i> Instruction-'. $shoppingcart->confirmation_code .'.pdf</a><br />';
+                
                
         }
 
@@ -377,6 +371,7 @@ class ContentHelper {
             'value' => 'midtrans|permata', 'label' => 'PERMATA VA', 'image' => '/img/bank/permata.png',
         ];
 
+        
         $bank_transfer_list[] = [
             'value' => 'doku|mandiri', 'label' => 'MANDIRI VA', 'image' => '/img/bank/mandiri.png',
         ];
@@ -408,6 +403,7 @@ class ContentHelper {
         $bank_transfer_list[] = [
             'value' => 'doku|doku', 'label' => 'DOKU VA', 'image' => '/img/bank/doku.png',
         ];
+        
 
         $dataShoppingcart[] = array(
                 'id' => $shoppingcart->session_id,

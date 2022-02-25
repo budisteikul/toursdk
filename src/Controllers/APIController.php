@@ -36,19 +36,10 @@ class APIController extends Controller
 {
     public function test(Request $request)
     {
-        $response = new \stdClass();
-        $response->a = 'aaa';
-        $response->b = 'bbb';
+        
+        
 
-        $response2 = new \stdClass();
-        $response2->a = 'aaa2';
-        $response2->b = 'bbb2';
-
-        $response3 = new \stdClass();
-        $response3->aaa = $response;
-        $response3->bbb = $response2;
-
-        print_r($response3->aaa->b);
+       
     }
     
     public function __construct()
@@ -101,6 +92,13 @@ class APIController extends Controller
         $shoppingcart = Shoppingcart::where('confirmation_code',$id)->where('session_id',$sessionId)->firstOrFail();
         $pdf = BookingHelper::create_instruction_pdf($shoppingcart);
         return $pdf->download('Instruction-'. $shoppingcart->confirmation_code .'.pdf');
+    }
+
+    public function manual($sessionId,$id)
+    {
+        $shoppingcart = Shoppingcart::where('confirmation_code',$id)->where('session_id',$sessionId)->firstOrFail();
+        $pdf = BookingHelper::create_manual_pdf($shoppingcart);
+        return $pdf->download('Manual-'. $shoppingcart->confirmation_code .'.pdf');
     }
 
     public function invoice($sessionId,$id)

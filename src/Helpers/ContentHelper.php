@@ -366,14 +366,12 @@ class ContentHelper {
             $payment_enable = 'bank_transfer,paypal';
         }
         
-        
-        $bank_transfer_list[] = [
-            'value' => 'midtrans|permata', 'label' => 'PERMATA VA', 'image' => '/img/bank/permata.png',
-        ];
-
-        
         $bank_transfer_list[] = [
             'value' => 'doku|mandiri', 'label' => 'MANDIRI VA', 'image' => '/img/bank/mandiri.png',
+        ];
+
+        $bank_transfer_list[] = [
+            'value' => 'doku|permata', 'label' => 'PERMATA VA', 'image' => '/img/bank/permata.png',
         ];
 
         $bank_transfer_list[] = [

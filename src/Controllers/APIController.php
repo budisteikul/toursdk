@@ -827,7 +827,7 @@ class APIController extends Controller
         $sessionId = $request->input('sessionId');
         $paymentType = $request->input('paymentType');
 
-        $paymentType_arr = explode("|",$paymentType);
+        $paymentType_arr = explode("-",$paymentType);
 
         $payment_type = NULL;
         $payment_provider = NULL;
@@ -870,7 +870,7 @@ class APIController extends Controller
     public function payment_jscript($payment_type,$sessionId)
     {
 
-        $paymentType_arr = explode("|",$payment_type);
+        $paymentType_arr = explode("-",$payment_type);
 
         $payment_type = NULL;
         $payment_provider = NULL;
@@ -890,7 +890,7 @@ class APIController extends Controller
             }
             else
             {
-                $paymentType = $payment_type .'|'. $payment_provider .'|'. $payment_bank;
+                $paymentType = $payment_type .'-'. $payment_provider .'-'. $payment_bank;
             }
         }
         else if($payment_type=="ewallet")

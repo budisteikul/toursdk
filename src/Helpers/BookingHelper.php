@@ -1708,8 +1708,10 @@ class BookingHelper {
 	
 	public static function payment_connect($data)
 	{
-		
+		//internal
 		//$url = self::env_appApiUrl();
+
+		//external
 		$url = 'https://payment.vertikaltrip.com/api';
 
 		$endpoint = $url .'/payment/connect';

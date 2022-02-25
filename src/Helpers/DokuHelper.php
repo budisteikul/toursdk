@@ -79,15 +79,15 @@ class DokuHelper {
         return $data;
     }
 
-    public static function createPayment($data,$bank)
+    public static function createPayment($data)
     {
         $data1 = self::createSnap($data);
-        $data2 = self::createCharge($data1->response->payment->token_id,$bank);
+        $data2 = self::createCharge($data1->response->payment->token_id,$data->transaction->bank);
 
         $response = new \stdClass();
         $response->payment_type = 'bank_transfer';
-        $response->bank_name = self::bankCode($bank)->bank_name;
-        $response->bank_code = self::bankCode($bank)->bank_code;
+        $response->bank_name = self::bankCode($data->transaction->bank)->bank_name;
+        $response->bank_code = self::bankCode($data->transaction->bank)->bank_code;
         $response->va_number = $data2->payment_code;
         $response->link = $data2->how_to_pay_url;
 

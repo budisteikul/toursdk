@@ -94,36 +94,36 @@ class MidtransHelper {
         return $data;
   }
 
-  public static function createPayment($data,$bank)
+  public static function createPayment($data)
   {
-        $data1 = MidtransHelper::createSnap($data,$bank);
+        $data1 = MidtransHelper::createSnap($data,$data->transaction->bank);
         
-        $data2 = MidtransHelper::chargeSnap($data1->token,$data,$bank);
+        $data2 = MidtransHelper::chargeSnap($data1->token,$data,$data->transaction->bank);
 
         $response = new \stdClass();
-        if($bank=="permata")
+        if($data->transaction->bank=="permata")
         {
           $response->payment_type = 'bank_transfer';
-          $response->bank_name = self::bankCode($bank)->bank_name;
-          $response->bank_code = self::bankCode($bank)->bank_code;
+          $response->bank_name = self::bankCode($data->transaction->bank)->bank_name;
+          $response->bank_code = self::bankCode($data->transaction->bank)->bank_code;
           $response->va_number = $data2['permata_va_number'];
         }
-        else if($bank=="gopay")
+        else if($data->transaction->bank=="gopay")
         {
           $qrcode = ImageHelper::uploadQrcodeCloudinary($data2['qr_code_url']);
           $response->payment_type = 'ewallet';
-          $response->bank_name = self::bankCode($bank)->bank_name;
+          $response->bank_name = self::bankCode($data->transaction->bank)->bank_name;
           $response->qrcode = $qrcode['secure_url'];
           $response->link = $data2['deeplink_url'];
         }
-        else if($bank=="mandiri")
+        else if($data->transaction->bank=="mandiri")
         {
           $response->payment_type = 'bank_transfer';
-          $response->bank_name = self::bankCode($bank)->bank_name;
+          $response->bank_name = self::bankCode($data->transaction->bank)->bank_name;
           $response->bank_code = $data2['biller_code'];
           $response->va_number = $data2['bill_key'];
         }
-        else if($bank=="bni")
+        else if($data->transaction->bank=="bni")
         {
           $response->payment_type = 'bank_transfer';
           $response->bank_name = 'bni';

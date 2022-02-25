@@ -1705,6 +1705,32 @@ class BookingHelper {
 		
 	}
 
+	
+	public static function payment_connect($data)
+	{
+		
+		$url = self::env_appApiUrl();
+
+		$endpoint = $url .'/payment/connect';
+
+        $headers = [
+              'Accept' => 'application/jsons',
+              'Content-Type' => 'application/json'
+          ];
+
+        $client = new \GuzzleHttp\Client(['headers' => $headers,'http_errors' => false]);
+        $response = $client->request('POST',$endpoint,
+          ['json' => $data]
+        );
+
+        $data = $response->getBody()->getContents();
+        $data = json_decode($data);
+
+        
+        return $data->response;
+	}
+	
+
 	public static function create_payment($sessionId,$payment_provider="none",$bank="")
 	{
 		$shoppingcart = Cache::get('_'. $sessionId);
@@ -1743,6 +1769,7 @@ class BookingHelper {
         $transaction = new \stdClass();
         $transaction->id = $shoppingcart->confirmation_code;
         $transaction->amount = $shoppingcart->due_now;
+        $transaction->payment_provider = $payment_provider;
         $transaction->bank = $bank;
         $transaction->mins_expired = $mins_expired;
         $transaction->date_expired = $date_expired;
@@ -1777,21 +1804,24 @@ class BookingHelper {
 				$currency = 'IDR';
 				$rate = 1;
 				$payment_status = 4;
-				$response = OyHelper::createPayment($data,$bank);
+				$response = self::payment_connect($data);
+				//$response = OyHelper::createPayment($data);
 			break;
 			case "doku":
 				$amount = $shoppingcart->due_now;
 				$currency = 'IDR';
 				$rate = 1;
 				$payment_status = 4;
-				$response = DokuHelper::createPayment($data,$bank);
+				$response = self::payment_connect($data);
+				//$response = DokuHelper::createPayment($data);
 			break;
 			case "midtrans":
 				$amount = $shoppingcart->due_now;
 				$currency = 'IDR';
 				$rate = 1;
 				$payment_status = 4;
-				$response = MidtransHelper::createPayment($data,$bank);
+				$response = self::payment_connect($data);
+				//$response = MidtransHelper::createPayment($data);
 			break;
 			case "paypal":
 				$payment_provider = 'paypal';

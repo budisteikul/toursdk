@@ -11,7 +11,6 @@ use budisteikul\toursdk\Helpers\BookingHelper;
 use budisteikul\toursdk\Helpers\ContentHelper;
 use budisteikul\toursdk\Helpers\FirebaseHelper;
 use budisteikul\toursdk\Helpers\PaypalHelper;
-use budisteikul\toursdk\Helpers\MidtransHelper;
 
 use budisteikul\toursdk\Models\Category;
 use budisteikul\toursdk\Models\Review;
@@ -903,7 +902,9 @@ class APIController extends Controller
                 'status' => 'error'
             ]);
         }
-           
+        
+        $endpoint_payment = url('/api');
+
         $jscript = '
         function paymentScript()
         {
@@ -918,7 +919,7 @@ class APIController extends Controller
                     "paymentType": "'.$paymentType.'",
                 },
                 type: \'POST\',
-                url: \''. url('/api') .'/payment\'
+                url: \''. $endpoint_payment .'/payment\'
             }).done(function( data ) {
                 if(data.id=="1")
                 {

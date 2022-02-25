@@ -128,14 +128,14 @@ class OyHelper {
        
   }
 
-  public static function createPayment($data,$bank)
+  public static function createPayment($data)
   {
         $response = new \stdClass();
 
-        if($bank=="qris")
+        if($data->transaction->bank=="qris")
         {
           $data1 = self::createSnap($data);
-          $data2 = self::createCharge($data,$data1->snaptoken,$bank);
+          $data2 = self::createCharge($data,$data1->snaptoken,$data->transaction->bank);
           $qrcode = ImageHelper::uploadQrcodeCloudinary($data2->data->qris_url);
           $response->payment_type = 'ewallet';
           $response->bank_name = 'shopeepay';
@@ -145,10 +145,10 @@ class OyHelper {
         else
         {
           $data1 = self::createSnap($data);
-          $data2 = self::createCharge($data,$data1->snaptoken,$bank);
+          $data2 = self::createCharge($data,$data1->snaptoken,$data->transaction->bank);
           $data3 = self::status($data1->snaptoken);
           $response->payment_type = 'bank_transfer';
-          $response->bank_name = self::bankCode($bank)->bank_name;
+          $response->bank_name = self::bankCode($data->transaction->bank)->bank_name;
           $response->bank_code = $data3->data->sender_bank;
           $response->va_number = $data3->data->va_number;
           $response->link = self::oyLink($data1->snaptoken);

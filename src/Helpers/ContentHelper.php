@@ -21,6 +21,11 @@ class ContentHelper {
         return env("APP_URL");
     }
 
+    public static function env_appApiUrl()
+    {
+        return env("APP_API_URL");
+    }
+
     public static function env_appName()
     {
         return env("APP_NAME");
@@ -367,6 +372,43 @@ class ContentHelper {
             $payment_enable = 'bank_transfer,paypal';
         }
         
+        
+        
+        $bank_transfer_list[] = [
+            'value' => 'midtrans|permata', 'label' => 'PERMATA VA', 'image' => '/img/bank/permata.png',
+        ];
+
+        $bank_transfer_list[] = [
+            'value' => 'doku|mandiri', 'label' => 'MANDIRI VA', 'image' => '/img/bank/mandiri.png',
+        ];
+
+        $bank_transfer_list[] = [
+            'value' => 'doku|danamon', 'label' => 'DANAMON VA', 'image' => '/img/bank/danamon.png',
+        ];
+
+        $bank_transfer_list[] = [
+            'value' => 'doku|bni', 'label' => 'BNI VA', 'image' => '/img/bank/bni.png',
+        ];
+
+        $bank_transfer_list[] = [
+            'value' => 'doku|bri', 'label' => 'BRI VA', 'image' => '/img/bank/bri.png',
+        ];
+
+        $bank_transfer_list[] = [
+            'value' => 'doku|cimb', 'label' => 'CIMB NIAGA VA',  'image' => '/img/bank/cimb.png',
+        ];
+
+        $bank_transfer_list[] = [
+            'value' => 'doku|mandirisyariah', 'label' => 'BSI VA', 'image' => '/img/bank/bsi.png',
+        ];
+
+        $bank_transfer_list[] = [
+            'value' => 'oyindonesia|btpn', 'label' => 'JENIUS (BTPN) VA', 'image' => '/img/bank/jenius.png',
+        ];
+
+        $bank_transfer_list[] = [
+            'value' => 'doku|doku', 'label' => 'DOKU VA', 'image' => '/img/bank/doku.png',
+        ];
 
         $dataShoppingcart[] = array(
                 'id' => $shoppingcart->session_id,
@@ -385,7 +427,8 @@ class ContentHelper {
                 'rate' => BookingHelper::paypal_rate($shoppingcart),
                 'paypal_client_id' => self::env_paypalClientId(),
                 'paypal_currency' => self::env_paypalCurrency(),
-                'payment_enable' => $payment_enable
+                'payment_enable' => $payment_enable,
+                'bank_transfer_list' => $bank_transfer_list
             );
 
         return $dataShoppingcart;

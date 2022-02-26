@@ -1729,7 +1729,14 @@ class BookingHelper {
         $data = $response->getBody()->getContents();
         $data = json_decode($data);
 
-        return $data->response;
+        if(isset($data->response))
+        {
+        	return $data->response;
+        }
+        else
+        {
+        	
+        }
 	}
 	
 

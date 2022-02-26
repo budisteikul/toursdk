@@ -1737,7 +1737,7 @@ class BookingHelper {
         {
         	return response()->json([
             	"id" => "2",
-            	"redirect" => $data
+            	"debug" => $data
         	]);
         }
 	}

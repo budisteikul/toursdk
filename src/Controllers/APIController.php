@@ -927,7 +927,7 @@ class APIController extends Controller
                 }
                 else
                 {
-                    console.log(data.redirect);
+                    console.log(data.debug);
                 }
             });
 

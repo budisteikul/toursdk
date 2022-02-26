@@ -43,17 +43,13 @@ class APIController extends Controller
     
     public function __construct()
     {
-        $this->bookingChannelUUID = env("BOKUN_BOOKING_CHANNEL");
         $this->currency = env("BOKUN_CURRENCY");
         $this->lang = env("BOKUN_LANG");
-
-        $this->paypalClientId = env("PAYPAL_CLIENT_ID");
-        $this->paypalCurrency = env("PAYPAL_CURRENCY");
         
         $this->midtransServerKey = env("MIDTRANS_SERVER_KEY");
-        $this->midtransClientKey = env("MIDTRANS_CLIENT_KEY");
-        $this->midtransEnv = env("MIDTRANS_ENV");
-        $this->appName = env("APP_NAME");
+        $this->oyApiKey = env("OY_API_KEY");
+        $this->dokuSecretKey = env("DOKU_SECRET_KEY");
+
         $this->appUrl = env("APP_URL");
     }
 
@@ -731,55 +727,54 @@ class APIController extends Controller
         
     }
 
-    public function confirmpaymentoy(Request $request)
+    public function confirmpaymentoy($id,Request $request)
     {
-        $data = $request->all();
-        print_r($data['partner_trx_id']);
-        exit();
-        //$transaction_status = $data['settlement_status'];
-        $confirmation_code = $data['partner_trx_id'];
-
-        $shoppingcart = Shoppingcart::where('confirmation_code',$confirmation_code)->first();
-        if($shoppingcart!==null)
+        if($this->oyApiKey==$id)
         {
-            BookingHelper::confirm_payment($shoppingcart,"CONFIRMED");
-        }
-        return response('OK', 200)->header('Content-Type', 'text/plain');
-    }
-
-    public function confirmpaymentdoku(Request $request)
-    {
-        $data = $request->all();
-        $confirmation_code = $data['order']['invoice_number'];
-        $transaction_status = $data['transaction']['status'];
-
-        $shoppingcart = Shoppingcart::where('confirmation_code',$confirmation_code)->first();
-        if($shoppingcart!==null)
-        {
-            if($transaction_status=="SUCCESS")
+            $data = $request->all();
+            $confirmation_code = $data['partner_tr_id'];
+            $shoppingcart = Shoppingcart::where('confirmation_code',$confirmation_code)->first();
+            if($shoppingcart!==null)
             {
                 BookingHelper::confirm_payment($shoppingcart,"CONFIRMED");
             }
-            else if ($transaction_status=="PENDING")
+        }
+        return response('OK', 200)->header('Content-Type', 'text/plain');
+    }
+
+    public function confirmpaymentdoku($id,Request $request)
+    {
+        if($this->dokuSecretKey==$id)
+        {
+            $data = $request->all();
+            $confirmation_code = $data['order']['invoice_number'];
+            $transaction_status = $data['transaction']['status'];
+
+            $shoppingcart = Shoppingcart::where('confirmation_code',$confirmation_code)->first();
+            if($shoppingcart!==null)
             {
-                 BookingHelper::confirm_payment($shoppingcart,"PENDING");      
-            }
-            else
-            {
-                 BookingHelper::confirm_payment($shoppingcart,"CANCELED");
+                if($transaction_status=="SUCCESS")
+                {
+                    BookingHelper::confirm_payment($shoppingcart,"CONFIRMED");
+                }
+                else if ($transaction_status=="PENDING")
+                {
+                    BookingHelper::confirm_payment($shoppingcart,"PENDING");      
+                }
+                else
+                {
+                    BookingHelper::confirm_payment($shoppingcart,"CANCELED");
+                }
             }
         }
         return response('OK', 200)->header('Content-Type', 'text/plain');
     }
 
-    public function confirmpaymentmidtrans(Request $request)
+    public function confirmpaymentmidtrans($id,Request $request)
     {
-        
-        switch ($request->method()) {
-        case 'POST':
-        
+        if($this->midtransServerKey==$id)
+        {
             $data = $request->all();
-            
             $shoppingcart = Shoppingcart::where('confirmation_code',$data['order_id'])->first();
             if($shoppingcart!==null)
             {
@@ -800,16 +795,7 @@ class APIController extends Controller
                     
                 }
             }
-
-            return response('OK', 200)->header('Content-Type', 'text/plain');
-            break;
-
-        default:
-            $shoppingcart = Shoppingcart::where('confirmation_code',$request->input('order_id'))->firstOrFail();
-            return redirect($this->appUrl .'/booking/receipt/'.$shoppingcart->id.'/'.$shoppingcart->session_id);
-            break;
         }
-        
     }
 
     public function createpaymentpaypal(Request $request)

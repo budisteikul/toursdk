@@ -371,7 +371,7 @@ class ContentHelper {
         ];
 
         $bank_transfer_list[] = [
-            'value' => 'doku-permata', 'label' => 'PERMATA VA', 'image' => '/img/bank/permata.png',
+            'value' => 'midtrans-permata', 'label' => 'PERMATA VA', 'image' => '/img/bank/permata.png',
         ];
 
         $bank_transfer_list[] = [

@@ -1669,7 +1669,7 @@ class BookingHelper {
 	{
 		if($status=="CONFIRMED")
 		{
-			if($shoppingcart->booking_status!="CONFIRMED")
+			if($shoppingcart->booking_status=="PENDING")
 			{
 				$shoppingcart->booking_status = 'CONFIRMED';
 				$shoppingcart->save();
@@ -1692,7 +1692,7 @@ class BookingHelper {
 
 		if($status=="CANCELED")
 		{
-			if($shoppingcart->booking_status!="CANCELED")
+			if($shoppingcart->booking_status=="PENDING")
 			{
 				$shoppingcart->booking_status = 'CANCELED';
 				$shoppingcart->save();

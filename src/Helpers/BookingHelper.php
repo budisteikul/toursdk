@@ -1777,7 +1777,7 @@ class BookingHelper {
         $mins_expired  = $date2->diffInMinutes($date1, true);
         $date_expired = Carbon::parse($date_arr[0])->formatLocalized('%Y-%m-%d %H:%M:%S');
         $date_now = Carbon::parse($date1)->formatLocalized('%Y-%m-%d %H:%M:%S +0700');
-
+        
         $transaction = new \stdClass();
         $transaction->id = $shoppingcart->confirmation_code;
         $transaction->amount = $shoppingcart->due_now;

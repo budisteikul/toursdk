@@ -925,6 +925,10 @@ class APIController extends Controller
                 {
                     window.openAppRoute(data.redirect);
                 }
+                else
+                {
+                    console.log(data.redirect);
+                }
             });
 
         } 

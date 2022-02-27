@@ -59,6 +59,11 @@ class BookingHelper {
         return env("APP_NAME");
     }
 
+    public static function env_appPaymentUrl()
+    {
+        return env("APP_PAYMENT_URL");
+    }
+
     public static function env_paypalClientId()
     {
         return env("PAYPAL_CLIENT_ID");
@@ -1712,9 +1717,9 @@ class BookingHelper {
 		//$url = self::env_appApiUrl();
 
 		//external
-		$url = 'https://payment.vertikaltrip.com/api';
+		$url = self::env_appPaymentUrl();
 
-		$endpoint = $url .'/payment/connect';
+		$endpoint = $url .'/api/payment/connect';
 
         $headers = [
               'Accept' => 'application/jsons',

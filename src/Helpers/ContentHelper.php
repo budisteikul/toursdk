@@ -367,41 +367,41 @@ class ContentHelper {
         }
         
         $bank_transfer_list[] = [
-            'value' => 'doku-mandiri', 'label' => 'MANDIRI VA', 'image' => '/img/bank/mandiri.png',
+            'value' => 'doku-mandiri', 'label' => 'MANDIRI VA', 'image' => url('/img/bank/mandiri.png'),
         ];
 
         $bank_transfer_list[] = [
-            'value' => 'midtrans-permata', 'label' => 'PERMATA VA', 'image' => '/img/bank/permata.png',
+            'value' => 'midtrans-permata', 'label' => 'PERMATA VA', 'image' => url('/img/bank/permata.png'),
         ];
 
         $bank_transfer_list[] = [
-            'value' => 'doku-danamon', 'label' => 'DANAMON VA', 'image' => '/img/bank/danamon.png',
+            'value' => 'doku-danamon', 'label' => 'DANAMON VA', 'image' => url('/img/bank/danamon.png'),
         ];
 
         $bank_transfer_list[] = [
-            'value' => 'doku-bni', 'label' => 'BNI VA', 'image' => '/img/bank/bni.png',
+            'value' => 'doku-bni', 'label' => 'BNI VA', 'image' => url('/img/bank/bni.png'),
         ];
 
         $bank_transfer_list[] = [
-            'value' => 'doku-bri', 'label' => 'BRI VA', 'image' => '/img/bank/bri.png',
+            'value' => 'doku-bri', 'label' => 'BRI VA', 'image' => url('/img/bank/bri.png'),
         ];
 
         $bank_transfer_list[] = [
-            'value' => 'doku-cimb', 'label' => 'CIMB NIAGA VA',  'image' => '/img/bank/cimb.png',
+            'value' => 'doku-cimb', 'label' => 'CIMB NIAGA VA',  'image' => url('/img/bank/cimb.png'),
         ];
 
         $bank_transfer_list[] = [
-            'value' => 'doku-mandirisyariah', 'label' => 'BSI VA', 'image' => '/img/bank/bsi.png',
+            'value' => 'doku-mandirisyariah', 'label' => 'BSI VA', 'image' => url('/img/bank/bsi.png'),
         ];
 
         
         $bank_transfer_list[] = [
-            'value' => 'oyindonesia-btpn', 'label' => 'JENIUS (BTPN) VA', 'image' => '/img/bank/jenius.png',
+            'value' => 'oyindonesia-btpn', 'label' => 'JENIUS (BTPN) VA', 'image' => url('/img/bank/jenius.png'),
         ];
         
 
         $bank_transfer_list[] = [
-            'value' => 'doku-doku', 'label' => 'DOKU VA', 'image' => '/img/bank/doku.png',
+            'value' => 'doku-doku', 'label' => 'DOKU VA', 'image' => url('/img/bank/doku.png'),
         ];
         
 

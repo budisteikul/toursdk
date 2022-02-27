@@ -33,13 +33,7 @@ use Illuminate\Support\Facades\Storage;
 
 class APIController extends Controller
 {
-    public function test(Request $request)
-    {
-        
-        
-
-       
-    }
+    
     
     public function __construct()
     {

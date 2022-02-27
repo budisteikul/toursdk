@@ -34,6 +34,21 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class BookingHelper {
 	
+	public static function env_dokuSecretKey()
+    {
+        return env("DOKU_SECRET_KEY");
+    }
+
+    public static function env_oyApiKey()
+    {
+        return env("OY_API_KEY");
+    }
+
+    public static function env_midtransServerKey()
+    {
+        return env("MIDTRANS_SERVER_KEY");
+    }
+
 	public static function env_paypalCurrency()
     {
         return env("PAYPAL_CURRENCY");
@@ -54,29 +69,9 @@ class BookingHelper {
         return env("APP_URL");
     }
 
-    public static function env_appName()
-    {
-        return env("APP_NAME");
-    }
-
     public static function env_appPaymentUrl()
     {
         return env("APP_PAYMENT_URL");
-    }
-
-    public static function env_paypalClientId()
-    {
-        return env("PAYPAL_CLIENT_ID");
-    }
-
-    public static function env_midtransClientKey()
-    {
-        return env("MIDTRANS_CLIENT_KEY");
-    }
-
-    public static function env_midtransEnv()
-    {
-        return env("MIDTRANS_ENV");
     }
 
 	public static function webhook_insert_shoppingcart($data)
@@ -1783,19 +1778,6 @@ class BookingHelper {
         $date_expired = Carbon::parse($date_arr[0])->formatLocalized('%Y-%m-%d %H:%M:%S');
         $date_now = Carbon::parse($date1)->formatLocalized('%Y-%m-%d %H:%M:%S +0700');
         
-        $transaction = new \stdClass();
-        $transaction->id = $shoppingcart->confirmation_code;
-        $transaction->amount = $shoppingcart->due_now;
-        $transaction->payment_provider = $payment_provider;
-        $transaction->bank = $bank;
-        $transaction->mins_expired = $mins_expired;
-        $transaction->date_expired = $date_expired;
-        $transaction->date_now = $date_now;
-
-        $data = new \stdClass();
-        $data->contact = $contact;
-        $data->transaction = $transaction;
-
         $response = NULL;
         $payment_type = NULL;
 		$bank_name = NULL;
@@ -1814,9 +1796,24 @@ class BookingHelper {
 		$rate_to = NULL;
 		$payment_status = NULL;
 
+		$transaction = new \stdClass();
+        $transaction->id = $shoppingcart->confirmation_code;
+        $transaction->amount = $shoppingcart->due_now;
+        $transaction->payment_provider = $payment_provider;
+        $transaction->bank = $bank;
+        $transaction->mins_expired = $mins_expired;
+        $transaction->date_expired = $date_expired;
+        $transaction->date_now = $date_now;
+        $transaction->api_key = NULL;
+
+        $data = new \stdClass();
+        $data->contact = $contact;
+        $data->transaction = $transaction;
+
 		switch($payment_provider)
 		{
 			case "oyindonesia":
+				$data->transaction->api_key = self::env_oyApiKey();
 				$amount = $shoppingcart->due_now;
 				$currency = 'IDR';
 				$rate = 1;
@@ -1825,6 +1822,7 @@ class BookingHelper {
 				//$response = OyHelper::createPayment($data);
 			break;
 			case "doku":
+				$data->transaction->api_key = self::env_dokuSecretKey();
 				$amount = $shoppingcart->due_now;
 				$currency = 'IDR';
 				$rate = 1;
@@ -1833,6 +1831,7 @@ class BookingHelper {
 				$response = DokuHelper::createPayment($data);
 			break;
 			case "midtrans":
+				$data->transaction->api_key = self::env_midtransServerKey();
 				$amount = $shoppingcart->due_now;
 				$currency = 'IDR';
 				$rate = 1;

@@ -10,6 +10,14 @@ use Illuminate\Http\Request;
 
 class PaymentController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->midtransServerKey = env("MIDTRANS_SERVER_KEY",NULL);
+        $this->oyApiKey = env("OY_API_KEY",NULL);
+        $this->dokuSecretKey = env("DOKU_SECRET_KEY",NULL);
+    }
+
 	public function payment_connect(Request $request)
     {
     	$response = NULL;
@@ -19,13 +27,22 @@ class PaymentController extends Controller
         switch($data->transaction->payment_provider)
         {
         	case "oyindonesia":
-        		$response = OyHelper::createPayment($data);
+                if($this->oyApiKey==$data->transaction->api_key)
+                {
+                    $response = OyHelper::createPayment($data);
+                }
         	break;
         	case "midtrans":
-        		$response = MidtransHelper::createPayment($data);
+                if($this->midtransServerKey==$data->transaction->api_key)
+                {
+        		  $response = MidtransHelper::createPayment($data);
+                }
         	break;
         	case "doku":
-        		$response = DokuHelper::createPayment($data);
+                if($this->dokuSecretKey==$data->transaction->api_key)
+                {
+        		  $response = DokuHelper::createPayment($data);
+                }
         	break;
         	default:
         		return "";

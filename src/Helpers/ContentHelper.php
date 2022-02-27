@@ -367,11 +367,11 @@ class ContentHelper {
         }
         
         $bank_transfer_list[] = [
-            'value' => 'doku-mandiri', 'label' => 'MANDIRI VA', 'image' => url('/img/bank/mandiri.png'),
+            'value' => 'oyindonesia-mandiri', 'label' => 'MANDIRI VA', 'image' => url('/img/bank/mandiri.png'),
         ];
 
         $bank_transfer_list[] = [
-            'value' => 'midtrans-permata', 'label' => 'PERMATA VA', 'image' => url('/img/bank/permata.png'),
+            'value' => 'oyindonesia-permata', 'label' => 'PERMATA VA', 'image' => url('/img/bank/permata.png'),
         ];
 
         $bank_transfer_list[] = [
@@ -379,15 +379,15 @@ class ContentHelper {
         ];
 
         $bank_transfer_list[] = [
-            'value' => 'doku-bni', 'label' => 'BNI VA', 'image' => url('/img/bank/bni.png'),
+            'value' => 'oyindonesia-bni', 'label' => 'BNI VA', 'image' => url('/img/bank/bni.png'),
         ];
 
         $bank_transfer_list[] = [
-            'value' => 'doku-bri', 'label' => 'BRI VA', 'image' => url('/img/bank/bri.png'),
+            'value' => 'oyindonesia-bri', 'label' => 'BRI VA', 'image' => url('/img/bank/bri.png'),
         ];
 
         $bank_transfer_list[] = [
-            'value' => 'doku-cimb', 'label' => 'CIMB NIAGA VA',  'image' => url('/img/bank/cimb.png'),
+            'value' => 'oyindonesia-cimb', 'label' => 'CIMB NIAGA VA',  'image' => url('/img/bank/cimb.png'),
         ];
 
         $bank_transfer_list[] = [

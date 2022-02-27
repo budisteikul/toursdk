@@ -1737,7 +1737,7 @@ class BookingHelper {
         {
         	return response()->json([
             	"id" => "1",
-            	"redirect" => selff::env_appUrl() .'/page/not/found'
+            	"redirect" => self::env_appUrl() .'/page/not/found'
         	]);
         }
 	}

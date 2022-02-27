@@ -31,6 +31,7 @@
 	Route::post('/api/promocode', 'budisteikul\toursdk\Controllers\APIController@applypromocode');
 	Route::post('/api/promocode/remove', 'budisteikul\toursdk\Controllers\APIController@removepromocode');
 
+	Route::post('/api/disbursement/connect', 'budisteikul\toursdk\Controllers\DisbursementController@disbursement_connect');
 	Route::post('/api/payment/connect', 'budisteikul\toursdk\Controllers\PaymentController@payment_connect');
 
 	Route::post('/api/payment/paypal', 'budisteikul\toursdk\Controllers\APIController@createpaymentpaypal');

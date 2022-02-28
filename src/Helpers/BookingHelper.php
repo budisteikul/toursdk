@@ -1987,15 +1987,15 @@ class BookingHelper {
 		$value = '';
 		if($shoppingcart->booking_status=="CONFIRMED")
 		{
-			$value = '<span class="badge badge-success">CONFIRMED</span>';
+			$value = '<span class="badge badge-success" style="font-size: 20px;">CONFIRMED</span>';
 		}
 		else if($shoppingcart->booking_status=="PENDING")
 		{
-			$value = '<span class="badge badge-warning">PENDING</span>';
+			$value = '<span class="badge badge-warning" style="font-size: 20px;">PENDING</span>';
 		}
 		else
 		{
-			$value = '<span class="badge badge-danger">CANCELED</span>';
+			$value = '<span class="badge badge-danger" style="font-size: 20px;">CANCELED</span>';
 		}
 		return $value;
 	}

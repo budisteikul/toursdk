@@ -12,6 +12,7 @@ use budisteikul\toursdk\Helpers\ContentHelper;
 use budisteikul\toursdk\Helpers\FirebaseHelper;
 use budisteikul\toursdk\Helpers\PaypalHelper;
 
+use budisteikul\toursdk\Models\Disbursement;
 use budisteikul\toursdk\Models\Category;
 use budisteikul\toursdk\Models\Review;
 use budisteikul\toursdk\Models\Product;
@@ -670,7 +671,26 @@ class APIController extends Controller
             ], 200);
     }
     
-    
+    public function confirmdisbursementoy($id,Request $request)
+    {
+        if($this->oyApiKey==$id)
+        {
+            $data = $request->all();
+            $transaction_id = $data['partner_trx_id'];
+            $status = $data['status']['code'];
+
+            $disbursement = Disbursement::where('transaction_id',$transaction_id)->first();
+            if($disbursement!==null)
+            {
+                if($status=="000")
+                {
+                    $disbursement->status = 2;
+                    $disbursement->save();
+                }
+            }
+        }
+        return response('OK', 200)->header('Content-Type', 'text/plain');
+    }
 
     public function confirmpaymentpaypal(Request $request)
     {

@@ -2018,7 +2018,7 @@ class BookingHelper {
             {
             	$text = '';
 
-            	$text .= '<br />Total : '.$shoppingcart->shoppingcart_payment->currency.' '. $shoppingcart->shoppingcart_payment->amount .'<br />';
+            	$text .= 'Total : '.$shoppingcart->shoppingcart_payment->currency.' '. $shoppingcart->shoppingcart_payment->amount .'<br />';
 				$text .= 'Paypal Rate : '. BookingHelper::get_rate($shoppingcart) .'<br />';
             	
 
@@ -2027,8 +2027,8 @@ class BookingHelper {
 					case 1:
 						return '
 								<div class="card mb-4">
+								<span class="badge badge-success invoice-color-success" style="font-size:20px;"><i class="fab fa-paypal"></i> PAYPAL AUTHORIZED</span>
 								<div class="card-body bg-light">
-									<span class="badge badge-success mb-2 invoice-color-success" style="font-size:20px;"><i class="fab fa-paypal"></i> PAYPAL AUTHORIZED</span>
 								'. $text .'
 								</div>
 								</div>';
@@ -2036,8 +2036,8 @@ class BookingHelper {
 					case 2:
 						return '
 								<div class="card mb-4">
+								<span class="badge badge-success invoice-color-success" style="font-size:20px;"><i class="fab fa-paypal"></i> PAYPAL PAID</span>
 								<div class="card-body bg-light">
-									<span class="badge badge-success mb-2 invoice-color-success" style="font-size:20px;"><i class="fab fa-paypal"></i> PAYPAL PAID</span>
 								'. $text .'
 								</div>
 								</div>';
@@ -2045,8 +2045,8 @@ class BookingHelper {
 					case 3:
 						return '
 								<div class="card mb-4">
+								<span class="badge badge-danger invoice-color-danger" style="font-size:20px;"><i class="fab fa-paypal"></i> PAYPAL VOIDED</span>
 								<div class="card-body bg-light">
-									<span class="badge badge-danger mb-2 invoice-color-danger" style="font-size:20px;"><i class="fab fa-paypal"></i> PAYPAL VOIDED</span>
 								'. $text .'
 								</div>
 								</div>';
@@ -2062,26 +2062,22 @@ class BookingHelper {
 				{
 					case 2:
 						return '<div class="card mb-4">
-								<div class="card-body bg-light">
 								<span class="badge badge-success invoice-color-success" style="font-size:20px;">
 								<i class="fas fa-university"></i> BANK TRANSFER PAID </span>
-								</div>
 								</div>';
 						break;
 					case 3:
 						return '<div class="card mb-4">
-								<div class="card-body bg-light">
 								<span class="badge badge-danger invoice-color-danger" style="font-size:20px;">
 								<i class="fas fa-university"></i> BANK TRANSFER UNPAID </span>
-								</div>
 								</div>';
 						break;	
 					case 4:
 						return '
 								<div class="card mb-4">
+								<span class="badge badge-warning invoice-color-warning" style="font-size:20px;">
+								<i class="fas fa-university"></i> WAITING FOR PAYMENT </span>
 								<div class="card-body bg-light">
-								<span class="badge badge-warning mb-2 invoice-color-warning" style="font-size:20px;">
-								<i class="fas fa-university"></i> WAITING FOR PAYMENT </span><br />
 								Bank Name : <b>'. Str::upper($shoppingcart->shoppingcart_payment->bank_name) .' ('. $shoppingcart->shoppingcart_payment->bank_code .')</b> <br />
 								Virtual Account Number : <b>'. $shoppingcart->shoppingcart_payment->va_number .'</b> <br />
 								Total Bill : <b>'. GeneralHelper::formatRupiah($shoppingcart->shoppingcart_payment->amount) .'</b><br />
@@ -2100,29 +2096,27 @@ class BookingHelper {
 				{
 					case 2:
 						return '<div class="card mb-4">
-								<div class="card-body bg-light">
 								<span class="badge badge-success invoice-color-success" style="font-size:20px;">
 								<i class="fas fa-wallet"></i> E-WALLET PAID </span>
-								</div>
 								</div>';
 						break;
 					case 3:
 						return '<div class="card mb-4">
-								<div class="card-body bg-light">
 								<span class="badge badge-danger invoice-color-danger" style="font-size:20px;">
 								<i class="fas fa-wallet"></i> E-WALLET UNPAID </span>
-								</div>
 								</div>';
 						break;	
 					case 4:
 						return '
 								<div class="card mb-4">
+								<span class="badge badge-warning invoice-color-warning" style="font-size:20px;">
+								<i class="fas fa-wallet"></i> WAITING FOR PAYMENT </span>
 								<div class="card-body bg-light">
-								<span class="badge badge-warning mb-2 invoice-color-warning" style="font-size:20px;">
-								<i class="fas fa-wallet"></i> WAITING FOR PAYMENT </span><br />
-								<img width="165" src="'. $shoppingcart->shoppingcart_payment->qrcode .'"><br />
-								<a href="'. self::env_appApiUrl() .'/qrcode/'.$shoppingcart->session_id.'/'. $shoppingcart->confirmation_code .'" class="invoice-hilang btn btn-success mt-2"><i class="fas fa-download"></i> Download QRCODE</a>
+								<b>SCAN HERE</b><br>
+								<img class="img-fluid" src="'. $shoppingcart->shoppingcart_payment->qrcode .'"><br />
+								
 								</div>
+								<a href="'. self::env_appApiUrl() .'/qrcode/'.$shoppingcart->session_id.'/'. $shoppingcart->confirmation_code .'" type="button" class="invoice-hilang btn btn-success invoice-hilang ">or Download QRCODE <i class="fas fa-download"></i> </a>
 								</div>
 								';
 						break;

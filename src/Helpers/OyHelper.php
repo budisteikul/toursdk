@@ -3,6 +3,7 @@ namespace budisteikul\toursdk\Helpers;
 use budisteikul\toursdk\Helpers\ImageHelper;
 use Carbon\Carbon;
 
+
 class OyHelper {
 	
   public static function env_oyApiKey()
@@ -124,6 +125,9 @@ class OyHelper {
         $data = $response->getBody()->getContents();
         $data = json_decode($data);
         
+
+        
+
         return $data;
        
   }
@@ -145,8 +149,11 @@ class OyHelper {
         else
         {
           $data1 = self::createSnap($data);
+          
           $data2 = self::createCharge($data,$data1->snaptoken,$data->transaction->bank);
+          
           $data3 = self::status($data1->snaptoken);
+          
           $response->payment_type = 'bank_transfer';
           $response->bank_name = self::bankCode($data->transaction->bank)->bank_name;
           $response->bank_code = $data3->data->sender_bank;
@@ -171,8 +178,13 @@ class OyHelper {
         $response = $client->request('GET',$endpoint);
 
         $data = $response->getBody()->getContents();
+
+      
+
         $data = json_decode($data);
+
         
+
         return $data;
   }
 
@@ -235,6 +247,9 @@ class OyHelper {
             );
 
             $data = $response->getBody()->getContents();
+
+            
+
             $data = json_decode($data);
 
             
@@ -271,8 +286,13 @@ class OyHelper {
         );
 
         $data = $response->getBody()->getContents();
+
+
+
         $data = json_decode($data);
+
         
+
         $response = new \stdClass();
         $response->snaptoken = $data->payment_link_id;
         $response->link = $data->url;

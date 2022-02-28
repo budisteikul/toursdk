@@ -7,6 +7,7 @@ use budisteikul\toursdk\Helpers\OyHelper;
 use budisteikul\toursdk\Helpers\DokuHelper;
 
 use Illuminate\Http\Request;
+use Cache;
 
 class PaymentController extends Controller
 {
@@ -22,7 +23,7 @@ class PaymentController extends Controller
     {
     	$response = NULL;
     	$data = $request->getContent();
-    	$data = json_decode($data);
+        $data = json_decode($data);
     	
         switch($data->transaction->payment_provider)
         {

@@ -747,10 +747,19 @@ class APIController extends Controller
         {
             $data = $request->all();
             $confirmation_code = $data['partner_tx_id'];
+            
             $shoppingcart = Shoppingcart::where('confirmation_code',$confirmation_code)->first();
             if($shoppingcart!==null)
             {
-                BookingHelper::confirm_payment($shoppingcart,"CONFIRMED");
+                if(isset($data['status']))
+                {
+                    $settlement_status = strtolower($data['status']);
+                    if($settlement_status=="complete")
+                    {
+                        BookingHelper::confirm_payment($shoppingcart,"CONFIRMED");
+                    }
+                }
+                
             }
         }
         return response('OK', 200)->header('Content-Type', 'text/plain');

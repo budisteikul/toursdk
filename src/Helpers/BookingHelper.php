@@ -1818,8 +1818,11 @@ class BookingHelper {
 				$currency = 'IDR';
 				$rate = 1;
 				$payment_status = 4;
+
 				$response = self::payment_connect($data);
+				
 				//$response = OyHelper::createPayment($data);
+
 			break;
 			case "doku":
 				$data->transaction->api_key = self::env_dokuSecretKey();

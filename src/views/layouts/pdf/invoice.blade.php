@@ -222,12 +222,12 @@ footer {
        </tbody>
      </table>
      
-   <hr style="border:none; height:1px; color: #AAA; background-color: #AAA; margin-top:0px; margin-bottom:0px;">  
+   <hr style="border:none; height:1px; color: #AAA; background-color: #AAA; margin-top:0px; margin-bottom:10px;">  
 
 <table border="0" cellspacing="0" cellpadding="0" style="margin-bottom:20px; margin-top:0px;">
        <tbody>
          <tr>
-           <td width="50%" style="background-color:#FFFFFF; text-align:left; padding-left:0px; padding-top:0px; ">
+           <td valign="top" width="50%" style="background-color:#FFFFFF; text-align:left; padding-left:0px; padding-top:0px; ">
            
          <div id="client">
           <div class="to" style="font-size: 14px; color: #0087C3; line-height: 18px; ">INVOICE TO</div>
@@ -238,9 +238,9 @@ footer {
         </div>
            				
            </td>
-           <td style="background-color:#FFFFFF; text-align:right; padding-right:0px; padding-top:0px;">
+           <td valign="top" style="background-color:#FFFFFF; text-align:right; padding-right:0px; padding-top:0px;">
             <div id="invoice">
-          		<h1>INVOICE</h1>
+          		<h1 style="margin-top: 5px;">INVOICE</h1>
               <div class="date" style=" line-height: 18px; font-size:14px;">
                 No : <b>{{ $shoppingcart->confirmation_code }}</b>
               </div>

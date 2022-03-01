@@ -760,11 +760,11 @@ class APIController extends Controller
                     }
                     if($settlement_status=="expired")
                     {
-                        BookingHelper::confirm_payment($shoppingcart,"CANCELLED");
+                        BookingHelper::confirm_payment($shoppingcart,"CANCELED");
                     }
                     if($settlement_status=="failed")
                     {
-                        BookingHelper::confirm_payment($shoppingcart,"CANCELLED");
+                        BookingHelper::confirm_payment($shoppingcart,"CANCELED");
                     }
                 }
                 

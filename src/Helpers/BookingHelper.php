@@ -2127,9 +2127,7 @@ class BookingHelper {
             if($shoppingcart->shoppingcart_payment->payment_provider=="none")
             {
             	return '<div class="card mb-4">
-								<div class="card-body bg-light">
-									<span class="badge badge-success" style="font-size:20px;">PAID</span>
-								</div>
+            			<span class="badge badge-success" style="font-size:20px;">INVOICED</span>
 						</div>';
             }
 		}

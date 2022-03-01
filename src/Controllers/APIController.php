@@ -758,6 +758,14 @@ class APIController extends Controller
                     {
                         BookingHelper::confirm_payment($shoppingcart,"CONFIRMED");
                     }
+                    if($settlement_status=="expired")
+                    {
+                        BookingHelper::confirm_payment($shoppingcart,"CANCELLED");
+                    }
+                    if($settlement_status=="failed")
+                    {
+                        BookingHelper::confirm_payment($shoppingcart,"CANCELLED");
+                    }
                 }
                 
             }

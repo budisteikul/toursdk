@@ -746,8 +746,7 @@ class APIController extends Controller
         if($this->oyApiKey==$id)
         {
             $data = $request->all();
-            print_r($data);
-            exit();
+
             $confirmation_code = $data['partner_tx_id'];
             
             $shoppingcart = Shoppingcart::where('confirmation_code',$confirmation_code)->first();
@@ -756,16 +755,23 @@ class APIController extends Controller
                 if(isset($data['status']))
                 {
                     $settlement_status = strtolower($data['status']);
+
+                    print($settlement_status);
+                    print($confirmation_code);
+
                     if($settlement_status=="complete")
                     {
                         BookingHelper::confirm_payment($shoppingcart,"CONFIRMED");
                     }
                     if($settlement_status=="expired")
                     {
+                         print('aaa');
+                        print('bbb');
                         BookingHelper::confirm_payment($shoppingcart,"CANCELED");
                     }
                     if($settlement_status=="failed")
                     {
+                       
                         BookingHelper::confirm_payment($shoppingcart,"CANCELED");
                     }
                 }

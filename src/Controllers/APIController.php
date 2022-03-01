@@ -756,17 +756,12 @@ class APIController extends Controller
                 {
                     $settlement_status = strtolower($data['status']);
 
-                    print($settlement_status);
-                    print($confirmation_code);
-
                     if($settlement_status=="complete")
                     {
                         BookingHelper::confirm_payment($shoppingcart,"CONFIRMED");
                     }
                     if($settlement_status=="expired")
                     {
-                         print('aaa');
-                        print('bbb');
                         BookingHelper::confirm_payment($shoppingcart,"CANCELED");
                     }
                     if($settlement_status=="failed")

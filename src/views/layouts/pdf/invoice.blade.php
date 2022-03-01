@@ -227,7 +227,7 @@ footer {
 <table border="0" cellspacing="0" cellpadding="0" style="margin-bottom:20px; margin-top:0px;">
        <tbody>
          <tr>
-           <td style="background-color:#FFFFFF; text-align:left; padding-left:0px; padding-top:0px; ">
+           <td width="50%" style="background-color:#FFFFFF; text-align:left; padding-left:0px; padding-top:0px; ">
            
          <div id="client">
           <div class="to" style="font-size: 14px; color: #0087C3; line-height: 18px; ">INVOICE TO</div>

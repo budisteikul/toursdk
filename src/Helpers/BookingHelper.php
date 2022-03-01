@@ -2113,7 +2113,7 @@ class BookingHelper {
 								<i class="fas fa-wallet"></i> WAITING FOR PAYMENT </span>
 								<div class="card-body bg-light">
 								<b>SCAN HERE</b><br>
-								<img class="img-fluid" src="'. $shoppingcart->shoppingcart_payment->qrcode .'"><br />
+								<img class="img-fluid" style="max-width:200px;" src="'. $shoppingcart->shoppingcart_payment->qrcode .'"><br />
 								
 								</div>
 								<a href="'. self::env_appApiUrl() .'/qrcode/'.$shoppingcart->session_id.'/'. $shoppingcart->confirmation_code .'" type="button" class="invoice-hilang btn btn-success invoice-hilang ">or Download QRCODE <i class="fas fa-download"></i> </a>

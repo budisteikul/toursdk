@@ -746,6 +746,8 @@ class APIController extends Controller
         if($this->oyApiKey==$id)
         {
             $data = $request->all();
+            print_r($data);
+            exit();
             $confirmation_code = $data['partner_tx_id'];
             
             $shoppingcart = Shoppingcart::where('confirmation_code',$confirmation_code)->first();

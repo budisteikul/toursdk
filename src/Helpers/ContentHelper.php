@@ -76,6 +76,8 @@ class ContentHelper {
         $pdfUrl = array();
         if($shoppingcart->shoppingcart_payment->payment_type=="ewallet")
         {
+            if($shoppingcart->shoppingcart_payment->payment_status==4)
+            {
                 $pdfUrl = '
                     <div class="pl-2">
                     1.  Open your <b>E-wallet</b> or <b>Mobile Banking</b> apps. <br />
@@ -86,6 +88,7 @@ class ContentHelper {
                     4.  Enter your <b>PIN</b>. <br />
                     5.  Your transaction is complete. 
                     </div>';
+            }
         }
 
         if($shoppingcart->shoppingcart_payment->payment_type=="bank_transfer")

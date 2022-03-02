@@ -39,8 +39,9 @@ class BookingConfirmedMail extends Mailable
         $mail = $this->view('toursdk::layouts.mail.booking-confirmed')
                     ->text('toursdk::layouts.mail.booking-confirmed_plain')
                     ->subject('Booking Confirmation')
-                    ->with('shoppingcart',$shoppingcart)
-                    ->attachData($invoice->output(), 'Invoice-'. $shoppingcart->confirmation_code .'.pdf', ['mime' => 'application/pdf']);
+                    ->with('shoppingcart',$shoppingcart);
+                    
+                    //->attachData($invoice->output(), 'Invoice-'. $shoppingcart->confirmation_code .'.pdf', ['mime' => 'application/pdf']);
 
         /*
         if($shoppingcart->shoppingcart_payment->payment_type=="bank_transfer")
@@ -50,6 +51,7 @@ class BookingConfirmedMail extends Mailable
         }
         */
 
+        /*
         if($shoppingcart->shoppingcart_payment->payment_status!=4)
         {
             foreach($shoppingcart->shoppingcart_products()->get() as $shoppingcart_product)
@@ -60,7 +62,7 @@ class BookingConfirmedMail extends Mailable
                 $mail->attachData($ticket->output(), 'Ticket-'. $shoppingcart_product->product_confirmation_code .'.pdf', ['mime' => 'application/pdf']);
             }
         }
-        
+        */
 
     }
 }

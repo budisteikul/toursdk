@@ -314,13 +314,13 @@ footer {
           @if($shoppingcart->due_on_arrival>0)
           <tr>
             <td colspan="2"></td>
-            <td colspan="2">DUE ON ARRIVAL</td>
+            <td colspan="2">DUE ON ARRIVAL ({{$shoppingcart->currency}})</td>
             <td>{{ $GeneralHelper->numberFormat($shoppingcart->due_on_arrival) }}</td>
           </tr>
           @endif
           <tr>
             <td colspan="2"></td>
-            <td colspan="2">DUE NOW</td>
+            <td colspan="2">DUE NOW ({{$shoppingcart->currency}})</td>
             <td>{{ $GeneralHelper->numberFormat($shoppingcart->due_now) }}</td>
           </tr>
           

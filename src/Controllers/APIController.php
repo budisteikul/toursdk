@@ -48,6 +48,7 @@ class APIController extends Controller
         $this->appUrl = env("APP_URL");
     }
 
+    
 
     public function product_add(Request $request)
     {

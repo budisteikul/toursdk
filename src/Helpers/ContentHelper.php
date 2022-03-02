@@ -413,7 +413,7 @@ class ContentHelper {
                 'subtotal' => GeneralHelper::numberFormat($shoppingcart->subtotal),
                 'discount' => GeneralHelper::numberFormat($shoppingcart->discount),
                 'total' => GeneralHelper::numberFormat($shoppingcart->total),
-                'total_paypal' => BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,self::env_paypalCurrency()),
+                'total_paypal' => BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,self::env_paypalCurrency(),"PAYPAL"),
                 'due_now' => GeneralHelper::numberFormat($shoppingcart->due_now),
                 'due_on_arrival' => GeneralHelper::numberFormat($shoppingcart->due_on_arrival),
                 'products' => $dataProducts,

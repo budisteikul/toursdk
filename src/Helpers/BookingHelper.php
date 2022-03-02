@@ -180,18 +180,24 @@ class BookingHelper {
 					
 					if($type_product=="product")
 					{
+						$new_currency = 'IDR';
+						$new_price = self::convert_currency($lineitems[$j]['unitPrice'],$data['currency'],$new_currency);
+						$new_discount = self::convert_currency($lineitems[$j]['discountedUnitPrice'],$data['currency'],$new_currency);
+
 						$shoppingcart_product_detail = new ShoppingcartProductDetail();
 						$shoppingcart_product_detail->shoppingcart_product_id = $shoppingcart_product->id;
 						$shoppingcart_product_detail->type = $type_product;
 						$shoppingcart_product_detail->title = $data['activityBookings'][$i]['product']['title'];
 						$shoppingcart_product_detail->people = $lineitems[$j]['people'];
 						$shoppingcart_product_detail->qty = $lineitems[$j]['quantity'];
-						$shoppingcart_product_detail->price = $lineitems[$j]['unitPrice'];
+						$shoppingcart_product_detail->price = $new_price;
 						$shoppingcart_product_detail->unit_price = $unitPrice;
-						$subtotal = $lineitems[$j]['unitPrice'] * $shoppingcart_product_detail->qty;
-						$discount = $subtotal - ($lineitems[$j]['discountedUnitPrice'] * $shoppingcart_product_detail->qty);
+
+						$subtotal = $new_price * $shoppingcart_product_detail->qty;
+						$discount = $subtotal - ($new_discount * $shoppingcart_product_detail->qty);
 						$total = $subtotal - $discount;
-						$shoppingcart_product_detail->currency = $data['currency'];
+
+						$shoppingcart_product_detail->currency = $new_currency;
 						$shoppingcart_product_detail->discount = $discount;
 						$shoppingcart_product_detail->subtotal = $subtotal;
 						$shoppingcart_product_detail->total = $total;
@@ -204,18 +210,26 @@ class BookingHelper {
 					
 					if($type_product=="pickup")
 					{
+						$new_currency = 'IDR';
+						$new_price = self::convert_currency($lineitems[$j]['total'],$data['currency'],$new_currency);
+						$new_discount = self::convert_currency($lineitems[$j]['discountedUnitPrice'],$data['currency'],$new_currency);
+
 						$shoppingcart_product_detail = new ShoppingcartProductDetail();
 						$shoppingcart_product_detail->shoppingcart_product_id = $shoppingcart_product->id;
 						$shoppingcart_product_detail->type = $type_product;
 						$shoppingcart_product_detail->title = 'Pick-up and drop-off services';
 						$shoppingcart_product_detail->people = $lineitems[$j]['people'];
 						$shoppingcart_product_detail->qty = 1;
-						$shoppingcart_product_detail->price = $lineitems[$j]['total'];
+
+						$shoppingcart_product_detail->price = $new_price;
 						$shoppingcart_product_detail->unit_price = $unitPrice;
-						$subtotal = $lineitems[$j]['total'];
-						$discount = $subtotal - $lineitems[$j]['discountedUnitPrice'];
+
+						//$subtotal = $lineitems[$j]['total'];
+						$subtotal = $new_price * $shoppingcart_product_detail->qty;
+						$discount = $subtotal - $new_discount;
 						$total = $subtotal - $discount;
-						$shoppingcart_product_detail->currency = $data['currency'];
+
+						$shoppingcart_product_detail->currency = $new_currency;
 						$shoppingcart_product_detail->discount = $discount;
 						$shoppingcart_product_detail->subtotal = $subtotal;
 						$shoppingcart_product_detail->total = $total;
@@ -228,8 +242,9 @@ class BookingHelper {
 					
 				}
 				
+				$new_currency = 'IDR';
 				ShoppingcartProduct::where('id',$shoppingcart_product->id)->update([
-					'currency'=>$data['currency'],
+					'currency'=>$new_currency,
 					'subtotal'=>$subtotal_product,
 					'discount'=>$total_discount,
 					'total'=>$total_product,
@@ -261,20 +276,22 @@ class BookingHelper {
 			$grand_total += $total_product;
 			
 
-			$shoppingcart->currency = $data['currency'];
+			$shoppingcart->currency = 'IDR';
 			$shoppingcart->subtotal = $grand_subtotal;
 			$shoppingcart->discount = $grand_discount;
 			$shoppingcart->total = $grand_total;
 			$shoppingcart->due_now = $grand_total;
 			$shoppingcart->save();
 
+
+			$new_currency = 'IDR';
 			$shoppingcart_payment = new ShoppingcartPayment();
 			$shoppingcart_payment->payment_provider = 'none';
-			$shoppingcart_payment->amount = self::convert_currency($grand_total,$data['currency'],self::env_paypalCurrency());
-			$shoppingcart_payment->rate = self::convert_currency(1,self::env_paypalCurrency(),$data['currency']);
+			$shoppingcart_payment->amount = $grand_total;
+			$shoppingcart_payment->rate = self::convert_currency(1,$data['currency'],$new_currency);
 			$shoppingcart_payment->rate_from = $data['currency'];
-			$shoppingcart_payment->rate_to = self::env_paypalCurrency();
-			$shoppingcart_payment->currency = self::env_paypalCurrency();
+			$shoppingcart_payment->rate_to = $new_currency;
+			$shoppingcart_payment->currency = $new_currency;
 			$shoppingcart_payment->payment_status = 2;
 			$shoppingcart_payment->shoppingcart_id = $shoppingcart->id;
 			$shoppingcart_payment->save();
@@ -1844,9 +1861,9 @@ class BookingHelper {
 			break;
 			case "paypal":
 				$payment_provider = 'paypal';
-				$amount = self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,self::env_paypalCurrency());
+				$amount = self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,self::env_paypalCurrency(),"PAYPAL");
 				$currency = self::env_paypalCurrency();
-				$rate = self::convert_currency(1,self::env_paypalCurrency(),$shoppingcart->currency);
+				$rate = self::convert_currency(1,self::env_paypalCurrency(),$shoppingcart->currency,"PAYPAL");
 				$rate_from = $shoppingcart->currency;
 				$rate_to = self::env_paypalCurrency();
 
@@ -1932,8 +1949,8 @@ class BookingHelper {
 
 	public static function paypal_rate($shoppingcart)
 	{
-		$amount = 'Total : '. self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,self::env_paypalCurrency()) .' '. self::env_paypalCurrency();
-		$value = $amount .'<br />Paypal Rate : 1 '. self::env_paypalCurrency() .' = '. self::convert_currency(1,self::env_paypalCurrency(),$shoppingcart->currency) .' '. $shoppingcart->currency;
+		$amount = 'Total : '. self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,self::env_paypalCurrency(),"PAYPAL") .' '. self::env_paypalCurrency();
+		$value = $amount .'<br />Paypal Rate : 1 '. self::env_paypalCurrency() .' = '. self::convert_currency(1,self::env_paypalCurrency(),$shoppingcart->currency,"PAYPAL") .' '. $shoppingcart->currency;
 		return $value;
 	}
 
@@ -1944,14 +1961,23 @@ class BookingHelper {
 		return $value;
 	}
 
-	public static function convert_currency($amount,$from,$to)
+	public static function convert_currency($amount,$from,$to,$booking_fee="")
 	{
 
 		$rate = BokunHelper::get_currency();
+
 		$oneusd = 1 / $rate;
-		$paypal_charge = $oneusd * 4.4 / 100;
-		$paypal_rate = $oneusd * 3.74 / 100;
-		$rate = $oneusd - $paypal_rate - $paypal_charge;
+		if($booking_fee=="PAYPAL")
+		{
+			$paypal_charge = $oneusd * 4.4 / 100;
+			$paypal_rate = $oneusd * 3.74 / 100;
+			$rate = $oneusd - $paypal_rate - $paypal_charge;
+		}
+		else
+		{
+			$rate = $oneusd;
+		}
+		
 
 		if($from!=$to)
 		{

@@ -201,11 +201,11 @@
                     
                     <h1>Hi {{$main_contact->firstName}},</h1>
                     <p>Have a good day,<br />
-                      Thank you for your booking with {{env('APP_NAME')}}. <br />
-                    You can find booking receipt and e-ticket  on attachments and present it  to our team on location.                  <br />
-
+                      Thank you for your booking with {{env('APP_NAME')}}.
+                    <br />
+                    <br />
                     <a href="{{ env('APP_URL') .'/booking/receipt/'.$shoppingcart->id.'/'.$shoppingcart->session_id  }}">Click here to view status of your booking.</a>
-
+                    <br />
                     <br />
                     If you have any question, feel free to contact us.<br />
                     Thanks again, and enjoy your time in Indonesia :)

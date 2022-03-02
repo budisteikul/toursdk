@@ -5,9 +5,9 @@
 Hi {{$main_contact->firstName}},
 
 Have a good day,
-Thank you for your booking with {{env('APP_NAME')}}. 
-You can find booking receipt and e-ticket on attachments and present it to our team on location. 
+Thank you for your booking with {{env('APP_NAME')}}.
 Follow link below to view status of your booking.
+
 {{ env('APP_URL') .'/booking/receipt/'.$shoppingcart->id.'/'.$shoppingcart->session_id  }}
 
 If you have any question, feel free to contact us.

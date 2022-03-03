@@ -1725,10 +1725,7 @@ class BookingHelper {
 	
 	public static function payment_connect($data)
 	{
-		//internal
-		//$url = self::env_appApiUrl();
-
-		//external
+		
 		$url = self::env_appPaymentUrl();
 
 		$endpoint = $url .'/api/payment/connect';

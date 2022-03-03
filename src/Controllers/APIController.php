@@ -585,7 +585,6 @@ class APIController extends Controller
 
     public function snippetsinvoice(Request $request)
     {
-        
         $contents = BokunHelper::get_invoice(json_decode($request->getContent(), true));
         return response()->json($contents);
     }

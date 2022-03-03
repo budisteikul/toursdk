@@ -24,6 +24,7 @@ class WebhookController extends Controller
                 if(Shoppingcart::where('confirmation_code',$data['confirmationCode'])->count()==0)
                 {
                     $shoppingcart = BookingHelper::webhook_insert_shoppingcart($data);
+                    BookingHelper::confirm_payment($shoppingcart,"CONFIRMED",true);
                     BookingHelper::shoppingcart_mail($shoppingcart);
                 }
                 return response()->json([
@@ -34,9 +35,7 @@ class WebhookController extends Controller
             case 'BOOKING_ITEM_CANCELLED':
                 $shoppingcart = Shoppingcart::where('confirmation_code',$data['confirmationCode'])->firstOrFail();
                 
-                $shoppingcart->booking_status = "PENDING";
-                $shoppingcart->save();
-                BookingHelper::confirm_payment($shoppingcart,"CANCELED");
+                BookingHelper::confirm_payment($shoppingcart,"CANCELED",true);
                 
                 return response()->json([
                     "id" => "1",

@@ -1682,10 +1682,16 @@ class BookingHelper {
         return $shoppingcart;
 	}
 
-	public static function confirm_payment($shoppingcart,$status)
+	public static function confirm_payment($shoppingcart,$status,$force=false)
 	{
 		if($status=="CONFIRMED")
 		{
+			if($force)
+			{
+				$shoppingcart->booking_status = "PENDING";
+				$shoppingcart->save();
+			}
+
 			if($shoppingcart->booking_status=="PENDING")
 			{
 				$shoppingcart->booking_status = 'CONFIRMED';
@@ -1698,6 +1704,12 @@ class BookingHelper {
 
 		if($status=="PENDING")
 		{
+			if($force)
+			{
+				$shoppingcart->booking_status = "PENDING";
+				$shoppingcart->save();
+			}
+
 			if($shoppingcart->booking_status!="PENDING")
 			{
 				$shoppingcart->booking_status = 'PENDING';
@@ -1709,6 +1721,12 @@ class BookingHelper {
 
 		if($status=="CANCELED")
 		{
+			if($force)
+			{
+				$shoppingcart->booking_status = "PENDING";
+				$shoppingcart->save();
+			}
+			
 			if($shoppingcart->booking_status=="PENDING")
 			{
 				$shoppingcart->booking_status = 'CANCELED';

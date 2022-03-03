@@ -1,7 +1,7 @@
 <?php
 namespace budisteikul\toursdk\Helpers;
 use budisteikul\toursdk\Helpers\ImageHelper;
-use Carbon\Carbon;
+use Illuminate\Support\Facades\Storage;
 
 
 class OyHelper {
@@ -125,9 +125,6 @@ class OyHelper {
         $data = $response->getBody()->getContents();
         $data = json_decode($data);
         
-
-        
-
         return $data;
        
   }
@@ -140,18 +137,23 @@ class OyHelper {
         {
           $data1 = self::createSnap($data);
           $data2 = self::createCharge($data,$data1->snaptoken,$data->transaction->bank);
+          
           $qrcode = ImageHelper::uploadQrcodeCloudinary($data2->data->qris_url);
+          $qrcode_url = $qrcode['secure_url'];
+
+          //$contents = file_get_contents($data2->data->qris_url);
+          //Storage::put('qrcode/oy-'.$data1->snaptoken.'.png', $contents);
+          //$qrcode_url = Storage::url('qrcode/oy-'.$data1->snaptoken.'.png');
+
           $response->payment_type = 'ewallet';
           $response->bank_name = 'shopeepay';
-          $response->qrcode = $qrcode['secure_url'];
+          $response->qrcode = $qrcode_url;
           $response->link = self::oyLink($data1->snaptoken);
         }
         else
         {
           $data1 = self::createSnap($data);
-          
           $data2 = self::createCharge($data,$data1->snaptoken,$data->transaction->bank);
-          
           $data3 = self::status($data1->snaptoken);
           
           $response->payment_type = 'bank_transfer';

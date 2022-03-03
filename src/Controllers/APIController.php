@@ -35,7 +35,15 @@ use Illuminate\Support\Facades\Storage;
 class APIController extends Controller
 {
     
-    
+    public function test()
+    {
+        $contents = file_get_contents('https://res.cloudinary.com/budi/image/upload/v1646248810/LOCAL%20VERTIKAL%20TRIP/qr-code/fzk1xwflgm7accbb6vof.png');
+        Storage::put('qrcode/2.png', $contents);
+        $url = Storage::url('qrcode/2.png');
+        print_r($url);
+
+    }
+
     public function __construct()
     {
         $this->currency = env("BOKUN_CURRENCY");

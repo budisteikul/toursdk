@@ -1,7 +1,7 @@
 <?php
 namespace budisteikul\toursdk\Helpers;
 use budisteikul\toursdk\Helpers\ImageHelper;
-use Carbon\Carbon;
+use Illuminate\Support\Facades\Storage;
 
 class MidtransHelper {
 	
@@ -111,9 +111,15 @@ class MidtransHelper {
         else if($data->transaction->bank=="gopay")
         {
           $qrcode = ImageHelper::uploadQrcodeCloudinary($data2['qr_code_url']);
+          $qrcode_url = $qrcode['secure_url'];
+
+          //$contents = file_get_contents($data2['qr_code_url']);
+          //Storage::put('qrcode/midtrans-'.$data1->token.'.png', $contents);
+          //$qrcode_url = Storage::url('qrcode/midtrans-'.$data1->token.'.png');
+
           $response->payment_type = 'ewallet';
           $response->bank_name = self::bankCode($data->transaction->bank)->bank_name;
-          $response->qrcode = $qrcode['secure_url'];
+          $response->qrcode = $qrcode_url;
           $response->link = $data2['deeplink_url'];
         }
         else if($data->transaction->bank=="mandiri")

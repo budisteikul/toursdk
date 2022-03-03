@@ -12,7 +12,7 @@ use budisteikul\toursdk\Helpers\OyHelper;
 use budisteikul\toursdk\Helpers\DokuHelper;
 use budisteikul\toursdk\Helpers\FirebaseHelper;
 use budisteikul\toursdk\Helpers\GeneralHelper;
-use budisteikul\toursdk\Models\Category;
+
 use budisteikul\toursdk\Models\Product;
 use budisteikul\toursdk\Models\Shoppingcart;
 use budisteikul\toursdk\Models\ShoppingcartProduct;
@@ -20,6 +20,7 @@ use budisteikul\toursdk\Models\ShoppingcartProductDetail;
 use budisteikul\toursdk\Models\ShoppingcartQuestion;
 use budisteikul\toursdk\Models\ShoppingcartQuestionOption;
 use budisteikul\toursdk\Models\ShoppingcartPayment;
+
 use budisteikul\toursdk\Mail\BookingConfirmedMail;
 
 use Illuminate\Support\Facades\Mail;
@@ -1726,7 +1727,7 @@ class BookingHelper {
 				$shoppingcart->booking_status = "PENDING";
 				$shoppingcart->save();
 			}
-			
+
 			if($shoppingcart->booking_status=="PENDING")
 			{
 				$shoppingcart->booking_status = 'CANCELED';
@@ -1933,6 +1934,12 @@ class BookingHelper {
 		return $response;
 	}
 
+
+	public static function delete_shoppingcart($shoppingcart)
+	{
+		$shoppingcart->delete();
+		FirebaseHelper::delete($shoppingcart,'receipt');
+	}
 
 	public static function remove_promocode($sessionId)
 	{

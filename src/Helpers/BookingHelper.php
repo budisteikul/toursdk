@@ -1692,7 +1692,7 @@ class BookingHelper {
 				$shoppingcart->save();
 				$shoppingcart->shoppingcart_payment->payment_status = 2;
 				$shoppingcart->shoppingcart_payment->save();
-				self::shoppingcart_mail($shoppingcart);
+				//self::shoppingcart_mail($shoppingcart);
 			}
 		}
 
@@ -2240,30 +2240,7 @@ class BookingHelper {
 		return $access;
 	}
 
-	public static function change_booking_status($shoppingcart,$booking_status)
-	{
-
-		if($booking_status=="CONFIRMED")
-		{
-			$shoppingcart->booking_status = "CONFIRMED";
-			$shoppingcart->save();
-			FirebaseHelper::upload($shoppingcart,'receipt');
-		}
-
-		if ($booking_status=="CANCELED")
-		{
-			$shoppingcart->booking_status = "CANCELED";
-			$shoppingcart->save();
-			FirebaseHelper::upload($shoppingcart,'receipt');
-		}
-
-		if ($booking_status=="DELETED")
-		{
-			$shoppingcart->delete();
-			FirebaseHelper::delete($shoppingcart,'receipt');
-		}
-		
-	}
+	
 
 	public static function create_manual_pdf($shoppingcart)
 	{

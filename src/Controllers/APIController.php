@@ -37,10 +37,7 @@ class APIController extends Controller
     
     public function test()
     {
-        $contents = file_get_contents('https://res.cloudinary.com/budi/image/upload/v1646248810/LOCAL%20VERTIKAL%20TRIP/qr-code/fzk1xwflgm7accbb6vof.png');
-        Storage::put('qrcode/2.png', $contents);
-        $url = Storage::url('qrcode/2.png');
-        print_r($url);
+        
 
     }
 
@@ -1048,7 +1045,6 @@ class APIController extends Controller
             switch($request->input('action'))
             {
             case 'BOOKING_CONFIRMED':
-                
                 if(Shoppingcart::where('confirmation_code',$data['confirmationCode'])->count()==0)
                 {
                     $shoppingcart = BookingHelper::webhook_insert_shoppingcart($data);
@@ -1062,7 +1058,9 @@ class APIController extends Controller
             case 'BOOKING_ITEM_CANCELLED':
                 $shoppingcart = Shoppingcart::where('confirmation_code',$data['confirmationCode'])->firstOrFail();
                 
-                BookingHelper::change_booking_status($shoppingcart,"CANCELED");
+                $shoppingcart->booking_status = "PENDING";
+                $shoppingcart->save();
+                BookingHelper::confirm_payment($shoppingcart,"CANCELED");
                 
                 return response()->json([
                     "id" => "1",

@@ -1699,7 +1699,6 @@ class BookingHelper {
 				$shoppingcart->save();
 				$shoppingcart->shoppingcart_payment->payment_status = 2;
 				$shoppingcart->shoppingcart_payment->save();
-				//self::shoppingcart_mail($shoppingcart);
 			}
 		}
 
@@ -1730,6 +1729,7 @@ class BookingHelper {
 
 			if($shoppingcart->booking_status=="PENDING")
 			{
+
 				$shoppingcart->booking_status = 'CANCELED';
 				$shoppingcart->save();
 				$shoppingcart->shoppingcart_payment->payment_status = 3;
@@ -2174,9 +2174,18 @@ class BookingHelper {
             }
             if($shoppingcart->shoppingcart_payment->payment_provider=="none")
             {
-            	return '<div class="card mb-4">
-            			<span class="badge badge-success invoice-color-success" style="font-size:20px;">PAID</span>
-						</div>';
+            	switch($shoppingcart->shoppingcart_payment->payment_status)
+				{
+					case 3:
+						return '<div class="card mb-4">
+            				<span class="badge badge-danger invoice-color-danger" style="font-size:20px;">UNPAID</span>
+							</div>';
+					default:
+						return '<div class="card mb-4">
+            				<span class="badge badge-success invoice-color-success" style="font-size:20px;">PAID</span>
+							</div>';
+				}
+            	
             }
 		}
 		return '';

@@ -2147,13 +2147,13 @@ class BookingHelper {
 								<span class="badge badge-warning invoice-color-warning" style="font-size:20px;">
 								<i class="fas fa-wallet"></i> WAITING FOR PAYMENT </span>
 								</div>
-								<div class="card mb-0 img-fluid invoice-hilang">
-								
-								
+								<div class="card mb-0 img-fluid invoice-hilang"  style="min-height:500px;">
 								
 								<img class="card-img-top" src="'. url('/img/qris-template.jpg') .'" alt="Card image" style="width:100%">
+								
+								
 								<div class="card-img-overlay">
-									<div class="row h-100" style="min-height:300px;">
+									<div class="row h-100">
    										<div class="col-sm-12 my-auto text-center">
      										
     										<h1 class="mb-2 mt-4">VERTIKAL TRIP</h1>

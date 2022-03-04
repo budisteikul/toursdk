@@ -1741,41 +1741,6 @@ class BookingHelper {
 		
 	}
 
-	
-	public static function payment_connect($data)
-	{
-		
-		$url = self::env_appPaymentUrl();
-
-		$endpoint = $url .'/api/payment/connect';
-
-        $headers = [
-              'Accept' => 'application/jsons',
-              'Content-Type' => 'application/json'
-          ];
-
-        $client = new \GuzzleHttp\Client(['headers' => $headers,'http_errors' => false]);
-        $response = $client->request('POST',$endpoint,
-          ['json' => $data]
-        );
-
-        $data = $response->getBody()->getContents();
-        $data = json_decode($data);
-
-        if(isset($data->response))
-        {
-        	return $data->response;
-        }
-        else
-        {
-        	return response()->json([
-            	"id" => "1",
-            	"redirect" => self::env_appUrl() .'/page/not/found'
-        	]);
-        }
-	}
-	
-
 	public static function create_payment($sessionId,$payment_provider="none",$bank="")
 	{
 		$shoppingcart = Cache::get('_'. $sessionId);
@@ -1852,8 +1817,6 @@ class BookingHelper {
 				$rate = 1;
 				$payment_status = 4;
 
-				//$response = self::payment_connect($data);
-				
 				$response = OyHelper::createPayment($data);
 
 			break;
@@ -1863,7 +1826,7 @@ class BookingHelper {
 				$currency = 'IDR';
 				$rate = 1;
 				$payment_status = 4;
-				//$response = self::payment_connect($data);
+				
 				$response = DokuHelper::createPayment($data);
 			break;
 			case "midtrans":
@@ -1872,7 +1835,7 @@ class BookingHelper {
 				$currency = 'IDR';
 				$rate = 1;
 				$payment_status = 4;
-				//$response = self::payment_connect($data);
+				
 				$response = MidtransHelper::createPayment($data);
 			break;
 			case "paypal":

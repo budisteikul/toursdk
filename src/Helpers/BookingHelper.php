@@ -2132,6 +2132,15 @@ class BookingHelper {
 								';
 						break;
 					case 4:
+						$nmid = '';
+						if($shoppingcart->shoppingcart_payment->bank_name=="shopeepay")
+						{
+							$nmid = '<h5>NMID : ID1022150910159</h5>';
+						}
+						if($shoppingcart->shoppingcart_payment->bank_name=="gopay")
+						{
+							$nmid = '<h5>NMID : ID1022148923652</h5>';
+						}
 						return '
 								
 								<div class="card mb-0">
@@ -2149,7 +2158,7 @@ class BookingHelper {
      										
     										<h1 class="mb-2 mt-4">VERTIKAL TRIP</h1>
     								
-    										<h5>NMID : ID1022150910159</h5>
+    										'.$nmid.'
     									
     										<img class="img-fluid border border-white" alt="QRIS" style="max-width:250px;" src="'. $shoppingcart->shoppingcart_payment->qrcode .'">
     										

@@ -2117,7 +2117,7 @@ class BookingHelper {
 								<i class="fas fa-wallet"></i> E-WALLET UNPAID </span>
 								</div>';
 						break;	
-					case 4:
+					case 5:
 						return '
 								<div class="card mb-4">
 								<span class="badge badge-warning invoice-color-warning" style="font-size:20px;">
@@ -2127,6 +2127,41 @@ class BookingHelper {
 								<img class="img-fluid" alt="QRIS" style="max-width:200px;" src="'. $shoppingcart->shoppingcart_payment->qrcode .'"><br />
 								
 								</div>
+								<a href="'. self::env_appApiUrl() .'/qrcode/'.$shoppingcart->session_id.'/'. $shoppingcart->confirmation_code .'" type="button" class="invoice-hilang btn btn-success invoice-hilang ">or Download QRCODE <i class="fas fa-download"></i> </a>
+								</div>
+								';
+						break;
+					case 4:
+						return '
+								
+								<div class="card mb-0">
+								<span class="badge badge-warning invoice-color-warning" style="font-size:20px;">
+								<i class="fas fa-wallet"></i> WAITING FOR PAYMENT </span>
+								</div>
+								<div class="card mb-0 img-fluid invoice-hilang">
+								
+								
+								
+								<img class="card-img-top" src="'. url('/img/qris-template.jpg') .'" alt="Card image" style="width:100%">
+								<div class="card-img-overlay">
+									<div class="row h-100">
+   										<div class="col-sm-12 my-auto text-center">
+     										
+    										<h1 class="mb-2 mt-4">VERTIKAL TRIP</h1>
+    								
+    										<h5>NMID : ID1022150910159</h5>
+    									
+    										<img class="img-fluid border border-white" alt="QRIS" style="max-width:250px;" src="'. $shoppingcart->shoppingcart_payment->qrcode .'">
+    										
+    										
+
+   										</div>
+									</div>
+									
+  								</div>
+								
+								</div>
+								<div class="card mb-4">
 								<a href="'. self::env_appApiUrl() .'/qrcode/'.$shoppingcart->session_id.'/'. $shoppingcart->confirmation_code .'" type="button" class="invoice-hilang btn btn-success invoice-hilang ">or Download QRCODE <i class="fas fa-download"></i> </a>
 								</div>
 								';

@@ -37,12 +37,8 @@
 	Route::get('/api/receipt/{id}/{sessionId}', 'budisteikul\toursdk\Controllers\APIController@receipt');
 
 	//Disbursmenet
-	Route::post('/api/disbursement/connect', 'budisteikul\toursdk\Controllers\DisbursementController@disbursement_connect');
 	Route::post('/api/disbursement/oy/confirm/{id}', 'budisteikul\toursdk\Controllers\APIController@confirmdisbursementoy');
 
-	//Connect Payment
-	Route::post('/api/payment/connect', 'budisteikul\toursdk\Controllers\PaymentController@payment_connect');
-	
 	//Confirm Payment
 	Route::post('/api/payment/paypal/confirm', 'budisteikul\toursdk\Controllers\APIController@confirmpaymentpaypal');
 	Route::post('/api/payment/doku/confirm/{id}', 'budisteikul\toursdk\Controllers\APIController@confirmpaymentdoku');

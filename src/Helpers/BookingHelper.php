@@ -2153,7 +2153,7 @@ class BookingHelper {
 								
 								<img class="card-img-top" src="'. url('/img/qris-template.jpg') .'" alt="Card image" style="width:100%">
 								<div class="card-img-overlay">
-									<div class="row h-100">
+									<div class="row h-100" style="min-height:300px;">
    										<div class="col-sm-12 my-auto text-center">
      										
     										<h1 class="mb-2 mt-4">VERTIKAL TRIP</h1>

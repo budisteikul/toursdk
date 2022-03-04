@@ -1852,9 +1852,9 @@ class BookingHelper {
 				$rate = 1;
 				$payment_status = 4;
 
-				$response = self::payment_connect($data);
+				//$response = self::payment_connect($data);
 				
-				//$response = OyHelper::createPayment($data);
+				$response = OyHelper::createPayment($data);
 
 			break;
 			case "doku":
@@ -2161,7 +2161,7 @@ class BookingHelper {
 								<i class="fas fa-wallet"></i> WAITING FOR PAYMENT </span>
 								<div class="card-body bg-light">
 								<b>SCAN HERE</b><br>
-								<img class="img-fluid" style="max-width:200px;" src="'. $shoppingcart->shoppingcart_payment->qrcode .'"><br />
+								<img class="img-fluid" alt="QRIS" style="max-width:200px;" src="'. $shoppingcart->shoppingcart_payment->qrcode .'"><br />
 								
 								</div>
 								<a href="'. self::env_appApiUrl() .'/qrcode/'.$shoppingcart->session_id.'/'. $shoppingcart->confirmation_code .'" type="button" class="invoice-hilang btn btn-success invoice-hilang ">or Download QRCODE <i class="fas fa-download"></i> </a>

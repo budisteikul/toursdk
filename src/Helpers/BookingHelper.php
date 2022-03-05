@@ -35,21 +35,6 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class BookingHelper {
 	
-	public static function env_dokuSecretKey()
-    {
-        return env("DOKU_SECRET_KEY");
-    }
-
-    public static function env_oyApiKey()
-    {
-        return env("OY_API_KEY");
-    }
-
-    public static function env_midtransServerKey()
-    {
-        return env("MIDTRANS_SERVER_KEY");
-    }
-
 	public static function env_paypalCurrency()
     {
         return env("PAYPAL_CURRENCY");
@@ -70,9 +55,9 @@ class BookingHelper {
         return env("APP_URL");
     }
 
-    public static function env_appPaymentUrl()
+    public static function env_appName()
     {
-        return env("APP_PAYMENT_URL");
+        return env("APP_NAME");
     }
 
 	public static function webhook_insert_shoppingcart($data)
@@ -1811,7 +1796,7 @@ class BookingHelper {
 		switch($payment_provider)
 		{
 			case "oyindonesia":
-				$data->transaction->api_key = self::env_oyApiKey();
+				
 				$amount = $shoppingcart->due_now;
 				$currency = 'IDR';
 				$rate = 1;
@@ -1821,7 +1806,7 @@ class BookingHelper {
 
 			break;
 			case "doku":
-				$data->transaction->api_key = self::env_dokuSecretKey();
+				
 				$amount = $shoppingcart->due_now;
 				$currency = 'IDR';
 				$rate = 1;
@@ -1830,7 +1815,7 @@ class BookingHelper {
 				$response = DokuHelper::createPayment($data);
 			break;
 			case "midtrans":
-				$data->transaction->api_key = self::env_midtransServerKey();
+				
 				$amount = $shoppingcart->due_now;
 				$currency = 'IDR';
 				$rate = 1;
@@ -2119,14 +2104,15 @@ class BookingHelper {
 						break;	
 					
 					case 4:
+						$merchant_name = self::env_appName();
 						$nmid = '';
 						if($shoppingcart->shoppingcart_payment->bank_name=="shopeepay")
 						{
-							$nmid = '<h5>NMID : ID1022150910159</h5>';
+							$nmid = 'ID1022150910159';
 						}
 						if($shoppingcart->shoppingcart_payment->bank_name=="gopay")
 						{
-							$nmid = '<h5>NMID : ID1022148923652</h5>';
+							$nmid = 'ID1022148923652';
 						}
 						return '
 								
@@ -2143,9 +2129,9 @@ class BookingHelper {
 									<div class="row h-100">
    										<div class="col-sm-12 my-auto text-center">
      										
-    										<h1 class="mb-2 mt-4">VERTIKAL TRIP</h1>
+    										<h1 class="mb-2 mt-4">'. $merchant_name .'</h1>
     								
-    										'.$nmid.'
+    										<h5>NMID : '.$nmid.'</h5>
     									
     										<img class="img-fluid border border-white" alt="QRIS" style="max-width:250px;" src="'. $shoppingcart->shoppingcart_payment->qrcode .'">
     										

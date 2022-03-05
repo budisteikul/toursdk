@@ -45,34 +45,47 @@ class DokuHelper {
             case "doku":
                 $data->bank_name = "doku";
                 $data->bank_code = "899";
+                $data->bank_payment_type = "doku";
             break;
             case "bri":
                 $data->bank_name = "bri";
                 $data->bank_code = "002";
+                $data->bank_payment_type = "bri";
             break;
             case "cimb":
                 $data->bank_name = "cimb niaga";
                 $data->bank_code = "022";
+                $data->bank_payment_type = "cimb";
             break;
             case "mandiri":
                 $data->bank_name = "mandiri";
                 $data->bank_code = "008";
+                $data->bank_payment_type = "mandiri";
             break;
             case "permata":
                 $data->bank_name = "permata";
                 $data->bank_code = "013";
+                $data->bank_payment_type = "permata";
             break;
             case "bni":
                 $data->bank_name = "bni";
                 $data->bank_code = "009";
+                $data->bank_payment_type = "bni";
             break;
             case "danamon":
                 $data->bank_name = "danamon";
                 $data->bank_code = "011";
+                $data->bank_payment_type = "danamon";
             break;
             case "mandirisyariah":
                 $data->bank_name = "bsi";
-                $data->bank_code = "451900";
+                $data->bank_code = "451-900";
+                $data->bank_payment_type = "mandirisyariah";
+            break;
+            case "bsi":
+                $data->bank_name = "bsi";
+                $data->bank_code = "451-900";
+                $data->bank_payment_type = "mandirisyariah";
             break;   
         }
 
@@ -81,25 +94,27 @@ class DokuHelper {
 
     public static function createPayment($data)
     {
+        $payment = self::bankCode($data->transaction->bank);
+
         $data1 = self::createSnap($data);
-        $data2 = self::createCharge($data1->response->payment->token_id,$data->transaction->bank);
+        $data2 = self::createCharge($data1->response->payment->token_id,$payment);
 
         $response = new \stdClass();
         $response->payment_type = 'bank_transfer';
-        $response->bank_name = self::bankCode($data->transaction->bank)->bank_name;
-        $response->bank_code = self::bankCode($data->transaction->bank)->bank_code;
+        $response->bank_name = $payment->bank_name;
+        $response->bank_code = $payment->bank_code;
         $response->va_number = $data2->payment_code;
         $response->link = $data2->how_to_pay_url;
 
         return $response;
     }
 
-    public static function createCharge($token,$bank)
+    public static function createCharge($token,$payment)
     {
         $data = [
             'token_id' => $token,
             'lang' => 'en',
-            'bank' => $bank
+            'bank' => $payment->bank_payment_type
         ];
         $targetPath = '/checkout/v1/payment/'.$token.'/generate-code';
         $url = self::dokuApiEndpoint();

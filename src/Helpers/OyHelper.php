@@ -28,7 +28,7 @@ class OyHelper {
 
   public static function env_oyUseProxy()
   {
-        return env("OY_USE_PROXY");
+        return env("OY_USE_PROXY",false);
   }
 
   public static function env_proxyServer()
@@ -196,7 +196,7 @@ class OyHelper {
 
           $contents = file_get_contents($data2->data->qris_url);
           Storage::put('qrcode/'.$data1->snaptoken.'.png', $contents);
-          $qrcode_url = Storage::url('qrcode/'.$data1->snaptoken.'.png');
+          $qrcode_url = Storage::url('qrcode/'. date('Y-m-d') .'/'.$data1->snaptoken.'.png');
 
           $response->payment_type = 'ewallet';
           $response->bank_name = $payment->bank_name;

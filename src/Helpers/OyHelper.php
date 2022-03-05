@@ -186,7 +186,7 @@ class OyHelper {
 
         $payment = self::bankCode($data->transaction->bank);
 
-        if($payment->bank_payment_type=="shopeepay")
+        if($payment->bank_payment_type=="qris_shopee")
         {
           $data1 = self::createSnap($data);
           $data2 = self::createCharge($data,$data1->snaptoken,$payment);

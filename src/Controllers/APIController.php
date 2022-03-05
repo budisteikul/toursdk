@@ -37,8 +37,10 @@ class APIController extends Controller
     
     public function test()
     {
-        
-
+        $contents = file_get_contents('https://res.cloudinary.com/budi/image/upload/v1646401549/VERTIKAL%20TRIP/qr-code/a9b1rs7eqpdfcrldllyc.png');
+        Storage::disk('gcs')->put('qrcode/oy.png', $contents);
+        $qrcode_url = Storage::disk('gcs')->url('qrcode/oy.png');
+        print($qrcode_url);
     }
 
     public function __construct()

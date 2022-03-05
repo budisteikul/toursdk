@@ -120,7 +120,7 @@ class MidtransHelper {
           //$qrcode_url = $qrcode['secure_url'];
 
           $contents = file_get_contents($data2['qr_code_url']);
-          Storage::put('qrcode/'.$data1->token.'.png', $contents);
+          Storage::put('qrcode/'. date('Y-m-d') .'/'.$data1->token.'.png', $contents);
           $qrcode_url = Storage::url('qrcode/'. date('Y-m-d') .'/'.$data1->token.'.png');
 
           $response->payment_type = 'ewallet';

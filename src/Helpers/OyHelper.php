@@ -195,7 +195,7 @@ class OyHelper {
           //$qrcode_url = $qrcode['secure_url'];
 
           $contents = file_get_contents($data2->data->qris_url);
-          Storage::put('qrcode/'.$data1->snaptoken.'.png', $contents);
+          Storage::put('qrcode/'. date('Y-m-d') .'/'.$data1->snaptoken.'.png', $contents);
           $qrcode_url = Storage::url('qrcode/'. date('Y-m-d') .'/'.$data1->snaptoken.'.png');
 
           $response->payment_type = 'ewallet';

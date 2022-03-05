@@ -441,7 +441,7 @@ class ContentHelper {
 
             $product = self::view_product_detail($shoppingcart);
             
-            $receipt_page = '<a onclick="window.openAppRoute(\'/booking/receipt/'.$shoppingcart->id.'/'. $shoppingcart->session_id .'\')"  class="btn btn-theme" href="javascript:void(0);">View receipt page <i class="fas fa-arrow-circle-right"></i></a>';
+            $receipt_page = '<a onclick="window.openAppRoute(\'/booking/receipt/'.$shoppingcart->session_id.'/'. $shoppingcart->confirmation_code .'\')"  class="btn btn-theme" href="javascript:void(0);">View receipt page <i class="fas fa-arrow-circle-right"></i></a>';
 
             $booking[] = array(
                 'booking' => $product . $receipt_page

@@ -8,7 +8,7 @@ Have a good day,
 Thank you for your booking with {{env('APP_NAME')}}.
 Follow link below to view status of your booking.
 
-{{ env('APP_URL') .'/booking/receipt/'.$shoppingcart->id.'/'.$shoppingcart->session_id  }}
+{{ env('APP_URL') .'/booking/receipt/'.$shoppingcart->session_id.'/'.$shoppingcart->confirmation_code  }}
 
 If you have any question, feel free to contact us.
 Thanks again, and enjoy your time in Indonesia :) 

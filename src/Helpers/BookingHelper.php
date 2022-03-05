@@ -1662,10 +1662,11 @@ class BookingHelper {
 
         $shoppingcart = self::confirm_transaction($sessionId);
 
-        BookingHelper::shoppingcart_clear($sessionId);
+        self::shoppingcart_clear($sessionId);
+
         if($sendMail)
         {
-        	BookingHelper::shoppingcart_mail($shoppingcart);
+        	self::shoppingcart_mail($shoppingcart);
         }
         return $shoppingcart;
 	}
@@ -2273,7 +2274,7 @@ class BookingHelper {
 
 	public static function create_invoice_pdf($shoppingcart)
 	{
-		$qrcode = base64_encode(QrCode::errorCorrection('H')->format('png')->size(111)->margin(0)->generate( self::env_appUrl() .'/booking/receipt/'.$shoppingcart->id.'/'.$shoppingcart->session_id  ));
+		$qrcode = base64_encode(QrCode::errorCorrection('H')->format('png')->size(111)->margin(0)->generate( self::env_appUrl() .'/booking/receipt/'.$shoppingcart->session_id.'/'.$shoppingcart->confirmation_code  ));
         $pdf = PDF::setOptions(['tempDir' =>  storage_path(),'fontDir' => storage_path(),'fontCache' => storage_path(),'isRemoteEnabled' => true])->loadView('toursdk::layouts.pdf.invoice', compact('shoppingcart','qrcode'))->setPaper('a4', 'portrait');
         return $pdf;
 	}
@@ -2288,7 +2289,7 @@ class BookingHelper {
 	public static function create_ticket_pdf($shoppingcart_product)
 	{
 		$customPaper = array(0,0,300,540);
-        $qrcode = base64_encode(QrCode::errorCorrection('H')->format('png')->size(111)->margin(0)->generate( self::env_appUrl() .'/booking/receipt/'.$shoppingcart_product->shoppingcart->id.'/'.$shoppingcart_product->shoppingcart->session_id  ));
+        $qrcode = base64_encode(QrCode::errorCorrection('H')->format('png')->size(111)->margin(0)->generate( self::env_appUrl() .'/booking/receipt/'.$shoppingcart_product->shoppingcart->session_id.'/'.$shoppingcart_product->shoppingcart->confirmation_code  ));
         $pdf = PDF::setOptions(['tempDir' => storage_path(),'fontDir' => storage_path(),'fontCache' => storage_path(),'isRemoteEnabled' => true])->loadView('toursdk::layouts.pdf.ticket', compact('shoppingcart_product','qrcode'))->setPaper($customPaper);
         return $pdf;
 	}

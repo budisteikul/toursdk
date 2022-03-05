@@ -115,27 +115,6 @@ class APIController extends Controller
         return $pdf->download('Ticket-'. $shoppingcart_product->product_confirmation_code .'.pdf');
     }
 
-    public function ticket_check(Request $request)
-    {
-        $data = json_decode($request->getContent(), true);
-        $confirmation_code = strtoupper(trim($data['confirmation_code']));
-        $shoppingcart = Shoppingcart::where('confirmation_code',$confirmation_code)->first();
-        if($shoppingcart)
-        {
-            return response()->json([
-                'message' => 'success',
-                'sessionId' => $shoppingcart->session_id,
-                'redirect' => '/booking/receipt/'.$shoppingcart->id.'/'.$shoppingcart->session_id
-            ], 200);
-        }
-        else
-        {
-                return response()->json([
-                    'message' => 'fail'
-                ], 200);
-        }
-    }
-
     public function navbar()
     {
         $categories = Category::where('parent_id',0)->get();
@@ -649,10 +628,10 @@ class APIController extends Controller
         
     }
 
-    public function receipt($id,$sessionId)
+    public function receipt($sessionId,$confirmationCode)
     {
 
-        $shoppingcart = Shoppingcart::where('id',$id)->where('session_id', $sessionId)->where(function($query){
+        $shoppingcart = Shoppingcart::where('confirmation_code',$confirmationCode)->where('session_id', $sessionId)->where(function($query){
             return $query->where('booking_status', 'CONFIRMED')
                          ->orWhere('booking_status', 'CANCELED')
                          ->orWhere('booking_status', 'PENDING');
@@ -743,7 +722,7 @@ class APIController extends Controller
 
         return response()->json([
                     "id" => "1",
-                    "message" => "/booking/receipt/".$shoppingcart->id."/".$shoppingcart->session_id
+                    "message" => "/booking/receipt/".$shoppingcart->session_id."/".$shoppingcart->confirmation_code
                 ]);
         
     }
@@ -883,13 +862,15 @@ class APIController extends Controller
                 'status' => 'error'
             ]);
         }
-        
+    
         $shoppingcart = BookingHelper::confirm_booking($sessionId);
+
+       
 
         return response()->json([
             "id" => "1",
             "token" => $shoppingcart->shoppingcart_payment->snaptoken,
-            "redirect" => '/booking/receipt/'.$shoppingcart->id.'/'.$shoppingcart->session_id
+            "redirect" => '/booking/receipt/'.$shoppingcart->session_id.'/'.$shoppingcart->confirmation_code
         ]);
         
         

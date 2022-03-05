@@ -1609,24 +1609,26 @@ class BookingHelper {
 
 		$shoppingcart_payment = new ShoppingcartPayment();
 		$shoppingcart_payment->shoppingcart_id = $shoppingcart->id;
-		$shoppingcart_payment->payment_provider = $shoppingcart_json->payment->payment_provider;
-		$shoppingcart_payment->payment_type = $shoppingcart_json->payment->payment_type;
-		$shoppingcart_payment->bank_name = $shoppingcart_json->payment->bank_name;
-		$shoppingcart_payment->bank_code = $shoppingcart_json->payment->bank_code;
-		$shoppingcart_payment->va_number = $shoppingcart_json->payment->va_number;
+
+		if(isset($shoppingcart_json->payment->payment_provider)) $shoppingcart_payment->payment_provider = $shoppingcart_json->payment->payment_provider;
+		if(isset($shoppingcart_json->payment->payment_type)) $shoppingcart_payment->payment_type = $shoppingcart_json->payment->payment_type;
+		if(isset($shoppingcart_json->payment->bank_name)) $shoppingcart_payment->bank_name = $shoppingcart_json->payment->bank_name;
+		if(isset($shoppingcart_json->payment->bank_code)) $shoppingcart_payment->bank_code = $shoppingcart_json->payment->bank_code;
+		if(isset($shoppingcart_json->payment->va_number)) $shoppingcart_payment->va_number = $shoppingcart_json->payment->va_number;
 
 		if(isset($shoppingcart_json->payment->snaptoken)) $shoppingcart_payment->snaptoken = $shoppingcart_json->payment->snaptoken;
 		if(isset($shoppingcart_json->payment->qrcode)) $shoppingcart_payment->qrcode = $shoppingcart_json->payment->qrcode;
 		if(isset($shoppingcart_json->payment->link)) $shoppingcart_payment->link = $shoppingcart_json->payment->link;
 
-		$shoppingcart_payment->order_id = $shoppingcart_json->payment->order_id;
-		$shoppingcart_payment->authorization_id = $shoppingcart_json->payment->authorization_id;
-		$shoppingcart_payment->amount = $shoppingcart_json->payment->amount;
-		$shoppingcart_payment->currency = $shoppingcart_json->payment->currency;
-		$shoppingcart_payment->rate = $shoppingcart_json->payment->rate;
-		$shoppingcart_payment->rate_from = $shoppingcart_json->payment->rate_from;
-		$shoppingcart_payment->rate_to = $shoppingcart_json->payment->rate_to;
-		$shoppingcart_payment->payment_status = $shoppingcart_json->payment->payment_status;
+		if(isset($shoppingcart_json->payment->order_id)) $shoppingcart_payment->order_id = $shoppingcart_json->payment->order_id;
+		if(isset($shoppingcart_json->payment->authorization_id)) $shoppingcart_payment->authorization_id = $shoppingcart_json->payment->authorization_id;
+		if(isset($shoppingcart_json->payment->amount)) $shoppingcart_payment->amount = $shoppingcart_json->payment->amount;
+		if(isset($shoppingcart_json->payment->currency)) $shoppingcart_payment->currency = $shoppingcart_json->payment->currency;
+		if(isset($shoppingcart_json->payment->rate)) $shoppingcart_payment->rate = $shoppingcart_json->payment->rate;
+		if(isset($shoppingcart_json->payment->rate_from)) $shoppingcart_payment->rate_from = $shoppingcart_json->payment->rate_from;
+		if(isset($shoppingcart_json->payment->rate_to)) $shoppingcart_payment->rate_to = $shoppingcart_json->payment->rate_to;
+		if(isset($shoppingcart_json->payment->payment_status)) $shoppingcart_payment->payment_status = $shoppingcart_json->payment->payment_status;
+		
 		$shoppingcart_payment->save();
 
 		

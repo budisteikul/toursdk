@@ -71,13 +71,13 @@ class MidtransHelper {
         return $data;
     }
 
-  public static function chargeSnap($token,$data,$payment_type)
+  public static function chargeSnap($token,$data,$payment)
   {
         $data = [
               'customer_details' => [
                 'email' => $data->contact->email,
                ],
-              'payment_type' => $payment_type
+              'payment_type' => $payment->bank_payment_type
             ];
       
         $endpoint = self::midtransSnapEndpoint() ."/snap/v2/transactions/". $token ."/charge";
@@ -103,8 +103,8 @@ class MidtransHelper {
   {
         $payment = self::bankCode($data->transaction->bank);
 
-        $data1 = MidtransHelper::createSnap($data,$payment->bank_payment_type);
-        $data2 = MidtransHelper::chargeSnap($data1->token,$data,$payment->bank_payment_type);
+        $data1 = MidtransHelper::createSnap($data,$payment);
+        $data2 = MidtransHelper::chargeSnap($data1->token,$data,$payment);
 
         $response = new \stdClass();
         if($payment->bank_payment_type=="permata_va")
@@ -147,7 +147,7 @@ class MidtransHelper {
         return $response;
   }
 
-	public static function createSnap($data,$payment_type)
+	public static function createSnap($data,$payment)
     {
         
         $endpoint = self::midtransSnapEndpoint() ."/snap/v1/transactions";
@@ -173,7 +173,7 @@ class MidtransHelper {
             ]
           ];
 
-        if($payment_type=="permata_va")
+        if($payment->bank_payment_type=="permata_va")
         {
             $data_permata = [
               'permata_va' => [

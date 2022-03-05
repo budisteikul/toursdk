@@ -283,6 +283,44 @@ class OyHelper {
 
           
         }
+        else if($payment->bank_payment_type=="shopeepay_ewallet")
+        {
+            $data = [
+                'tx_id' => $token,
+                'amount' => $data->transaction->amount,
+                'admin_fee' => 0,
+                'sender_phone' => NULL,
+                'sender_notes' => NULL,
+                'sender_email' => NULL,
+                'sender_name' => $data->contact->name,
+                'ewallet_type' => $payment->bank_payment_type,
+                'email_active' => false
+            ];
+
+            $endpoint = self::oyCheckoutEndpoint() .'/b2x/v2/pay/enc/ewallet/create';
+
+            $headers = [
+              'Accept' => 'application/jsons',
+              'Content-Type' => 'application/json'
+            ];
+
+            $proxy = null;
+            if(self::env_oyUseProxy())
+            {
+                $proxy = 'http://'. self::env_proxyUsermame() .':'. self::env_proxyPassword() .'@'. self::env_proxyServer() .':'. self::env_proxyPort();
+            }
+
+            $client = new \GuzzleHttp\Client(['headers' => $headers,'http_errors' => false]);
+            $response = $client->request('POST',$endpoint,
+              [
+                'json' => $data,
+                'proxy' => $proxy
+              ]
+            );
+
+            $data = $response->getBody()->getContents();
+            $data = json_decode($data);
+        }
         else
         {
             $data = [
@@ -305,9 +343,17 @@ class OyHelper {
               'Content-Type' => 'application/json'
             ];
 
+            $proxy = null;
+            if(self::env_oyUseProxy())
+            {
+                $proxy = 'http://'. self::env_proxyUsermame() .':'. self::env_proxyPassword() .'@'. self::env_proxyServer() .':'. self::env_proxyPort();
+            }
             $client = new \GuzzleHttp\Client(['headers' => $headers,'http_errors' => false]);
             $response = $client->request('PUT',$endpoint,
-              ['json' => $data]
+              [
+                'json' => $data,
+                'proxy' => $proxy
+              ]
             );
 
             $data = $response->getBody()->getContents();

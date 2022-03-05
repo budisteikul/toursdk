@@ -194,9 +194,10 @@ class OyHelper {
           //$qrcode = ImageHelper::uploadQrcodeCloudinary($data2->data->qris_url);
           //$qrcode_url = $qrcode['secure_url'];
 
+          $path = date('Y-m-d');
           $contents = file_get_contents($data2->data->qris_url);
-          Storage::put('qrcode/'. date('Y-m-d') .'/'.$data1->snaptoken.'.png', $contents);
-          $qrcode_url = Storage::url('qrcode/'. date('Y-m-d') .'/'.$data1->snaptoken.'.png');
+          Storage::put('qrcode/'. $path .'/'.$data1->snaptoken.'.png', $contents);
+          $qrcode_url = Storage::url('qrcode/'. $path .'/'.$data1->snaptoken.'.png');
 
           $response->payment_type = 'ewallet';
           $response->bank_name = $payment->bank_name;

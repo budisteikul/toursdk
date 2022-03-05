@@ -119,9 +119,10 @@ class MidtransHelper {
           //$qrcode = ImageHelper::uploadQrcodeCloudinary($data2['qr_code_url']);
           //$qrcode_url = $qrcode['secure_url'];
 
+          $path = date('Y-m-d');
           $contents = file_get_contents($data2['qr_code_url']);
-          Storage::put('qrcode/'. date('Y-m-d') .'/'.$data1->token.'.png', $contents);
-          $qrcode_url = Storage::url('qrcode/'. date('Y-m-d') .'/'.$data1->token.'.png');
+          Storage::put('qrcode/'. $path .'/'.$data1->token.'.png', $contents);
+          $qrcode_url = Storage::url('qrcode/'. $path .'/'.$data1->token.'.png');
 
           $response->payment_type = 'ewallet';
           $response->bank_name = $payment->bank_name;

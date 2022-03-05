@@ -172,12 +172,12 @@ class OyHelper {
           $data1 = self::createSnap($data);
           $data2 = self::createCharge($data,$data1->snaptoken,$data->transaction->bank);
           
-          $qrcode = ImageHelper::uploadQrcodeCloudinary($data2->data->qris_url);
-          $qrcode_url = $qrcode['secure_url'];
+          //$qrcode = ImageHelper::uploadQrcodeCloudinary($data2->data->qris_url);
+          //$qrcode_url = $qrcode['secure_url'];
 
-          //$contents = file_get_contents($data2->data->qris_url);
-          //Storage::put('qrcode/oy-'.$data1->snaptoken.'.png', $contents);
-          //$qrcode_url = Storage::url('qrcode/oy-'.$data1->snaptoken.'.png');
+          $contents = file_get_contents($data2->data->qris_url);
+          Storage::put('qrcode/'.$data1->snaptoken.'.png', $contents);
+          $qrcode_url = Storage::url('qrcode/oy-'.$data1->snaptoken.'.png');
 
           $response->payment_type = 'ewallet';
           $response->bank_name = 'shopeepay';

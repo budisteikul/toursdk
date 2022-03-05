@@ -2070,9 +2070,12 @@ class BookingHelper {
 						break;	
 					case 4:
 						return '
-								<div class="card mb-4">
+								<div class="card mb-1">
 								<span class="badge badge-warning invoice-color-warning" style="font-size:20px;">
-								<i class="fas fa-university"></i> WAITING FOR PAYMENT </span>
+								<i class="fas fa-wallet"></i> WAITING FOR PAYMENT </span>
+								</div>
+								<div class="card mb-4">
+								
 								<div class="card-body bg-light">
 								Bank Name : <b>'. Str::upper($shoppingcart->shoppingcart_payment->bank_name) .' ('. $shoppingcart->shoppingcart_payment->bank_code .')</b> <br />
 								Virtual Account Number : <b>'. $shoppingcart->shoppingcart_payment->va_number .'</b> <br />
@@ -2255,8 +2258,7 @@ class BookingHelper {
 
 	public static function create_manual_pdf($shoppingcart)
 	{
-		$qrcode = base64_encode(QrCode::errorCorrection('H')->format('png')->size(111)->margin(0)->generate( self::env_appUrl() .'/booking/receipt/'.$shoppingcart->id.'/'.$shoppingcart->session_id  ));
-        $pdf = PDF::setOptions(['tempDir' =>  storage_path(),'fontDir' => storage_path(),'fontCache' => storage_path(),'isRemoteEnabled' => true])->loadView('toursdk::layouts.manual.manual', compact('shoppingcart','qrcode'))->setPaper('a4', 'portrait');
+        $pdf = PDF::setOptions(['tempDir' =>  storage_path(),'fontDir' => storage_path(),'fontCache' => storage_path(),'isRemoteEnabled' => true])->loadView('toursdk::layouts.manual.manual', compact('shoppingcart'))->setPaper('a4', 'portrait');
         return $pdf;
 	}
 

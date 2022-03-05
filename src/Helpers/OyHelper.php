@@ -177,7 +177,7 @@ class OyHelper {
 
           $contents = file_get_contents($data2->data->qris_url);
           Storage::put('qrcode/'.$data1->snaptoken.'.png', $contents);
-          $qrcode_url = Storage::url('qrcode/oy-'.$data1->snaptoken.'.png');
+          $qrcode_url = Storage::url('qrcode/'.$data1->snaptoken.'.png');
 
           $response->payment_type = 'ewallet';
           $response->bank_name = 'shopeepay';

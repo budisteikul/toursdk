@@ -115,7 +115,7 @@ class MidtransHelper {
 
           $contents = file_get_contents($data2['qr_code_url']);
           Storage::put('qrcode/'.$data1->token.'.png', $contents);
-          $qrcode_url = Storage::url('qrcode/midtrans-'.$data1->token.'.png');
+          $qrcode_url = Storage::url('qrcode/'.$data1->token.'.png');
 
           $response->payment_type = 'ewallet';
           $response->bank_name = self::bankCode($data->transaction->bank)->bank_name;

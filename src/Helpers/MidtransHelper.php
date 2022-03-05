@@ -57,7 +57,12 @@ class MidtransHelper {
                 $data->bank_payment_type = "bni_va";
             break;
             case "gopay":
-                $data->bank_name = "qris (gopay)";
+                $data->bank_name = "gopay";
+                $data->bank_code = "";
+                $data->bank_payment_type = "gopay";
+            break;
+            case "qris":
+                $data->bank_name = "gopay";
                 $data->bank_code = "";
                 $data->bank_payment_type = "gopay";
             break;
@@ -66,13 +71,13 @@ class MidtransHelper {
         return $data;
     }
 
-  public static function chargeSnap($token,$data,$bank)
+  public static function chargeSnap($token,$data,$payment_type)
   {
         $data = [
               'customer_details' => [
                 'email' => $data->contact->email,
                ],
-              'payment_type' => self::bankCode($bank)->bank_payment_type
+              'payment_type' => $payment_type
             ];
       
         $endpoint = self::midtransSnapEndpoint() ."/snap/v2/transactions/". $token ."/charge";
@@ -96,19 +101,20 @@ class MidtransHelper {
 
   public static function createPayment($data)
   {
-        $data1 = MidtransHelper::createSnap($data,$data->transaction->bank);
-        
-        $data2 = MidtransHelper::chargeSnap($data1->token,$data,$data->transaction->bank);
+        $payment = self::bankCode($data->transaction->bank);
+
+        $data1 = MidtransHelper::createSnap($data,$payment->bank_payment_type);
+        $data2 = MidtransHelper::chargeSnap($data1->token,$data,$payment->bank_payment_type);
 
         $response = new \stdClass();
-        if($data->transaction->bank=="permata")
+        if($payment->bank_payment_type=="permata_va")
         {
           $response->payment_type = 'bank_transfer';
-          $response->bank_name = self::bankCode($data->transaction->bank)->bank_name;
-          $response->bank_code = self::bankCode($data->transaction->bank)->bank_code;
+          $response->bank_name = $payment->bank_name;
+          $response->bank_code = $payment->bank_code;
           $response->va_number = $data2['permata_va_number'];
         }
-        else if($data->transaction->bank=="gopay")
+        else if($payment->bank_payment_type=="gopay")
         {
           //$qrcode = ImageHelper::uploadQrcodeCloudinary($data2['qr_code_url']);
           //$qrcode_url = $qrcode['secure_url'];
@@ -118,34 +124,30 @@ class MidtransHelper {
           $qrcode_url = Storage::url('qrcode/'.$data1->token.'.png');
 
           $response->payment_type = 'ewallet';
-          $response->bank_name = self::bankCode($data->transaction->bank)->bank_name;
+          $response->bank_name = $payment->bank_name;
           $response->qrcode = $qrcode_url;
           $response->link = $data2['deeplink_url'];
         }
-        else if($data->transaction->bank=="mandiri")
+        else if($payment->bank_payment_type=="echannel")
         {
           $response->payment_type = 'bank_transfer';
-          $response->bank_name = self::bankCode($data->transaction->bank)->bank_name;
+          $response->bank_name = $payment->bank_name;
           $response->bank_code = $data2['biller_code'];
           $response->va_number = $data2['bill_key'];
         }
-        else if($data->transaction->bank=="bni")
-        {
-          $response->payment_type = 'bank_transfer';
-          $response->bank_name = 'bni';
-          $response->bank_code = '009';
-          $response->va_number = $data2['va_numbers'][0]['va_number'];
-        }
         else
         {
-          return "";
+          $response->payment_type = 'bank_transfer';
+          $response->bank_name = $payment->bank_name;
+          $response->bank_code = $payment->bank_code;
+          $response->va_number = $data2['va_numbers'][0]['va_number'];
         }
 
         $response->snaptoken = $data1->token;
         return $response;
   }
 
-	public static function createSnap($data,$bank)
+	public static function createSnap($data,$payment_type)
     {
         
         $endpoint = self::midtransSnapEndpoint() ."/snap/v1/transactions";
@@ -171,7 +173,7 @@ class MidtransHelper {
             ]
           ];
 
-        if($bank=="permata")
+        if($payment_type=="permata_va")
         {
             $data_permata = [
               'permata_va' => [

@@ -90,40 +90,6 @@ class OyHelper {
         return $endpoint;
   }
 
-
-  public static function bankCode($bank)
-  {
-    $data = new \stdClass();
-    switch($bank)
-    {
-      case "btpn":
-        $data->bank_name = "Jenius (BTPN)";
-        $data->bank_code = "213";
-      break;
-      case "bri":
-        $data->bank_name = "bri";
-        $data->bank_code = "002";
-      break;
-      case "cimb":
-        $data->bank_name = "cimb niaga";
-        $data->bank_code = "022";
-      break;
-      case "mandiri":
-        $data->bank_name = "mandiri";
-        $data->bank_code = "008";
-      break;
-      case "permata":
-        $data->bank_name = "permata";
-        $data->bank_code = "013";
-      break;
-      case "bni":
-        $data->bank_name = "bni";
-        $data->bank_code = "009";
-      break;
-    }
-    return $data;
-  }
-
   public static function createDisbursement($disbursement)
   {
         $endpoint = self::oyApiEndpoint() ."/api/remit";
@@ -163,14 +129,67 @@ class OyHelper {
        
   }
 
+  public static function bankCode($bank)
+  {
+    $data = new \stdClass();
+    switch($bank)
+    {
+      case "btpn":
+        $data->bank_name = "Jenius (BTPN)";
+        $data->bank_code = "213";
+        $data->bank_payment_type = "btpn";
+      break;
+      case "bri":
+        $data->bank_name = "bri";
+        $data->bank_code = "002";
+        $data->bank_payment_type = "bri";
+      break;
+      case "cimb":
+        $data->bank_name = "cimb niaga";
+        $data->bank_code = "022";
+        $data->bank_payment_type = "cimb";
+      break;
+      case "mandiri":
+        $data->bank_name = "mandiri";
+        $data->bank_code = "008";
+        $data->bank_payment_type = "mandiri";
+      break;
+      case "permata":
+        $data->bank_name = "permata";
+        $data->bank_code = "013";
+        $data->bank_payment_type = "permata";
+      break;
+      case "bni":
+        $data->bank_name = "bni";
+        $data->bank_code = "009";
+        $data->bank_payment_type = "bni";
+      break;
+      case "shopeepay":
+        $data->bank_name = "shopeepay";
+        $data->bank_code = "";
+        $data->bank_payment_type = "qris_shopee";
+      break;
+      case "qris":
+        $data->bank_name = "shopeepay";
+        $data->bank_code = "";
+        $data->bank_payment_type = "qris_shopee";
+      break;
+    }
+    return $data;
+  }
+
+  
+
   public static function createPayment($data)
   {
         $response = new \stdClass();
 
-        if($data->transaction->bank=="qris")
+        $payment = self::bankCode($data->transaction->bank);
+
+        if($payment->bank_payment_type=="shopeepay")
         {
           $data1 = self::createSnap($data);
-          $data2 = self::createCharge($data,$data1->snaptoken,$data->transaction->bank);
+          $data2 = self::createCharge($data,$data1->snaptoken,$payment);
           
           //$qrcode = ImageHelper::uploadQrcodeCloudinary($data2->data->qris_url);
           //$qrcode_url = $qrcode['secure_url'];
@@ -180,18 +199,18 @@ class OyHelper {
           $qrcode_url = Storage::url('qrcode/'.$data1->snaptoken.'.png');
 
           $response->payment_type = 'ewallet';
-          $response->bank_name = 'shopeepay';
+          $response->bank_name = $payment->bank_name;
           $response->qrcode = $qrcode_url;
           $response->link = self::oyLink($data1->snaptoken);
         }
         else
         {
           $data1 = self::createSnap($data);
-          $data2 = self::createCharge($data,$data1->snaptoken,$data->transaction->bank);
+          $data2 = self::createCharge($data,$data1->snaptoken,$payment);
           $data3 = self::status($data1->snaptoken);
           
           $response->payment_type = 'bank_transfer';
-          $response->bank_name = self::bankCode($data->transaction->bank)->bank_name;
+          $response->bank_name = $payment->bank_name;
           $response->bank_code = $data3->data->sender_bank;
           $response->va_number = $data3->data->va_number;
           $response->link = self::oyLink($data1->snaptoken);
@@ -217,24 +236,15 @@ class OyHelper {
         }
 
         $client = new \GuzzleHttp\Client(['headers' => $headers,'http_errors' => false]);
-
-        
         $response = $client->request('GET',$endpoint,[ 'proxy' => $proxy ]);
-
         $data = $response->getBody()->getContents();
-
-      
-
         $data = json_decode($data);
-
-        
-
         return $data;
   }
 
-  public static function createCharge($data,$token,$bank)
+  public static function createCharge($data,$token,$payment)
   {
-        if($bank=="qris")
+        if($payment->bank_payment_type=="qris_shopee")
         {
             $data = [
                 'tx_id' => $token,
@@ -244,7 +254,7 @@ class OyHelper {
                 'sender_notes' => NULL,
                 'sender_email' => NULL,
                 'email_active' => false,
-                'card_sender' => 'qris_shopee'
+                'card_sender' => $payment->bank_payment_type
             ];
 
             $endpoint = self::oyCheckoutEndpoint() .'/b2x/v2/pay/qris/create';
@@ -281,7 +291,7 @@ class OyHelper {
                 'sender_notes' => NULL,
                 'sender_email' => NULL,
                 'sender_name' => $data->contact->name,
-                'card_sender' => self::bankCode($bank)->bank_code,
+                'card_sender' => $payment->bank_code,
                 'device_id' => NULL,
                 'payment_method' => 'VA',
                 'email_active' => false
@@ -300,11 +310,7 @@ class OyHelper {
             );
 
             $data = $response->getBody()->getContents();
-
-            
-
             $data = json_decode($data);
-
             
         }
         return $data;
@@ -348,12 +354,7 @@ class OyHelper {
         );
 
         $data = $response->getBody()->getContents();
-
-
-
         $data = json_decode($data);
-
-        
 
         $response = new \stdClass();
         $response->snaptoken = $data->payment_link_id;

@@ -115,7 +115,7 @@ class APIController extends Controller
         return $pdf->download('Ticket-'. $shoppingcart_product->product_confirmation_code .'.pdf');
     }
 
-    public function navbar()
+    public function navbar($sessionId)
     {
         $categories = Category::where('parent_id',0)->get();
         return response()->json([

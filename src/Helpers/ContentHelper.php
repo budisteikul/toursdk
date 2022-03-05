@@ -374,7 +374,7 @@ class ContentHelper {
         ];
 
         $bank_transfer_list[] = [
-            'value' => 'oyindonesia-permata', 'label' => 'PERMATA VA', 'image' => url('/img/bank/permata.png'),
+            'value' => 'midtrans-permata', 'label' => 'PERMATA VA', 'image' => url('/img/bank/permata.png'),
         ];
 
         $bank_transfer_list[] = [
@@ -382,7 +382,7 @@ class ContentHelper {
         ];
 
         $bank_transfer_list[] = [
-            'value' => 'oyindonesia-bni', 'label' => 'BNI VA', 'image' => url('/img/bank/bni.png'),
+            'value' => 'midtrans-bni', 'label' => 'BNI VA', 'image' => url('/img/bank/bni.png'),
         ];
 
         $bank_transfer_list[] = [

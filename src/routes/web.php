@@ -34,7 +34,7 @@
 	Route::post('/api/promocode/remove', 'budisteikul\toursdk\Controllers\APIController@removepromocode');
 
 	//Receipt
-	Route::get('/api/receipt/{id}/{sessionId}', 'budisteikul\toursdk\Controllers\APIController@receipt');
+	Route::get('/api/receipt/{sessionId}/{confirmationCode}', 'budisteikul\toursdk\Controllers\APIController@receipt');
 
 	//Disbursmenet
 	Route::post('/api/disbursement/oy/confirm/{id}', 'budisteikul\toursdk\Controllers\APIController@confirmdisbursementoy');

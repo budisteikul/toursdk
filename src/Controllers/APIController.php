@@ -649,7 +649,7 @@ class APIController extends Controller
                 'message' => 'success'
             );
 
-        FirebaseHelper::connect('receipt/'.$shoppingcart->session_id ."/". $shoppingcart->id,$data,"PUT");
+        FirebaseHelper::connect('receipt/'.$shoppingcart->session_id ."/". $shoppingcart->confirmation_code,$data,"PUT");
         
         return response()->json([
                 'receipt' => $dataObj,

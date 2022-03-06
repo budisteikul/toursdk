@@ -363,50 +363,54 @@ class ContentHelper {
         $promo_code = $shoppingcart->promo_code;
         if($promo_code=="") $promo_code = null;
         
-        $payment_enable = 'bank_transfer,ewallet,paypal';
+        $payment_enable = 'bank_transfer,ewallet,paypal,crypto';
         if($shoppingcart->due_now > 5000000)
         {
-            $payment_enable = 'bank_transfer,paypal';
+            $payment_enable = 'bank_transfer,paypal,crypto';
         }
         
         $bank_transfer_list[] = [
             'value' => 'oyindonesia-mandiri', 'label' => 'MANDIRI VA', 'image' => url('/img/bank/mandiri.png'),
         ];
-
         $bank_transfer_list[] = [
             'value' => 'midtrans-permata', 'label' => 'PERMATA VA', 'image' => url('/img/bank/permata.png'),
         ];
-
         $bank_transfer_list[] = [
             'value' => 'doku-danamon', 'label' => 'DANAMON VA', 'image' => url('/img/bank/danamon.png'),
         ];
-
         $bank_transfer_list[] = [
             'value' => 'midtrans-bni', 'label' => 'BNI VA', 'image' => url('/img/bank/bni.png'),
         ];
-
         $bank_transfer_list[] = [
             'value' => 'oyindonesia-bri', 'label' => 'BRI VA', 'image' => url('/img/bank/bri.png'),
         ];
-
         $bank_transfer_list[] = [
             'value' => 'oyindonesia-cimb', 'label' => 'CIMB NIAGA VA',  'image' => url('/img/bank/cimb.png'),
         ];
-
         $bank_transfer_list[] = [
             'value' => 'doku-mandirisyariah', 'label' => 'BSI VA', 'image' => url('/img/bank/bsi.png'),
         ];
-
-        
         $bank_transfer_list[] = [
             'value' => 'oyindonesia-btpn', 'label' => 'JENIUS (BTPN) VA', 'image' => url('/img/bank/jenius.png'),
         ];
-        
-
         $bank_transfer_list[] = [
             'value' => 'doku-doku', 'label' => 'DOKU VA', 'image' => url('/img/bank/doku.png'),
         ];
+
+        $blockchain_list[] = [
+            'value' => 'bep20', 'label' => 'BINANCE SMART CHAIN (BEP20) NETWORK',
+        ];
+        $blockchain_list[] = [
+            'value' => 'erc20', 'label' => 'ETHEREUM NETWORK',
+        ];
+        $blockchain_list[] = [
+            'value' => 'trc20', 'label' => 'TRON NETWORK',
+        ];
+        $blockchain_list[] = [
+            'value' => 'polygon', 'label' => 'POLYGON NETWORK',
+        ];
         
+
 
         $dataShoppingcart[] = array(
                 'id' => $shoppingcart->session_id,
@@ -426,7 +430,8 @@ class ContentHelper {
                 'paypal_client_id' => self::env_paypalClientId(),
                 'paypal_currency' => self::env_paypalCurrency(),
                 'payment_enable' => $payment_enable,
-                'bank_transfer_list' => $bank_transfer_list
+                'bank_transfer_list' => $bank_transfer_list,
+                'blockchain_list' => $blockchain_list
             );
 
         return $dataShoppingcart;

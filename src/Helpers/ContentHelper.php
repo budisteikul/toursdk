@@ -363,10 +363,10 @@ class ContentHelper {
         $promo_code = $shoppingcart->promo_code;
         if($promo_code=="") $promo_code = null;
         
-        $payment_enable = 'bank_transfer,ewallet,paypal,crypto';
+        $payment_enable = 'bank_transfer,ewallet,paypal';
         if($shoppingcart->due_now > 5000000)
         {
-            $payment_enable = 'bank_transfer,paypal,crypto';
+            $payment_enable = 'bank_transfer,paypal';
         }
         
         $bank_transfer_list[] = [

@@ -398,16 +398,22 @@ class ContentHelper {
         ];
 
         $blockchain_list[] = [
-            'value' => 'bep20', 'label' => 'BINANCE SMART CHAIN (BEP20) NETWORK',
+            'value' => 'bep20', 'label' => 'BINANCE SMART CHAIN', 'image' => url('/img/blockchain/bsc.png'),
         ];
         $blockchain_list[] = [
-            'value' => 'erc20', 'label' => 'ETHEREUM NETWORK',
+            'value' => 'erc20', 'label' => 'ETHEREUM', 'image' => url('/img/blockchain/ethereum.png'),
         ];
         $blockchain_list[] = [
-            'value' => 'trc20', 'label' => 'TRON NETWORK',
+            'value' => 'trc20', 'label' => 'TRON NETWORK', 'image' => url('/img/blockchain/tron.png'),
         ];
         $blockchain_list[] = [
-            'value' => 'polygon', 'label' => 'POLYGON NETWORK',
+            'value' => 'polygon', 'label' => 'POLYGON (Matic)', 'image' => url('/img/blockchain/polygon.png'),
+        ];
+        $blockchain_list[] = [
+            'value' => 'stellar', 'label' => 'STELLAR', 'image' => url('/img/blockchain/stellar.png'),
+        ];
+        $blockchain_list[] = [
+            'value' => 'klaytn', 'label' => 'KLAYTN', 'image' => url('/img/blockchain/klaytn.png'),
         ];
         
 

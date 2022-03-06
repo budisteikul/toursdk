@@ -397,6 +397,7 @@ class ContentHelper {
             'value' => 'doku-doku', 'label' => 'DOKU VA', 'image' => url('/img/bank/doku.png'),
         ];
 
+        /*
         $blockchain_list[] = [
             'value' => 'bep20', 'label' => 'BINANCE SMART CHAIN', 'image' => url('/img/blockchain/bsc.png'),
         ];
@@ -415,7 +416,7 @@ class ContentHelper {
         $blockchain_list[] = [
             'value' => 'klaytn', 'label' => 'KLAYTN', 'image' => url('/img/blockchain/klaytn.png'),
         ];
-        
+        */
 
 
         $dataShoppingcart[] = array(
@@ -437,7 +438,7 @@ class ContentHelper {
                 'paypal_currency' => self::env_paypalCurrency(),
                 'payment_enable' => $payment_enable,
                 'bank_transfer_list' => $bank_transfer_list,
-                'blockchain_list' => $blockchain_list
+                //'blockchain_list' => $blockchain_list
             );
 
         return $dataShoppingcart;

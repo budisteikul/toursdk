@@ -1729,6 +1729,18 @@ class BookingHelper {
 		
 	}
 
+	public static function booking_expired($shoppingcart)
+	{
+		if($shoppingcart->booking_status=="PENDING")
+        {
+            $due_date = self::due_date($shoppingcart,"database");
+            if(Carbon::parse($due_date)->isPast())
+            {
+                self::confirm_payment($shoppingcart,"CANCELED");
+            }
+        }
+	}
+
 	public static function due_date($shoppingcart, $data_type = "json")
 	{
 		$date_arr = array();

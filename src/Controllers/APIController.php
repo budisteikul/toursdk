@@ -642,15 +642,7 @@ class APIController extends Controller
             abort(404);
         }
         
-        if($shoppingcart->booking_status=="PENDING")
-        {
-            $due_date = BookingHelper::due_date($shoppingcart,"database");
-            if(Carbon::parse($due_date)->isPast())
-            {
-                BookingHelper::confirm_payment($shoppingcart,"CANCELED");
-            }
-        }
-        
+        BookingHelper::booking_expired($shoppingcart);
 
         $dataObj = ContentHelper::view_receipt($shoppingcart);
 

@@ -51,6 +51,16 @@ class OyHelper {
         return env("PROXY_PORT");
   }
 
+  public static function oyUseProxy()
+  {
+      $proxy = null;
+      if(self::env_oyUseProxy())
+      {
+            $proxy = 'http://'. self::env_proxyUsermame() .':'. self::env_proxyPassword() .'@'. self::env_proxyServer() .':'. self::env_proxyPort();
+      }
+      return $proxy;
+  }
+
   public static function oyApiEndpoint()
   {
         if(self::env_oyEnv()=="production")
@@ -108,17 +118,13 @@ class OyHelper {
           'partner_trx_id' => $disbursement->transaction_id,
         ];
 
-        $proxy = null;
-        if(self::env_oyUseProxy())
-        {
-            $proxy = 'http://'. self::env_proxyUsermame() .':'. self::env_proxyPassword() .'@'. self::env_proxyServer() .':'. self::env_proxyPort();
-        }
+        
         
         $client = new \GuzzleHttp\Client(['headers' => $headers,'http_errors' => false]);
         $response = $client->request('POST',$endpoint,
           [
             'json' => $data,
-            'proxy' => $proxy
+            'proxy' => self::oyUseProxy()
           ]
         );
 
@@ -167,7 +173,7 @@ class OyHelper {
       case "shopeepay":
         $data->bank_name = "shopeepay";
         $data->bank_code = "";
-        $data->bank_payment_type = "qris_shopee";
+        $data->bank_payment_type = "shopeepay_ewallet";
       break;
       case "qris":
         $data->bank_name = "shopeepay";
@@ -230,14 +236,9 @@ class OyHelper {
               'Content-Type' => 'application/json'
           ];
 
-        $proxy = null;
-        if(self::env_oyUseProxy())
-        {
-            $proxy = 'http://'. self::env_proxyUsermame() .':'. self::env_proxyPassword() .'@'. self::env_proxyServer() .':'. self::env_proxyPort();
-        }
-
+        
         $client = new \GuzzleHttp\Client(['headers' => $headers,'http_errors' => false]);
-        $response = $client->request('GET',$endpoint,[ 'proxy' => $proxy ]);
+        $response = $client->request('GET',$endpoint,[ 'proxy' => self::oyUseProxy() ]);
         $data = $response->getBody()->getContents();
         $data = json_decode($data);
         return $data;
@@ -264,17 +265,12 @@ class OyHelper {
               'Content-Type' => 'application/json'
           ];
 
-          $proxy = null;
-          if(self::env_oyUseProxy())
-          {
-              $proxy = 'http://'. self::env_proxyUsermame() .':'. self::env_proxyPassword() .'@'. self::env_proxyServer() .':'. self::env_proxyPort();
-          }
-
+         
           $client = new \GuzzleHttp\Client(['headers' => $headers,'http_errors' => false]);
           $response = $client->request('POST',$endpoint,
               [
                 'json' => $data,
-                'proxy' => $proxy
+                'proxy' => self::oyUseProxy()
               ]
           );
 
@@ -304,17 +300,12 @@ class OyHelper {
               'Content-Type' => 'application/json'
             ];
 
-            $proxy = null;
-            if(self::env_oyUseProxy())
-            {
-                $proxy = 'http://'. self::env_proxyUsermame() .':'. self::env_proxyPassword() .'@'. self::env_proxyServer() .':'. self::env_proxyPort();
-            }
-
+            
             $client = new \GuzzleHttp\Client(['headers' => $headers,'http_errors' => false]);
             $response = $client->request('POST',$endpoint,
               [
                 'json' => $data,
-                'proxy' => $proxy
+                'proxy' => self::oyUseProxy()
               ]
             );
 
@@ -343,16 +334,12 @@ class OyHelper {
               'Content-Type' => 'application/json'
             ];
 
-            $proxy = null;
-            if(self::env_oyUseProxy())
-            {
-                $proxy = 'http://'. self::env_proxyUsermame() .':'. self::env_proxyPassword() .'@'. self::env_proxyServer() .':'. self::env_proxyPort();
-            }
+            
             $client = new \GuzzleHttp\Client(['headers' => $headers,'http_errors' => false]);
             $response = $client->request('PUT',$endpoint,
               [
                 'json' => $data,
-                'proxy' => $proxy
+                'proxy' => self::oyUseProxy()
               ]
             );
 
@@ -386,17 +373,12 @@ class OyHelper {
           'due_date' => $data->transaction->date_expired,
         ];
 
-        $proxy = null;
-        if(self::env_oyUseProxy())
-        {
-          $proxy = 'http://'. self::env_proxyUsermame() .':'. self::env_proxyPassword() .'@'. self::env_proxyServer() .':'. self::env_proxyPort();
-        }
-
+        
         $client = new \GuzzleHttp\Client(['headers' => $headers,'http_errors' => false]);
         $response = $client->request('POST',$endpoint,
           [
             'json' => $data,
-            'proxy' => $proxy
+            'proxy' => self::oyUseProxy()
           ]
         );
 

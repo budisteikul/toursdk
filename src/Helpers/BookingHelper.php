@@ -1729,6 +1729,34 @@ class BookingHelper {
 		
 	}
 
+	public static function due_date($shoppingcart, $data_type = "json")
+	{
+		$date_arr = array();
+
+		if($data_type=="json")
+		{
+        	foreach($shoppingcart->products as $product)
+        	{
+            	$date_arr[] = $product->date;
+        	}
+		}
+		else
+		{
+			foreach($shoppingcart->shoppingcart_products()->get() as $shoppingcart_product)
+			{
+				$date_arr[] = $shoppingcart_product->date;
+            }
+		}
+
+		usort($date_arr, function($a, $b) {
+            	$dateTimestamp1 = strtotime($a);
+            	$dateTimestamp2 = strtotime($b);
+            	return $dateTimestamp1 < $dateTimestamp2 ? -1: 1;
+        	});
+
+		return $date_arr[0];
+	}
+
 	public static function create_payment($sessionId,$payment_provider="none",$bank="")
 	{
 		$shoppingcart = Cache::get('_'. $sessionId);
@@ -1745,23 +1773,12 @@ class BookingHelper {
         $contact->email = $email;
         $contact->phone = $phone;
 
-        $date_arr = array();
-        foreach($shoppingcart->products as $product)
-        {
-            $date_arr[] = $product->date;
-            
-        }
-
-        usort($date_arr, function($a, $b) {
-            $dateTimestamp1 = strtotime($a);
-            $dateTimestamp2 = strtotime($b);
-            return $dateTimestamp1 < $dateTimestamp2 ? -1: 1;
-        });
+        $due_date = self::due_date($shoppingcart);
 
         $date1 = Carbon::now();
-        $date2 = Carbon::parse($date_arr[0]);
+        $date2 = Carbon::parse($due_date);
         $mins_expired  = $date2->diffInMinutes($date1, true);
-        $date_expired = Carbon::parse($date_arr[0])->formatLocalized('%Y-%m-%d %H:%M:%S');
+        $date_expired = Carbon::parse($due_date)->formatLocalized('%Y-%m-%d %H:%M:%S');
         $date_now = Carbon::parse($date1)->formatLocalized('%Y-%m-%d %H:%M:%S +0700');
         
         $response = NULL;
@@ -1790,7 +1807,6 @@ class BookingHelper {
         $transaction->mins_expired = $mins_expired;
         $transaction->date_expired = $date_expired;
         $transaction->date_now = $date_now;
-        $transaction->api_key = NULL;
 
         $data = new \stdClass();
         $data->contact = $contact;

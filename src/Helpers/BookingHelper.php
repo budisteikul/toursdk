@@ -2151,7 +2151,7 @@ class BookingHelper {
 
 						$merchant_name = self::env_appName();
 						$nmid = '';
-						$link = '';
+						
 						if($shoppingcart->shoppingcart_payment->bank_name=="shopeepay")
 						{
 							$nmid = 'ID1022150910159';
@@ -2160,10 +2160,7 @@ class BookingHelper {
 						{
 							$nmid = 'ID1022148923652';
 						}
-						if($shoppingcart->shoppingcart_payment->link!="")
-						{
-							$link = '<a href="'. $shoppingcart->shoppingcart_payment->link .'" type="button" class="invoice-hilang btn btn-danger invoice-hilang ">or Open SHOPEE APP <i class="fas fa-wallet"></i> </a>';
-						}
+						
 
 						return '
 								
@@ -2196,7 +2193,6 @@ class BookingHelper {
 								</div>
 								<div class="card mb-4">
 								<a href="'. self::env_appApiUrl() .'/qrcode/'.$shoppingcart->session_id.'/'. $shoppingcart->confirmation_code .'" type="button" class="invoice-hilang btn btn-success invoice-hilang ">or Download QRCODE <i class="fas fa-download"></i> </a>
-								'. $link .'
 								</div>
 								';
 						break;

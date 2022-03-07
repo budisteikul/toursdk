@@ -47,7 +47,7 @@ class FirebaseHelper {
 
         if($index=="receipt")
         {
-            self::connect("receipt/".$shoppingcart->session_id .'/'. $shoppingcart->id,"","DELETE");
+            self::connect("receipt/".$shoppingcart->session_id .'/'. $shoppingcart->confirmation_code,"","DELETE");
             
         }
 	}
@@ -70,7 +70,7 @@ class FirebaseHelper {
                 'message' => 'success'
             );
             
-            self::connect('receipt/'.$shoppingcart->session_id ."/". $shoppingcart->id,$data,"PUT");
+            self::connect('receipt/'.$shoppingcart->session_id ."/". $shoppingcart->confirmation_code,$data,"PUT");
             
             return "";
         }

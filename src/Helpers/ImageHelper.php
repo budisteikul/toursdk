@@ -30,7 +30,7 @@ class ImageHelper {
             "api_secret" => self::env_cloudinarySecret() 
         ));
         $path = date('Y-m-d');
-        $response = \Cloudinary\Uploader::upload($url, Array('unique_filename'=>true,'use_filename'=>false,'folder' => env('APP_NAME') .'/qr-code/'. $path));
+        $response = \Cloudinary\Uploader::upload($url, Array('unique_filename'=>true,'use_filename'=>false,'folder' => env('APP_NAME') .'/qr-code/'. $path .'/'));
         return $response;
     }
 

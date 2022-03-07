@@ -1821,7 +1821,7 @@ class BookingHelper {
         $transaction->date_now = $date_now;
 
         $app_url = self::env_appUrl();
-        $app_url = "https://www.vertikaltrip.com";
+        //$app_url = "https://www.vertikaltrip.com";
         $transaction->finish_url = $app_url .'/booking/receipt/'. $sessionId .'/'. $shoppingcart->confirmation_code;
 
         $data = new \stdClass();

@@ -245,7 +245,8 @@ class OyHelper {
           $response->payment_type = 'ewallet';
           $response->bank_name = $payment->bank_name;
           $response->qrcode = $qrcode_url;
-          $response->link = self::createEwallet($data,'shopeepay_ewallet')->ewallet_url;
+          $response->link = self::oyLink($data1->snaptoken);
+          //$response->link = self::createEwallet($data,'shopeepay_ewallet')->ewallet_url;
         }
         else if($payment->bank_payment_type=="shopeepay_ewallet")
         {
@@ -264,10 +265,6 @@ class OyHelper {
           $data2 = self::createCharge($data,$data1->snaptoken,$payment);
           $data3 = self::status($data1->snaptoken);
 
-          print_r($data1);
-          print_r($data2);
-          print_r($data3);
-          exit();
           $response->payment_type = 'bank_transfer';
           $response->bank_name = $payment->bank_name;
           $response->bank_code = $data3->data->sender_bank;

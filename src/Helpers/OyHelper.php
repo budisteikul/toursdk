@@ -135,41 +135,6 @@ class OyHelper {
        
   }
 
-  public static function createEwallet($data,$ewallet_code)
-  {
-        
-        $endpoint = self::oyApiEndpoint() ."/api/e-wallet-aggregator/create-transaction";
-
-        $headers = [
-              'Accept' => 'application/jsons',
-              'Content-Type' => 'application/json',
-              'x-oy-username' => self::env_oyUsername(),
-              'x-api-key' => self::env_oyApiKey(),
-          ];
-
-        $data = [
-          'customer_id' => $data->transaction->id,
-          'partner_trx_id' => $data->transaction->id,
-          'amount' => $data->transaction->amount,
-          'ewallet_code' => $ewallet_code,
-          'success_redirect_url' => $data->transaction->finish_url,
-          'expiration_time' => 60,
-        ];
-
-        $client = new \GuzzleHttp\Client(['headers' => $headers,'http_errors' => false]);
-        $response = $client->request('POST',$endpoint,
-          [
-            'json' => $data,
-            'proxy' => self::oyUseProxy()
-          ]
-        );
-
-        $data = $response->getBody()->getContents();
-        $data = json_decode($data);
-        
-
-        return $data;
-  }
 
   public static function bankCode($bank)
   {
@@ -246,7 +211,7 @@ class OyHelper {
           $response->bank_name = $payment->bank_name;
           $response->qrcode = $qrcode_url;
           $response->link = self::oyLink($data1->snaptoken);
-          //$response->link = self::createEwallet($data,'shopeepay_ewallet')->ewallet_url;
+          
         }
         else if($payment->bank_payment_type=="shopeepay_ewallet")
         {

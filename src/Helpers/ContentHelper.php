@@ -78,13 +78,6 @@ class ContentHelper {
         {
             if($shoppingcart->shoppingcart_payment->payment_status==4)
             {
-                /*
-                $link = '';
-                if($shoppingcart->shoppingcart_payment->link!="")
-                {
-                    $link = '<a href="'. $shoppingcart->shoppingcart_payment->link .'" type="button" class="invoice-hilang btn btn-danger invoice-hilang ">or Open SHOPEE APP <i class="fas fa-wallet"></i> </a>';
-                }
-                */
 
                 $pdfUrl = '
                     <div class="pl-2">

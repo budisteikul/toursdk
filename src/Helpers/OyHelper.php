@@ -196,7 +196,7 @@ class OyHelper {
         {
           $data1 = self::createSnap($data);
           $data2 = self::createCharge($data,$data1->snaptoken,$payment);
-          
+
           $qrcode = ImageHelper::uploadQrcodeCloudinary($data2->data->qris_url);
           $qrcode_url = $qrcode['secure_url'];
 
@@ -210,12 +210,23 @@ class OyHelper {
           $response->qrcode = $qrcode_url;
           $response->link = self::oyLink($data1->snaptoken);
         }
+        else if($payment->bank_payment_type=="shopeepay_ewallet")
+        {
+          $data1 = self::createSnap($data);
+          $data2 = self::createCharge($data,$data1->snaptoken,$payment);
+          
+          $response->payment_type = 'ewallet';
+          $response->bank_name = $payment->bank_name;
+          $response->bank_code = null;
+          $response->va_number = null;
+          $response->link = $data2->data->deeplink_url;
+        }
         else
         {
           $data1 = self::createSnap($data);
           $data2 = self::createCharge($data,$data1->snaptoken,$payment);
           $data3 = self::status($data1->snaptoken);
-          
+
           $response->payment_type = 'bank_transfer';
           $response->bank_name = $payment->bank_name;
           $response->bank_code = $data3->data->sender_bank;
@@ -231,13 +242,7 @@ class OyHelper {
   {
         $endpoint = self::oyCheckoutEndpoint() .'/b2x/v2/pay/status/enc/'. $token;
 
-        $headers = [
-              'Accept' => 'application/jsons',
-              'Content-Type' => 'application/json'
-          ];
-
-        
-        $client = new \GuzzleHttp\Client(['headers' => $headers,'http_errors' => false]);
+        $client = new \GuzzleHttp\Client(['http_errors' => false]);
         $response = $client->request('GET',$endpoint,[ 'proxy' => self::oyUseProxy() ]);
         $data = $response->getBody()->getContents();
         $data = json_decode($data);
@@ -293,11 +298,11 @@ class OyHelper {
                 'email_active' => false
             ];
 
-            $endpoint = self::oyCheckoutEndpoint() .'/b2x/v2/pay/enc/ewallet/create';
+            $endpoint = self::oyCheckoutEndpoint() .'/b2x/v2/pay/ewallet/create';
 
             $headers = [
               'Accept' => 'application/jsons',
-              'Content-Type' => 'application/json'
+              'Content-Type' => 'application/json',
             ];
 
             
@@ -368,7 +373,7 @@ class OyHelper {
           'phone_number' => null,
           'username_display' => self::env_appName(),
           'is_open' => false,
-          'list_disabled_payment_methods' => "EWALLET,CREDIT_CARD",
+          'list_disabled_payment_methods' => null,
           'expiration' => $data->transaction->date_expired,
           'due_date' => $data->transaction->date_expired,
         ];

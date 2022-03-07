@@ -37,10 +37,9 @@ class APIController extends Controller
     
     public function test()
     {
-        $contents = file_get_contents('https://res.cloudinary.com/budi/image/upload/v1646401549/VERTIKAL%20TRIP/qr-code/a9b1rs7eqpdfcrldllyc.png');
-        Storage::disk('gcs')->put('qrcode/oy.png', $contents);
-        $qrcode_url = Storage::disk('gcs')->url('qrcode/oy.png');
-        print($qrcode_url);
+        $string = '{"success":true,"error":null,"data":{"id":"3dc8545b-0fd5-47d4-ac6a-de3c6eaf6316","amount":10000,"description":"test shopeepay","tiering_type":"NON_TIERING_TYPE","admin_fee_va":null,"non_tiering_admin_fee":null,"tiering_admin_fee_va":{"002":4000,"009":4000,"014":4000,"022":4000,"013":4000,"008":4000,"213":4000},"admin_fee_card":4300,"admin_fee_card_percent":null,"admin_fee_qris_shopee_percent":0.7,"admin_fee_qris_dsp_percent":0.7,"admin_fee_offline_cash_in":5000,"minimum_amount":10000,"expired_date":"2022-03-07 23:06:09","due_date":"2022-03-07 23:06:09","payment_channel_exp_time":"2022-03-07 21:34:08","step":"input-amount","status":"WAITING_PAYMENT","sender_information":{"name":"test prod","phone":"","note":"","email":""},"error":null,"additional_data":{"deeplink_url":"https://wsa.wallet.airpay.co.id/universal-link/wallet/pay?deep_and_deferred=1&token=Um80ZWF4Yk9xZmROU8EZBug8J45ca_NZTDHohxXrfwg7lAT84dQIfg","expired_at":"2022-03-07T14:34:08","ewallet_type":"shopeepay_ewallet","sender_phone_ovo":null},"redirect_url":null,"ewallet_admin_fee":[{"ewallet_type":"shopeepay_ewallet","type":"FIXED","admin_fee":150}],"reusable":false,"is_open":false,"is_include_admin_fee":false,"partner":{"image_url":"https://www.vertikaltrip.com/img/logo-dark.png","name":"VERTIKAL TRIP","username":"vertikaltrip","company_name":null,"primary_color":null,"secondary_color":null,"industry":"ADMINISTRATIVE_AND_SUPPORT_SERVICE_ACTIVITIES"},"bank_channel":[{"name":"VA","data":[{"vendor_code":"002","name":"BRI","disabled_description":null},{"vendor_code":"008","name":"Bank Mandiri","disabled_description":null},{"vendor_code":"009","name":"BNI","disabled_description":null},{"vendor_code":"013","name":"Bank Permata / Permata Syariah","disabled_description":null},{"vendor_code":"022","name":"CIMB Niaga / CIMB Niaga Syariah","disabled_description":null},{"vendor_code":"213","name":"JENIUS (BANK BTPN)","disabled_description":null}]},{"name":"QRIS","data":[]},{"name":"EWALLET","data":[{"vendor_code":"shopeepay_ewallet","name":"ShopeePay","disabled_description":null}]}],"email_active":false},"reason":null,"status_code":200}';
+        $string = json_decode($string);
+        print_r($string);
     }
 
     public function __construct()

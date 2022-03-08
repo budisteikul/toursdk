@@ -1833,7 +1833,8 @@ class BookingHelper {
 		$shoppingcart = Cache::get('_'. $sessionId);
 
 		$data = self::pre_create_payment($shoppingcart->session_id);
-
+		print_r($data);
+		exit();
 		switch($payment_provider)
 		{
 			case "oyindonesia":

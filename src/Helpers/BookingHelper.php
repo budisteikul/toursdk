@@ -1822,7 +1822,7 @@ class BookingHelper {
         $transaction->mins_expired = $mins_expired;
         $transaction->date_expired = $date_expired;
         $transaction->date_now = $date_now;
-        $transaction->finish_url = self::env_appUrl() .'/booking/receipt/'. $sessionId .'/'. $shoppingcart->confirmation_code;
+        $transaction->finish_url = '/booking/receipt/'. $sessionId .'/'. $shoppingcart->confirmation_code;
 
         $data = new \stdClass();
         $data->contact = $contact;

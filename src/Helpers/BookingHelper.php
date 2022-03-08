@@ -1769,7 +1769,9 @@ class BookingHelper {
 		return $date_arr[0];
 	}
 
-	public static function pre_create_payment($sessionId)
+	
+
+	public static function create_payment($sessionId,$payment_provider="none",$bank="")
 	{
 		$shoppingcart = Cache::get('_'. $sessionId);
 
@@ -1825,16 +1827,6 @@ class BookingHelper {
         $data->contact = $contact;
         $data->transaction = $transaction;
 
-        return $data;
-	}
-
-	public static function create_payment($sessionId,$payment_provider="none",$bank="")
-	{
-		$shoppingcart = Cache::get('_'. $sessionId);
-
-		$data = self::pre_create_payment($shoppingcart->session_id);
-		print_r($data);
-		exit();
 		switch($payment_provider)
 		{
 			case "oyindonesia":

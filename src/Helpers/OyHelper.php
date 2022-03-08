@@ -212,7 +212,7 @@ class OyHelper {
           $response->qrcode = $qrcode_url;
           $response->snaptoken = $data1->snaptoken;
           $response->link = self::oyLink($data1->snaptoken);
-          
+          $response->redirect = $data->transaction->finish_url;
         }
         else if($payment->bank_payment_type=="shopeepay_ewallet")
         {
@@ -225,6 +225,7 @@ class OyHelper {
           $response->va_number = null;
           $response->snaptoken = $data1->snaptoken;
           $response->link = $data2->data->deeplink_url;
+          $response->redirect = $data->transaction->finish_url;
         }
         else
         {
@@ -238,9 +239,9 @@ class OyHelper {
           $response->va_number = $data3->data->va_number;
           $response->snaptoken = $data1->snaptoken;
           $response->link = self::oyLink($data1->snaptoken);
+          $response->redirect = $data->transaction->finish_url;
         }
-        
-        
+       
         return $response;
   }
 

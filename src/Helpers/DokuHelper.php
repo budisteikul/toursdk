@@ -105,7 +105,7 @@ class DokuHelper {
         $response->bank_code = $payment->bank_code;
         $response->va_number = $data2->payment_code;
         $response->link = $data2->how_to_pay_url;
-
+        $response->redirect = $data->transaction->finish_url;
         return $response;
     }
 

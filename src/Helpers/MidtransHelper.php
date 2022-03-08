@@ -128,6 +128,7 @@ class MidtransHelper {
           $response->bank_name = $payment->bank_name;
           $response->qrcode = $qrcode_url;
           $response->link = $data2['deeplink_url'];
+          $response->redirect = $data->transaction->finish_url;
         }
         else if($payment->bank_payment_type=="echannel")
         {
@@ -135,6 +136,7 @@ class MidtransHelper {
           $response->bank_name = $payment->bank_name;
           $response->bank_code = $data2['biller_code'];
           $response->va_number = $data2['bill_key'];
+          $response->redirect = $data->transaction->finish_url;
         }
         else
         {
@@ -142,6 +144,7 @@ class MidtransHelper {
           $response->bank_name = $payment->bank_name;
           $response->bank_code = $payment->bank_code;
           $response->va_number = $data2['va_numbers'][0]['va_number'];
+          $response->redirect = $data->transaction->finish_url;
         }
 
         $response->snaptoken = $data1->token;

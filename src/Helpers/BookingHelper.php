@@ -1619,6 +1619,7 @@ class BookingHelper {
 		if(isset($shoppingcart_json->payment->snaptoken)) $shoppingcart_payment->snaptoken = $shoppingcart_json->payment->snaptoken;
 		if(isset($shoppingcart_json->payment->qrcode)) $shoppingcart_payment->qrcode = $shoppingcart_json->payment->qrcode;
 		if(isset($shoppingcart_json->payment->link)) $shoppingcart_payment->link = $shoppingcart_json->payment->link;
+		if(isset($shoppingcart_json->payment->redirect)) $shoppingcart_payment->redirect = $shoppingcart_json->payment->redirect;
 
 		if(isset($shoppingcart_json->payment->order_id)) $shoppingcart_payment->order_id = $shoppingcart_json->payment->order_id;
 		if(isset($shoppingcart_json->payment->authorization_id)) $shoppingcart_payment->authorization_id = $shoppingcart_json->payment->authorization_id;
@@ -1909,7 +1910,6 @@ class BookingHelper {
 
 		return $response;
 	}
-
 
 	public static function delete_shoppingcart($shoppingcart)
 	{

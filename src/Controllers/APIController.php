@@ -867,7 +867,8 @@ class APIController extends Controller
         return response()->json([
             "id" => "1",
             "token" => $shoppingcart->shoppingcart_payment->snaptoken,
-            "redirect" => '/booking/receipt/'.$shoppingcart->session_id.'/'.$shoppingcart->confirmation_code
+            //"redirect" => '/booking/receipt/'.$shoppingcart->session_id.'/'.$shoppingcart->confirmation_code
+            "redirect" => $shoppingcart->shoppingcart_payment->redirect
         ]);
         
         

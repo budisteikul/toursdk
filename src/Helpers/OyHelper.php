@@ -210,6 +210,7 @@ class OyHelper {
           $response->payment_type = 'ewallet';
           $response->bank_name = $payment->bank_name;
           $response->qrcode = $qrcode_url;
+          $response->snaptoken = $data1->snaptoken;
           $response->link = self::oyLink($data1->snaptoken);
           
         }
@@ -222,6 +223,7 @@ class OyHelper {
           $response->bank_name = $payment->bank_name;
           $response->bank_code = null;
           $response->va_number = null;
+          $response->snaptoken = $data1->snaptoken;
           $response->link = $data2->data->deeplink_url;
         }
         else
@@ -234,6 +236,7 @@ class OyHelper {
           $response->bank_name = $payment->bank_name;
           $response->bank_code = $data3->data->sender_bank;
           $response->va_number = $data3->data->va_number;
+          $response->snaptoken = $data1->snaptoken;
           $response->link = self::oyLink($data1->snaptoken);
         }
         

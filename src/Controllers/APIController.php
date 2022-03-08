@@ -864,8 +864,6 @@ class APIController extends Controller
     
         $shoppingcart = BookingHelper::confirm_booking($sessionId);
 
-       
-
         return response()->json([
             "id" => "1",
             "token" => $shoppingcart->shoppingcart_payment->snaptoken,

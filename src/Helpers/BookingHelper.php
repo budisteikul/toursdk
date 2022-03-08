@@ -1769,7 +1769,7 @@ class BookingHelper {
 		return $date_arr[0];
 	}
 
-	public static function create_payment($sessionId,$payment_provider="none",$bank="")
+	public static function pre_create_payment($sessionId)
 	{
 		$shoppingcart = Cache::get('_'. $sessionId);
 
@@ -1792,7 +1792,7 @@ class BookingHelper {
         $mins_expired  = $date2->diffInMinutes($date1, true);
         $date_expired = Carbon::parse($due_date)->formatLocalized('%Y-%m-%d %H:%M:%S');
         $date_now = Carbon::parse($date1)->formatLocalized('%Y-%m-%d %H:%M:%S +0700');
-        
+
         $response = NULL;
         $payment_type = NULL;
 		$bank_name = NULL;
@@ -1825,34 +1825,37 @@ class BookingHelper {
         $data->contact = $contact;
         $data->transaction = $transaction;
 
+        return $data;
+	}
+
+	public static function create_payment($sessionId,$payment_provider="none",$bank="")
+	{
+		$shoppingcart = Cache::get('_'. $sessionId);
+
+		$data = self::pre_create_payment($shoppingcart->session_id);
+
 		switch($payment_provider)
 		{
 			case "oyindonesia":
-				
 				$amount = $shoppingcart->due_now;
 				$currency = 'IDR';
 				$rate = 1;
 				$payment_status = 4;
-
 				$response = OyHelper::createPayment($data);
 
 			break;
 			case "doku":
-				
 				$amount = $shoppingcart->due_now;
 				$currency = 'IDR';
 				$rate = 1;
 				$payment_status = 4;
-				
 				$response = DokuHelper::createPayment($data);
 			break;
 			case "midtrans":
-				
 				$amount = $shoppingcart->due_now;
 				$currency = 'IDR';
 				$rate = 1;
 				$payment_status = 4;
-				
 				$response = MidtransHelper::createPayment($data);
 			break;
 			case "paypal":

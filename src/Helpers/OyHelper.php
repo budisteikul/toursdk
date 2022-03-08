@@ -224,8 +224,8 @@ class OyHelper {
           $response->bank_code = null;
           $response->va_number = null;
           $response->snaptoken = $data1->snaptoken;
-          $response->link = $data2->data->deeplink_url;
-          $response->redirect = $data->transaction->finish_url;
+          $response->link = self::oyLink($data1->snaptoken);
+          $response->redirect = $data2->data->deeplink_url;
         }
         else
         {

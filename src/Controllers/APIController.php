@@ -843,23 +843,23 @@ class APIController extends Controller
         if(isset($paymentType_arr[1])) $payment_provider = $paymentType_arr[1];
         if(isset($paymentType_arr[2])) $payment_bank = $paymentType_arr[2];
 
-        if($payment_type=="ewallet")
-        {
-            BookingHelper::set_bookingStatus($sessionId,'PENDING');
-            BookingHelper::set_confirmationCode($sessionId);
-            BookingHelper::create_payment($sessionId,"oyindonesia","qris");
-        }
-        else if($payment_type=="bank_transfer")
+        if($payment_type=="bank_transfer")
         {
             BookingHelper::set_bookingStatus($sessionId,'PENDING');
             BookingHelper::set_confirmationCode($sessionId);
             BookingHelper::create_payment($sessionId,$payment_provider,$payment_bank);
         }
+        else if($payment_type=="qris")
+        {
+            BookingHelper::set_bookingStatus($sessionId,'PENDING');
+            BookingHelper::set_confirmationCode($sessionId);
+            BookingHelper::create_payment($sessionId,"oyindonesia","qris");
+        }
         else
         {
-            return response()->json([
-                'status' => 'error'
-            ]);
+            BookingHelper::set_bookingStatus($sessionId,'PENDING');
+            BookingHelper::set_confirmationCode($sessionId);
+            BookingHelper::create_payment($sessionId,"oyindonesia","qris");
         }
     
         $shoppingcart = BookingHelper::confirm_booking($sessionId);
@@ -867,7 +867,6 @@ class APIController extends Controller
         return response()->json([
             "id" => "1",
             "token" => $shoppingcart->shoppingcart_payment->snaptoken,
-            //"redirect" => '/booking/receipt/'.$shoppingcart->session_id.'/'.$shoppingcart->confirmation_code
             "redirect" => $shoppingcart->shoppingcart_payment->redirect
         ]);
         

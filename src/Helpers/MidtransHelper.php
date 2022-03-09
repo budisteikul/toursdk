@@ -61,8 +61,8 @@ class MidtransHelper {
                 $data->bank_code = "";
                 $data->bank_payment_type = "gopay";
             break;
-            case "qris":
-                $data->bank_name = "gopay";
+            case "qris_gopay":
+                $data->bank_name = "qris (gopay)";
                 $data->bank_code = "";
                 $data->bank_payment_type = "gopay";
             break;
@@ -71,33 +71,7 @@ class MidtransHelper {
         return $data;
     }
 
-  public static function chargeSnap($token,$data,$payment)
-  {
-        $data = [
-              'customer_details' => [
-                'email' => $data->contact->email,
-               ],
-              'payment_type' => $payment->bank_payment_type
-            ];
-      
-        $endpoint = self::midtransSnapEndpoint() ."/snap/v2/transactions/". $token ."/charge";
-
-        $headers = [
-              'Accept' => 'application/jsons',
-              'Content-Type' => 'application/json',
-              'Authorization' => 'Basic '. base64_encode(self::env_midtransServerKey()),
-          ];
-
-        $client = new \GuzzleHttp\Client(['headers' => $headers,'http_errors' => false]);
-        $response = $client->request('POST',$endpoint,
-          ['json' => $data]
-        );
-
-        $data = $response->getBody()->getContents();
-        $data = json_decode($data,true);
-
-        return $data;
-  }
+  
 
   public static function createPayment($data)
   {
@@ -128,7 +102,15 @@ class MidtransHelper {
           $response->bank_name = $payment->bank_name;
           $response->qrcode = $qrcode_url;
           $response->link = $data2['deeplink_url'];
-          $response->redirect = $data2['deeplink_url'];
+          if($data->transaction->bank=="qris_gopay")
+          {
+            $response->redirect = $data->transaction->finish_url;
+          }
+          else
+          {
+            $response->redirect = $data2['deeplink_url'];
+          }
+          
         }
         else if($payment->bank_payment_type=="echannel")
         {
@@ -204,6 +186,32 @@ class MidtransHelper {
         return $data;
     }
 	
-	
+	public static function chargeSnap($token,$data,$payment)
+  {
+        $data = [
+              'customer_details' => [
+                'email' => $data->contact->email,
+               ],
+              'payment_type' => $payment->bank_payment_type
+            ];
+      
+        $endpoint = self::midtransSnapEndpoint() ."/snap/v2/transactions/". $token ."/charge";
+
+        $headers = [
+              'Accept' => 'application/jsons',
+              'Content-Type' => 'application/json',
+              'Authorization' => 'Basic '. base64_encode(self::env_midtransServerKey()),
+          ];
+
+        $client = new \GuzzleHttp\Client(['headers' => $headers,'http_errors' => false]);
+        $response = $client->request('POST',$endpoint,
+          ['json' => $data]
+        );
+
+        $data = $response->getBody()->getContents();
+        $data = json_decode($data,true);
+
+        return $data;
+  }
 }
 ?>

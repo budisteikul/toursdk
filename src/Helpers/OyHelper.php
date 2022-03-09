@@ -2,7 +2,7 @@
 namespace budisteikul\toursdk\Helpers;
 use budisteikul\toursdk\Helpers\ImageHelper;
 use Illuminate\Support\Facades\Storage;
-
+use Carbon\Carbon;
 
 class OyHelper {
 	
@@ -261,6 +261,7 @@ class OyHelper {
           $response->snaptoken = $data1->snaptoken;
           $response->link = self::oyLink($data1->snaptoken);
           $response->redirect = $data->transaction->finish_url;
+          $response->expiration_date = $data->transaction->date_expired;
         }
         else if($payment->bank_payment_type=="shopeepay_ewallet")
         {
@@ -279,6 +280,8 @@ class OyHelper {
           $response->redirect = $data2->data->deeplink_url;
           */
 
+          $data->transaction->mins_expired = 60;
+
           $init_data = [
             'customer_id' => $data->transaction->id,
             'partner_trx_id' => $data->transaction->id,
@@ -290,12 +293,9 @@ class OyHelper {
             'expiration_time' => $data->transaction->mins_expired,
           ];
 
-          print_r($init_data);
-          exit();
-          
           $data1 = self::createEwallet($init_data);
 
-
+          $data->transaction->date_expired = Carbon::parse($data->transaction->date_now)->addMinutes($data->transaction->mins_expired);
 
           $response->payment_type = 'ewallet';
           $response->bank_name = $payment->bank_name;
@@ -304,7 +304,7 @@ class OyHelper {
           $response->snaptoken = null;
           $response->link = null;
           $response->redirect = $data1->ewallet_url;
-
+          $response->expiration_date = $data->transaction->date_expired;
         }
         else
         {
@@ -348,7 +348,7 @@ class OyHelper {
           $response->snaptoken = null;
           $response->link = null;
           $response->redirect = $data->transaction->finish_url;
-          
+          $response->expiration_date = $data->transaction->date_expired;
         }
        
         return $response;

@@ -87,6 +87,7 @@ class MidtransHelper {
           $response->bank_name = $payment->bank_name;
           $response->bank_code = $payment->bank_code;
           $response->va_number = $data2['permata_va_number'];
+          $response->expiration_date = $data->transaction->date_expired;
         }
         else if($payment->bank_payment_type=="gopay")
         {
@@ -101,6 +102,7 @@ class MidtransHelper {
           $response->bank_name = $payment->bank_name;
           $response->qrcode = $qrcode_url;
           $response->link = null;
+          $response->expiration_date = $data->transaction->date_expired;
 
           if($data->transaction->bank=="qris_gopay")
           {
@@ -121,6 +123,7 @@ class MidtransHelper {
           $response->bank_code = $data2['biller_code'];
           $response->va_number = $data2['bill_key'];
           $response->redirect = $data->transaction->finish_url;
+          $response->expiration_date = $data->transaction->date_expired;
         }
         else
         {
@@ -129,6 +132,7 @@ class MidtransHelper {
           $response->bank_code = $payment->bank_code;
           $response->va_number = $data2['va_numbers'][0]['va_number'];
           $response->redirect = $data->transaction->finish_url;
+          $response->expiration_date = $data->transaction->date_expired;
         }
 
         $response->snaptoken = $data1->token;

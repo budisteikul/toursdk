@@ -1628,6 +1628,7 @@ class BookingHelper {
 		if(isset($shoppingcart_json->payment->rate)) $shoppingcart_payment->rate = $shoppingcart_json->payment->rate;
 		if(isset($shoppingcart_json->payment->rate_from)) $shoppingcart_payment->rate_from = $shoppingcart_json->payment->rate_from;
 		if(isset($shoppingcart_json->payment->rate_to)) $shoppingcart_payment->rate_to = $shoppingcart_json->payment->rate_to;
+		if(isset($shoppingcart_json->payment->expiration_date)) $shoppingcart_payment->expiration_date = $shoppingcart_json->payment->expiration_date;
 		if(isset($shoppingcart_json->payment->payment_status)) $shoppingcart_payment->payment_status = $shoppingcart_json->payment->payment_status;
 		
 		$shoppingcart_payment->save();
@@ -1744,30 +1745,51 @@ class BookingHelper {
 
 	public static function due_date($shoppingcart, $data_type = "json")
 	{
-		$date_arr = array();
+		$due_date = null;
 
 		if($data_type=="json")
 		{
-        	foreach($shoppingcart->products as $product)
-        	{
-            	$date_arr[] = $product->date;
-        	}
+			if(!isset($shoppingcart->payment->expiration_date)) $date = null;
 		}
 		else
 		{
-			foreach($shoppingcart->shoppingcart_products()->get() as $shoppingcart_product)
-			{
-				$date_arr[] = $shoppingcart_product->date;
-            }
+			$date = $shoppingcart->shoppingcart_payment->expiration_date;
 		}
 
-		usort($date_arr, function($a, $b) {
+		if($date!==null)
+		{
+			$due_date = $date;
+		}
+		else
+		{
+			$date_arr = array();
+
+			if($data_type=="json")
+			{
+        		foreach($shoppingcart->products as $product)
+        		{
+            		$date_arr[] = $product->date;
+        		}
+			}
+			else
+			{
+				foreach($shoppingcart->shoppingcart_products()->get() as $shoppingcart_product)
+				{
+				$date_arr[] = $shoppingcart_product->date;
+            	}
+			}
+
+			usort($date_arr, function($a, $b) {
             	$dateTimestamp1 = strtotime($a);
             	$dateTimestamp2 = strtotime($b);
             	return $dateTimestamp1 < $dateTimestamp2 ? -1: 1;
         	});
 
-		return $date_arr[0];
+        	$due_date = $date_arr[0];
+		}
+		
+
+		return $due_date;
 	}
 
 	
@@ -1812,6 +1834,7 @@ class BookingHelper {
 		$rate = NULL;
 		$rate_from = NULL;
 		$rate_to = NULL;
+		$expiration_date = NULL;
 		$payment_status = NULL;
 
 		$transaction = new \stdClass();
@@ -1836,7 +1859,6 @@ class BookingHelper {
 				$rate = 1;
 				$payment_status = 4;
 				$response = OyHelper::createPayment($data);
-
 			break;
 			case "doku":
 				$amount = $shoppingcart->due_now;
@@ -1883,6 +1905,7 @@ class BookingHelper {
 		if(isset($response->qrcode)) $qrcode = $response->qrcode;
 		if(isset($response->link)) $link = $response->link;
 		if(isset($response->redirect)) $redirect = $response->redirect;
+		if(isset($response->expiration_date)) $expiration_date = $response->expiration_date;
 
 		$ShoppingcartPayment = (object) array(
 			'payment_provider' => $payment_provider,
@@ -1901,6 +1924,7 @@ class BookingHelper {
 			'rate' => $rate,
 			'rate_from' => $rate_from,
 			'rate_to' => $rate_to,
+			'expiration_date' => $expiration_date,
 			'payment_status' => $payment_status,
 		);
 
@@ -2212,50 +2236,19 @@ class BookingHelper {
 						break;
 					case 4:
 
-						$merchant_name = self::env_appName();
-						$nmid = '';
 						
-						if($shoppingcart->shoppingcart_payment->bank_name=="shopeepay")
-						{
-							$nmid = 'ID1022150910159';
-						}
-						if($shoppingcart->shoppingcart_payment->bank_name=="gopay")
-						{
-							$nmid = 'ID1022148923652';
-						}
-						
-
 						return '
-								
 								<div class="card mb-1">
 								<span class="badge badge-warning invoice-color-warning" style="font-size:20px;">
 								<i class="fas fa-wallet"></i> WAITING FOR PAYMENT </span>
 								</div>
-								<div class="card mb-1 img-fluid invoice-hilang"  style="min-height:300px; max-width:505px;">
+								<div class="card mb-4">
 								
-								<img class="card-img-top" src="'. url('/img/qris-template.jpg') .'" alt="Card image" style="width:100%">
-								
-								
-								<div class="card-img-overlay">
-									<div class="row h-100">
-   										<div class="col-sm-12 my-auto text-center">
-     										
-    										<h1 class="mb-2 mt-4">'. $merchant_name .'</h1>
-    								
-    										<h5>NMID : '.$nmid.'</h5>
-    									
-    										<img class="img-fluid border border-white" alt="QRIS" style="max-width:250px;" src="'. $shoppingcart->shoppingcart_payment->qrcode .'">
-    										
-    										
+								<div class="card-body bg-light">
 
-   										</div>
-									</div>
-									
-  								</div>
+								<a class="btn btn-theme w-100" href="'. $shoppingcart->shoppingcart_payment->redirect .'" target="_blank"><i class="fas fa-location-arrow"></i> Open '. strtoupper($shoppingcart->shoppingcart_payment->bank_name) .' App</a>
 								
 								</div>
-								<div class="card mb-4">
-								<a href="'. self::env_appApiUrl() .'/qrcode/'.$shoppingcart->session_id.'/'. $shoppingcart->confirmation_code .'" type="button" class="invoice-hilang btn btn-success invoice-hilang ">or Download QRCODE <i class="fas fa-download"></i> </a>
 								</div>
 								';
 						break;

@@ -245,11 +245,9 @@ footer {
                 No : <b>{{ $shoppingcart->confirmation_code }}</b>
               </div>
           		<div class="date" style=" line-height: 18px; font-size:14px;">
-                Date of Invoice : {{ Carbon\Carbon::parse($shoppingcart->created_at)->formatLocalized('%d %b %Y') }}</div>
-          		@php
-                	$min_date = $shoppingcart->shoppingcart_products()->orderBy('date','asc')->first()->date;
-                @endphp
-                <div class="date" style=" line-height: 18px; font-size:14px;">Due Date : {{ Carbon\Carbon::parse($min_date)->formatLocalized('%d %b %Y') }}</div>
+                Date of Invoice : {{ Carbon\Carbon::parse($shoppingcart->created_at)->formatLocalized('%d %b %Y  %H:%M') }}</div>
+          		
+                <div class="date" style=" line-height: 18px; font-size:14px;">Due Date : {{ Carbon\Carbon::parse($BookingHelper->due_date($shoppingcart,"database"))->formatLocalized('%d %b %Y  %H:%M') }}</div>
                 
         	</div>           
            </td>

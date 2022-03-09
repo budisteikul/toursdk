@@ -905,6 +905,10 @@ class APIController extends Controller
         {
             $paymentType = "ewallet";
         }
+        else if($payment_type=="qris")
+        {
+            $paymentType = "qris";
+        }
         else
         {
             return response()->json([

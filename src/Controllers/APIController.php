@@ -735,7 +735,7 @@ class APIController extends Controller
             $partner_tx_id = $data['partner_tx_id'];
             $partner_trx_id = $data['partner_trx_id'];
             
-            $shoppingcart = Shoppingcart::where('partner_tx_id',$partner_tx_id)orWhere('partner_trx_id',$partner_trx_id)->first();
+            $shoppingcart = Shoppingcart::where('partner_tx_id',$partner_tx_id)->orWhere('partner_trx_id',$partner_trx_id)->first();
             if($shoppingcart!==null)
             {
                 if(isset($data['status']))

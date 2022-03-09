@@ -98,16 +98,17 @@ class MidtransHelper {
           //Storage::put('qrcode/'. $path .'/'.$data1->token.'.png', $contents);
           //$qrcode_url = Storage::url('qrcode/'. $path .'/'.$data1->token.'.png');
 
-          $response->payment_type = 'ewallet';
           $response->bank_name = $payment->bank_name;
           $response->qrcode = $qrcode_url;
           $response->link = $data2['deeplink_url'];
           if($data->transaction->bank=="qris_gopay")
           {
+            $response->payment_type = 'qris';
             $response->redirect = $data->transaction->finish_url;
           }
           else
           {
+            $response->payment_type = 'ewallet';
             $response->redirect = $data2['deeplink_url'];
           }
           

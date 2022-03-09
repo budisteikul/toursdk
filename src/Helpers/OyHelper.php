@@ -299,11 +299,12 @@ class OyHelper {
           $response->snaptoken = null;
           $response->link = null;
           $response->redirect = $data1->ewallet_url;
-          
+
         }
         else
         {
           
+          /*
           $data1 = self::createSnap($data);
           $data2 = self::createCharge($data,$data1->snaptoken,$payment);
           $data3 = self::status($data1->snaptoken);
@@ -315,9 +316,9 @@ class OyHelper {
           $response->snaptoken = $data1->snaptoken;
           $response->link = self::oyLink($data1->snaptoken);
           $response->redirect = $data->transaction->finish_url;
-          
+          */
 
-          /*
+          
           $init_data = [
             'partner_user_id' => $data->transaction->id,
             'bank_code' => $payment->bank_code,
@@ -332,6 +333,7 @@ class OyHelper {
             'trx_counter' => 1,
           ];
 
+          
           $data1 = self::createVA($init_data);
           
           $response->payment_type = 'bank_transfer';
@@ -341,7 +343,7 @@ class OyHelper {
           $response->snaptoken = null;
           $response->link = null;
           $response->redirect = $data->transaction->finish_url;
-          */
+          
         }
        
         return $response;

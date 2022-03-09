@@ -100,7 +100,7 @@ class MidtransHelper {
 
           $response->bank_name = $payment->bank_name;
           $response->qrcode = $qrcode_url;
-          $response->link = $data2['deeplink_url'];
+          $response->link = null;
 
           if($data->transaction->bank=="qris_gopay")
           {

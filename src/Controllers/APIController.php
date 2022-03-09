@@ -732,10 +732,14 @@ class APIController extends Controller
         {
             $data = $request->all();
 
-            $partner_tx_id = $data['partner_tx_id'];
-            $partner_trx_id = $data['partner_trx_id'];
+            $confirmation_code = null;
+            $status = null;
+            if(isset($data['partner_tx_id'])) $confirmation_code = $data['partner_tx_id'];
+            if(isset($data['partner_trx_id'])) $confirmation_code = $data['partner_trx_id'];
+            if(isset($data['status'])) $status = strtolower($data['status']);
+            if(isset($data['settlement_status'])) $status = strtolower($data['settlement_status']);
             
-            $shoppingcart = Shoppingcart::where('partner_tx_id',$partner_tx_id)->orWhere('partner_trx_id',$partner_trx_id)->first();
+            $shoppingcart = Shoppingcart::where('confirmation_code',$confirmation_code)->first();
             if($shoppingcart!==null)
             {
                 if(isset($data['status']))
@@ -743,21 +747,20 @@ class APIController extends Controller
                     $status = strtolower($data['status']);
                     $settlement_status = strtolower($data['settlement_status']);
 
-                    if($settlement_status=="complete" || $status=="complete" )
+                    if($status=="complete")
                     {
                         BookingHelper::confirm_payment($shoppingcart,"CONFIRMED");
                     }
-                    if($settlement_status=="success" || $status=="success" )
+                    if($status=="success")
                     {
                         BookingHelper::confirm_payment($shoppingcart,"CONFIRMED");
                     }
-                    if($settlement_status=="expired" || $status=="expired" )
+                    if($status=="expired")
                     {
                         BookingHelper::confirm_payment($shoppingcart,"CANCELED");
                     }
-                    if($settlement_status=="failed" || $status=="failed" )
+                    if($status=="failed")
                     {
-                       
                         BookingHelper::confirm_payment($shoppingcart,"CANCELED");
                     }
                 }

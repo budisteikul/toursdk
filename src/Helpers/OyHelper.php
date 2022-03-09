@@ -290,7 +290,12 @@ class OyHelper {
             'expiration_time' => $data->transaction->mins_expired,
           ];
 
+          print_r($init_data);
+          exit();
+          
           $data1 = self::createEwallet($init_data);
+
+
 
           $response->payment_type = 'ewallet';
           $response->bank_name = $payment->bank_name;
@@ -333,7 +338,7 @@ class OyHelper {
             'trx_counter' => 1,
           ];
 
-          
+
           $data1 = self::createVA($init_data);
           
           $response->payment_type = 'bank_transfer';

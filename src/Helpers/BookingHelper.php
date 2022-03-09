@@ -2123,6 +2123,76 @@ class BookingHelper {
 						return '';
 				}
             }
+            if($shoppingcart->shoppingcart_payment->payment_type=="qris")
+            {
+
+            	switch($shoppingcart->shoppingcart_payment->payment_status)
+				{
+					case 2:
+						return '<div class="card mb-4">
+								<span class="badge badge-success invoice-color-success" style="font-size:20px;">
+								<i class="fas fa-wallet"></i> E-WALLET PAID </span>
+								</div>';
+						break;
+					case 3:
+						return '<div class="card mb-4">
+								<span class="badge badge-danger invoice-color-danger" style="font-size:20px;">
+								<i class="fas fa-wallet"></i> E-WALLET UNPAID </span>
+								</div>';
+						break;
+					case 4:
+
+						$merchant_name = self::env_appName();
+						$nmid = '';
+						
+						if($shoppingcart->shoppingcart_payment->bank_name=="shopeepay")
+						{
+							$nmid = 'ID1022150910159';
+						}
+						if($shoppingcart->shoppingcart_payment->bank_name=="gopay")
+						{
+							$nmid = 'ID1022148923652';
+						}
+						
+
+						return '
+								
+								<div class="card mb-1">
+								<span class="badge badge-warning invoice-color-warning" style="font-size:20px;">
+								<i class="fas fa-wallet"></i> WAITING FOR PAYMENT </span>
+								</div>
+								<div class="card mb-1 img-fluid invoice-hilang"  style="min-height:300px; max-width:505px;">
+								
+								<img class="card-img-top" src="'. url('/img/qris-template.jpg') .'" alt="Card image" style="width:100%">
+								
+								
+								<div class="card-img-overlay">
+									<div class="row h-100">
+   										<div class="col-sm-12 my-auto text-center">
+     										
+    										<h1 class="mb-2 mt-4">'. $merchant_name .'</h1>
+    								
+    										<h5>NMID : '.$nmid.'</h5>
+    									
+    										<img class="img-fluid border border-white" alt="QRIS" style="max-width:250px;" src="'. $shoppingcart->shoppingcart_payment->qrcode .'">
+    										
+    										
+
+   										</div>
+									</div>
+									
+  								</div>
+								
+								</div>
+								<div class="card mb-4">
+								<a href="'. self::env_appApiUrl() .'/qrcode/'.$shoppingcart->session_id.'/'. $shoppingcart->confirmation_code .'" type="button" class="invoice-hilang btn btn-success invoice-hilang ">or Download QRCODE <i class="fas fa-download"></i> </a>
+								</div>
+								';
+						break;
+					default:
+						return '';
+				}
+            }
             if($shoppingcart->shoppingcart_payment->payment_type=="ewallet")
             {
 

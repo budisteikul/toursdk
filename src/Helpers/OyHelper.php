@@ -318,7 +318,7 @@ class OyHelper {
 
           $init_data = [
             'partner_user_id' => $data->transaction->id,
-            'bank_code' => $data->bank_code,
+            'bank_code' => $payment->bank_code,
             'amount' => $data->transaction->amount,
             'is_open' => false,
             'is_single_use' => true,
@@ -332,8 +332,7 @@ class OyHelper {
 
           $data1 = self::createVA($init_data);
 
-          print_r($data1);
-          exit();
+          
 
           $response->payment_type = 'bank_transfer';
           $response->bank_name = $payment->bank_name;

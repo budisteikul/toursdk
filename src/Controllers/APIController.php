@@ -742,11 +742,6 @@ class APIController extends Controller
             $shoppingcart = Shoppingcart::where('confirmation_code',$confirmation_code)->first();
             if($shoppingcart!==null)
             {
-                if(isset($data['status']))
-                {
-                    $status = strtolower($data['status']);
-                    $settlement_status = strtolower($data['settlement_status']);
-
                     if($status=="complete")
                     {
                         BookingHelper::confirm_payment($shoppingcart,"CONFIRMED");
@@ -763,8 +758,6 @@ class APIController extends Controller
                     {
                         BookingHelper::confirm_payment($shoppingcart,"CANCELED");
                     }
-                }
-                
             }
         }
         return response('OK', 200)->header('Content-Type', 'text/plain');

@@ -732,24 +732,26 @@ class APIController extends Controller
         {
             $data = $request->all();
 
-            $confirmation_code = $data['partner_tx_id'];
+            $partner_tx_id = $data['partner_tx_id'];
+            $partner_trx_id = $data['partner_trx_id'];
             
-            $shoppingcart = Shoppingcart::where('confirmation_code',$confirmation_code)->first();
+            $shoppingcart = Shoppingcart::where('partner_tx_id',$partner_tx_id)orWhere('partner_trx_id',$partner_trx_id)->first();
             if($shoppingcart!==null)
             {
                 if(isset($data['status']))
                 {
-                    $settlement_status = strtolower($data['status']);
+                    $status = strtolower($data['status']);
+                    $settlement_status = strtolower($data['settlement_status']);
 
-                    if($settlement_status=="complete")
+                    if($settlement_status=="complete" || $status=="complete" )
                     {
                         BookingHelper::confirm_payment($shoppingcart,"CONFIRMED");
                     }
-                    if($settlement_status=="expired")
+                    if($settlement_status=="expired" || $status=="expired" )
                     {
                         BookingHelper::confirm_payment($shoppingcart,"CANCELED");
                     }
-                    if($settlement_status=="failed")
+                    if($settlement_status=="failed" || $status=="failed" )
                     {
                        
                         BookingHelper::confirm_payment($shoppingcart,"CANCELED");

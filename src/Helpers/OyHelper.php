@@ -332,6 +332,9 @@ class OyHelper {
 
           $data1 = self::createVA($init_data);
 
+          print_r($data1);
+          exit();
+
           $response->payment_type = 'bank_transfer';
           $response->bank_name = $payment->bank_name;
           $response->bank_code = $data1->bank_code;

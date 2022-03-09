@@ -185,7 +185,55 @@ class OyHelper {
     return $data;
   }
 
-  
+  public static function createEwallet($data)
+  {
+        $endpoint = self::oyApiEndpoint() ."/api/e-wallet-aggregator/create-transaction";
+        $headers = [
+              'Accept' => 'application/jsons',
+              'Content-Type' => 'application/json',
+              'x-oy-username' => self::env_oyUsername(),
+              'x-api-key' => self::env_oyApiKey(),
+          ];
+
+        
+
+        $client = new \GuzzleHttp\Client(['headers' => $headers,'http_errors' => false]);
+        $response = $client->request('POST',$endpoint,
+          [
+            'json' => $data,
+            'proxy' => self::oyUseProxy()
+          ]
+        );
+
+        $data = $response->getBody()->getContents();
+        $data = json_decode($data);
+        
+        return $data;
+  }
+
+  public static function createVA($data)
+  {
+        $endpoint = self::oyApiEndpoint() ."/api/generate-static-va";
+        $headers = [
+              'Accept' => 'application/jsons',
+              'Content-Type' => 'application/json',
+              'x-oy-username' => self::env_oyUsername(),
+              'x-api-key' => self::env_oyApiKey(),
+          ];
+
+        $client = new \GuzzleHttp\Client(['headers' => $headers,'http_errors' => false]);
+        $response = $client->request('POST',$endpoint,
+          [
+            'json' => $data,
+            'proxy' => self::oyUseProxy()
+          ]
+        );
+
+        $data = $response->getBody()->getContents();
+        $data = json_decode($data);
+        
+        return $data;
+  }
 
   public static function createPayment($data)
   {
@@ -207,7 +255,7 @@ class OyHelper {
           //Storage::put('qrcode/'. $path .'/'.$data1->snaptoken.'.png', $contents);
           //$qrcode_url = Storage::url('qrcode/'. $path .'/'.$data1->snaptoken.'.png');
 
-          $response->payment_type = 'ewallet';
+          $response->payment_type = 'qris';
           $response->bank_name = $payment->bank_name;
           $response->qrcode = $qrcode_url;
           $response->snaptoken = $data1->snaptoken;
@@ -216,9 +264,12 @@ class OyHelper {
         }
         else if($payment->bank_payment_type=="shopeepay_ewallet")
         {
+          /*
           $data1 = self::createSnap($data);
           $data2 = self::createCharge($data,$data1->snaptoken,$payment);
-          
+          */
+
+          /*
           $response->payment_type = 'ewallet';
           $response->bank_name = $payment->bank_name;
           $response->bank_code = null;
@@ -226,9 +277,32 @@ class OyHelper {
           $response->snaptoken = $data1->snaptoken;
           $response->link = self::oyLink($data1->snaptoken);
           $response->redirect = $data2->data->deeplink_url;
+          */
+
+          $init_data = [
+            'customer_id' => $data->transaction->id,
+            'partner_trx_id' => $data->transaction->id,
+            'amount' => $data->transaction->amount,
+            'email' => null,
+            'ewallet_code' => $payment->bank_payment_type,
+            'mobile_number' => null,
+            'success_redirect_url' => $data->transaction->finish_url,
+            'expiration_time' => $data->transaction->mins_expired,
+          ];
+
+          $data1 = self::createEwallet($init_data);
+
+          $response->payment_type = 'ewallet';
+          $response->bank_name = $payment->bank_name;
+          $response->bank_code = null;
+          $response->va_number = null;
+          $response->snaptoken = null;
+          $response->link = null;
+          $response->redirect = $data1->ewallet_url;
         }
         else
         {
+          /*
           $data1 = self::createSnap($data);
           $data2 = self::createCharge($data,$data1->snaptoken,$payment);
           $data3 = self::status($data1->snaptoken);
@@ -240,6 +314,36 @@ class OyHelper {
           $response->snaptoken = $data1->snaptoken;
           $response->link = self::oyLink($data1->snaptoken);
           $response->redirect = $data->transaction->finish_url;
+          */
+
+          
+          $init_data = [
+            'partner_user_id' => $data->transaction->id,
+            'bank_code' => $payment->bank_code,
+            'amount' => $data->transaction->amount,
+            'is_open' => false,
+            'is_single_use' => true,
+            'is_lifetime' => false,
+            'expiration_time' => $data->transaction->mins_expired,
+            'username_display' => $data->contact->first_name,
+            'email' => null,
+            'partner_trx_id' => $data->transaction->id,
+            'trx_counter' => 1,
+          ];
+
+          $data1 = self::createVA($init_data);
+
+          print_r($data1);
+          exit();
+          
+          $response->payment_type = 'bank_transfer';
+          $response->bank_name = $payment->bank_name;
+          $response->bank_code = $data1->bank_code;
+          $response->va_number = $data1->va_number;
+          $response->snaptoken = null;
+          $response->link = null;
+          $response->redirect = $data->transaction->finish_url;
+          
         }
        
         return $response;

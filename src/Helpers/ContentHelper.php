@@ -74,7 +74,8 @@ class ContentHelper {
 
         
         $pdfUrl = array();
-        if($shoppingcart->shoppingcart_payment->payment_type=="ewallet")
+        
+        if($shoppingcart->shoppingcart_payment->payment_type=="qris")
         {
             if($shoppingcart->shoppingcart_payment->payment_status==4)
             {

@@ -128,7 +128,8 @@ class MidtransHelper {
           $response->bank_name = $payment->bank_name;
           $response->qrcode = $qrcode_url;
           $response->link = $data2['deeplink_url'];
-          $response->redirect = $data2['deeplink_url'];
+          //$response->redirect = $data2['deeplink_url'];
+          $response->redirect = $data->transaction->finish_url;
         }
         else if($payment->bank_payment_type=="echannel")
         {

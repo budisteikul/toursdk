@@ -2134,9 +2134,12 @@ class BookingHelper {
 								<div>Bank Name : </div>
 								<div class="mb-2"><b>'. Str::upper($shoppingcart->shoppingcart_payment->bank_name) .' ('. $shoppingcart->shoppingcart_payment->bank_code .')</b></div>
 								<div>Virtual Account Number : </div>
-								<div class="mb-2"><b id="va">'. GeneralHelper::splitSpace($shoppingcart->shoppingcart_payment->va_number,4,0) .'</b> <button onclick="copyToClipboard(\'#va_number\')" class="btn btn-light btn-sm invoice-hilang"><i class="far fa-copy"></i></button> </div>
+								<div class="mb-2"><b id="va">'. GeneralHelper::splitSpace($shoppingcart->shoppingcart_payment->va_number,4,0) .'</b> 
+								<button id="va_number_button" onclick="copyToClipboard(\'#va_number\')" title="Copied" data-toggle="tooltip" data-placement="right" data-trigger="click" class="btn btn-light btn-sm invoice-hilang"><i class="far fa-copy"></i></button>
+								
+								 </div>
 								<div>Total Bill : </div>
-								<div class="mb-2"><b>'. GeneralHelper::formatRupiah($shoppingcart->shoppingcart_payment->amount) .'</b> <button onclick="copyToClipboard(\'#va_total\')" class="btn btn-light btn-sm invoice-hilang"><i class="far fa-copy"></i></button></div>
+								<div class="mb-2"><b>'. GeneralHelper::formatRupiah($shoppingcart->shoppingcart_payment->amount) .'</b> <button onclick="copyToClipboard(\'#va_total\')" id="va_total_button" data-toggle="tooltip" data-placement="right" title="Copied" data-trigger="click" class="btn btn-light btn-sm invoice-hilang"><i class="far fa-copy"></i></button></div>
 
 								
 								</div>

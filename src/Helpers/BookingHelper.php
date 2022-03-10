@@ -2201,7 +2201,7 @@ class BookingHelper {
     								
     										<h5>NMID : '.$nmid.'</h5>
     									
-    										<img class="img-fluid border border-white" alt="QRIS" style="max-width:250px;" src="'. $shoppingcart->shoppingcart_payment->qrcode .'">
+    										<img id="qris-img" class="img-fluid border border-white" alt="QRIS" style="max-width:250px;" src="'. $shoppingcart->shoppingcart_payment->qrcode .'">
     										
     										
 

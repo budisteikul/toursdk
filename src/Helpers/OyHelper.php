@@ -293,6 +293,8 @@ class OyHelper {
             'expiration_time' => $data->transaction->mins_expired,
           ];
 
+          print_r(json_encode($init_data));
+          exit();
           $data1 = self::createEwallet($init_data);
 
           $data->transaction->date_expired = Carbon::parse($data->transaction->date_now)->addMinutes($data->transaction->mins_expired);

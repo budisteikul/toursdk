@@ -2158,13 +2158,13 @@ class BookingHelper {
 					case 2:
 						return '<div class="card mb-4">
 								<span class="badge badge-success invoice-color-success" style="font-size:20px;">
-								<i class="fas fa-wallet"></i> E-WALLET PAID </span>
+								<i class="fas fa-qrcode"></i> QRIS PAID </span>
 								</div>';
 						break;
 					case 3:
 						return '<div class="card mb-4">
 								<span class="badge badge-danger invoice-color-danger" style="font-size:20px;">
-								<i class="fas fa-wallet"></i> E-WALLET UNPAID </span>
+								<i class="fas fa-qrcode"></i> QRIS UNPAID </span>
 								</div>';
 						break;
 					case 4:
@@ -2186,7 +2186,7 @@ class BookingHelper {
 								
 								<div class="card mb-1">
 								<span class="badge badge-warning invoice-color-warning" style="font-size:20px;">
-								<i class="fas fa-wallet"></i> WAITING FOR PAYMENT </span>
+								<i class="fas fa-qrcode"></i> WAITING FOR PAYMENT </span>
 								</div>
 								<div class="card mb-1 img-fluid invoice-hilang"  style="min-height:300px; max-width:505px;">
 								

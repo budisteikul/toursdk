@@ -2124,7 +2124,7 @@ class BookingHelper {
 						return '
 								<div class="card mb-1">
 								<span class="badge badge-warning invoice-color-warning" style="font-size:20px;">
-								<i class="fas fa-wallet"></i> WAITING FOR PAYMENT </span>
+								<i class="fas fa-university"></i> WAITING FOR PAYMENT </span>
 								</div>
 								<div class="card mb-4">
 								<input type="hidden" id="va_number" value="'. $shoppingcart->shoppingcart_payment->va_number .'">

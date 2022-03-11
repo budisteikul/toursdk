@@ -181,6 +181,11 @@ class OyHelper {
         $data->bank_code = "";
         $data->bank_payment_type = "linkaja_ewallet";
       break;
+      case "dana":
+        $data->bank_name = "dana";
+        $data->bank_code = "";
+        $data->bank_payment_type = "dana_ewallet";
+      break;
       case "qris":
         $data->bank_name = "shopeepay";
         $data->bank_code = "";
@@ -213,6 +218,8 @@ class OyHelper {
         $data = $response->getBody()->getContents();
         $data = json_decode($data);
         
+        print_r($data);
+        exit();
         return $data;
   }
 
@@ -268,7 +275,7 @@ class OyHelper {
           $response->redirect = $data->transaction->finish_url;
           $response->expiration_date = $data->transaction->date_expired;
         }
-        else if($payment->bank_payment_type=="shopeepay_ewallet" || $payment->bank_payment_type=="linkaja_ewallet")
+        else if($payment->bank_payment_type=="shopeepay_ewallet" || $payment->bank_payment_type=="linkaja_ewallet" || $payment->bank_payment_type=="dana_ewallet")
         {
           
           $data->transaction->mins_expired = 60;

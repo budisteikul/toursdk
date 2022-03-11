@@ -368,7 +368,7 @@ class ContentHelper {
         $payment_enable = 'bank_transfer,qris,ewallet,paypal';
         if($shoppingcart->due_now > 2000000)
         {
-            $payment_enable = 'bank_transfer,paypal';
+            $payment_enable = 'bank_transfer,paypal,ewallet';
         }
         
         $bank_transfer_list[] = [
@@ -398,13 +398,13 @@ class ContentHelper {
         $bank_transfer_list[] = [
             'value' => 'doku-doku', 'label' => 'DOKU', 'image' => url('/img/bank/doku.png'),
         ];
-        $bank_transfer_list[] = [
+        $ewallet_list[] = [
             'value' => 'midtrans-gopay', 'label' => 'GOPAY', 'image' => url('/img/ewallet/gopay.png'),
         ];
-        $bank_transfer_list[] = [
+        $ewallet_list[] = [
             'value' => 'oyindonesia-shopeepay', 'label' => 'SHOPEEPAY', 'image' => url('/img/ewallet/shopeepay.png'),
         ];
-        $bank_transfer_list[] = [
+        $ewallet_list[] = [
             'value' => 'oyindonesia-linkaja', 'label' => 'LINKAJA', 'image' => url('/img/ewallet/linkaja.png'),
         ];
 
@@ -449,7 +449,7 @@ class ContentHelper {
                 'paypal_currency' => self::env_paypalCurrency(),
                 'payment_enable' => $payment_enable,
                 'bank_transfer_list' => $bank_transfer_list,
-                //'blockchain_list' => $blockchain_list
+                'ewallet_list' => $ewallet_list
             );
 
         return $dataShoppingcart;

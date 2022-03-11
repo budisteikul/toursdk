@@ -398,6 +398,7 @@ class ContentHelper {
         $bank_transfer_list[] = [
             'value' => 'doku-doku', 'label' => 'DOKU', 'image' => url('/img/bank/doku.png'),
         ];
+        
         $ewallet_list[] = [
             'value' => 'midtrans-gopay', 'label' => 'GOPAY', 'image' => url('/img/ewallet/gopay.png'),
         ];

@@ -398,6 +398,15 @@ class ContentHelper {
         $bank_transfer_list[] = [
             'value' => 'doku-doku', 'label' => 'DOKU', 'image' => url('/img/bank/doku.png'),
         ];
+        $bank_transfer_list[] = [
+            'value' => 'midtrans-gopay', 'label' => 'GOPAY', 'image' => url('/img/ewallet/gopay.png'),
+        ];
+        $bank_transfer_list[] = [
+            'value' => 'oyindonesia-shopeepay', 'label' => 'SHOPEEPAY', 'image' => url('/img/ewallet/shopeepay.png'),
+        ];
+        $bank_transfer_list[] = [
+            'value' => 'oyindonesia-linkaja', 'label' => 'LINKAJA', 'image' => url('/img/ewallet/linkaja.png'),
+        ];
 
         /*
         $blockchain_list[] = [

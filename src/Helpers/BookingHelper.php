@@ -2249,7 +2249,7 @@ class BookingHelper {
 								
 								<div class="card-body bg-light">
 
-								<a class="btn btn-theme w-100" href="'. $shoppingcart->shoppingcart_payment->redirect .'" target="_blank"><i class="fas fa-location-arrow"></i> Open '. strtoupper($shoppingcart->shoppingcart_payment->bank_name) .' App</a>
+								<a class="btn btn-theme w-100" href="'. $shoppingcart->shoppingcart_payment->redirect .'" target="_blank"><i class="fas fa-location-arrow"></i> <b>Open '. strtoupper($shoppingcart->shoppingcart_payment->bank_name) .' App</b></a>
 								
 								</div>
 								</div>

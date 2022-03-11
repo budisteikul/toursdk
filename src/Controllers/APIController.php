@@ -869,7 +869,8 @@ class APIController extends Controller
         return response()->json([
             "id" => "1",
             "token" => $shoppingcart->shoppingcart_payment->snaptoken,
-            "redirect" => $shoppingcart->shoppingcart_payment->redirect
+            "redirect" => $shoppingcart->shoppingcart_payment->redirect,
+            "receipt_page" => '/booking/receipt/'. $shoppingcart->session_id .'/'. $shoppingcart->confirmation_code
         ]);
         
         
@@ -936,7 +937,7 @@ class APIController extends Controller
             }).done(function( data ) {
                 if(data.id=="1")
                 {
-                    window.openAppRoute(data.redirect);
+                    window.openAppRoute(data.redirect,data.receipt_page);
                 }
                 else
                 {

@@ -176,6 +176,11 @@ class OyHelper {
         $data->bank_code = "";
         $data->bank_payment_type = "shopeepay_ewallet";
       break;
+      case "linkaja":
+        $data->bank_name = "linkaja";
+        $data->bank_code = "";
+        $data->bank_payment_type = "linkaja_ewallet";
+      break;
       case "qris":
         $data->bank_name = "shopeepay";
         $data->bank_code = "";
@@ -263,23 +268,9 @@ class OyHelper {
           $response->redirect = $data->transaction->finish_url;
           $response->expiration_date = $data->transaction->date_expired;
         }
-        else if($payment->bank_payment_type=="shopeepay_ewallet")
+        else if($payment->bank_payment_type=="shopeepay_ewallet" || $payment->bank_payment_type=="linkaja_ewallet")
         {
-          /*
-          $data1 = self::createSnap($data);
-          $data2 = self::createCharge($data,$data1->snaptoken,$payment);
-          */
-
-          /*
-          $response->payment_type = 'ewallet';
-          $response->bank_name = $payment->bank_name;
-          $response->bank_code = null;
-          $response->va_number = null;
-          $response->snaptoken = $data1->snaptoken;
-          $response->link = self::oyLink($data1->snaptoken);
-          $response->redirect = $data2->data->deeplink_url;
-          */
-
+          
           $data->transaction->mins_expired = 60;
 
           $init_data = [
@@ -293,7 +284,6 @@ class OyHelper {
             'expiration_time' => $data->transaction->mins_expired,
           ];
 
-          
           $data1 = self::createEwallet($init_data);
 
           $data->transaction->date_expired = Carbon::parse($data->transaction->date_now)->addMinutes($data->transaction->mins_expired);

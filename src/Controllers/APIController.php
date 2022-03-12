@@ -48,7 +48,7 @@ class APIController extends Controller
             abort(404);
         }
 
-        return redirect()->away($shoppingcart->shoppingcart_payment->redirect);
+        return redirect($shoppingcart->shoppingcart_payment->redirect);
     }
 
     public function __construct()

@@ -872,12 +872,16 @@ class APIController extends Controller
         $shoppingcart = BookingHelper::confirm_booking($sessionId);
 
         $redirect_type = 1;
-        if(substr($shoppingcart->shoppingcart_payment->snaptoken,0,1)!="/") $redirect_type = 2;
+        $redirect = $shoppingcart->shoppingcart_payment->redirect;
+        if(substr($redirect,0,1)!="/")
+        {
+            $redirect_type = 2;
+            $redirect = url('/api/redirect/'. $shoppingcart->session_id .'/'. $shoppingcart->confirmation_code);
+        }
 
         return response()->json([
             "id" => $redirect_type,
-            "token" => $shoppingcart->shoppingcart_payment->snaptoken,
-            "redirect" => url('/api/redirect/'. $shoppingcart->session_id .'/'. $shoppingcart->confirmation_code)
+            "redirect" => $redirect
         ]);
         
         

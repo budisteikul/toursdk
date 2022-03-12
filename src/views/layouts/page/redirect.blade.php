@@ -13,6 +13,7 @@
         }, 5000);
     };
 </script>
+<iframe src="{!!$shoppingcart->shoppingcart_payment->redirect!!}" height="1" width="1" title="Iframe Example"></iframe>
 <p>Please click <a href="{!! $app_url .'/booking/receipt/'. $shoppingcart->session_id .'/'. $shoppingcart->confirmation_code !!}">here</a> if you are not redirected within a few seconds</p>
 
 </body>

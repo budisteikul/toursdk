@@ -871,11 +871,13 @@ class APIController extends Controller
 
         $shoppingcart = BookingHelper::confirm_booking($sessionId);
 
+        $redirect_type = 1;
+        if(substr($shoppingcart->shoppingcart_payment->snaptoken,0,1)!="/") $redirect_type = 2;
+
         return response()->json([
-            "id" => "1",
+            "id" => $redirect_type,
             "token" => $shoppingcart->shoppingcart_payment->snaptoken,
-            "redirect" => url('/api/open-app/'. $shoppingcart->session_id .'/'. $shoppingcart->confirmation_code),
-            "receipt_page" => '/booking/receipt/'. $shoppingcart->session_id .'/'. $shoppingcart->confirmation_code
+            "redirect" => url('/api/redirect/'. $shoppingcart->session_id .'/'. $shoppingcart->confirmation_code)
         ]);
         
         
@@ -904,7 +906,11 @@ class APIController extends Controller
             }).done(function( data ) {
                 if(data.id=="1")
                 {
-                    window.openAppRoute(data.redirect,data.receipt_page);
+                    window.openAppRoute(data.redirect);
+                }
+                else if(data.id=="2")
+                {
+                    window.location.replace(data.redirect);
                 }
                 else
                 {

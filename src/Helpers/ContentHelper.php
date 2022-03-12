@@ -105,18 +105,6 @@ class ContentHelper {
                
         }
 
-        $ewallet_url = null;
-        if($shoppingcart->shoppingcart_payment->payment_type=="ewallet")
-        {
-            if($shoppingcart->shoppingcart_payment->payment_status==4)
-            {
-                if($shoppingcart->shoppingcart_payment->bank_name=="gopay")
-                {
-                    $ewallet_url = url('/api/open-app/'. $shoppingcart->session_id .'/'. $shoppingcart->confirmation_code);
-                }
-            }
-        }
-
         $payment_status_asText = BookingHelper::get_paymentStatus($shoppingcart);
         $booking_status_asText = BookingHelper::get_bookingStatus($shoppingcart);
         
@@ -138,7 +126,6 @@ class ContentHelper {
             'tickets' => $ticket,
             'paymentProvider' => $shoppingcart->shoppingcart_payment->payment_provider,
             'pdf_url' => $pdfUrl,
-            'ewallet_url' => $ewallet_url,
         );
 
         return $dataObj;

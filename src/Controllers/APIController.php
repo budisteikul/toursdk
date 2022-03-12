@@ -62,7 +62,7 @@ class APIController extends Controller
             abort(404);
         }
 
-        //return view('tourcms::channel.create');
+        
         //return view('toursdk::layouts.page.redirect', ['shoppingcart' => $shoppingcart, 'app_url' => $this->appUrl]);
         return redirect($shoppingcart->shoppingcart_payment->redirect);
     }

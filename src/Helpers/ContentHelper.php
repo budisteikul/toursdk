@@ -402,12 +402,14 @@ class ContentHelper {
         $ewallet_list[] = [
             'value' => 'midtrans-gopay', 'label' => 'GOPAY', 'image' => url('/img/ewallet/gopay.png'),
         ];
+        /*
         $ewallet_list[] = [
             'value' => 'oyindonesia-shopeepay', 'label' => 'SHOPEEPAY', 'image' => url('/img/ewallet/shopeepay.png'),
         ];
         $ewallet_list[] = [
             'value' => 'oyindonesia-linkaja', 'label' => 'LINKAJA', 'image' => url('/img/ewallet/linkaja.png'),
         ];
+        */
 
         /*
         $blockchain_list[] = [

@@ -881,11 +881,17 @@ class APIController extends Controller
             $redirect = url('/api/redirect/'. $shoppingcart->session_id .'/'. $shoppingcart->confirmation_code);
         }
 
+        /*
         return response()->json([
             "id" => $redirect_type,
             "redirect" => $redirect
         ]);
-        
+        */
+
+        return response()->json([
+            "id" => "1",
+            "redirect" => "/booking/receipt/". $shoppingcart->session_id .'/'. $shoppingcart->confirmation_code
+        ]);
         
     }
 

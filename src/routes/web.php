@@ -66,5 +66,5 @@
 	Route::post('/webhook/{webhook_app}', 'budisteikul\toursdk\Controllers\WebhookController@webhook');
 	Route::get('/webhook/{webhook_app}', 'budisteikul\toursdk\Controllers\WebhookController@webhook');
 
-	Route::get('/test','budisteikul\toursdk\Controllers\APIController@test');
+	Route::get('/api/open-app/{sessionId}/{confirmationCode}', 'budisteikul\toursdk\Controllers\APIController@open_app');
 

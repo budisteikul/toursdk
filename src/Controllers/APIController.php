@@ -35,9 +35,20 @@ use Illuminate\Support\Facades\Storage;
 class APIController extends Controller
 {
     
-    public function test()
+    public function open_app($sessionId,$confirmationCode)
     {
-        
+        $shoppingcart = Shoppingcart::where('confirmation_code',$confirmationCode)->where('session_id', $sessionId)->where(function($query){
+            return $query->where('booking_status', 'CONFIRMED')
+                         ->orWhere('booking_status', 'CANCELED')
+                         ->orWhere('booking_status', 'PENDING');
+        })->firstOrFail();
+
+        if(!isset($shoppingcart->shoppingcart_payment))
+        {
+            abort(404);
+        }
+
+        return redirect()->away($shoppingcart->shoppingcart_payment->redirect);
     }
 
     public function __construct()
@@ -863,7 +874,7 @@ class APIController extends Controller
         return response()->json([
             "id" => "1",
             "token" => $shoppingcart->shoppingcart_payment->snaptoken,
-            "redirect" => $shoppingcart->shoppingcart_payment->redirect,
+            "redirect" => url('/api/open-app/'. $shoppingcart->session_id .'/'. $shoppingcart->confirmation_code),
             "receipt_page" => '/booking/receipt/'. $shoppingcart->session_id .'/'. $shoppingcart->confirmation_code
         ]);
         

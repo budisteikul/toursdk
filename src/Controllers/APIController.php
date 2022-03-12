@@ -63,8 +63,8 @@ class APIController extends Controller
         }
 
         //return view('tourcms::channel.create');
-        return view('toursdk::layouts.page.redirect', ['shoppingcart' => $shoppingcart, 'app_url' => $this->appUrl]);
-        //return redirect($shoppingcart->shoppingcart_payment->redirect);
+        //return view('toursdk::layouts.page.redirect', ['shoppingcart' => $shoppingcart, 'app_url' => $this->appUrl]);
+        return redirect($shoppingcart->shoppingcart_payment->redirect);
     }
 
     public function product_add(Request $request)

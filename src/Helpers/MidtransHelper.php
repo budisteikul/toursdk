@@ -161,7 +161,7 @@ class MidtransHelper {
               'duration' => $data->transaction->mins_expired
             ],
             'callbacks' => [
-              'finish' => '',
+              'finish' => $data->transaction->finish_url,
             ]
           ];
 
@@ -174,6 +174,18 @@ class MidtransHelper {
             ];
 
             $data_post = array_merge($data_post,$data_permata);
+        }
+
+        if($payment->bank_payment_type=="gopay")
+        {
+            $data_gopay = [
+              'gopay' => [
+                'enable_callback' => true,
+                'callback_url' => $data->transaction->finish_url,
+              ]
+            ];
+
+            $data_post = array_merge($data_post,$data_gopay);
         }
 
         $headers = [

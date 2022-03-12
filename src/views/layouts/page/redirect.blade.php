@@ -2,6 +2,7 @@
 <html>
 <head>
 <meta http-equiv="refresh" content="0;url={!!$shoppingcart->shoppingcart_payment->redirect!!}" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
 

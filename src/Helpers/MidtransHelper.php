@@ -112,7 +112,7 @@ class MidtransHelper {
           else
           {
             $response->payment_type = 'ewallet';
-            $response->redirect = $data2['deeplink_url'];
+            $response->redirect = $data2['deeplink_url'].$data->transaction->finish_url;
           }
           
         }

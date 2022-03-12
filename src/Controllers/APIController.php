@@ -835,23 +835,7 @@ class APIController extends Controller
         $sessionId = $request->input('sessionId');
         $paymentType = $request->input('paymentType');
 
-        $paymentType_arr = explode("-",$paymentType);
-
-        $payment_type = NULL;
-        $payment_provider = NULL;
-        $payment_bank = NULL;
-
-        if(isset($paymentType_arr[0])) $payment_type = $paymentType_arr[0];
-        if(isset($paymentType_arr[1])) $payment_provider = $paymentType_arr[1];
-        if(isset($paymentType_arr[2])) $payment_bank = $paymentType_arr[2];
-
-        if($payment_type=="bank_transfer")
-        {
-            BookingHelper::set_bookingStatus($sessionId,'PENDING');
-            BookingHelper::set_confirmationCode($sessionId);
-            BookingHelper::create_payment($sessionId,$payment_provider,$payment_bank);
-        }
-        else if($payment_type=="qris")
+        if($paymentType=="qris")
         {
             BookingHelper::set_bookingStatus($sessionId,'PENDING');
             BookingHelper::set_confirmationCode($sessionId);
@@ -859,11 +843,21 @@ class APIController extends Controller
         }
         else
         {
+            $paymentType_arr = explode("-",$paymentType);
+
+            $payment_provider = NULL;
+            $payment_bank = NULL;
+
+            if(isset($paymentType_arr[0])) $payment_provider = $paymentType_arr[0];
+            if(isset($paymentType_arr[1])) $payment_bank = $paymentType_arr[1];
+
             BookingHelper::set_bookingStatus($sessionId,'PENDING');
             BookingHelper::set_confirmationCode($sessionId);
-            BookingHelper::create_payment($sessionId,"oyindonesia","qris");
+            BookingHelper::create_payment($sessionId,$payment_provider,$payment_bank);
+
+            
         }
-    
+
         $shoppingcart = BookingHelper::confirm_booking($sessionId);
 
         return response()->json([
@@ -879,44 +873,6 @@ class APIController extends Controller
     public function payment_jscript($payment_type,$sessionId)
     {
 
-        $paymentType_arr = explode("-",$payment_type);
-
-        $payment_type = NULL;
-        $payment_provider = NULL;
-        $payment_bank = NULL;
-
-        if(isset($paymentType_arr[0])) $payment_type = $paymentType_arr[0];
-        if(isset($paymentType_arr[1])) $payment_provider = $paymentType_arr[1];
-        if(isset($paymentType_arr[2])) $payment_bank = $paymentType_arr[2];
-
-        
-
-        if($payment_type=="bank_transfer")
-        {
-            if($payment_provider==NULL || $payment_bank==NULL)
-            {
-                $paymentType = "bank_transfer";
-            }
-            else
-            {
-                $paymentType = $payment_type .'-'. $payment_provider .'-'. $payment_bank;
-            }
-        }
-        else if($payment_type=="ewallet")
-        {
-            $paymentType = "ewallet";
-        }
-        else if($payment_type=="qris")
-        {
-            $paymentType = "qris";
-        }
-        else
-        {
-            return response()->json([
-                'status' => 'error'
-            ]);
-        }
-        
         $endpoint_payment = url('/api');
 
         $jscript = '
@@ -930,7 +886,7 @@ class APIController extends Controller
             $.ajax({
                 data: {
                     "sessionId": "'.$sessionId.'",
-                    "paymentType": "'.$paymentType.'",
+                    "paymentType": "'.$payment_type.'",
                 },
                 type: \'POST\',
                 url: \''. $endpoint_payment .'/payment\'

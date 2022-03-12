@@ -1746,10 +1746,11 @@ class BookingHelper {
 	public static function due_date($shoppingcart, $data_type = "json")
 	{
 		$due_date = null;
+		$date = null;
 
 		if($data_type=="json")
 		{
-			if(!isset($shoppingcart->payment->expiration_date)) $date = null;
+			if(isset($shoppingcart->payment->expiration_date)) $date = $shoppingcart->payment->expiration_date;
 		}
 		else
 		{
@@ -1810,7 +1811,10 @@ class BookingHelper {
         $contact->email = $email;
         $contact->phone = $phone;
 
+
         $due_date = self::due_date($shoppingcart);
+
+        
 
         $date1 = Carbon::now();
         $date2 = Carbon::parse($due_date);
@@ -1850,6 +1854,8 @@ class BookingHelper {
         $data = new \stdClass();
         $data->contact = $contact;
         $data->transaction = $transaction;
+
+        
 
 		switch($payment_provider)
 		{

@@ -35,21 +35,7 @@ use Illuminate\Support\Facades\Storage;
 class APIController extends Controller
 {
     
-    public function open_app($sessionId,$confirmationCode)
-    {
-        $shoppingcart = Shoppingcart::where('confirmation_code',$confirmationCode)->where('session_id', $sessionId)->where(function($query){
-            return $query->where('booking_status', 'CONFIRMED')
-                         ->orWhere('booking_status', 'CANCELED')
-                         ->orWhere('booking_status', 'PENDING');
-        })->firstOrFail();
-
-        if(!isset($shoppingcart->shoppingcart_payment))
-        {
-            abort(404);
-        }
-
-        return redirect($shoppingcart->shoppingcart_payment->redirect);
-    }
+    
 
     public function __construct()
     {
@@ -63,7 +49,23 @@ class APIController extends Controller
         $this->appUrl = env("APP_URL");
     }
 
-    
+    public function redirect($sessionId,$confirmationCode)
+    {
+        $shoppingcart = Shoppingcart::where('confirmation_code',$confirmationCode)->where('session_id', $sessionId)->where(function($query){
+            return $query->where('booking_status', 'CONFIRMED')
+                         ->orWhere('booking_status', 'CANCELED')
+                         ->orWhere('booking_status', 'PENDING');
+        })->firstOrFail();
+
+        if(!isset($shoppingcart->shoppingcart_payment))
+        {
+            abort(404);
+        }
+
+        //return view('tourcms::channel.create');
+        return view('toursdk::layouts.page.redirect', ['shoppingcart' => $shoppingcart, 'app_url' => $this->appUrl]);
+        //return redirect($shoppingcart->shoppingcart_payment->redirect);
+    }
 
     public function product_add(Request $request)
     {

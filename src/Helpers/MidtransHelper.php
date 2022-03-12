@@ -5,6 +5,11 @@ use Illuminate\Support\Facades\Storage;
 
 class MidtransHelper {
 	
+  public static function env_appUrl()
+  {
+        return env("APP_URL");
+  }
+
   public static function env_midtransServerKey()
   {
         return env("MIDTRANS_SERVER_KEY");
@@ -161,7 +166,7 @@ class MidtransHelper {
               'duration' => $data->transaction->mins_expired
             ],
             'callbacks' => [
-              'finish' => $data->transaction->finish_url,
+              'finish' => self::env_appUrl() . $data->transaction->finish_url,
             ]
           ];
 
@@ -181,7 +186,7 @@ class MidtransHelper {
             $data_gopay = [
               'gopay' => [
                 'enable_callback' => true,
-                'callback_url' => $data->transaction->finish_url,
+                'callback_url' => self::env_appUrl() . $data->transaction->finish_url,
               ]
             ];
 

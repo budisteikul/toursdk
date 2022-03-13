@@ -29,8 +29,10 @@ class FirebaseHelper {
     public static function createDynamicLink($link,$app="gopay")
     {
         if($app=="gopay") {
+            $androidPackageName = 'com.gojek.app';
             $androidFallbackLink = 'https://play.google.com/store/apps/details?id=com.gojek.app';
             $iosFallbackLink = 'https://apps.apple.com/id/app/gojek/id944875099';
+            $iosBundleId = 'com.go-jek.ios';
         }
 
         $endpoint = "https://firebasedynamiclinks.googleapis.com/v1/shortLinks?key=". self::env_firebaseDynamicLinkApiKey();

@@ -35,6 +35,34 @@ class FirebaseHelper {
             $iosBundleId = 'com.go-jek.ios';
         }
 
+        if($app=="shopeepay") {
+            $androidPackageName = 'com.shopee.id';
+            $androidFallbackLink = 'https://play.google.com/store/apps/details?id=com.shopee.id';
+            $iosFallbackLink = 'https://apps.apple.com/id/app/shopee/id959841443';
+            $iosBundleId = 'com.beeasy.shopee.id';
+        }
+
+        if($app=="linkaja") {
+            $androidPackageName = 'com.telkom.mwallet';
+            $androidFallbackLink = 'https://play.google.com/store/apps/details?id=com.telkom.mwallet';
+            $iosFallbackLink = 'https://apps.apple.com/id/app/linkaja/id984436451';
+            $iosBundleId = 'com.telkomsel.wallet';
+        }
+
+        if($app=="dana") {
+            $androidPackageName = 'id.dana';
+            $androidFallbackLink = 'https://play.google.com/store/apps/details?id=id.dana';
+            $iosFallbackLink = 'https://apps.apple.com/id/app/dana/id1437123008';
+            $iosBundleId = 'id.dana.app';
+        }
+
+        if($app=="ovo") {
+            $androidPackageName = 'ovo.id';
+            $androidFallbackLink = 'https://play.google.com/store/apps/details?id=ovo.id';
+            $iosFallbackLink = 'https://apps.apple.com/id/app/ovo/id1142114207';
+            $iosBundleId = 'ovo.id';
+        }
+
         $endpoint = "https://firebasedynamiclinks.googleapis.com/v1/shortLinks?key=". self::env_firebaseDynamicLinkApiKey();
         $headers = [
               'Accept' => 'application/jsons',

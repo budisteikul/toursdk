@@ -586,33 +586,6 @@ class APIController extends Controller
         return response()->json($contents);
     }
 
-    public function checkout(Request $request)
-    {
-            $validator = Validator::make(json_decode($request->getContent(), true), [
-                'sessionId' => ['required', 'string', 'max:255'],
-            ]);
-
-            if ($validator->fails()) {
-                $errors = $validator->errors();
-                return response()->json($errors);
-            }
-            
-            $data = json_decode($request->getContent(), true);
-
-            $sessionId = $data['sessionId'];
-            
-            $check_question = BookingHelper::check_question_json($sessionId,$data);
-            if(@count($check_question) > 0)
-            {
-                return response()->json($check_question);
-            }
-            $shoppingcart = BookingHelper::save_question_json($sessionId,$data);
-            
-            return response()->json([
-                'message' => 'success',
-            ], 200);
-    }
-
     public function last_order($sessionId)
     {
         $shoppingcarts = Shoppingcart::where('session_id', $sessionId)->orderBy('id','desc')->get();
@@ -841,103 +814,74 @@ class APIController extends Controller
     }
 
 
-    
-
-    public function createpayment(Request $request)
+    public function checkout(Request $request)
     {
-        $sessionId = $request->input('sessionId');
-        $paymentType = $request->input('paymentType');
+            $validator = Validator::make(json_decode($request->getContent(), true), [
+                'sessionId' => ['required', 'string', 'max:255'],
+            ]);
 
-        if($paymentType=="qris")
-        {
-            BookingHelper::set_bookingStatus($sessionId,'PENDING');
-            BookingHelper::set_confirmationCode($sessionId);
-            BookingHelper::create_payment($sessionId,"oyindonesia","qris");
-        }
-        else
-        {
-            $paymentType_arr = explode("-",$paymentType);
-
-            $payment_provider = NULL;
-            $payment_bank = NULL;
-
-            if(isset($paymentType_arr[0])) $payment_provider = $paymentType_arr[0];
-            if(isset($paymentType_arr[1])) $payment_bank = $paymentType_arr[1];
-
-            BookingHelper::set_bookingStatus($sessionId,'PENDING');
-            BookingHelper::set_confirmationCode($sessionId);
-            BookingHelper::create_payment($sessionId,$payment_provider,$payment_bank);
-
+            if ($validator->fails()) {
+                $errors = $validator->errors();
+                return response()->json($errors);
+            }
             
-        }
+            $data = json_decode($request->getContent(), true);
 
-        $shoppingcart = BookingHelper::confirm_booking($sessionId);
+            $sessionId = $data['sessionId'];
+            
+            $check_question = BookingHelper::check_question_json($sessionId,$data);
+            if(@count($check_question) > 0)
+            {
+                return response()->json($check_question);
+            }
+            $shoppingcart = BookingHelper::save_question_json($sessionId,$data);
+            
+            $payment = $data['payment'];
 
-        $redirect_type = 1;
-        $redirect = $shoppingcart->shoppingcart_payment->redirect;
-        if(substr($redirect,0,1)!="/")
-        {
-            $redirect_type = 2;
-            $redirect = url('/api/redirect/'. $shoppingcart->session_id .'/'. $shoppingcart->confirmation_code);
-        }
+            if($payment=="paypal") {
+                return response()->json([
+                    'message' => 'success',
+                ], 200);
+            }
+            else if($payment=="qris")
+            {
+                BookingHelper::set_bookingStatus($sessionId,'PENDING');
+                BookingHelper::set_confirmationCode($sessionId);
+                BookingHelper::create_payment($sessionId,"oyindonesia","qris");
+                
+            }
+            else
+            {
+                $payment_arr = explode("-",$payment);
 
-        /*
-        return response()->json([
-            "id" => $redirect_type,
-            "redirect" => $redirect
-        ]);
-        */
+                $payment_provider = NULL;
+                $payment_bank = NULL;
 
-        return response()->json([
-            "id" => "1",
-            "redirect" => "/booking/receipt/". $shoppingcart->session_id .'/'. $shoppingcart->confirmation_code
-        ]);
-        
+                if(isset($payment_arr[0])) $payment_provider = $payment_arr[0];
+                if(isset($payment_arr[1])) $payment_bank = $payment_arr[1];
+
+                BookingHelper::set_bookingStatus($sessionId,'PENDING');
+                BookingHelper::set_confirmationCode($sessionId);
+                BookingHelper::create_payment($sessionId,$payment_provider,$payment_bank);
+            }
+            
+            $shoppingcart = BookingHelper::confirm_booking($sessionId);
+
+            $redirect_type = 1;
+            $redirect = $shoppingcart->shoppingcart_payment->redirect;
+            if(substr($redirect,0,1)!="/")
+            {
+                $redirect_type = 2;
+                $redirect = url('/api/redirect/'. $shoppingcart->session_id .'/'. $shoppingcart->confirmation_code);
+            }
+
+            return response()->json([
+                "message" => "success",
+                "id" => $redirect_type,
+                "redirect" => $redirect
+            ]);
     }
 
-    public function payment_jscript($payment_type,$sessionId)
-    {
-
-        $endpoint_payment = url('/api');
-
-        $jscript = '
-        function paymentScript()
-        {
-            $("#paymentContainer").html(\'<div id=\"loader\" class=\"mb-4\"></div><div id=\"text-alert\" class=\"text-center\"></div>\');
-            $("#submitCheckout").slideUp("slow");
-            $("#loader").addClass("loader");
-            $("#text-alert").prepend( "Please wait and do not close the browser or refresh the page" );
-
-            $.ajax({
-                data: {
-                    "sessionId": "'.$sessionId.'",
-                    "paymentType": "'.$payment_type.'",
-                },
-                type: \'POST\',
-                url: \''. $endpoint_payment .'/payment\'
-            }).done(function( data ) {
-                if(data.id=="1")
-                {
-                    window.openAppRoute(data.redirect);
-                }
-                else if(data.id=="2")
-                {
-                    window.location.replace(data.redirect);
-                }
-                else
-                {
-                    console.log(data.debug);
-                }
-            });
-
-        } 
-        ';
-
-        return response($jscript)->header('Content-Type', 'application/javascript');
-    }
-
-    
-    
     public function paypal_jscript($sessionId)
     {
         

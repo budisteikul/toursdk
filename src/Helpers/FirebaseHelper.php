@@ -46,10 +46,12 @@ class FirebaseHelper {
             'domainUriPrefix' => self::env_firebaseDynamicLinkDomainUri(),
             'link' => $link,
             'androidInfo' => [
-                'androidFallbackLink' => $androidFallbackLink
+                'androidFallbackLink' => $androidFallbackLink,
+                'androidPackageName' => $androidPackageName
             ],
             'iosInfo' => [
-                'iosFallbackLink' => $iosFallbackLink
+                'iosFallbackLink' => $iosFallbackLink,
+                'iosBundleId' => $iosBundleId
             ]
           ]
         ];

@@ -877,9 +877,17 @@ class APIController extends Controller
 
             return response()->json([
                 "message" => "success",
+                "id" => "1",
+                "redirect" => "/booking/receipt/". $shoppingcart->session_id ."/". $shoppingcart->confirmation_code
+            ]);
+
+            /*
+            return response()->json([
+                "message" => "success",
                 "id" => $redirect_type,
                 "redirect" => $redirect
             ]);
+            */
     }
 
     public function paypal_jscript($sessionId)

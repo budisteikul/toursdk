@@ -878,7 +878,7 @@ class APIController extends Controller
             return response()->json([
                 "message" => "success",
                 "id" => $redirect_type,
-                "redirect" => $redirect
+                "redirect" => 'https://budi.page.link/K3VhEEjnY7tjmTdV7'
             ]);
     }
 

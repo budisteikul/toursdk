@@ -839,9 +839,11 @@ class APIController extends Controller
             $payment = $data['payment'];
 
             if($payment=="paypal") {
+
                 return response()->json([
                     'message' => 'success',
                 ], 200);
+                
             }
             else if($payment=="qris")
             {
@@ -881,15 +883,6 @@ class APIController extends Controller
                 $text = '<strong>Pay with '. $text .'</strong>';
             }
 
-            /*
-            return response()->json([
-                "message" => "success",
-                "id" => "1",
-                "redirect" => "/booking/receipt/". $shoppingcart->session_id ."/". $shoppingcart->confirmation_code
-            ]);
-            */
-
-            
             return response()->json([
                 "message" => "success",
                 "id" => $redirect_type,

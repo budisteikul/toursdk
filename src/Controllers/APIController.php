@@ -867,27 +867,36 @@ class APIController extends Controller
             
             $shoppingcart = BookingHelper::confirm_booking($sessionId);
 
+            $text = null;
             $redirect_type = 1;
             $redirect = $shoppingcart->shoppingcart_payment->redirect;
             if(substr($redirect,0,1)!="/")
             {
                 $redirect_type = 2;
                 $redirect = url('/api/redirect/'. $shoppingcart->session_id .'/'. $shoppingcart->confirmation_code);
+                if($shoppingcart->shoppingcart_payment->bank_name=="gopay")
+                {
+                    $text = '<img src="'. url('/img/ewallet/gopay-light.png') .'" height="30" />';
+                }
+                $text = '<strong>Pay with '. $text .'</strong>';
             }
 
+            /*
             return response()->json([
                 "message" => "success",
                 "id" => "1",
                 "redirect" => "/booking/receipt/". $shoppingcart->session_id ."/". $shoppingcart->confirmation_code
             ]);
+            */
 
-            /*
+            
             return response()->json([
                 "message" => "success",
                 "id" => $redirect_type,
-                "redirect" => $redirect
+                "redirect" => $redirect,
+                "text" => $text
             ]);
-            */
+            
     }
 
     public function paypal_jscript($sessionId)

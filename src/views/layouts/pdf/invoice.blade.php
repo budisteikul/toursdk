@@ -200,6 +200,12 @@ footer {
   font-weight: bold;
 }
 
+.invoice-color-info
+{
+  color: #1c98ae;
+  font-weight: bold;
+}
+
 </style>
 </head>
 <body>

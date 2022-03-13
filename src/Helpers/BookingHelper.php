@@ -2045,7 +2045,7 @@ class BookingHelper {
 		}
 		else if($shoppingcart->booking_status=="PENDING")
 		{
-			$value = '<span class="badge badge-warning" style="font-size: 20px;">PENDING</span>';
+			$value = '<span class="badge badge-info" style="font-size: 20px;">PENDING</span>';
 		}
 		else
 		{
@@ -2129,7 +2129,7 @@ class BookingHelper {
 					case 4:
 						return '
 								<div class="card mb-1">
-								<span class="badge badge-warning invoice-color-warning" style="font-size:20px;">
+								<span class="badge badge-info invoice-color-info" style="font-size:20px;">
 								<i class="fas fa-university"></i> WAITING FOR PAYMENT </span>
 								</div>
 								<div class="card mb-4">
@@ -2191,7 +2191,7 @@ class BookingHelper {
 						return '
 								
 								<div class="card mb-1">
-								<span class="badge badge-warning invoice-color-warning" style="font-size:20px;">
+								<span class="badge badge-info invoice-color-info" style="font-size:20px;">
 								<i class="fas fa-qrcode"></i> WAITING FOR PAYMENT </span>
 								</div>
 								<div class="card mb-1 img-fluid invoice-hilang"  style="min-height:300px; max-width:505px;">
@@ -2251,7 +2251,7 @@ class BookingHelper {
 						
 						return '
 								<div class="card mb-1">
-								<span class="badge badge-warning invoice-color-warning" style="font-size:20px;">
+								<span class="badge badge-info invoice-color-info" style="font-size:20px;">
 								<i class="fas fa-wallet"></i> WAITING FOR PAYMENT </span>
 								</div>
 								<div class="card mb-4">

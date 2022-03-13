@@ -26,7 +26,7 @@ class FirebaseHelper {
         return env("FIREBASE_DYNAMIC_LINK_DOMAIN_URI");
     }
 
-    public static function createDynamicLink($link,$app="gopay")
+    public static function createDynamicLink($link,$receipt_url,$app="gopay")
     {
         if($app=="gopay") {
             $androidPackageName = 'com.gojek.app';
@@ -52,6 +52,9 @@ class FirebaseHelper {
             'iosInfo' => [
                 'iosFallbackLink' => $iosFallbackLink,
                 'iosBundleId' => $iosBundleId
+            ],
+            'desktopInfo' => [
+                'desktopFallbackLink' => $receipt_url
             ]
           ]
         ];

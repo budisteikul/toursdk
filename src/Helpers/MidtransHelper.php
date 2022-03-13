@@ -117,7 +117,6 @@ class MidtransHelper {
           }
           else
           {
-            $link = url('/api/redirect/'. $shoppingcart);
             $response->payment_type = 'ewallet';
             $response->redirect = $data2['deeplink_url'];
             $response->link = FirebaseHelper::createDynamicLink($data->transaction->link,"gopay");

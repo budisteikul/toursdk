@@ -16,6 +16,55 @@ class FirebaseHelper {
         return env("FIREBASE_DATABASE_SECRET");
     }
 
+    public static function env_firebaseDynamicLinkApiKey()
+    {
+        return env("FIREBASE_DYNAMIC_LINK_API_KEY");
+    }
+
+    public static function env_firebaseDynamicLinkDomainUri()
+    {
+        return env("FIREBASE_DYNAMIC_LINK_DOMAIN_URI");
+    }
+
+    public static function createDynamicLink($link,$app="gopay")
+    {
+        if($app=="gopay") {
+            $androidFallbackLink = 'https://play.google.com/store/apps/details?id=com.gojek.app';
+            $iosFallbackLink = 'https://apps.apple.com/id/app/gojek/id944875099';
+        }
+
+        $endpoint = "https://firebasedynamiclinks.googleapis.com/v1/shortLinks?key=". self::env_firebaseDynamicLinkApiKey();
+        $headers = [
+              'Accept' => 'application/jsons',
+              'Content-Type' => 'application/json'
+          ];
+
+        $data = [
+          'dynamicLinkInfo' => [
+            'domainUriPrefix' => self::env_firebaseDynamicLinkDomainUri(),
+            'link' => $link,
+            'androidInfo' => [
+                'androidFallbackLink' => $androidFallbackLink
+            ],
+            'iosInfo' => [
+                'iosFallbackLink' => $iosFallbackLink
+            ]
+          ]
+        ];
+
+        $client = new \GuzzleHttp\Client(['headers' => $headers,'http_errors' => false]);
+        $response = $client->request('POST',$endpoint,
+          [
+            'json' => $data
+          ]
+        );
+
+        $data = $response->getBody()->getContents();
+        $data = json_decode($data);
+        
+        return $data->shortLink;
+    }
+
     public static function connect($path,$data="",$method="PUT")
     {
         if($method=="PUT")

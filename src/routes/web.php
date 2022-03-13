@@ -68,3 +68,6 @@
 	//Redirect
 	Route::get('/api/redirect/{sessionId}/{confirmationCode}', 'budisteikul\toursdk\Controllers\APIController@redirect');
 
+	//TEST
+	Route::get('/test', 'budisteikul\toursdk\Controllers\APIController@test');
+

@@ -35,7 +35,25 @@ use Illuminate\Support\Facades\Storage;
 class APIController extends Controller
 {
     
-    
+    public function test()
+    {
+        $string = '{
+    "shortLink": "https://budi.page.link/us6BaDzNEWau9J1c9",
+    "warning": [
+        {
+            "warningCode": "UNRECOGNIZED_PARAM",
+            "warningMessage": "iOS app \'944875099\' lacks App ID Prefix. UniversalLinks is not enabled for the app. [https://firebase.google.com/docs/dynamic-links/debug#ios-team-id-absent]"
+        },
+        {
+            "warningCode": "UNRECOGNIZED_PARAM",
+            "warningMessage": "There is no configuration to prevent phishing on this domain https://budi.page.link. Setup URL patterns to whitelist in the Firebase Dynamic Links console. [https://support.google.com/firebase/answer/9021429]"
+        }
+    ],
+    "previewLink": "https://budi.page.link/us6BaDzNEWau9J1c9?d=1"
+}';
+        $data = json_decode($string);
+        print_r($data->shortLink);
+    }
 
     public function __construct()
     {
@@ -51,19 +69,7 @@ class APIController extends Controller
 
     public function redirect($sessionId,$confirmationCode)
     {
-        $shoppingcart = Shoppingcart::where('confirmation_code',$confirmationCode)->where('session_id', $sessionId)->where(function($query){
-            return $query->where('booking_status', 'CONFIRMED')
-                         ->orWhere('booking_status', 'CANCELED')
-                         ->orWhere('booking_status', 'PENDING');
-        })->firstOrFail();
-
-        if(!isset($shoppingcart->shoppingcart_payment))
-        {
-            abort(404);
-        }
-
-        
-        //return view('toursdk::layouts.page.redirect', ['shoppingcart' => $shoppingcart, 'app_url' => $this->appUrl]);
+        $shoppingcart = Shoppingcart::where('confirmation_code',$confirmationCode)->where('session_id', $sessionId)->firstOrFail();
         return redirect($shoppingcart->shoppingcart_payment->redirect);
     }
 
@@ -843,7 +849,7 @@ class APIController extends Controller
                 return response()->json([
                     'message' => 'success',
                 ], 200);
-                
+
             }
             else if($payment=="qris")
             {
@@ -875,7 +881,7 @@ class APIController extends Controller
             if(substr($redirect,0,1)!="/")
             {
                 $redirect_type = 2;
-                $redirect = url('/api/redirect/'. $shoppingcart->session_id .'/'. $shoppingcart->confirmation_code);
+                $redirect = $shoppingcart->shoppingcart_payment->link;
                 if($shoppingcart->shoppingcart_payment->bank_name=="gopay")
                 {
                     $text = '<img src="'. url('/img/ewallet/gopay-light.png') .'" height="30" />';

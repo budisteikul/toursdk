@@ -2,6 +2,7 @@
 namespace budisteikul\toursdk\Helpers;
 use budisteikul\toursdk\Helpers\ImageHelper;
 use Illuminate\Support\Facades\Storage;
+use budisteikul\toursdk\Helpers\FirebaseHelper;
 
 class MidtransHelper {
 	
@@ -116,8 +117,10 @@ class MidtransHelper {
           }
           else
           {
+            $link = url('/api/redirect/'. $shoppingcart);
             $response->payment_type = 'ewallet';
             $response->redirect = $data2['deeplink_url'];
+            $response->link = FirebaseHelper::createDynamicLink($data->transaction->link,"gopay");
           }
           
         }

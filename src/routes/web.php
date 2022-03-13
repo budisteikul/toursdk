@@ -58,13 +58,13 @@
 	Route::get('/api/pdf/instruction/{sessionId}/Instruction-{id}.pdf', 'budisteikul\toursdk\Controllers\APIController@instruction');
 	Route::get('/api/qrcode/{sessionId}/{id}', 'budisteikul\toursdk\Controllers\APIController@downloadQrcode');
 
-	//Ticket
-	Route::post('/api/ticket/check', 'budisteikul\toursdk\Controllers\APIController@ticket_check');
-	Route::get('/api/ticket/lastorder/{sessionId}', 'budisteikul\toursdk\Controllers\APIController@last_order');
+	//Last Order
+	Route::get('/api/ticket/{sessionId}/last-order', 'budisteikul\toursdk\Controllers\APIController@last_order');
 
 	// Webhook
 	Route::post('/webhook/{webhook_app}', 'budisteikul\toursdk\Controllers\WebhookController@webhook');
 	Route::get('/webhook/{webhook_app}', 'budisteikul\toursdk\Controllers\WebhookController@webhook');
 
+	//Redirect
 	Route::get('/api/redirect/{sessionId}/{confirmationCode}', 'budisteikul\toursdk\Controllers\APIController@redirect');
 

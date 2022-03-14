@@ -2251,6 +2251,14 @@ class BookingHelper {
 						{
 							$button = '<a class="btn btn-outline-secondary w-100" href="'. $shoppingcart->shoppingcart_payment->redirect .'"><b class="invoice-hilang"> Open <img height="30" src="'. url('/img/ewallet/gopay.png') .'" /> App</b></a>';
 						}
+						if($shoppingcart->shoppingcart_payment->bank_name=="shopeepay")
+						{
+							$button = '<a class="btn btn-outline-secondary w-100" href="'. $shoppingcart->shoppingcart_payment->redirect .'"><b class="invoice-hilang"> Open <img height="30" src="'. url('/img/ewallet/shopeepay.png') .'" /> App</b></a>';
+						}
+						if($shoppingcart->shoppingcart_payment->bank_name=="linkaja")
+						{
+							$button = '<a class="btn btn-outline-secondary w-100" href="'. $shoppingcart->shoppingcart_payment->redirect .'"><b class="invoice-hilang"> Open <img height="30" src="'. url('/img/ewallet/linkaja.png') .'" /> App</b></a>';
+						}
 						
 						return '
 								<div class="card mb-1">

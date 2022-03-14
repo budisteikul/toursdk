@@ -882,6 +882,14 @@ class APIController extends Controller
                 {
                     $text = '<img src="'. url('/img/ewallet/gopay-light.png') .'" height="30" />';
                 }
+                if($shoppingcart->shoppingcart_payment->bank_name=="shopeepay")
+                {
+                    $text = '<img src="'. url('/img/ewallet/shopeepay-light.png') .'" height="30" />';
+                }
+                if($shoppingcart->shoppingcart_payment->bank_name=="linkaja")
+                {
+                    $text = '<img src="'. url('/img/ewallet/linkaja-light.png') .'" height="30" />';
+                }
                 $text = '<strong>Pay with '. $text .'</strong>';
             }
 

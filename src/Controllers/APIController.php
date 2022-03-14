@@ -636,10 +636,9 @@ class APIController extends Controller
             ], 200);
     }
     
-    public function confirmdisbursementoy($id,Request $request)
+    public function confirmdisbursementoy(Request $request)
     {
-        if($this->oyApiKey==$id)
-        {
+        
             $data = $request->all();
             $transaction_id = $data['partner_trx_id'];
             $status = $data['status']['code'];
@@ -653,7 +652,7 @@ class APIController extends Controller
                     $disbursement->save();
                 }
             }
-        }
+       
         return response('OK', 200)->header('Content-Type', 'text/plain');
     }
 

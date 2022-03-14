@@ -1849,7 +1849,6 @@ class BookingHelper {
         $transaction->mins_expired = $mins_expired;
         $transaction->date_expired = $date_expired;
         $transaction->date_now = $date_now;
-        $transaction->link = url('/api/redirect/'. $shoppingcart->session_id .'/'. $shoppingcart->confirmation_code);
         $transaction->finish_url = '/booking/receipt/'. $sessionId .'/'. $shoppingcart->confirmation_code;
 
         $data = new \stdClass();

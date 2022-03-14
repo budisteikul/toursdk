@@ -778,12 +778,15 @@ class APIController extends Controller
     {
         
             $data = $request->all();
+
+
+
             $order_id = null;
             if(isset($data['order_id'])) $order_id = $data['order_id'];
 
             $shoppingcart_payment = ShoppingcartPayment::where('order_id',$order_id)->first();
             $confirmation_code = $shoppingcart_payment->shoppingcart->confirmation_code;
-            $shoppingcart = Shoppingcart::where('confirmation_code',$data['order_id'])->first();
+            $shoppingcart = Shoppingcart::where('confirmation_code',$confirmation_code)->first();
             if($shoppingcart!==null)
             {
                 if(hash('sha512', $order_id.$data['status_code'].$data['gross_amount'].$this->midtransServerKey)==$data['signature_key'])

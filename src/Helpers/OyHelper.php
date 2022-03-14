@@ -248,6 +248,7 @@ class OyHelper {
 
   public static function createPayment($data)
   {
+
         $response = new \stdClass();
 
         $payment = self::bankCode($data->transaction->bank);
@@ -257,6 +258,7 @@ class OyHelper {
 
           $data1 = self::createSnap($data);
           $data2 = self::createCharge($data,$data1->snaptoken,$payment);
+
 
           $qrcode = ImageHelper::uploadQrcodeCloudinary($data2->data->qris_url);
           $qrcode_url = $qrcode['secure_url'];
@@ -273,6 +275,7 @@ class OyHelper {
           $response->link = self::oyLink($data1->snaptoken);
           $response->redirect = $data->transaction->finish_url;
           $response->expiration_date = $data->transaction->date_expired;
+          $response->order_id = $data->transaction->id;
         }
         else if($payment->bank_payment_type=="shopeepay_ewallet" || $payment->bank_payment_type=="linkaja_ewallet" || $payment->bank_payment_type=="dana_ewallet")
         {
@@ -302,25 +305,11 @@ class OyHelper {
           $response->link = null;
           $response->redirect = $data1->ewallet_url;
           $response->expiration_date = $data->transaction->date_expired;
+          $response->order_id = $data->transaction->id;
         }
         else
         {
-          
-          /*
-          $data1 = self::createSnap($data);
-          $data2 = self::createCharge($data,$data1->snaptoken,$payment);
-          $data3 = self::status($data1->snaptoken);
 
-          $response->payment_type = 'bank_transfer';
-          $response->bank_name = $payment->bank_name;
-          $response->bank_code = $data3->data->sender_bank;
-          $response->va_number = $data3->data->va_number;
-          $response->snaptoken = $data1->snaptoken;
-          $response->link = self::oyLink($data1->snaptoken);
-          $response->redirect = $data->transaction->finish_url;
-          */
-
-          
           $init_data = [
             'partner_user_id' => $data->transaction->id,
             'bank_code' => $payment->bank_code,
@@ -346,6 +335,7 @@ class OyHelper {
           $response->link = null;
           $response->redirect = $data->transaction->finish_url;
           $response->expiration_date = $data->transaction->date_expired;
+          $response->order_id = $data->transaction->id;
         }
        
         return $response;

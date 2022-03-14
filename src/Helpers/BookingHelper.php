@@ -1842,7 +1842,7 @@ class BookingHelper {
 		$payment_status = NULL;
 
 		$transaction = new \stdClass();
-        $transaction->id = $shoppingcart->confirmation_code;
+        $transaction->id = Uuid::uuid4()->toString();
         $transaction->amount = $shoppingcart->due_now;
         $transaction->payment_provider = $payment_provider;
         $transaction->bank = $bank;
@@ -1912,6 +1912,8 @@ class BookingHelper {
 		if(isset($response->link)) $link = $response->link;
 		if(isset($response->redirect)) $redirect = $response->redirect;
 		if(isset($response->expiration_date)) $expiration_date = $response->expiration_date;
+		if(isset($response->order_id)) $order_id = $response->order_id;
+		if(isset($response->authorization_id)) $authorization_id = $response->authorization_id;
 
 		$ShoppingcartPayment = (object) array(
 			'payment_provider' => $payment_provider,
@@ -2244,6 +2246,7 @@ class BookingHelper {
 								</div>';
 						break;
 					case 4:
+						$button = null;
 						if($shoppingcart->shoppingcart_payment->bank_name=="gopay")
 						{
 							$button = '<a class="btn btn-outline-secondary w-100" href="'. $shoppingcart->shoppingcart_payment->redirect .'"><b class="invoice-hilang"> Open <img height="30" src="'. url('/img/ewallet/gopay.png') .'" /> App</b></a>';

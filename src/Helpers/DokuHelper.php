@@ -107,6 +107,7 @@ class DokuHelper {
         $response->link = $data2->how_to_pay_url;
         $response->redirect = $data->transaction->finish_url;
         $response->expiration_date = $data->transaction->date_expired;
+        $response->order_id = $data->transaction->id;
         return $response;
     }
 

@@ -41,9 +41,9 @@
 
 	//Confirm Payment
 	Route::post('/api/payment/paypal/confirm', 'budisteikul\toursdk\Controllers\APIController@confirmpaymentpaypal');
-	Route::post('/api/payment/doku/confirm/{id}', 'budisteikul\toursdk\Controllers\APIController@confirmpaymentdoku');
-	Route::post('/api/payment/oy/confirm/{id}', 'budisteikul\toursdk\Controllers\APIController@confirmpaymentoy');
-	Route::post('/api/payment/midtrans/confirm/{id}', 'budisteikul\toursdk\Controllers\APIController@confirmpaymentmidtrans');
+	Route::post('/api/payment/doku/confirm', 'budisteikul\toursdk\Controllers\APIController@confirmpaymentdoku');
+	Route::post('/api/payment/oy/confirm', 'budisteikul\toursdk\Controllers\APIController@confirmpaymentoy');
+	Route::post('/api/payment/midtrans/confirm', 'budisteikul\toursdk\Controllers\APIController@confirmpaymentmidtrans');
 
 	//Create Payment
 	Route::get('/api/payment/paypal/jscript/{sessionId}', 'budisteikul\toursdk\Controllers\APIController@paypal_jscript');

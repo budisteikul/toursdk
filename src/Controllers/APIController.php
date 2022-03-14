@@ -31,28 +31,16 @@ use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 
+use budisteikul\toursdk\Helpers\OyHelper;
 
 class APIController extends Controller
 {
     
     public function test()
     {
-        $string = '{
-    "shortLink": "https://budi.page.link/us6BaDzNEWau9J1c9",
-    "warning": [
-        {
-            "warningCode": "UNRECOGNIZED_PARAM",
-            "warningMessage": "iOS app \'944875099\' lacks App ID Prefix. UniversalLinks is not enabled for the app. [https://firebase.google.com/docs/dynamic-links/debug#ios-team-id-absent]"
-        },
-        {
-            "warningCode": "UNRECOGNIZED_PARAM",
-            "warningMessage": "There is no configuration to prevent phishing on this domain https://budi.page.link. Setup URL patterns to whitelist in the Firebase Dynamic Links console. [https://support.google.com/firebase/answer/9021429]"
-        }
-    ],
-    "previewLink": "https://budi.page.link/us6BaDzNEWau9J1c9?d=1"
-}';
-        $data = json_decode($string);
-        print_r($data->shortLink);
+        $token = '87628869-31a2-4869-b62e-afadfee9f40c';
+        $data = ShoppingcartPayment::where('order_id',$token)->first();
+        print_r($data->shoppingcart->confirmation_code);
     }
 
     public function __construct()
@@ -718,19 +706,19 @@ class APIController extends Controller
         
     }
 
-    public function confirmpaymentoy($id,Request $request)
+    public function confirmpaymentoy(Request $request)
     {
-        if($this->oyApiKey==$id)
-        {
             $data = $request->all();
 
-            $confirmation_code = null;
+            $order_id = null;
             $status = null;
-            if(isset($data['partner_tx_id'])) $confirmation_code = $data['partner_tx_id'];
-            if(isset($data['partner_trx_id'])) $confirmation_code = $data['partner_trx_id'];
+            if(isset($data['partner_tx_id'])) $order_id = $data['partner_tx_id'];
+            if(isset($data['partner_trx_id'])) $order_id = $data['partner_trx_id'];
             if(isset($data['status'])) $status = strtolower($data['status']);
             if(isset($data['settlement_status'])) $status = strtolower($data['settlement_status']);
             
+            $shoppingcart_payment = ShoppingcartPayment::where('order_id',$order_id)->first();
+            $confirmation_code = $shoppingcart_payment->shoppingcart->confirmation_code;
             $shoppingcart = Shoppingcart::where('confirmation_code',$confirmation_code)->first();
             if($shoppingcart!==null)
             {
@@ -751,18 +739,22 @@ class APIController extends Controller
                         BookingHelper::confirm_payment($shoppingcart,"CANCELED");
                     }
             }
-        }
+        
         return response('OK', 200)->header('Content-Type', 'text/plain');
     }
 
-    public function confirmpaymentdoku($id,Request $request)
+    public function confirmpaymentdoku($Request $request)
     {
-        if($this->dokuSecretKey==$id)
-        {
+        
             $data = $request->all();
-            $confirmation_code = $data['order']['invoice_number'];
-            $transaction_status = $data['transaction']['status'];
+            $order_id = null;
+            $transaction_status = null;
 
+            if(isset($data['order']['invoice_number'])) $order_id = $data['order']['invoice_number'];
+            if(isset($data['transaction']['status'])) $transaction_status = $data['transaction']['status'];
+
+            $shoppingcart_payment = ShoppingcartPayment::where('order_id',$order_id)->first();
+            $confirmation_code = $shoppingcart_payment->shoppingcart->confirmation_code;
             $shoppingcart = Shoppingcart::where('confirmation_code',$confirmation_code)->first();
             if($shoppingcart!==null)
             {
@@ -779,19 +771,23 @@ class APIController extends Controller
                     BookingHelper::confirm_payment($shoppingcart,"CANCELED");
                 }
             }
-        }
+        
         return response('OK', 200)->header('Content-Type', 'text/plain');
     }
 
-    public function confirmpaymentmidtrans($id,Request $request)
+    public function confirmpaymentmidtrans(Request $request)
     {
-        if($this->midtransServerKey==$id)
-        {
+        
             $data = $request->all();
+            $order_id = null;
+            if(isset($data['order_id'])) $order_id = $data['order_id'];
+
+            $shoppingcart_payment = ShoppingcartPayment::where('order_id',$order_id)->first();
+            $confirmation_code = $shoppingcart_payment->shoppingcart->confirmation_code;
             $shoppingcart = Shoppingcart::where('confirmation_code',$data['order_id'])->first();
             if($shoppingcart!==null)
             {
-                if(hash('sha512', $data['order_id'].$data['status_code'].$data['gross_amount'].$this->midtransServerKey)==$data['signature_key'])
+                if(hash('sha512', $order_id.$data['status_code'].$data['gross_amount'].$this->midtransServerKey)==$data['signature_key'])
                 {
                     if($data['transaction_status']=="settlement")
                     {
@@ -808,7 +804,7 @@ class APIController extends Controller
                     
                 }
             }
-        }
+        
     }
 
     public function createpaymentpaypal(Request $request)

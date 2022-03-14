@@ -117,7 +117,7 @@ class MidtransHelper {
           }
           else
           {
-            $deeplink = str_ireplace ("gojek://","https://gojek.link/",$data2['deeplink_url']);
+            $deeplink = str_ireplace("gojek://","https://gojek.link/",$data2['deeplink_url']);
             $response->payment_type = 'ewallet';
             $response->redirect = $deeplink;
             $response->link = FirebaseHelper::createDynamicLink($deeplink,self::env_appUrl() . $data->transaction->finish_url,"gopay");

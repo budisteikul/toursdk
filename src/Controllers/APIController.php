@@ -742,7 +742,7 @@ class APIController extends Controller
         return response('OK', 200)->header('Content-Type', 'text/plain');
     }
 
-    public function confirmpaymentdoku($Request $request)
+    public function confirmpaymentdoku(Request $request)
     {
         
             $data = $request->all();

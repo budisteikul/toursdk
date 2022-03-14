@@ -2246,7 +2246,7 @@ class BookingHelper {
 					case 4:
 						if($shoppingcart->shoppingcart_payment->bank_name=="gopay")
 						{
-							$button = '<a class="btn btn-outline-secondary w-100" href="'. $shoppingcart->shoppingcart_payment->link .'"><b class="invoice-hilang"> Open <img height="30" src="'. url('/img/ewallet/gopay.png') .'" /> App</b></a>';
+							$button = '<a class="btn btn-outline-secondary w-100" href="'. $shoppingcart->shoppingcart_payment->redirect .'"><b class="invoice-hilang"> Open <img height="30" src="'. url('/img/ewallet/gopay.png') .'" /> App</b></a>';
 						}
 						
 						return '

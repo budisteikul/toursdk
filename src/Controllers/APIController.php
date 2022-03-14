@@ -856,7 +856,6 @@ class APIController extends Controller
                 BookingHelper::set_bookingStatus($sessionId,'PENDING');
                 BookingHelper::set_confirmationCode($sessionId);
                 BookingHelper::create_payment($sessionId,"oyindonesia","qris");
-                
             }
             else
             {
@@ -881,7 +880,6 @@ class APIController extends Controller
             if(substr($redirect,0,1)!="/")
             {
                 $redirect_type = 2;
-                $redirect = $shoppingcart->shoppingcart_payment->link;
                 if($shoppingcart->shoppingcart_payment->bank_name=="gopay")
                 {
                     $text = '<img src="'. url('/img/ewallet/gopay-light.png') .'" height="30" />';

@@ -39,8 +39,8 @@ class CreateShoppingcartPaymentsTable extends Migration
             $table->string('rate_from')->nullable();
             $table->string('rate_to')->nullable();
 
-            $table->string('link')->nullable();
-            $table->string('redirect')->nullable();
+            $table->text('link')->nullable();
+            $table->text('redirect')->nullable();
             $table->dateTime('expiration_date')->nullable();
             $table->tinyInteger('payment_status')->default(1);
             

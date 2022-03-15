@@ -748,6 +748,8 @@ class APIController extends Controller
 
             if(isset($data['order']['invoice_number'])) $order_id = $data['order']['invoice_number'];
             if(isset($data['transaction']['status'])) $transaction_status = $data['transaction']['status'];
+            if(isset($data['INVOICE'])) $order_id = $data['INVOICE'];
+            if(isset($data['TXNSTATUS'])) $transaction_status = $data['TXNSTATUS'];
 
             $shoppingcart_payment = ShoppingcartPayment::where('order_id',$order_id)->first();
             $confirmation_code = $shoppingcart_payment->shoppingcart->confirmation_code;
@@ -755,6 +757,10 @@ class APIController extends Controller
             if($shoppingcart!==null)
             {
                 if($transaction_status=="SUCCESS")
+                {
+                    BookingHelper::confirm_payment($shoppingcart,"CONFIRMED");
+                }
+                else if($transaction_status=="S")
                 {
                     BookingHelper::confirm_payment($shoppingcart,"CONFIRMED");
                 }

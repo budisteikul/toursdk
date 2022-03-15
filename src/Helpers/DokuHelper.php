@@ -116,7 +116,7 @@ class DokuHelper {
             $path = date('Y-m-d');
             $contents = QrCode::size(630)->format('png')->generate($data2->qr_code);
             Storage::disk('gcs')->put('qrcode/'. $path .'/'.$data1->response->payment->token_id.'.png', $contents);
-            $qrcode_url = Storage::disk('gcs')->url('qrcode/'. $path .'/'.$data1->snaptoken.'.png');
+            $qrcode_url = Storage::disk('gcs')->url('qrcode/'. $path .'/'.$data1->response->payment->token_id.'.png');
 
             $response->qrcode = $qrcode_url;
         }

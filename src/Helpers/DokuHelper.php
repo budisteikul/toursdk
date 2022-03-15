@@ -114,9 +114,9 @@ class DokuHelper {
         {
             $response->payment_type = 'qris';
             $image = QrCode::size(630)->format('png')->generate($data2->qr_code);
-            $path = Storage::disk('local')->put('temp/'. $data1->response->payment->token_id .'.png', $image);
-            $qrcode = ImageHelper::uploadImageCloudinary($path);
-            $response->qrcode = $qrcode['secure_url'];
+            //$path = Storage::disk('local')->put('temp/'. $data1->response->payment->token_id .'.png', $image);
+            $qrcode = ImageHelper::uploadQrcodeCloudinary($image);
+            $qrcode_url = $qrcode['secure_url'];
         }
         else
         {

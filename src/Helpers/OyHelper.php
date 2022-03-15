@@ -259,6 +259,9 @@ class OyHelper {
           $data->transaction->mins_expired = 30;
           $data->transaction->date_expired = Carbon::parse($data->transaction->date_now)->addMinutes($data->transaction->mins_expired)->formatLocalized('%Y-%m-%d %H:%M:%S');
 
+          print_r($data);
+          exit();
+
           $data1 = self::createSnap($data);
           $data2 = self::createCharge($data,$data1->snaptoken,$payment);
 

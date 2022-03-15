@@ -83,12 +83,12 @@ class MidtransHelper {
   {
         $payment = self::bankCode($data->transaction->bank);
 
-        $data1 = MidtransHelper::createSnap($data,$payment);
-        $data2 = MidtransHelper::chargeSnap($data1->token,$data,$payment);
-
         $response = new \stdClass();
         if($payment->bank_payment_type=="permata_va")
         {
+          $data1 = MidtransHelper::createSnap($data,$payment);
+          $data2 = MidtransHelper::chargeSnap($data1->token,$data,$payment);
+
           $response->payment_type = 'bank_transfer';
           $response->bank_name = $payment->bank_name;
           $response->bank_code = $payment->bank_code;
@@ -98,6 +98,12 @@ class MidtransHelper {
         }
         else if($payment->bank_payment_type=="gopay")
         {
+          $data->transaction->mins_expired = 30;
+          $data->transaction->date_expired = Carbon::parse($data->transaction->date_now)->addMinutes($data->transaction->mins_expired);
+
+          $data1 = MidtransHelper::createSnap($data,$payment);
+          $data2 = MidtransHelper::chargeSnap($data1->token,$data,$payment);
+
           $qrcode = ImageHelper::uploadQrcodeCloudinary($data2['qr_code_url']);
           $qrcode_url = $qrcode['secure_url'];
 
@@ -126,6 +132,10 @@ class MidtransHelper {
         }
         else if($payment->bank_payment_type=="echannel")
         {
+
+          $data1 = MidtransHelper::createSnap($data,$payment);
+          $data2 = MidtransHelper::chargeSnap($data1->token,$data,$payment);
+
           $response->payment_type = 'bank_transfer';
           $response->bank_name = $payment->bank_name;
           $response->bank_code = $data2['biller_code'];
@@ -136,6 +146,9 @@ class MidtransHelper {
         }
         else
         {
+          $data1 = MidtransHelper::createSnap($data,$payment);
+          $data2 = MidtransHelper::chargeSnap($data1->token,$data,$payment);
+          
           $response->payment_type = 'bank_transfer';
           $response->bank_name = $payment->bank_name;
           $response->bank_code = $payment->bank_code;

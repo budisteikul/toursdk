@@ -256,7 +256,7 @@ class OyHelper {
 
         if($payment->bank_payment_type=="qris_shopee")
         {
-          $data->transaction->mins_expired = 30;
+          $data->transaction->mins_expired = 60;
           $data->transaction->date_expired = Carbon::parse($data->transaction->date_now)->addMinutes($data->transaction->mins_expired)->formatLocalized('%Y-%m-%d %H:%M:%S');
 
 
@@ -285,7 +285,7 @@ class OyHelper {
         else if($payment->bank_payment_type=="shopeepay_ewallet" || $payment->bank_payment_type=="linkaja_ewallet" || $payment->bank_payment_type=="dana_ewallet")
         {
           
-          $data->transaction->mins_expired = 30;
+          $data->transaction->mins_expired = 60;
 
           $init_data = [
             'customer_id' => $data->transaction->id,
@@ -503,9 +503,6 @@ class OyHelper {
 
         $data = $response->getBody()->getContents();
         $data = json_decode($data);
-
-        print_r($data);
-        exit();
 
         $response = new \stdClass();
         $response->snaptoken = $data->payment_link_id;

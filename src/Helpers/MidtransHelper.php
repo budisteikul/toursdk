@@ -99,7 +99,7 @@ class MidtransHelper {
         }
         else if($payment->bank_payment_type=="gopay")
         {
-          $data->transaction->mins_expired = 30;
+          $data->transaction->mins_expired = 60;
           $data->transaction->date_expired = Carbon::parse($data->transaction->date_now)->addMinutes($data->transaction->mins_expired);
 
           $data1 = MidtransHelper::createSnap($data,$payment);

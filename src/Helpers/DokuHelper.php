@@ -1,6 +1,10 @@
 <?php
 namespace budisteikul\toursdk\Helpers;
+use budisteikul\toursdk\Helpers\ImageHelper;
+use Illuminate\Support\Facades\Storage;
+use budisteikul\toursdk\Helpers\FirebaseHelper;
 use Carbon\Carbon;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class DokuHelper {
 
@@ -86,6 +90,11 @@ class DokuHelper {
                 $data->bank_name = "bsi";
                 $data->bank_code = "451-900";
                 $data->bank_payment_type = "mandirisyariah";
+            break;
+            case "qris":
+                $data->bank_name = "qris_doku";
+                $data->bank_code = "";
+                $data->bank_payment_type = "qris_doku";
             break;   
         }
 
@@ -100,25 +109,54 @@ class DokuHelper {
         $data2 = self::createCharge($data1->response->payment->token_id,$payment);
 
         $response = new \stdClass();
-        $response->payment_type = 'bank_transfer';
+
+        if($payment->bank_payment_type=="qris_doku")
+        {
+            $response->payment_type = 'qris';
+            $image = QrCode::size(630)
+            ->format('png')
+            ->generate($data2->qr_code);
+            $path = Storage::disk('local')->put('temp/'. $data1->response->payment->token_id '.png', $image);
+            $qrcode = ImageHelper::uploadImageCloudinary($path);
+            $response->qrcode = $qrcode['secure_url'];
+        }
+        else
+        {
+            $response->payment_type = 'bank_transfer';
+            $response->va_number = $data2->payment_code;
+            $response->link = $data2->how_to_pay_url;
+        }
+
+
         $response->bank_name = $payment->bank_name;
         $response->bank_code = $payment->bank_code;
-        $response->va_number = $data2->payment_code;
-        $response->link = $data2->how_to_pay_url;
         $response->redirect = $data->transaction->finish_url;
         $response->expiration_date = $data->transaction->date_expired;
         $response->order_id = $data->transaction->id;
+        
         return $response;
     }
 
     public static function createCharge($token,$payment)
     {
-        $data = [
-            'token_id' => $token,
-            'lang' => 'en',
-            'bank' => $payment->bank_payment_type
-        ];
-        $targetPath = '/checkout/v1/payment/'.$token.'/generate-code';
+        if($payment->bank_payment_type=="qris_doku")
+        {
+            $data = [
+                'token_id' => $token
+            ];
+            $targetPath = '/checkout/v1/payment/'.$token.'/generate-qris';
+        }
+        else
+        {
+            $data = [
+                'token_id' => $token,
+                'lang' => 'en',
+                'bank' => $payment->bank_payment_type
+            ];
+            $targetPath = '/checkout/v1/payment/'.$token.'/generate-code';
+        }
+        
+
         $url = self::dokuApiEndpoint();
         $endpoint = $url . $targetPath;
 

@@ -745,7 +745,7 @@ class APIController extends Controller
             $data = $request->all();
 
             $log_name = date('YmdHis');
-            Storage::disk('gcs')->put('log/'.$log_name.'.txt',$data);
+            Storage::disk('gcs')->put('log/'.$log_name.'.txt',json_encode($data));
 
             exit();
             $order_id = null;

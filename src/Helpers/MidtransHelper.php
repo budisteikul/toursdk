@@ -68,7 +68,7 @@ class MidtransHelper {
                 $data->bank_code = "";
                 $data->bank_payment_type = "gopay";
             break;
-            case "qris_gopay":
+            case "qris":
                 $data->bank_name = "qris (gopay)";
                 $data->bank_code = "";
                 $data->bank_payment_type = "gopay";
@@ -119,7 +119,7 @@ class MidtransHelper {
           $response->expiration_date = $data->transaction->date_expired;
           $response->order_id = $data->transaction->id;
 
-          if($data->transaction->bank=="qris_gopay")
+          if($data->transaction->bank=="qris")
           {
             $response->payment_type = 'qris';
             $response->redirect = $data->transaction->finish_url;

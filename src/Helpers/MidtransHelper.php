@@ -3,6 +3,7 @@ namespace budisteikul\toursdk\Helpers;
 use budisteikul\toursdk\Helpers\ImageHelper;
 use Illuminate\Support\Facades\Storage;
 use budisteikul\toursdk\Helpers\FirebaseHelper;
+use Carbon\Carbon;
 
 class MidtransHelper {
 	
@@ -148,7 +149,7 @@ class MidtransHelper {
         {
           $data1 = MidtransHelper::createSnap($data,$payment);
           $data2 = MidtransHelper::chargeSnap($data1->token,$data,$payment);
-          
+
           $response->payment_type = 'bank_transfer';
           $response->bank_name = $payment->bank_name;
           $response->bank_code = $payment->bank_code;

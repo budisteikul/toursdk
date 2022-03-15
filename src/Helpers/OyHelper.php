@@ -2,6 +2,7 @@
 namespace budisteikul\toursdk\Helpers;
 use budisteikul\toursdk\Helpers\ImageHelper;
 use Illuminate\Support\Facades\Storage;
+use budisteikul\toursdk\Helpers\FirebaseHelper;
 use Carbon\Carbon;
 
 class OyHelper {
@@ -257,7 +258,7 @@ class OyHelper {
         {
           $data->transaction->mins_expired = 30;
           $data->transaction->date_expired = Carbon::parse($data->transaction->date_now)->addMinutes($data->transaction->mins_expired);
-          
+
           $data1 = self::createSnap($data);
           $data2 = self::createCharge($data,$data1->snaptoken,$payment);
 

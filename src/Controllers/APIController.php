@@ -744,16 +744,12 @@ class APIController extends Controller
         
             $data = $request->all();
 
-            $log_name = date('YmdHis');
-            Storage::disk('gcs')->put('log/'.$log_name.'.txt',json_encode($data));
-
-            exit();
             $order_id = null;
             $transaction_status = null;
 
             if(isset($data['order']['invoice_number'])) $order_id = $data['order']['invoice_number'];
             if(isset($data['transaction']['status'])) $transaction_status = $data['transaction']['status'];
-            if(isset($data['INVOICE'])) $order_id = $data['INVOICE'];
+            if(isset($data['TRANSACTIONID'])) $order_id = $data['TRANSACTIONID'];
             if(isset($data['TXNSTATUS'])) $transaction_status = $data['TXNSTATUS'];
 
             $shoppingcart_payment = ShoppingcartPayment::where('order_id',$order_id)->first();

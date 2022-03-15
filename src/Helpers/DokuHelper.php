@@ -108,6 +108,7 @@ class DokuHelper {
         $data1 = self::createSnap($data);
         $data2 = self::createCharge($data1->response->payment->token_id,$payment);
 
+
         $response = new \stdClass();
 
         if($payment->bank_payment_type=="qris_doku")

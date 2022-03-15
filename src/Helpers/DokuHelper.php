@@ -105,14 +105,16 @@ class DokuHelper {
     {
         $payment = self::bankCode($data->transaction->bank);
 
-        $data1 = self::createSnap($data);
-        $data2 = self::createCharge($data1->response->payment->token_id,$payment);
-
-
         $response = new \stdClass();
 
         if($payment->bank_payment_type=="qris_doku")
         {
+            $data->transaction->mins_expired = 120;
+            $data->transaction->date_expired = Carbon::parse($data->transaction->date_now)->addMinutes($data->transaction->mins_expired);
+
+            $data1 = self::createSnap($data);
+            $data2 = self::createCharge($data1->response->payment->token_id,$payment);
+
             $response->payment_type = 'qris';
             $path = date('Y-m-d');
             $contents = QrCode::format('png')->size(630)->generate($data2->qr_code);
@@ -123,6 +125,9 @@ class DokuHelper {
         }
         else
         {
+            $data1 = self::createSnap($data);
+            $data2 = self::createCharge($data1->response->payment->token_id,$payment);
+
             $response->payment_type = 'bank_transfer';
             $response->va_number = $data2->payment_code;
             $response->link = $data2->how_to_pay_url;

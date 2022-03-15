@@ -105,6 +105,10 @@ class MidtransHelper {
           $data1 = MidtransHelper::createSnap($data,$payment);
           $data2 = MidtransHelper::chargeSnap($data1->token,$data,$payment);
 
+          print_r($data1);
+          print_r($data2);
+          exit();
+
           //$qrcode = ImageHelper::uploadQrcodeCloudinary($data2['qr_code_url']);
           //$qrcode_url = $qrcode['secure_url'];
 

@@ -31,16 +31,13 @@ use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 
-use budisteikul\toursdk\Helpers\OyHelper;
 
 class APIController extends Controller
 {
     
     public function test()
     {
-        $token = '87628869-31a2-4869-b62e-afadfee9f40c';
-        $data = ShoppingcartPayment::where('order_id',$token)->first();
-        print_r($data->shoppingcart->confirmation_code);
+        
     }
 
     public function __construct()

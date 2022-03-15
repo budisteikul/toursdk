@@ -114,7 +114,7 @@ class DokuHelper {
         {
             $response->payment_type = 'qris';
             $path = date('Y-m-d');
-            $contents = QrCode::size(500)->format('png')->generate($data2->qr_code);
+            $contents = QrCode::size(1900)->format('png')->generate($data2->qr_code);
             Storage::disk('gcs')->put('qrcode/'. $path .'/'.$data1->response->payment->token_id.'.png', $contents);
             $qrcode_url = Storage::disk('gcs')->url('qrcode/'. $path .'/'.$data1->response->payment->token_id.'.png');
 

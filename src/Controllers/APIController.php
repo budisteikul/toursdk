@@ -747,6 +747,7 @@ class APIController extends Controller
             $log_name = date('YmdHis');
             Storage::disk('gcs')->put('log/'.$log_name.'.txt',$data);
 
+            exit();
             $order_id = null;
             $transaction_status = null;
 

@@ -92,7 +92,7 @@ class DokuHelper {
                 $data->bank_payment_type = "mandirisyariah";
             break;
             case "qris":
-                $data->bank_name = "qris_doku";
+                $data->bank_name = "doku";
                 $data->bank_code = "";
                 $data->bank_payment_type = "qris_doku";
             break;

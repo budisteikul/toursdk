@@ -262,11 +262,8 @@ class OyHelper {
           $data->transaction->mins_expired = 120;
           $data->transaction->date_expired = Carbon::parse($data->transaction->date_now)->addMinutes($data->transaction->mins_expired)->formatLocalized('%Y-%m-%d %H:%M:%S');
 
-
-
           $data1 = self::createSnap($data);
           $data2 = self::createCharge($data,$data1->snaptoken,$payment);
-
 
           //$qrcode = ImageHelper::uploadQrcodeCloudinary($data2->data->qris_url);
           //$qrcode_url = $qrcode['secure_url'];

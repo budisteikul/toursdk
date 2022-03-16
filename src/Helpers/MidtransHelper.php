@@ -73,6 +73,10 @@ class MidtransHelper {
                 $data->bank_code = "";
                 $data->bank_payment_type = "gopay";
             break;
+            default:
+                return response()->json([
+                    "message" => 'Error'
+                ]);
         }
 
         return $data;

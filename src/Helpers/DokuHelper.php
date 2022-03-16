@@ -95,7 +95,11 @@ class DokuHelper {
                 $data->bank_name = "qris_doku";
                 $data->bank_code = "";
                 $data->bank_payment_type = "qris_doku";
-            break;   
+            break;
+            default:
+                return response()->json([
+                    "message" => 'Error'
+                ]);   
         }
 
         return $data;

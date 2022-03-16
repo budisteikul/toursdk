@@ -253,11 +253,10 @@ class OyHelper {
 
   public static function createPayment($data)
   {
-
-        $response = new \stdClass();
-
         $payment = self::bankCode($data->transaction->bank);
 
+        $response = new \stdClass();
+        
         if($payment->bank_payment_type=="qris_shopee")
         {
           $data->transaction->mins_expired = 120;

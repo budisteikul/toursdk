@@ -2371,7 +2371,7 @@ class BookingHelper {
 	{
 		//$contents = file_get_contents(url('/img/qrcode-logo.png'));
 		//Storage::disk('local')->put($shoppingcart->confirmation_code .'.png', $contents);
-		$path = 'https://api.vertikaltrip.com/img/qrcode-logo.png';
+		$path = base_path('public/img/qrcode-logo.png');
 		//$path = Storage::disk('local')->path($shoppingcart->confirmation_code .'.png');
 		$qrcode = QrCode::errorCorrection('H')->format('png')->merge($path, .5, true)->margin(0)->size(630)->generate($shoppingcart->shoppingcart_payment->qrcode);
 		return $qrcode;

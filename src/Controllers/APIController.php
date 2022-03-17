@@ -38,7 +38,7 @@ class APIController extends Controller
     
     public function test()
     {
-        print_r(storage_path());
+        print_r(base_path('public/img/qrcode-logo.png'));
     }
 
     public function __construct()

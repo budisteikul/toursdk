@@ -2369,9 +2369,9 @@ class BookingHelper {
 
 	public static function generate_qris($shoppingcart)
 	{
-		$path = '/public/img/qrcode-logo.png';
-		$qrcode = QrCode::errorCorrection('H')->format('png')->merge($path,.3,false)->margin(0)->size(630)->generate($shoppingcart->shoppingcart_payment->qrcode);
-		//$qrcode = QrCode::errorCorrection('H')->format('png')->margin(0)->size(630)->generate($shoppingcart->shoppingcart_payment->qrcode);
+		//$path = '/public/img/qrcode-logo.png';
+		//$qrcode = QrCode::errorCorrection('H')->format('png')->merge($path,.3,false)->margin(0)->size(630)->generate($shoppingcart->shoppingcart_payment->qrcode);
+		$qrcode = QrCode::errorCorrection('H')->format('png')->margin(0)->size(630)->generate($shoppingcart->shoppingcart_payment->qrcode);
 		return $qrcode;
 	}
 

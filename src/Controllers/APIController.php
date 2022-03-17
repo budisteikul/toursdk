@@ -38,7 +38,7 @@ class APIController extends Controller
     
     public function test()
     {
-        
+        print_r(storage_path());
     }
 
     public function __construct()

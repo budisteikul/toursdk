@@ -31,16 +31,14 @@ use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 
-use Zxing\QrReader;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class APIController extends Controller
 {
     
     public function test()
     {
-        $path = Storage::disk('local')->path('1.png');
-        $qrcode = new QrReader($path);
-        print_r($qrcode->text());
+        
     }
 
     public function __construct()
@@ -83,10 +81,13 @@ class APIController extends Controller
     public function downloadQrcode($sessionId,$id)
     {
         $shoppingcart = Shoppingcart::where('confirmation_code',$id)->where('session_id',$sessionId)->firstOrFail();
-        $payments = $shoppingcart->shoppingcart_payment()->first();
-        $contents = file_get_contents($payments->qrcode);
-        $path = Storage::disk('local')->put($shoppingcart->confirmation_code .'.png', $contents);
+        $qrcode = BookingHelper::generate_qris($shoppingcart);
+        $path = Storage::disk('local')->put($shoppingcart->confirmation_code .'.png', $qrcode);
         return response()->download(storage_path('app').'/'.$shoppingcart->confirmation_code .'.png')->deleteFileAfterSend(true);
+        //$payments = $shoppingcart->shoppingcart_payment()->first();
+        //$contents = file_get_contents($payments->qrcode);
+        //$path = Storage::disk('local')->put($shoppingcart->confirmation_code .'.png', $contents);
+        //return response()->download(storage_path('app').'/'.$shoppingcart->confirmation_code .'.png')->deleteFileAfterSend(true);
     }
 
     public function instruction($sessionId,$id)

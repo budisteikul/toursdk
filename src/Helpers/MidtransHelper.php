@@ -4,6 +4,7 @@ use budisteikul\toursdk\Helpers\ImageHelper;
 use Illuminate\Support\Facades\Storage;
 use budisteikul\toursdk\Helpers\FirebaseHelper;
 use Carbon\Carbon;
+use Zxing\QrReader;
 
 class MidtransHelper {
 	
@@ -42,11 +43,6 @@ class MidtransHelper {
         }
         return $endpoint;
   }
-
-  public static function env_midtransNmid()
-    {
-        return env("MIDTRANS_NMID_GOPAY","");
-    }
 
   public static function bankCode($bank)
     {
@@ -118,13 +114,20 @@ class MidtransHelper {
           //$qrcode = ImageHelper::uploadQrcodeCloudinary($data2['qr_code_url']);
           //$qrcode_url = $qrcode['secure_url'];
 
-          $path = date('Y-m-d');
+          //$path = date('Y-m-d');
+          //$contents = file_get_contents($data2['qr_code_url']);
+          //Storage::disk('gcs')->put('qrcode/'. $path .'/'.$data1->token.'.png', $contents);
+          //$qrcode_url = Storage::disk('gcs')->url('qrcode/'. $path .'/'.$data1->token.'.png');
+
+          
           $contents = file_get_contents($data2['qr_code_url']);
-          Storage::disk('gcs')->put('qrcode/'. $path .'/'.$data1->token.'.png', $contents);
-          $qrcode_url = Storage::disk('gcs')->url('qrcode/'. $path .'/'.$data1->token.'.png');
+          Storage::disk('local')->put($data1->token.'.png', $contents);
+          $file = Storage::disk('local')->path($data1->token.'.png');
+          $qrcode = new QrReader($file);
+          $qrcode_content = $qrcode->text();
 
           $response->bank_name = $payment->bank_name;
-          $response->qrcode = $qrcode_url;
+          $response->qrcode = $qrcode_content;
           $response->link = null;
           $response->expiration_date = $data->transaction->date_expired;
           $response->order_id = $data->transaction->id;
@@ -132,7 +135,6 @@ class MidtransHelper {
           if($data->transaction->bank=="qris")
           {
             $response->payment_type = 'qris';
-            $response->bank_code = self::env_midtransNmid();
             $response->redirect = $data->transaction->finish_url;
           }
           else

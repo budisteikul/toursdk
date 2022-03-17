@@ -41,11 +41,6 @@ class DokuHelper {
         return $endpoint;
   	}
 
-    public static function env_dokuNmid()
-    {
-        return env("DOKU_NMID_DOKU","");
-    }
-
     public static function bankCode($bank)
     {
         $data = new \stdClass();
@@ -124,14 +119,16 @@ class DokuHelper {
             $data1 = self::createSnap($data);
             $data2 = self::createCharge($data1->response->payment->token_id,$payment);
 
+            
             $response->payment_type = 'qris';
-            $response->bank_code = self::env_dokuNmid();
-            $path = date('Y-m-d');
-            $contents = QrCode::format('png')->size(630)->generate($data2->qr_code);
-            Storage::disk('gcs')->put('qrcode/'. $path .'/'.$data1->response->payment->token_id.'.png', $contents);
-            $qrcode_url = Storage::disk('gcs')->url('qrcode/'. $path .'/'.$data1->response->payment->token_id.'.png');
 
-            $response->qrcode = $qrcode_url;
+            //$path = date('Y-m-d');
+            //$contents = QrCode::format('png')->size(630)->generate($data2->qr_code);
+            //Storage::disk('gcs')->put('qrcode/'. $path .'/'.$data1->response->payment->token_id.'.png', $contents);
+            //$qrcode_url = Storage::disk('gcs')->url('qrcode/'. $path .'/'.$data1->response->payment->token_id.'.png');
+            
+            $response->snaptoken = $data1->response->payment->token_id;
+            $response->qrcode = $data2->qr_code;
         }
         else
         {

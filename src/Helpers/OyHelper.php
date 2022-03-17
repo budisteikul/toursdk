@@ -52,11 +52,6 @@ class OyHelper {
         return env("PROXY_PORT");
   }
 
-  public static function env_oyNmid()
-    {
-        return env("OY_NMID_SHOPEEPAY","");
-    }
-
   public static function oyUseProxy()
   {
       $proxy = null;
@@ -270,18 +265,18 @@ class OyHelper {
           $data1 = self::createSnap($data);
           $data2 = self::createCharge($data,$data1->snaptoken,$payment);
 
+
           //$qrcode = ImageHelper::uploadQrcodeCloudinary($data2->data->qris_url);
           //$qrcode_url = $qrcode['secure_url'];
 
-          $path = date('Y-m-d');
-          $contents = file_get_contents($data2->data->qris_url);
-          Storage::disk('gcs')->put('qrcode/'. $path .'/'.$data1->snaptoken.'.png', $contents);
-          $qrcode_url = Storage::disk('gcs')->url('qrcode/'. $path .'/'.$data1->snaptoken.'.png');
+          //$path = date('Y-m-d');
+          //$contents = file_get_contents($data2->data->qris_url);
+          //Storage::disk('gcs')->put('qrcode/'. $path .'/'.$data1->snaptoken.'.png', $contents);
+          //$qrcode_url = Storage::disk('gcs')->url('qrcode/'. $path .'/'.$data1->snaptoken.'.png');
 
           $response->payment_type = 'qris';
-          $response->bank_code = self::env_oyNmid();
           $response->bank_name = $payment->bank_name;
-          $response->qrcode = $qrcode_url;
+          $response->qrcode = $data2->data->qris_content;
           $response->snaptoken = $data1->snaptoken;
           $response->link = self::oyLink($data1->snaptoken);
           $response->redirect = $data->transaction->finish_url;

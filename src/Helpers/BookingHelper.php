@@ -2178,8 +2178,6 @@ class BookingHelper {
 					case 4:
 
 						$merchant_name = self::env_appName();
-						$nmid = $shoppingcart->shoppingcart_payment->bank_code;
-						
 						return '
 								
 								<div class="card mb-1">
@@ -2197,9 +2195,9 @@ class BookingHelper {
      										
     										<h1 class="mb-2 mt-4">'. $merchant_name .'</h1>
     								
-    										<h5>NMID : '.$nmid.'</h5>
+    										
     									
-    										<img id="qris-img" class="img-fluid border border-white" alt="QRIS" style="max-width:250px;" src="'. $shoppingcart->shoppingcart_payment->qrcode .'">
+    										<img id="qris-img" class="img-fluid border border-white" alt="QRIS" style="max-width:250px;" src="data:image/png;base64, '. base64_encode(self::generate_qris($shoppingcart)) .' ">
     										
     										
 
@@ -2368,7 +2366,11 @@ class BookingHelper {
 		return $access;
 	}
 
-	
+	public static function generate_qris($shoppingcart)
+	{
+		$qrcode = QrCode::errorCorrection('H')->format('png')->merge('/public/img/qrcode-logo.png', .5)->margin(0)->size(630)->generate($shoppingcart->shoppingcart_payment->qrcode);
+		return $qrcode;
+	}
 
 	public static function create_manual_pdf($shoppingcart)
 	{

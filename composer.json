@@ -18,7 +18,7 @@
    		"psr-4": {
         	"budisteikul\\toursdk\\": "src/",
             "Zxing\\": "src/Libs/Zxing/",
-            "SimpleSoftwareIO\\QrCode\\": "src/Libs/SimpleSoftwareIO/"
+            "SimpleSoftwareIO\\QrCode\\": "src/Libs/"
     	}
 	}
 }

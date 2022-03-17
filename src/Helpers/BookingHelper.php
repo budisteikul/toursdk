@@ -2193,7 +2193,7 @@ class BookingHelper {
 									<div class="row h-100">
    										<div class="col-sm-12 my-auto text-center">
      										
-    										<h1 class="mb-2 mt-4">'. $merchant_name .'</h1>
+    										<h1 class="mb-4 mt-4">'. $merchant_name .'</h1>
     								
     										
     									

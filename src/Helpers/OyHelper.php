@@ -52,6 +52,11 @@ class OyHelper {
         return env("PROXY_PORT");
   }
 
+  public static function env_oyNmid()
+    {
+        return env("ENV_OY_NMID");
+    }
+
   public static function oyUseProxy()
   {
       $proxy = null;
@@ -274,6 +279,7 @@ class OyHelper {
           $qrcode_url = Storage::disk('gcs')->url('qrcode/'. $path .'/'.$data1->snaptoken.'.png');
 
           $response->payment_type = 'qris';
+          $response->bank_code = self::env_oyNmid();
           $response->bank_name = $payment->bank_name;
           $response->qrcode = $qrcode_url;
           $response->snaptoken = $data1->snaptoken;

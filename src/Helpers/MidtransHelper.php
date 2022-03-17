@@ -43,6 +43,11 @@ class MidtransHelper {
         return $endpoint;
   }
 
+  public static function env_midtransNmid()
+    {
+        return env("ENV_MIDTRANS_NMID");
+    }
+
   public static function bankCode($bank)
     {
         $data = new \stdClass();
@@ -127,6 +132,7 @@ class MidtransHelper {
           if($data->transaction->bank=="qris")
           {
             $response->payment_type = 'qris';
+            $response->bank_code = self::env_midtransNmid();
             $response->redirect = $data->transaction->finish_url;
           }
           else

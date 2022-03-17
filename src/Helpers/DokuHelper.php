@@ -41,6 +41,11 @@ class DokuHelper {
         return $endpoint;
   	}
 
+    public static function env_dokuNmid()
+    {
+        return env("ENV_DOKU_NMID");
+    }
+
     public static function bankCode($bank)
     {
         $data = new \stdClass();
@@ -120,6 +125,7 @@ class DokuHelper {
             $data2 = self::createCharge($data1->response->payment->token_id,$payment);
 
             $response->payment_type = 'qris';
+            $response->bank_code = self::env_dokuNmid();
             $path = date('Y-m-d');
             $contents = QrCode::format('png')->size(630)->generate($data2->qr_code);
             Storage::disk('gcs')->put('qrcode/'. $path .'/'.$data1->response->payment->token_id.'.png', $contents);

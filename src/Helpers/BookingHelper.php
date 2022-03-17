@@ -2178,23 +2178,7 @@ class BookingHelper {
 					case 4:
 
 						$merchant_name = self::env_appName();
-						$nmid = '';
-						
-						if($shoppingcart->shoppingcart_payment->payment_type=="qris")
-						{
-							if($shoppingcart->shoppingcart_payment->bank_name=="shopeepay")
-							{
-								$nmid = 'ID1022150910159';
-							}
-							if($shoppingcart->shoppingcart_payment->bank_name=="gopay")
-							{
-								$nmid = 'ID1022150910159';
-							}
-							if($shoppingcart->shoppingcart_payment->bank_name=="doku")
-							{
-								$nmid = 'ID1022150910159';
-							}
-						}
+						$nmid = $shoppingcart->shoppingcart_payment->bank_code;
 						
 						return '
 								

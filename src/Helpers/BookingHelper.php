@@ -2369,8 +2369,8 @@ class BookingHelper {
 
 	public static function generate_qris($shoppingcart)
 	{
-		$path = 'https://res.cloudinary.com/budi/image/upload/v1647533694/qrcode-logo_im6sq7.png';
-		$qrcode = QrCode::errorCorrection('H')->format('png')->merge($path,.3,true)->margin(0)->size(630)->generate($shoppingcart->shoppingcart_payment->qrcode);
+		$path = 'public/img/qrcode-logo.png';
+		$qrcode = QrCode::errorCorrection('H')->format('png')->merge($path,.3,false)->margin(0)->size(630)->generate($shoppingcart->shoppingcart_payment->qrcode);
 		return $qrcode;
 	}
 

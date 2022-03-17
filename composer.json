@@ -16,7 +16,7 @@
     },
     "autoload": {
         "psr-0": {
-            "SimpleSoftwareIO\\QrCode\\": "src/Libs/SimpleSoftwareIO/"
+            "SimpleSoftwareIO\\QrCode\\": "src/Libs/"
         },
    		"psr-4": {
         	"budisteikul\\toursdk\\": "src/",

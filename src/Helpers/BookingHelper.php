@@ -2368,7 +2368,7 @@ class BookingHelper {
 
 	public static function generate_qris($shoppingcart)
 	{
-		$qrcode = QrCode::errorCorrection('H')->format('png')->merge('/public/img/qrcode-logo.png', .5)->margin(0)->size(630)->generate($shoppingcart->shoppingcart_payment->qrcode);
+		$qrcode = QrCode::errorCorrection('H')->format('png')->merge(url('/img/qrcode-logo.png'), .5, true)->margin(0)->size(630)->generate($shoppingcart->shoppingcart_payment->qrcode);
 		return $qrcode;
 	}
 

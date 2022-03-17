@@ -54,7 +54,7 @@ class OyHelper {
 
   public static function env_oyNmid()
     {
-        return env("ENV_OY_NMID");
+        return env("ENV_OY_NMID","");
     }
 
   public static function oyUseProxy()

@@ -45,7 +45,7 @@ class MidtransHelper {
 
   public static function env_midtransNmid()
     {
-        return env("ENV_MIDTRANS_NMID");
+        return env("ENV_MIDTRANS_NMID","");
     }
 
   public static function bankCode($bank)

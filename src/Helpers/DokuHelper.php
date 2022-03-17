@@ -43,7 +43,7 @@ class DokuHelper {
 
     public static function env_dokuNmid()
     {
-        return env("ENV_DOKU_NMID");
+        return env("ENV_DOKU_NMID","");
     }
 
     public static function bankCode($bank)

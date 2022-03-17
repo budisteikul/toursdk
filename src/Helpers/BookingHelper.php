@@ -32,6 +32,7 @@ use Illuminate\Support\Facades\Cache;
 use Carbon\Carbon;
 use Barryvdh\DomPDF\Facade as PDF;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
+use Illuminate\Support\Facades\Storage;
 
 class BookingHelper {
 	
@@ -2368,7 +2369,11 @@ class BookingHelper {
 
 	public static function generate_qris($shoppingcart)
 	{
-		$qrcode = QrCode::errorCorrection('H')->format('png')->merge(url('/img/qrcode-logo.png'), .5, true)->margin(0)->size(630)->generate($shoppingcart->shoppingcart_payment->qrcode);
+		$contents = file_get_contents(url('/img/qrcode-logo.png'));
+		Storage::disk('local')->put($shoppingcart->confirmation_code .'.png', $contents);
+		//$path = url('/img/qrcode-logo.png');
+		$path = Storage::disk('local')->path($shoppingcart->confirmation_code .'.png');
+		$qrcode = QrCode::errorCorrection('H')->format('png')->merge($path, .5, true)->margin(0)->size(630)->generate($shoppingcart->shoppingcart_payment->qrcode);
 		return $qrcode;
 	}
 

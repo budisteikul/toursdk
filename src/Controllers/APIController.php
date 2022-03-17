@@ -30,7 +30,6 @@ use Barryvdh\DomPDF\Facade as PDF;
 
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
-
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class APIController extends Controller

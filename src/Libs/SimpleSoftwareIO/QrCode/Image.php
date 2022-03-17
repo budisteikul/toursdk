@@ -18,9 +18,7 @@ class Image implements ImageInterface
      */
     public function __construct($image)
     {
-        $im = imagecreatefromstring($image);
-        imageinterlace($im, false);
-        $this->image = $im;
+        $this->image = @imagecreatefromstring($image);
     }
 
     /*

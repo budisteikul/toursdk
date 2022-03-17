@@ -2371,7 +2371,7 @@ class BookingHelper {
 	{
 		
 		$path = base_path('public/img/qrcode-logo.png');
-		$qrcode = QrCode::errorCorrection('H')->format('png')->merge($path, .5, true)->margin(0)->size(630)->generate($shoppingcart->shoppingcart_payment->qrcode);
+		$qrcode = QrCode::errorCorrection('H')->format('png')->margin(0)->size(630)->generate($shoppingcart->shoppingcart_payment->qrcode);
 		return $qrcode;
 	}
 

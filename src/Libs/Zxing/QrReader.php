@@ -5,7 +5,7 @@ namespace Zxing;
 use Zxing\Common\HybridBinarizer;
 use Zxing\Qrcode\QRCodeReader;
 
-include('Common\customFunctions.php');
+include_once ( 'Common/customFunctions.php' );
 
 final class QrReader
 {

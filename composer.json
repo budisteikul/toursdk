@@ -15,10 +15,22 @@
         "superbalist/laravel-google-cloud-storage": "^2.2"
     },
     "autoload": {
+        "psr-0": {
+            "SimpleSoftwareIO\\QrCode\\": "src/Libs/"
+        },
    		"psr-4": {
         	"budisteikul\\toursdk\\": "src/",
-            "Zxing\\": "src/Libs/Zxing/",
-            "SimpleSoftwareIO\\QrCode\\": "src/Libs/"
+            "Zxing\\": "src/Libs/Zxing/"
     	}
-	}
+	},
+    "extra": {
+        "laravel": {
+            "providers": [
+                "SimpleSoftwareIO\\QrCode\\QrCodeServiceProvider"
+            ],
+            "aliases": {
+                "QrCode": "SimpleSoftwareIO\\QrCode\\Facades\\QrCode"
+            }
+        }
+    }
 }

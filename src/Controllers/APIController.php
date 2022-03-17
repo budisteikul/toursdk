@@ -714,10 +714,11 @@ class APIController extends Controller
             if(isset($data['settlement_status'])) $status = strtolower($data['settlement_status']);
             
             $shoppingcart_payment = ShoppingcartPayment::where('order_id',$order_id)->first();
-            $confirmation_code = $shoppingcart_payment->shoppingcart->confirmation_code;
-            $shoppingcart = Shoppingcart::where('confirmation_code',$confirmation_code)->first();
-            if($shoppingcart!==null)
-            {
+            if($shoppingcart_payment!==null){
+                $confirmation_code = $shoppingcart_payment->shoppingcart->confirmation_code;
+                $shoppingcart = Shoppingcart::where('confirmation_code',$confirmation_code)->first();
+                if($shoppingcart!==null)
+                {
                     if($status=="complete")
                     {
                         BookingHelper::confirm_payment($shoppingcart,"CONFIRMED");
@@ -734,7 +735,9 @@ class APIController extends Controller
                     {
                         BookingHelper::confirm_payment($shoppingcart,"CANCELED");
                     }
+                }
             }
+                
         
         return response('OK', 200)->header('Content-Type', 'text/plain');
     }
@@ -753,27 +756,30 @@ class APIController extends Controller
             if(isset($data['TXNSTATUS'])) $transaction_status = $data['TXNSTATUS'];
 
             $shoppingcart_payment = ShoppingcartPayment::where('order_id',$order_id)->first();
-            $confirmation_code = $shoppingcart_payment->shoppingcart->confirmation_code;
-            $shoppingcart = Shoppingcart::where('confirmation_code',$confirmation_code)->first();
-            if($shoppingcart!==null)
-            {
-                if($transaction_status=="SUCCESS")
+            if($shoppingcart_payment!==null) {
+                $confirmation_code = $shoppingcart_payment->shoppingcart->confirmation_code;
+                $shoppingcart = Shoppingcart::where('confirmation_code',$confirmation_code)->first();
+                if($shoppingcart!==null)
                 {
-                    BookingHelper::confirm_payment($shoppingcart,"CONFIRMED");
-                }
-                else if($transaction_status=="S")
-                {
-                    BookingHelper::confirm_payment($shoppingcart,"CONFIRMED");
-                }
-                else if ($transaction_status=="PENDING")
-                {
-                    BookingHelper::confirm_payment($shoppingcart,"PENDING");      
-                }
-                else
-                {
-                    BookingHelper::confirm_payment($shoppingcart,"CANCELED");
+                    if($transaction_status=="SUCCESS")
+                    {
+                        BookingHelper::confirm_payment($shoppingcart,"CONFIRMED");
+                    }
+                    else if($transaction_status=="S")
+                    {
+                        BookingHelper::confirm_payment($shoppingcart,"CONFIRMED");
+                    }
+                    else if ($transaction_status=="PENDING")
+                    {
+                        BookingHelper::confirm_payment($shoppingcart,"PENDING");      
+                    }
+                    else
+                    {
+                        BookingHelper::confirm_payment($shoppingcart,"CANCELED");
+                    }
                 }
             }
+                
         
         return response('OK', 200)->header('Content-Type', 'text/plain');
     }
@@ -789,28 +795,31 @@ class APIController extends Controller
             if(isset($data['order_id'])) $order_id = $data['order_id'];
 
             $shoppingcart_payment = ShoppingcartPayment::where('order_id',$order_id)->first();
-            $confirmation_code = $shoppingcart_payment->shoppingcart->confirmation_code;
-            $shoppingcart = Shoppingcart::where('confirmation_code',$confirmation_code)->first();
-            if($shoppingcart!==null)
-            {
-                if(hash('sha512', $order_id.$data['status_code'].$data['gross_amount'].$this->midtransServerKey)==$data['signature_key'])
+            if($shoppingcart_payment!==null) {
+                $confirmation_code = $shoppingcart_payment->shoppingcart->confirmation_code;
+                $shoppingcart = Shoppingcart::where('confirmation_code',$confirmation_code)->first();
+                if($shoppingcart!==null)
                 {
-                    if($data['transaction_status']=="settlement")
+                    if(hash('sha512', $order_id.$data['status_code'].$data['gross_amount'].$this->midtransServerKey)==$data['signature_key'])
                     {
-                         BookingHelper::confirm_payment($shoppingcart,"CONFIRMED");
-                    }
-                    else if($data['transaction_status']=="pending")
-                    {
-                         BookingHelper::confirm_payment($shoppingcart,"PENDING");
-                    }
-                    else
-                    {
-                         BookingHelper::confirm_payment($shoppingcart,"CANCELED");
-                    }
+                        if($data['transaction_status']=="settlement")
+                        {
+                            BookingHelper::confirm_payment($shoppingcart,"CONFIRMED");
+                        }
+                        else if($data['transaction_status']=="pending")
+                        {
+                            BookingHelper::confirm_payment($shoppingcart,"PENDING");
+                        }
+                        else
+                        {
+                            BookingHelper::confirm_payment($shoppingcart,"CANCELED");
+                        }
                     
+                    }
                 }
             }
-        
+                
+            return response('OK', 200)->header('Content-Type', 'text/plain');
     }
 
     public function createpaymentpaypal(Request $request)

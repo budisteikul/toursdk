@@ -31,13 +31,16 @@ use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 
+use Zxing\QrReader;
 
 class APIController extends Controller
 {
     
     public function test()
     {
-        
+        $path = Storage::disk('local')->path('1.png');
+        $qrcode = new QrReader($path);
+        print_r($qrcode->text());
     }
 
     public function __construct()

@@ -54,7 +54,7 @@ class OyHelper {
 
   public static function env_oyNmid()
     {
-        return env("OY_NMID","");
+        return env("OY_NMID_SHOPEEPAY","");
     }
 
   public static function oyUseProxy()

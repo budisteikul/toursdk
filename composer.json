@@ -29,6 +29,7 @@
     "extra": {
         "laravel": {
             "providers": [
+                "budisteikul\\toursdk\\TourSDKServiceProvider",
                 "SimpleSoftwareIO\\QrCode\\QrCodeServiceProvider"
             ],
             "aliases": {

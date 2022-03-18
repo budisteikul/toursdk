@@ -869,7 +869,7 @@ class APIController extends Controller
             {
                 BookingHelper::set_bookingStatus($sessionId,'PENDING');
                 BookingHelper::set_confirmationCode($sessionId);
-                BookingHelper::create_payment($sessionId,"midtrans","qris");
+                BookingHelper::create_payment($sessionId,"doku","qris");
             }
             else
             {

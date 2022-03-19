@@ -129,7 +129,7 @@ body {
                     </div>
                     <div class="qrcode">
 						
-            <img src="data:image/png;base64, {{ $qrcode }} ">  
+            <img width="111" src="data:image/png;base64, {{ $qrcode }} ">  
 					</div>
                     <div class="qrcode" style="margin-top:0px;">
                     	{{ $shoppingcart_product->product_confirmation_code }}

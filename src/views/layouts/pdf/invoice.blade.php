@@ -215,7 +215,7 @@ footer {
        <tbody>
          <tr>
            <td style="background-color:#FFFFFF; text-align:left; padding-left:0px;">
-           <img src="data:image/png;base64, {{ $qrcode }} ">
+           <img width="110" src="data:image/png;base64, {{ $qrcode }} ">
            				
            </td>
            <td style="background-color:#FFFFFF; text-align:right; padding-right:0px; line-height: 18px; font-size:14px; color:#777777">

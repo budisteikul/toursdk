@@ -3,7 +3,8 @@ namespace budisteikul\toursdk\Helpers;
 use budisteikul\toursdk\Models\Product;
 use budisteikul\toursdk\Models\Image;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Auth;
+use Intervention\Image\Facades\Image as ImageIntervention;
+use Ramsey\Uuid\Uuid;
 
 class ImageHelper {
 
@@ -36,6 +37,35 @@ class ImageHelper {
 
     public static function uploadImageCloudinary($file)
     {
+        /*
+        $image_id = Uuid::uuid4()->toString() .'.jpg';
+
+        $img = ImageIntervention::make(storage_path('app').'/'. $file);
+        $img->resize(600, null, function ($constraint) {
+            $constraint->aspectRatio();
+        });
+        $img->crop(600, 400);
+        $img->save();
+        Storage::disk('gcs')->put( 'img/w_600-h_400/'. $image_id, $img->encode('jpg', 75));
+
+        $img->resize(300, null, function ($constraint) {
+            $constraint->aspectRatio();
+        });
+        $img->crop(300, 150);
+        Storage::disk('gcs')->put( 'img/w_300-h_150/'. $image_id, $img->encode('jpg', 75));
+
+        $img->fit(150, 150);
+        Storage::disk('gcs')->put( 'img/w_150-h_150/'. $image_id, $img->encode('jpg', 75));
+
+        $img->fit(80, 80);
+        Storage::disk('gcs')->put( 'img/w_80-h_80/'. $image_id, $img->encode('jpg', 75));
+
+        $response = array(
+            'public_id' => $image_id,
+            'secure_url' => Storage::disk('gcs')->url('img/w_600-h_400/'. $image_id)
+        );
+
+        */
         \Cloudinary::config(array( 
             "cloud_name" => self::env_cloudinaryName(), 
             "api_key" => self::env_cloudinaryKey(), 
@@ -43,6 +73,7 @@ class ImageHelper {
         ));
         $response = \Cloudinary\Uploader::upload(storage_path('app').'/'. $file, Array('unique_filename'=>false,'use_filename'=>true,'folder' => env('APP_NAME') .'/images'));
         Storage::disk('local')->delete($file);
+        
         return $response;
     }
 

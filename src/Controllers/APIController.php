@@ -3,10 +3,7 @@
 namespace budisteikul\toursdk\Controllers;
 use App\Http\Controllers\Controller;
 
-use budisteikul\toursdk\Helpers\ProductHelper;
 use budisteikul\toursdk\Helpers\BokunHelper;
-use budisteikul\toursdk\Helpers\ImageHelper;
-use budisteikul\toursdk\Helpers\GeneralHelper;
 use budisteikul\toursdk\Helpers\BookingHelper;
 use budisteikul\toursdk\Helpers\ContentHelper;
 use budisteikul\toursdk\Helpers\FirebaseHelper;
@@ -26,18 +23,16 @@ use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Validator;
-use Barryvdh\DomPDF\Facade as PDF;
 
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
-use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class APIController extends Controller
 {
     
     public function test()
     {
-        print_r(base_path('public/img/qrcode-logo.png'));
+        
     }
 
     public function __construct()
@@ -50,12 +45,6 @@ class APIController extends Controller
         $this->dokuSecretKey = env("DOKU_SECRET_KEY");
 
         $this->appUrl = env("APP_URL");
-    }
-
-    public function redirect($sessionId,$confirmationCode)
-    {
-        $shoppingcart = Shoppingcart::where('confirmation_code',$confirmationCode)->where('session_id', $sessionId)->firstOrFail();
-        return redirect($shoppingcart->shoppingcart_payment->redirect);
     }
 
     public function product_add(Request $request)

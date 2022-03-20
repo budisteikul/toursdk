@@ -65,9 +65,6 @@
 	Route::post('/webhook/{webhook_app}', 'budisteikul\toursdk\Controllers\WebhookController@webhook');
 	Route::get('/webhook/{webhook_app}', 'budisteikul\toursdk\Controllers\WebhookController@webhook');
 
-	//Redirect
-	Route::get('/api/redirect/{sessionId}/{confirmationCode}', 'budisteikul\toursdk\Controllers\APIController@redirect');
-
 	//TEST
 	Route::get('/test', 'budisteikul\toursdk\Controllers\APIController@test');
 

@@ -2031,12 +2031,28 @@ class BookingHelper {
 		return $value;
 	}
 	
+	public static function get_disbursement_transaction_id()
+    {
+        $uuid = "DISB-". date('Ymd') .'-'. GeneralHelper::digitFormat(rand(000000,999999),6);
+        while( Disbursement::where('transaction_id','=',$uuid)->first() ){
+            $uuid = "DISB-". date('Ymd') .'-'. GeneralHelper::digitFormat(rand(000000,999999),6);
+        }
+        return $uuid;
+    }
+
 	public static function get_ticket(){
+		$uuid = "VER-". date('Ymd') .'-'. GeneralHelper::digitFormat(rand(000000,999999),6);
+        while( Shoppingcart::where('confirmation_code','=',$uuid)->first() ){
+            $uuid = "VER-". date('Ymd') .'-'. GeneralHelper::digitFormat(rand(000000,999999),6);
+        }
+        return $uuid;
+    	/*
     	$uuid = "VER-". date('YmdHi') . rand(10,99);
     	while( Shoppingcart::where('confirmation_code','=',$uuid)->first() ){
         	$uuid = "VER-". date('YmdHi') . rand(10,99);
     	}
     	return $uuid;
+    	*/
 	}
 	
 	public static function get_bookingStatus($shoppingcart)

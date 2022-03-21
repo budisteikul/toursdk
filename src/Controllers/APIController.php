@@ -72,10 +72,6 @@ class APIController extends Controller
         $qrcode = BookingHelper::generate_qris($shoppingcart);
         $path = Storage::disk('local')->put($shoppingcart->confirmation_code .'.png', $qrcode);
         return response()->download(storage_path('app').'/'.$shoppingcart->confirmation_code .'.png')->deleteFileAfterSend(true);
-        //$payments = $shoppingcart->shoppingcart_payment()->first();
-        //$contents = file_get_contents($payments->qrcode);
-        //$path = Storage::disk('local')->put($shoppingcart->confirmation_code .'.png', $contents);
-        //return response()->download(storage_path('app').'/'.$shoppingcart->confirmation_code .'.png')->deleteFileAfterSend(true);
     }
 
     public function instruction($sessionId,$id)
@@ -858,7 +854,7 @@ class APIController extends Controller
             {
                 BookingHelper::set_bookingStatus($sessionId,'PENDING');
                 BookingHelper::set_confirmationCode($sessionId);
-                BookingHelper::create_payment($sessionId,"midtrans","qris");
+                BookingHelper::create_payment($sessionId,"oyindonesia","qris");
             }
             else
             {

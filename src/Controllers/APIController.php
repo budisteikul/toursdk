@@ -698,7 +698,7 @@ class APIController extends Controller
 
         switch($request->input('action'))
             {
-                case 'PAYMENT_LINK':
+                case 'CHECKOUT':
                     $data = $request->all();
                     if(isset($data['partner_tx_id'])) $order_id = $data['partner_tx_id'];
                     if(isset($data['status'])) $status = strtolower($data['status']);

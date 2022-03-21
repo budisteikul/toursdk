@@ -2201,7 +2201,7 @@ class BookingHelper {
 								<span class="badge badge-info invoice-color-info" style="font-size:20px;">
 								<i class="fas fa-qrcode"></i> WAITING FOR PAYMENT </span>
 								</div>
-								<div class="card mb-1 img-fluid invoice-hilang"  style="min-height:300px; max-width:505px;">
+								<div class="card mb-1 img-fluid invoice-hilang"  style="min-height:450px; max-width:505px;">
 								
 								<img class="card-img-top" src="'. url('/img/qris-template.jpg') .'" alt="Card image" style="width:100%">
 								
@@ -2209,18 +2209,12 @@ class BookingHelper {
 								<div class="card-img-overlay">
 									<div class="row h-100">
    										<div class="col-sm-12 my-auto text-center">
-     										
-    										<h1 class="mb-4 mt-4">'. $merchant_name .'</h1>
-    								
-    										
-    									
+    										<h1 class="mb-2 mt-2">'. $merchant_name .'</h1>
+    										<h5 class="mb-2 mt-2">'. self::get_nmid($shoppingcart) .'</h5>
+    										<h6 class="mb-2 mt-2">A01</h6>
     										<img id="qris-img" class="img-fluid border border-white" alt="QRIS" style="max-width:250px;" src="data:image/png;base64, '. base64_encode(self::generate_qris($shoppingcart)) .' ">
-    										
-    										
-
    										</div>
 									</div>
-									
   								</div>
 								
 								</div>
@@ -2389,6 +2383,19 @@ class BookingHelper {
 		//$qrcode = QrCode::errorCorrection('H')->format('png')->merge($path,.3,false)->margin(0)->size(630)->generate($shoppingcart->shoppingcart_payment->qrcode);
 		$qrcode = QrCode::errorCorrection('H')->format('png')->margin(0)->size(630)->generate($shoppingcart->shoppingcart_payment->qrcode);
 		return $qrcode;
+	}
+
+	public static function get_nmid($shoppingcart)
+	{
+		$nmid = "NMID : IDXXXXXXXXXXX";
+		$string = $shoppingcart->shoppingcart_payment->qrcode;
+		$arr = explode("ID.CO.QRIS.WWW",$string);
+        if(isset($arr[1]))
+        {
+            $lenght = substr($arr[1],2,2);
+            $nmid = 'NMID : '. substr($arr[1],4,$lenght);
+        }
+        return $nmid;
 	}
 
 	public static function create_manual_pdf($shoppingcart)

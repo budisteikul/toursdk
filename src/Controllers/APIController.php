@@ -32,7 +32,15 @@ class APIController extends Controller
     
     public function test()
     {
-        
+        $string = '00020101021226540012COM.DOKU.WWW01199360089900000013749020437490303UKE51450014ID.CO.QRIS.WWW0216ID102004215437490303UKE520115303360540810000.005802ID5913Vertikal Trip6009Indonesia61051111162470703k24503689f7f213-35b2-4593-a1b3-2eafa26c3dff6304FDE9';
+        $nmid = "NMID : IDXXXXXXXXXXX";
+        $arr = explode("ID.CO.QRIS.WWW",$string);
+        if(isset($arr[1]))
+        {
+            $lenght = substr($arr[1],2,2);
+            $nmid = 'NMID : '. substr($arr[1],4,$lenght);
+        }
+        print_r($nmid);
     }
 
     public function __construct()

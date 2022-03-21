@@ -621,26 +621,6 @@ class APIController extends Controller
             ], 200);
     }
     
-    public function confirmdisbursementoy(Request $request)
-    {
-        
-            $data = $request->all();
-            $transaction_id = $data['partner_trx_id'];
-            $status = $data['status']['code'];
-
-            $disbursement = Disbursement::where('transaction_id',$transaction_id)->first();
-            if($disbursement!==null)
-            {
-                if($status=="000")
-                {
-                    $disbursement->status = 2;
-                    $disbursement->save();
-                }
-            }
-       
-            return response('OK', 200)->header('Content-Type', 'text/plain');
-    }
-
     public function confirmpaymentpaypal(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -698,6 +678,21 @@ class APIController extends Controller
 
         switch($request->input('action'))
             {
+                case 'DISBURSEMENT':
+                     $data = $request->all();
+                        $transaction_id = $data['partner_trx_id'];
+                        $status = $data['status']['code'];
+
+                        $disbursement = Disbursement::where('transaction_id',$transaction_id)->first();
+                        if($disbursement!==null)
+                        {
+                            if($status=="000")
+                            {
+                                $disbursement->status = 2;
+                                $disbursement->save();
+                            }
+                        }
+                break;
                 case 'CHECKOUT':
                     $data = $request->all();
                     if(isset($data['partner_tx_id'])) $order_id = $data['partner_tx_id'];

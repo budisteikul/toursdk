@@ -36,10 +36,7 @@
 	//Receipt
 	Route::get('/api/receipt/{sessionId}/{confirmationCode}', 'budisteikul\toursdk\Controllers\APIController@receipt');
 
-	//Disbursmenet
-	Route::post('/api/disbursement/oy/confirm', 'budisteikul\toursdk\Controllers\APIController@confirmdisbursementoy');
-
-	//Confirm Payment
+	//Callback Payment
 	Route::post('/api/payment/paypal/confirm', 'budisteikul\toursdk\Controllers\APIController@confirmpaymentpaypal');
 	Route::post('/api/payment/doku/confirm', 'budisteikul\toursdk\Controllers\APIController@confirmpaymentdoku');
 	Route::post('/api/payment/oy/confirm', 'budisteikul\toursdk\Controllers\APIController@confirmpaymentoy');

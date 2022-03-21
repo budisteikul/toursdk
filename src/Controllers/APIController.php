@@ -690,6 +690,68 @@ class APIController extends Controller
         
     }
 
+    public function callbackpaymentoy(Request $request)
+    {
+
+        $order_id = null;
+        $status = null;
+
+        switch($request->input('action'))
+            {
+                case 'PAYMENT_LINK':
+                    $data = $request->all();
+                    if(isset($data['partner_tx_id'])) $order_id = $data['partner_tx_id'];
+                    if(isset($data['status'])) $status = strtolower($data['status']);
+                    $shoppingcart_payment = ShoppingcartPayment::where('order_id',$order_id)->first();
+                    if($shoppingcart_payment!==null){
+                        $confirmation_code = $shoppingcart_payment->shoppingcart->confirmation_code;
+                        $shoppingcart = Shoppingcart::where('confirmation_code',$confirmation_code)->first();
+                        if($shoppingcart!==null){
+                            if($status=="complete") {
+                                BookingHelper::confirm_payment($shoppingcart,"CONFIRMED");
+                            }
+                            if($status=="success") {
+                                BookingHelper::confirm_payment($shoppingcart,"CONFIRMED");
+                            }
+                        }
+                    }
+                break;
+                case 'VA':
+                    $data = $request->all();
+                    if(isset($data['partner_trx_id'])) $order_id = $data['partner_trx_id'];
+                    if(isset($data['success'])) $status = $data['success'];
+                    $shoppingcart_payment = ShoppingcartPayment::where('order_id',$order_id)->first();
+                    if($shoppingcart_payment!==null){
+                        $confirmation_code = $shoppingcart_payment->shoppingcart->confirmation_code;
+                        $shoppingcart = Shoppingcart::where('confirmation_code',$confirmation_code)->first();
+                        if($shoppingcart!==null){
+                            if($status)
+                            {
+                                BookingHelper::confirm_payment($shoppingcart,"CONFIRMED");
+                            }
+                        }
+                    }
+                break;
+                case 'EWALLET':
+                    $data = $request->all();
+                    if(isset($data['partner_trx_id'])) $order_id = $data['partner_trx_id'];
+                    if(isset($data['success'])) $status = $data['success'];
+                    $shoppingcart_payment = ShoppingcartPayment::where('order_id',$order_id)->first();
+                    if($shoppingcart_payment!==null){
+                        $confirmation_code = $shoppingcart_payment->shoppingcart->confirmation_code;
+                        $shoppingcart = Shoppingcart::where('confirmation_code',$confirmation_code)->first();
+                        if($shoppingcart!==null){
+                            if($status)
+                            {
+                                BookingHelper::confirm_payment($shoppingcart,"CONFIRMED");
+                            }
+                        }
+                    }
+                break;
+            }
+        return response('OK', 200)->header('Content-Type', 'text/plain');
+    }
+
     public function confirmpaymentoy(Request $request)
     {
             $data = $request->all();

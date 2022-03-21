@@ -747,45 +747,7 @@ class APIController extends Controller
         return response('OK', 200)->header('Content-Type', 'text/plain');
     }
 
-    public function confirmpaymentoy(Request $request)
-    {
-            $data = $request->all();
-
-            $order_id = null;
-            $status = null;
-            if(isset($data['partner_tx_id'])) $order_id = $data['partner_tx_id'];
-            if(isset($data['partner_trx_id'])) $order_id = $data['partner_trx_id'];
-            if(isset($data['status'])) $status = strtolower($data['status']);
-            if(isset($data['settlement_status'])) $status = strtolower($data['settlement_status']);
-            
-            $shoppingcart_payment = ShoppingcartPayment::where('order_id',$order_id)->first();
-            if($shoppingcart_payment!==null){
-                $confirmation_code = $shoppingcart_payment->shoppingcart->confirmation_code;
-                $shoppingcart = Shoppingcart::where('confirmation_code',$confirmation_code)->first();
-                if($shoppingcart!==null)
-                {
-                    if($status=="complete")
-                    {
-                        BookingHelper::confirm_payment($shoppingcart,"CONFIRMED");
-                    }
-                    if($status=="success")
-                    {
-                        BookingHelper::confirm_payment($shoppingcart,"CONFIRMED");
-                    }
-                    if($status=="expired")
-                    {
-                        BookingHelper::confirm_payment($shoppingcart,"CANCELED");
-                    }
-                    if($status=="failed")
-                    {
-                        BookingHelper::confirm_payment($shoppingcart,"CANCELED");
-                    }
-                }
-            }
-                
-        
-        return response('OK', 200)->header('Content-Type', 'text/plain');
-    }
+    
 
     public function confirmpaymentdoku(Request $request)
     {

@@ -1613,34 +1613,29 @@ class BookingHelper {
 
 		if(isset($shoppingcart_json->payment->order_id)) $shoppingcart_payment->order_id = $shoppingcart_json->payment->order_id;
 		if(isset($shoppingcart_json->payment->authorization_id)) $shoppingcart_payment->authorization_id = $shoppingcart_json->payment->authorization_id;
-
 		if(isset($shoppingcart_json->payment->payment_provider)) $shoppingcart_payment->payment_provider = $shoppingcart_json->payment->payment_provider;
 		if(isset($shoppingcart_json->payment->payment_type)) $shoppingcart_payment->payment_type = $shoppingcart_json->payment->payment_type;
-
 		if(isset($shoppingcart_json->payment->bank_name)) $shoppingcart_payment->bank_name = $shoppingcart_json->payment->bank_name;
+
 		if(isset($shoppingcart_json->payment->account_holder)) $shoppingcart_payment->account_holder = $shoppingcart_json->payment->account_holder;
 		if(isset($shoppingcart_json->payment->account_number)) $shoppingcart_payment->account_number = $shoppingcart_json->payment->account_number;
-
 		if(isset($shoppingcart_json->payment->swift_code)) $shoppingcart_payment->swift_code = $shoppingcart_json->payment->swift_code;
 		if(isset($shoppingcart_json->payment->iban_code)) $shoppingcart_payment->iban_code = $shoppingcart_json->payment->iban_code;
+		if(isset($shoppingcart_json->payment->note)) $shoppingcart_payment->note = $shoppingcart_json->payment->note;
+		if(isset($shoppingcart_json->payment->bank_address)) $shoppingcart_payment->bank_address = $shoppingcart_json->payment->bank_address;
 
 		if(isset($shoppingcart_json->payment->bank_code)) $shoppingcart_payment->bank_code = $shoppingcart_json->payment->bank_code;
 		if(isset($shoppingcart_json->payment->va_number)) $shoppingcart_payment->va_number = $shoppingcart_json->payment->va_number;
-
 		if(isset($shoppingcart_json->payment->qrcode)) $shoppingcart_payment->qrcode = $shoppingcart_json->payment->qrcode;
 		if(isset($shoppingcart_json->payment->link)) $shoppingcart_payment->link = $shoppingcart_json->payment->link;
 		if(isset($shoppingcart_json->payment->redirect)) $shoppingcart_payment->redirect = $shoppingcart_json->payment->redirect;
-
 		if(isset($shoppingcart_json->payment->amount)) $shoppingcart_payment->amount = $shoppingcart_json->payment->amount;
 		if(isset($shoppingcart_json->payment->currency)) $shoppingcart_payment->currency = $shoppingcart_json->payment->currency;
 		if(isset($shoppingcart_json->payment->rate)) $shoppingcart_payment->rate = $shoppingcart_json->payment->rate;
 		if(isset($shoppingcart_json->payment->rate_from)) $shoppingcart_payment->rate_from = $shoppingcart_json->payment->rate_from;
 		if(isset($shoppingcart_json->payment->rate_to)) $shoppingcart_payment->rate_to = $shoppingcart_json->payment->rate_to;
-		if(isset($shoppingcart_json->payment->text)) $shoppingcart_payment->text = $shoppingcart_json->payment->text;
 		if(isset($shoppingcart_json->payment->expiration_date)) $shoppingcart_payment->expiration_date = $shoppingcart_json->payment->expiration_date;
-
 		if(isset($shoppingcart_json->payment->payment_status)) $shoppingcart_payment->payment_status = $shoppingcart_json->payment->payment_status;
-		
 		$shoppingcart_payment->save();
 
 		
@@ -1843,6 +1838,7 @@ class BookingHelper {
 		$swift_code = NULL;
 		$iban_code = NULL;
 		$note = NULL;
+		$bank_address = NULL;
 
 		$qrcode = NULL;
 		$link = NULL;
@@ -1930,6 +1926,13 @@ class BookingHelper {
 		if(isset($response->order_id)) $order_id = $response->order_id;
 		if(isset($response->authorization_id)) $authorization_id = $response->authorization_id;
 
+		if(isset($response->account_holder)) $account_holder = $response->account_holder;
+		if(isset($response->account_number)) $account_number = $response->account_number;
+		if(isset($response->swift_code)) $swift_code = $response->swift_code;
+		if(isset($response->iban_code)) $iban_code = $response->iban_code;
+		if(isset($response->note)) $note = $response->note;
+		if(isset($response->bank_address)) $bank_address = $response->bank_address;
+
 		$ShoppingcartPayment = (object) array(
 			'payment_provider' => $payment_provider,
 			'payment_type' => $payment_type,
@@ -1952,6 +1955,7 @@ class BookingHelper {
 			'swift_code' => $swift_code,
 			'iban_code' => $iban_code,
 			'note' => $note,
+			'bank_address' => $bank_address,
 			'payment_status' => $payment_status,
 		);
 

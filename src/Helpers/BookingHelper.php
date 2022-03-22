@@ -1894,9 +1894,9 @@ class BookingHelper {
 			break;
 			case "paypal":
 				$payment_provider = 'paypal';
-				$amount = self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,self::env_paypalCurrency(),"PAYPAL");
+				$amount = self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,self::env_paypalCurrency());
 				$currency = self::env_paypalCurrency();
-				$rate = self::convert_currency(1,self::env_paypalCurrency(),$shoppingcart->currency,"PAYPAL");
+				$rate = self::convert_currency(1,self::env_paypalCurrency(),$shoppingcart->currency);
 				$rate_from = $shoppingcart->currency;
 				$rate_to = self::env_paypalCurrency();
 
@@ -2000,10 +2000,10 @@ class BookingHelper {
 		return $status;
 	}
 
-	public static function paypal_rate($shoppingcart)
+	public static function text_rate($shoppingcart,$currency)
 	{
-		$amount = 'Total : '. self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,self::env_paypalCurrency(),"PAYPAL") .' '. self::env_paypalCurrency();
-		$value = $amount .'<br />Paypal Rate : 1 '. self::env_paypalCurrency() .' = '. self::convert_currency(1,self::env_paypalCurrency(),$shoppingcart->currency,"PAYPAL") .' '. $shoppingcart->currency;
+		$amount = 'Total : '. self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,$currency) .' '. $currency;
+		$value = $amount .'<br />Rate : 1 '. $currency .' = '. self::convert_currency(1,$currency,$shoppingcart->currency) .' '. $shoppingcart->currency;
 		return $value;
 	}
 
@@ -2014,42 +2014,20 @@ class BookingHelper {
 		return $value;
 	}
 
-	public static function convert_currency($amount,$from,$to,$booking_fee="")
+	public static function convert_currency($amount,$from,$to)
 	{
 
-		$rate = BokunHelper::get_currency();
-
-		$oneusd = 1 / $rate;
-		if($booking_fee=="PAYPAL")
-		{
-			$paypal_charge = $oneusd * 4.4 / 100;
-			$paypal_rate = $oneusd * 3.74 / 100;
-			$rate = $oneusd - $paypal_rate - $paypal_charge;
-		}
-		else
-		{
-			$rate = $oneusd;
-		}
+		$rate_oneusd = BokunHelper::get_currency($from); // IDR jadi USD
 		
+		$value = ($amount * $rate_oneusd);
 
-		if($from!=$to)
+		if($to!="USD")
 		{
-			if($from==self::env_bokunCurrency())
-			{
-				$value = ($amount / $rate);
-			}
-
-			if($to==self::env_bokunCurrency())
-			{
-				$value = ($amount * $rate);
-			}
-		}
-		else
-		{
-			$value = $amount;
+			$rate = BokunHelper::get_currency($to); // EUR jadi USD
+			$value = ($amount * $rate_oneusd / $rate);
 		}
 
-		$value = number_format((float)$value, 2, '.', '');	
+		$value = number_format((float)$value, 2, '.', '');
 		return $value;
 	}
 	
@@ -2114,7 +2092,7 @@ class BookingHelper {
             	$text = '';
 
             	$text .= 'Total : '.$shoppingcart->shoppingcart_payment->currency.' '. $shoppingcart->shoppingcart_payment->amount .'<br />';
-				$text .= 'Paypal Rate : '. BookingHelper::get_rate($shoppingcart) .'<br />';
+				$text .= 'Rate : '. BookingHelper::get_rate($shoppingcart) .'<br />';
             	
 
             	switch($shoppingcart->shoppingcart_payment->payment_status)

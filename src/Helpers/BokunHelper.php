@@ -155,10 +155,23 @@ class BokunHelper {
         return '';
     }
 
-    public static function get_currency()
+    public static function get_currency_v2($currency="")
 	{
-		
-        $currency = self::env_bokunCurrency();
+        if($currency=="") $currency = self::env_bokunCurrency();
+        $lang = self::env_bokunLang();
+        $bookingChannel = self::env_bokunBookingChannel();
+
+        $value = Cache::remember('_bokunCurrency_'. $currency .'_'. $lang,7200, function() use ($currency,$lang,$bookingChannel)
+		{
+    		return self::bokunWidget_connect('/widgets/'.$bookingChannel.'/config/conversionRate?lang='.$lang.'&currency='.$currency);
+		});
+		//$value = json_decode($value);
+		return json_decode($value);
+	}
+
+    public static function get_currency($currency="")
+	{
+        if($currency=="") $currency = self::env_bokunCurrency();
         $lang = self::env_bokunLang();
         $bookingChannel = self::env_bokunBookingChannel();
 
@@ -167,7 +180,7 @@ class BokunHelper {
     		return self::bokunWidget_connect('/widgets/'.$bookingChannel.'/config/conversionRate?lang='.$lang.'&currency='.$currency);
 		});
 		$value = json_decode($value);
-		return number_format($value->paymentCurrencyRateToDollar->conversionRate,5,'.',',');
+		return number_format($value->displayCurrencyRateToDollar->conversionRate,5,'.',',');
 	}
 
 	public static function get_removepromocode($sessionId)

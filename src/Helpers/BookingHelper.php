@@ -1617,7 +1617,7 @@ class BookingHelper {
 		if(isset($shoppingcart_json->payment->bank_code)) $shoppingcart_payment->bank_code = $shoppingcart_json->payment->bank_code;
 		if(isset($shoppingcart_json->payment->va_number)) $shoppingcart_payment->va_number = $shoppingcart_json->payment->va_number;
 
-		if(isset($shoppingcart_json->payment->snaptoken)) $shoppingcart_payment->snaptoken = $shoppingcart_json->payment->snaptoken;
+		//if(isset($shoppingcart_json->payment->snaptoken)) $shoppingcart_payment->snaptoken = $shoppingcart_json->payment->snaptoken;
 		if(isset($shoppingcart_json->payment->qrcode)) $shoppingcart_payment->qrcode = $shoppingcart_json->payment->qrcode;
 		if(isset($shoppingcart_json->payment->link)) $shoppingcart_payment->link = $shoppingcart_json->payment->link;
 		if(isset($shoppingcart_json->payment->redirect)) $shoppingcart_payment->redirect = $shoppingcart_json->payment->redirect;
@@ -1828,7 +1828,7 @@ class BookingHelper {
 		$bank_name = NULL;
 		$bank_code = NULL;
 		$va_number = NULL;
-		$snaptoken = NULL;
+		//$snaptoken = NULL;
 		$qrcode = NULL;
 		$link = NULL;
 		$redirect = NULL;
@@ -1908,7 +1908,7 @@ class BookingHelper {
 		if(isset($response->bank_name)) $bank_name = $response->bank_name;
 		if(isset($response->bank_code)) $bank_code = $response->bank_code;
 		if(isset($response->va_number)) $va_number = $response->va_number;
-		if(isset($response->snaptoken)) $snaptoken = $response->snaptoken;
+		//if(isset($response->snaptoken)) $snaptoken = $response->snaptoken;
 		if(isset($response->qrcode)) $qrcode = $response->qrcode;
 		if(isset($response->link)) $link = $response->link;
 		if(isset($response->redirect)) $redirect = $response->redirect;
@@ -1922,7 +1922,7 @@ class BookingHelper {
 			'bank_name' => $bank_name,
 			'bank_code' => $bank_code,
 			'va_number' => $va_number,
-			'snaptoken' => $snaptoken,
+			//'snaptoken' => $snaptoken,
 			'qrcode' => $qrcode,
 			'link' => $link,
 			'redirect' => $redirect,

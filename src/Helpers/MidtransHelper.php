@@ -172,7 +172,7 @@ class MidtransHelper {
           $response->order_id = $data->transaction->id;
         }
 
-        $response->snaptoken = $data1->token;
+        $response->authorization_id = $data1->token;
         return $response;
   }
 

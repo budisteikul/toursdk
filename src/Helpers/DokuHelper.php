@@ -127,7 +127,7 @@ class DokuHelper {
             //Storage::disk('gcs')->put('qrcode/'. $path .'/'.$data1->response->payment->token_id.'.png', $contents);
             //$qrcode_url = Storage::disk('gcs')->url('qrcode/'. $path .'/'.$data1->response->payment->token_id.'.png');
             
-            $response->snaptoken = $data1->response->payment->token_id;
+            $response->authorization_id = $data1->response->payment->token_id;
             $response->qrcode = $data2->qr_code;
         }
         else

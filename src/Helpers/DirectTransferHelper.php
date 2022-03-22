@@ -4,7 +4,7 @@ use budisteikul\toursdk\Helpers\ImageHelper;
 use Illuminate\Support\Facades\Storage;
 use budisteikul\toursdk\Helpers\FirebaseHelper;
 use Carbon\Carbon;
-use SimpleSoftwareIO\QrCode\Facades\QrCode;
+use budisteikul\toursdk\Helpers\BookingHelper;
 
 class DirectTransferHelper {
 
@@ -13,36 +13,40 @@ class DirectTransferHelper {
         return env("APP_NAME");
   	}
 
+    public static function env_bokunCurrency()
+    {
+        return env("BOKUN_CURRENCY");
+    }
 	
     public static function bankCode($bank)
     {
         $data = new \stdClass();
         switch($bank)
         {
-            case "usd":
+            case "usd_wise":
                 $data->bank_name = "Wise";
-                $data->bank_code = "";
                 $data->bank_payment_type = "usd_wise";
+                $data->bank_currency = "USD";
             break;
-            case "eur":
+            case "eur_wise":
                 $data->bank_name = "Wise";
-                $data->bank_code = "";
                 $data->bank_payment_type = "eur_wise";
+                $data->bank_currency = "EUR";
             break;
-            case "aud":
+            case "aud_wise":
                 $data->bank_name = "Wise";
-                $data->bank_code = "";
                 $data->bank_payment_type = "aud_wise";
+                $data->bank_currency = "AUD";
             break;
-            case "sgd":
+            case "sgd_wise":
                 $data->bank_name = "Wise";
-                $data->bank_code = "";
                 $data->bank_payment_type = "sgd_wise";
+                $data->bank_currency = "SGD";
             break;
-            case "gbp":
+            case "gbp_wise":
                 $data->bank_name = "Wise";
-                $data->bank_code = "";
                 $data->bank_payment_type = "gbp_wise";
+                $data->bank_currency = "GBP";
             break;
             default:
                 return response()->json([
@@ -106,7 +110,11 @@ class DirectTransferHelper {
             $response->bank_address = '56 Shoreditch High Street <br />London E1 6JJ <br />United Kingdom';
         }
 
-
+        $response->amount = BookingHelper::convert_currency($data->transaction->amount,self::env_bokunCurrency(),$payment->bank_currency);
+        $response->currency = self::env_bokunCurrency();
+        $response->rate = BookingHelper::convert_currency(1,self::env_bokunCurrency(),$payment->bank_currency);
+        $response->rate_from = self::env_bokunCurrency();
+        $response->rate_to = $payment->bank_currency;
 
         
         $response->redirect = $data->transaction->finish_url;

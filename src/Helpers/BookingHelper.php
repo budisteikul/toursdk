@@ -1925,7 +1925,7 @@ class BookingHelper {
 		if(isset($response->expiration_date)) $expiration_date = $response->expiration_date;
 		if(isset($response->order_id)) $order_id = $response->order_id;
 		if(isset($response->authorization_id)) $authorization_id = $response->authorization_id;
-
+		if(isset($response->amount)) $amount = $response->amount;
 		if(isset($response->account_holder)) $account_holder = $response->account_holder;
 		if(isset($response->account_number)) $account_number = $response->account_number;
 		if(isset($response->swift_code)) $swift_code = $response->swift_code;

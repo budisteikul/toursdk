@@ -27,8 +27,12 @@ class CreateShoppingcartPaymentsTable extends Migration
             $table->string('payment_provider')->nullable();
             $table->string('payment_type')->nullable();
 
-            $table->string('bank_code')->nullable();
             $table->string('bank_name')->nullable();
+            $table->string('account_holder')->nullable();
+            $table->string('account_number')->nullable();
+            $table->string('swift_code')->nullable();
+            $table->string('iban_code')->nullable();
+            $table->string('bank_code')->nullable();
             $table->string('va_number')->nullable();
             
             $table->text('qrcode')->nullable();

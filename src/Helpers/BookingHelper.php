@@ -1611,25 +1611,34 @@ class BookingHelper {
 		$shoppingcart_payment = new ShoppingcartPayment();
 		$shoppingcart_payment->shoppingcart_id = $shoppingcart->id;
 
+		if(isset($shoppingcart_json->payment->order_id)) $shoppingcart_payment->order_id = $shoppingcart_json->payment->order_id;
+		if(isset($shoppingcart_json->payment->authorization_id)) $shoppingcart_payment->authorization_id = $shoppingcart_json->payment->authorization_id;
+
 		if(isset($shoppingcart_json->payment->payment_provider)) $shoppingcart_payment->payment_provider = $shoppingcart_json->payment->payment_provider;
 		if(isset($shoppingcart_json->payment->payment_type)) $shoppingcart_payment->payment_type = $shoppingcart_json->payment->payment_type;
+
 		if(isset($shoppingcart_json->payment->bank_name)) $shoppingcart_payment->bank_name = $shoppingcart_json->payment->bank_name;
+		if(isset($shoppingcart_json->payment->account_holder)) $shoppingcart_payment->account_holder = $shoppingcart_json->payment->account_holder;
+		if(isset($shoppingcart_json->payment->account_number)) $shoppingcart_payment->account_number = $shoppingcart_json->payment->account_number;
+
+		if(isset($shoppingcart_json->payment->swift_code)) $shoppingcart_payment->swift_code = $shoppingcart_json->payment->swift_code;
+		if(isset($shoppingcart_json->payment->iban_code)) $shoppingcart_payment->iban_code = $shoppingcart_json->payment->iban_code;
+
 		if(isset($shoppingcart_json->payment->bank_code)) $shoppingcart_payment->bank_code = $shoppingcart_json->payment->bank_code;
 		if(isset($shoppingcart_json->payment->va_number)) $shoppingcart_payment->va_number = $shoppingcart_json->payment->va_number;
 
-		//if(isset($shoppingcart_json->payment->snaptoken)) $shoppingcart_payment->snaptoken = $shoppingcart_json->payment->snaptoken;
 		if(isset($shoppingcart_json->payment->qrcode)) $shoppingcart_payment->qrcode = $shoppingcart_json->payment->qrcode;
 		if(isset($shoppingcart_json->payment->link)) $shoppingcart_payment->link = $shoppingcart_json->payment->link;
 		if(isset($shoppingcart_json->payment->redirect)) $shoppingcart_payment->redirect = $shoppingcart_json->payment->redirect;
 
-		if(isset($shoppingcart_json->payment->order_id)) $shoppingcart_payment->order_id = $shoppingcart_json->payment->order_id;
-		if(isset($shoppingcart_json->payment->authorization_id)) $shoppingcart_payment->authorization_id = $shoppingcart_json->payment->authorization_id;
 		if(isset($shoppingcart_json->payment->amount)) $shoppingcart_payment->amount = $shoppingcart_json->payment->amount;
 		if(isset($shoppingcart_json->payment->currency)) $shoppingcart_payment->currency = $shoppingcart_json->payment->currency;
 		if(isset($shoppingcart_json->payment->rate)) $shoppingcart_payment->rate = $shoppingcart_json->payment->rate;
 		if(isset($shoppingcart_json->payment->rate_from)) $shoppingcart_payment->rate_from = $shoppingcart_json->payment->rate_from;
 		if(isset($shoppingcart_json->payment->rate_to)) $shoppingcart_payment->rate_to = $shoppingcart_json->payment->rate_to;
+		if(isset($shoppingcart_json->payment->text)) $shoppingcart_payment->text = $shoppingcart_json->payment->text;
 		if(isset($shoppingcart_json->payment->expiration_date)) $shoppingcart_payment->expiration_date = $shoppingcart_json->payment->expiration_date;
+
 		if(isset($shoppingcart_json->payment->payment_status)) $shoppingcart_payment->payment_status = $shoppingcart_json->payment->payment_status;
 		
 		$shoppingcart_payment->save();
@@ -1828,7 +1837,13 @@ class BookingHelper {
 		$bank_name = NULL;
 		$bank_code = NULL;
 		$va_number = NULL;
-		//$snaptoken = NULL;
+
+		$account_holder = NULL;
+		$account_number = NULL;
+		$swift_code = NULL;
+		$iban_code = NULL;
+		$note = NULL;
+
 		$qrcode = NULL;
 		$link = NULL;
 		$redirect = NULL;
@@ -1908,7 +1923,6 @@ class BookingHelper {
 		if(isset($response->bank_name)) $bank_name = $response->bank_name;
 		if(isset($response->bank_code)) $bank_code = $response->bank_code;
 		if(isset($response->va_number)) $va_number = $response->va_number;
-		//if(isset($response->snaptoken)) $snaptoken = $response->snaptoken;
 		if(isset($response->qrcode)) $qrcode = $response->qrcode;
 		if(isset($response->link)) $link = $response->link;
 		if(isset($response->redirect)) $redirect = $response->redirect;
@@ -1922,7 +1936,6 @@ class BookingHelper {
 			'bank_name' => $bank_name,
 			'bank_code' => $bank_code,
 			'va_number' => $va_number,
-			//'snaptoken' => $snaptoken,
 			'qrcode' => $qrcode,
 			'link' => $link,
 			'redirect' => $redirect,
@@ -1934,6 +1947,11 @@ class BookingHelper {
 			'rate_from' => $rate_from,
 			'rate_to' => $rate_to,
 			'expiration_date' => $expiration_date,
+			'account_holder' => $account_holder,
+			'account_number' => $account_number,
+			'swift_code' => $swift_code,
+			'iban_code' => $iban_code,
+			'note' => $note,
 			'payment_status' => $payment_status,
 		);
 

@@ -286,7 +286,7 @@ class OyHelper {
         else if($payment->bank_payment_type=="shopeepay_ewallet" || $payment->bank_payment_type=="linkaja_ewallet" || $payment->bank_payment_type=="dana_ewallet")
         {
           
-          $data->transaction->mins_expired = 120;
+          $data->transaction->mins_expired = 60;
 
           $init_data = [
             'customer_id' => $data->transaction->id,

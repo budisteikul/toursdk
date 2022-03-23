@@ -28,15 +28,16 @@ class CreateShoppingcartPaymentsTable extends Migration
             $table->string('payment_type')->nullable();
 
             $table->string('bank_name')->nullable();
-            $table->string('account_holder')->nullable();
-            $table->string('account_number')->nullable();
-            $table->string('swift_code')->nullable();
-            $table->string('iban_code')->nullable();
             $table->string('bank_code')->nullable();
-            $table->text('bank_address')->nullable();
             $table->string('va_number')->nullable();
-            
             $table->text('qrcode')->nullable();
+
+            //$table->string('account_holder')->nullable();
+            //$table->string('account_number')->nullable();
+            //$table->string('swift_code')->nullable();
+            //$table->string('iban_code')->nullable();
+            //$table->text('bank_address')->nullable();
+            //$table->longText('note')->nullable();
 
             $table->float('amount',24,2)->default(0);
             $table->string('currency')->default('USD');
@@ -46,11 +47,8 @@ class CreateShoppingcartPaymentsTable extends Migration
 
             $table->text('link')->nullable();
             $table->text('redirect')->nullable();
-            $table->longText('note')->nullable();
             $table->dateTime('expiration_date')->nullable();
-
             $table->tinyInteger('payment_status')->default(1);
-            
             $table->timestamps(6);
         });
     }

@@ -31,6 +31,31 @@ class BokunHelper {
    		return env("BOKUN_SECRET_KEY");
     }
 
+    public static function get_cookie()
+    {
+    	/*
+    	$value = Cache::remember('_bokunCookie',7776000, function() 
+		{
+			$headers = [
+                'content-type' => 'application/json',
+            ];
+
+        	$client = new \GuzzleHttp\Client(['headers' => $headers,'http_errors' => false]);
+        	$response = $client->request('POST','https://vertikaltrip.bokun.io/extranet/login',
+            [   
+                'timeout' => 30,
+                'form_params' => [
+                    'email' => env('BOKUN_EMAIL'),
+                    'password' => env('BOKUN_PASSWORD')
+                ]
+            ]);
+
+        	return $response->getHeaderLine('Set-Cookie');
+		});
+		return $value;
+		*/
+    }
+
     public static function bokunAPI_connect($path, $method = 'GET', $data = "")
     {
     		if(self::env_bokunEnv()=="production")

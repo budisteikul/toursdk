@@ -2220,7 +2220,7 @@ class BookingHelper {
 								<div class="card-img-overlay">
 									<div class="row h-100">
    										<div class="col-sm-12 my-auto text-center">
-    										<h1 class="mb-2 mt-2">'. $merchant_name .'</h1>
+    										<h1 class="mb-2 mt-4">'. $merchant_name .'</h1>
     										<h5 class="mb-2 mt-2">'. self::get_nmid($shoppingcart) .'</h5>
     										<img id="qris-img" class="img-fluid border border-white" alt="QRIS" style="max-width:250px;" src="data:image/png;base64, '. base64_encode(self::generate_qris($shoppingcart)) .' ">
    										</div>

@@ -488,7 +488,8 @@ class OyHelper {
           'phone_number' => null,
           'username_display' => self::env_appName(),
           'is_open' => false,
-          'list_disabled_payment_methods' => null,
+          //'list_disabled_payment_methods' => null,
+          'list_disabled_payment_methods' => 'VA,CREDIT_CARD,EWALLET',
           'expiration' => $data->transaction->date_expired,
           'due_date' => $data->transaction->date_expired,
         ];

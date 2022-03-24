@@ -372,22 +372,22 @@ class ContentHelper {
         }
         
         $bank_transfer_list[] = [
-            'value' => 'doku-mandiri', 'label' => 'MANDIRI', 'image' => url('/img/bank/mandiri.png'),
+            'value' => 'oyindonesia-mandiri', 'label' => 'MANDIRI', 'image' => url('/img/bank/mandiri.png'),
         ];
         $bank_transfer_list[] = [
-            'value' => 'doku-permata', 'label' => 'PERMATA', 'image' => url('/img/bank/permata.png'),
+            'value' => 'oyindonesia-permata', 'label' => 'PERMATA', 'image' => url('/img/bank/permata.png'),
         ];
         $bank_transfer_list[] = [
             'value' => 'doku-danamon', 'label' => 'DANAMON', 'image' => url('/img/bank/danamon.png'),
         ];
         $bank_transfer_list[] = [
-            'value' => 'doku-bni', 'label' => 'BNI', 'image' => url('/img/bank/bni.png'),
+            'value' => 'oyindonesia-bni', 'label' => 'BNI', 'image' => url('/img/bank/bni.png'),
         ];
         $bank_transfer_list[] = [
-            'value' => 'doku-bri', 'label' => 'BRI', 'image' => url('/img/bank/bri.png'),
+            'value' => 'oyindonesia-bri', 'label' => 'BRI', 'image' => url('/img/bank/bri.png'),
         ];
         $bank_transfer_list[] = [
-            'value' => 'doku-cimb', 'label' => 'CIMB NIAGA',  'image' => url('/img/bank/cimb.png'),
+            'value' => 'oyindonesia-cimb', 'label' => 'CIMB NIAGA',  'image' => url('/img/bank/cimb.png'),
         ];
         $bank_transfer_list[] = [
             'value' => 'doku-mandirisyariah', 'label' => 'BSI', 'image' => url('/img/bank/bsi.png'),
@@ -411,27 +411,6 @@ class ContentHelper {
             'value' => 'oyindonesia-linkaja', 'label' => 'LINKAJA', 'image' => url('/img/ewallet/linkaja.png'),
         ];
         
-
-        /*
-        $blockchain_list[] = [
-            'value' => 'bep20', 'label' => 'BINANCE SMART CHAIN', 'image' => url('/img/blockchain/bsc.png'),
-        ];
-        $blockchain_list[] = [
-            'value' => 'erc20', 'label' => 'ETHEREUM', 'image' => url('/img/blockchain/ethereum.png'),
-        ];
-        $blockchain_list[] = [
-            'value' => 'trc20', 'label' => 'TRON NETWORK', 'image' => url('/img/blockchain/tron.png'),
-        ];
-        $blockchain_list[] = [
-            'value' => 'polygon', 'label' => 'POLYGON (Matic)', 'image' => url('/img/blockchain/polygon.png'),
-        ];
-        $blockchain_list[] = [
-            'value' => 'stellar', 'label' => 'STELLAR', 'image' => url('/img/blockchain/stellar.png'),
-        ];
-        $blockchain_list[] = [
-            'value' => 'klaytn', 'label' => 'KLAYTN', 'image' => url('/img/blockchain/klaytn.png'),
-        ];
-        */
 
 
         $dataShoppingcart[] = array(

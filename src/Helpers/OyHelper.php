@@ -2,7 +2,6 @@
 namespace budisteikul\toursdk\Helpers;
 use budisteikul\toursdk\Helpers\ImageHelper;
 use Illuminate\Support\Facades\Storage;
-use budisteikul\toursdk\Helpers\FirebaseHelper;
 use Carbon\Carbon;
 
 class OyHelper {
@@ -472,8 +471,7 @@ class OyHelper {
 
   public static function createSnap($data)
   {
-        //$endpoint = self::oyApiEndpoint() ."/api/payment-checkout/create-v2";
-        $endpoint = self::oyApiEndpoint() ."/api/payment-checkout/create-invoice";
+        $endpoint = self::oyApiEndpoint() ."/api/payment-checkout/create-v2";
         $headers = [
               'Cache-Control' => 'no-cache',
               'Content-Type' => 'application/json',
@@ -489,8 +487,7 @@ class OyHelper {
           'phone_number' => null,
           'username_display' => self::env_appName(),
           'is_open' => false,
-          //'list_disabled_payment_methods' => null,
-          'list_disabled_payment_methods' => 'VA,CREDIT_CARD,EWALLET',
+          'list_disabled_payment_methods' => null,
           'expiration' => $data->transaction->date_expired,
           'due_date' => $data->transaction->date_expired,
         ];

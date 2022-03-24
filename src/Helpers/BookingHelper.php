@@ -1854,7 +1854,8 @@ class BookingHelper {
 		$payment_status = NULL;
 
 		$transaction = new \stdClass();
-        $transaction->id = Uuid::uuid4()->toString();
+        //$transaction->id = Uuid::uuid4()->toString();
+        $transaction->id = self::get_payment_transaction_id();
         $transaction->amount = $shoppingcart->due_now;
         $transaction->payment_provider = $payment_provider;
         $transaction->bank = $bank;
@@ -2037,6 +2038,15 @@ class BookingHelper {
         $uuid = "DISB-". date('Ymd') .'-'. GeneralHelper::digitFormat(rand(000000,999999),6);
         while( Disbursement::where('transaction_id','=',$uuid)->first() ){
             $uuid = "DISB-". date('Ymd') .'-'. GeneralHelper::digitFormat(rand(000000,999999),6);
+        }
+        return $uuid;
+    }
+
+    public static function get_payment_transaction_id()
+    {
+        $uuid = "PAY-". date('Ymd') .'-'. GeneralHelper::digitFormat(rand(000000,999999),6);
+        while( ShoppingcartPayment::where('order_id','=',$uuid)->first() ){
+            $uuid = "PAY-". date('Ymd') .'-'. GeneralHelper::digitFormat(rand(000000,999999),6);
         }
         return $uuid;
     }

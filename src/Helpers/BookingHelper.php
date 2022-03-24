@@ -2035,26 +2035,26 @@ class BookingHelper {
 	
 	public static function get_disbursement_transaction_id()
     {
-        $uuid = "DISB-". date('Ymd') .'-'. GeneralHelper::digitFormat(rand(000000,999999),6);
+        $uuid = "DISB-". date('Ymd') .'-'. GeneralHelper::digitFormat(rand(0000,9999),4);
         while( Disbursement::where('transaction_id','=',$uuid)->first() ){
-            $uuid = "DISB-". date('Ymd') .'-'. GeneralHelper::digitFormat(rand(000000,999999),6);
+            $uuid = "DISB-". date('Ymd') .'-'. GeneralHelper::digitFormat(rand(0000,9999),4);
         }
         return $uuid;
     }
 
     public static function get_payment_transaction_id()
     {
-        $uuid = "PAY-". date('Ymd') .'-'. GeneralHelper::digitFormat(rand(000000,999999),6);
+        $uuid = "PAY-". date('Ymd') .'-'. GeneralHelper::digitFormat(rand(0000,9999),4);
         while( ShoppingcartPayment::where('order_id','=',$uuid)->first() ){
-            $uuid = "PAY-". date('Ymd') .'-'. GeneralHelper::digitFormat(rand(000000,999999),6);
+            $uuid = "PAY-". date('Ymd') .'-'. GeneralHelper::digitFormat(rand(0000,9999),4);
         }
         return $uuid;
     }
 
 	public static function get_ticket(){
-		$uuid = "VER-". date('Ymd') .'-'. GeneralHelper::digitFormat(rand(000000,999999),6);
+		$uuid = "VER-". date('Ymd') .'-'. GeneralHelper::digitFormat(rand(0000,9999),4);
         while( Shoppingcart::where('confirmation_code','=',$uuid)->first() ){
-            $uuid = "VER-". date('Ymd') .'-'. GeneralHelper::digitFormat(rand(000000,999999),6);
+            $uuid = "VER-". date('Ymd') .'-'. GeneralHelper::digitFormat(rand(0000,9999),4);
         }
         return $uuid;
     	/*

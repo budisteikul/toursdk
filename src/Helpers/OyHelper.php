@@ -472,7 +472,8 @@ class OyHelper {
 
   public static function createSnap($data)
   {
-        $endpoint = self::oyApiEndpoint() ."/api/payment-checkout/create-v2";
+        //$endpoint = self::oyApiEndpoint() ."/api/payment-checkout/create-v2";
+        $endpoint = self::oyApiEndpoint() ."/api/payment-checkout/create-invoice";
         $headers = [
               'Cache-Control' => 'no-cache',
               'Content-Type' => 'application/json',

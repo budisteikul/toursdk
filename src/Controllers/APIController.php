@@ -759,10 +759,7 @@ class APIController extends Controller
 
     public function confirmpaymentmidtrans(Request $request)
     {
-        
             $data = $request->all();
-
-
 
             $order_id = null;
             if(isset($data['order_id'])) $order_id = $data['order_id'];
@@ -797,10 +794,10 @@ class APIController extends Controller
 
     public function createpaymentpaypal(Request $request)
     {
-        $sessionId = $request->header('sessionId');
-        BookingHelper::set_confirmationCode($sessionId);
-        $response = BookingHelper::create_payment($sessionId,"paypal");
-        return response()->json($response);
+            $sessionId = $request->header('sessionId');
+            BookingHelper::set_confirmationCode($sessionId);
+            $response = BookingHelper::create_payment($sessionId,"paypal");
+            return response()->json($response);
     }
 
 

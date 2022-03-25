@@ -1816,10 +1816,7 @@ class BookingHelper {
         $contact->email = $email;
         $contact->phone = $phone;
 
-
         $due_date = self::due_date($shoppingcart);
-
-        
 
         $date1 = Carbon::now();
         $date2 = Carbon::parse($due_date);
@@ -1867,8 +1864,6 @@ class BookingHelper {
         $data = new \stdClass();
         $data->contact = $contact;
         $data->transaction = $transaction;
-
-        
 
 		switch($payment_provider)
 		{

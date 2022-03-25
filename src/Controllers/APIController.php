@@ -39,12 +39,7 @@ class APIController extends Controller
     {
         $this->currency = env("BOKUN_CURRENCY");
         $this->lang = env("BOKUN_LANG");
-        
         $this->midtransServerKey = env("MIDTRANS_SERVER_KEY");
-        $this->oyApiKey = env("OY_API_KEY");
-        $this->dokuSecretKey = env("DOKU_SECRET_KEY");
-
-        $this->appUrl = env("APP_URL");
     }
 
     public function product_add(Request $request)
@@ -113,27 +108,6 @@ class APIController extends Controller
         ], 200);
     }
 
-    
-
-    public function tawkto($id)
-    {
-        $jscript = '
-        function tawktoScript()
-        {
-            var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
-            (function(){
-                var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
-                s1.async=true;
-                s1.src=\'https://embed.tawk.to/'. $id .'/default\';
-                s1.charset=\'UTF-8\';
-                s1.setAttribute(\'crossorigin\',\'*\');
-                s0.parentNode.insertBefore(s1,s0);
-            })();
-        }
-        ';
-        return response($jscript)->header('Content-Type', 'application/javascript');
-    }
-
     public function review_count()
     {
         $count = Review::count();
@@ -158,9 +132,7 @@ class APIController extends Controller
     public function category($slug)
     {
         $category = Category::where('slug',$slug)->firstOrFail();
-        
         $dataObj = ContentHelper::view_category($category);
-
         return response()->json([
             'message' => 'success',
             'category' => $dataObj,
@@ -170,7 +142,6 @@ class APIController extends Controller
     public function page($slug)
     {
         $page = Page::where('slug',$slug)->firstOrFail();
-
         $dataObj[] = array(
             'title' => $page->title,
             'content' => $page->content,
@@ -184,9 +155,7 @@ class APIController extends Controller
     public function product($slug)
     {
         $product = Product::where('slug',$slug)->firstOrFail();
-
         $dataObj = ContentHelper::view_product($product);
-        
         return response()->json([
             'message' => 'success',
             'product' => $dataObj,
@@ -581,8 +550,6 @@ class APIController extends Controller
                 'message' => 'success'
             );
 
-       
-
         return response()->json([
                 'message' => 'success',
                 'booking' => $booking
@@ -592,7 +559,6 @@ class APIController extends Controller
 
     public function receipt($sessionId,$confirmationCode)
     {
-
         $shoppingcart = Shoppingcart::where('confirmation_code',$confirmationCode)->where('session_id', $sessionId)->where(function($query){
             return $query->where('booking_status', 'CONFIRMED')
                          ->orWhere('booking_status', 'CANCELED')

@@ -32,7 +32,9 @@ class APIController extends Controller
     
     public function test()
     {
-        
+        //BokunHelper::get_cookie();
+        $test = BokunHelper::get_product('9186');
+        print_r($test);
     }
 
     public function __construct()

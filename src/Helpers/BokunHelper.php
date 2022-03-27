@@ -33,7 +33,7 @@ class BokunHelper {
 
     public static function get_cookie()
     {
-    	/*
+    	
     	$value = Cache::remember('_bokunCookie',7776000, function() 
 		{
 			$headers = [
@@ -41,7 +41,7 @@ class BokunHelper {
             ];
 
         	$client = new \GuzzleHttp\Client(['headers' => $headers,'http_errors' => false]);
-        	$response = $client->request('POST','https://vertikaltrip.bokun.io/extranet/login',
+        	$response = $client->request('POST','https://vertikaltrip.bokuntest.com/extranet/login',
             [   
                 'timeout' => 30,
                 'form_params' => [
@@ -53,7 +53,7 @@ class BokunHelper {
         	return $response->getHeaderLine('Set-Cookie');
 		});
 		return $value;
-		*/
+		
     }
 
     public static function bokunAPI_connect($path, $method = 'GET', $data = "")
@@ -143,6 +143,8 @@ class BokunHelper {
 			return $contents;
 	}
 
+	
+
 	public static function set_mainContactQuestion($sessionId)
 	{
 		$currency = self::env_bokunCurrency();
@@ -180,20 +182,7 @@ class BokunHelper {
         return '';
     }
 
-    public static function get_currency_v2($currency="")
-	{
-        if($currency=="") $currency = self::env_bokunCurrency();
-        $lang = self::env_bokunLang();
-        $bookingChannel = self::env_bokunBookingChannel();
-
-        $value = Cache::remember('_bokunCurrency_'. $currency .'_'. $lang,7200, function() use ($currency,$lang,$bookingChannel)
-		{
-    		return self::bokunWidget_connect('/widgets/'.$bookingChannel.'/config/conversionRate?lang='.$lang.'&currency='.$currency);
-		});
-		//$value = json_decode($value);
-		return json_decode($value);
-	}
-
+    
     public static function get_currency($currency="")
 	{
         if($currency=="") $currency = self::env_bokunCurrency();
@@ -263,6 +252,7 @@ class BokunHelper {
 		$bookingChannel = self::env_bokunBookingChannel();
 
 		$value = self::bokunWidget_connect('/widgets/'. $bookingChannel .'/shoppingCart/activity/add?lang='. $lang .'&currency='.$currency.'&sessionId='. $sessionId,'POST',$data);
+		
 		$value = json_decode($value);
 		return $value;
 	}

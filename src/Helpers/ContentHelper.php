@@ -73,14 +73,14 @@ class ContentHelper {
         if($ticket=="") $ticket = 'No Documents <br /><small class="form-text text-muted">* Available when status is paid</small>';
 
         
-        $pdfUrl = array();
+        $how_to_pay = array();
         
         if($shoppingcart->shoppingcart_payment->payment_type=="qris")
         {
             if($shoppingcart->shoppingcart_payment->payment_status==4)
             {
 
-                $pdfUrl = '
+                $how_to_pay = '
                     <div class="pl-2">
                     1.  Open your <b>E-wallet</b> or <b>Mobile Banking</b> apps. <br />
                     2.  <b>Scan</b> the QR code shown on your monitor. <br />
@@ -98,7 +98,7 @@ class ContentHelper {
                
                 if($shoppingcart->shoppingcart_payment->payment_status==4)
                 {
-                    $pdfUrl = '<a target="_blank" class="text-theme" href="'.url('/api').'/pdf/manual/'. $shoppingcart->session_id .'/Manual-'. $shoppingcart->confirmation_code .'.pdf"><i class="fas fa-file-invoice"></i> Manual-'. $shoppingcart->confirmation_code .'.pdf</a><br />';
+                    $how_to_pay = '<a target="_blank" class="text-theme" href="'.url('/api').'/pdf/manual/'. $shoppingcart->session_id .'/Manual-'. $shoppingcart->confirmation_code .'.pdf"><i class="fas fa-file-invoice"></i> Manual-'. $shoppingcart->confirmation_code .'.pdf</a><br />';
                     
                 }
                 
@@ -125,7 +125,8 @@ class ContentHelper {
             'invoice' => $invoice,
             'tickets' => $ticket,
             'paymentProvider' => $shoppingcart->shoppingcart_payment->payment_provider,
-            'pdf_url' => $pdfUrl,
+            'pdf_url' => $how_to_pay,
+            'how_to_pay' => $how_to_pay,
         );
 
         return $dataObj;

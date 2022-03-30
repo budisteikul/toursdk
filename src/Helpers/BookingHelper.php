@@ -20,6 +20,7 @@ use budisteikul\toursdk\Models\ShoppingcartProductDetail;
 use budisteikul\toursdk\Models\ShoppingcartQuestion;
 use budisteikul\toursdk\Models\ShoppingcartQuestionOption;
 use budisteikul\toursdk\Models\ShoppingcartPayment;
+use budisteikul\toursdk\Models\Disbursement;
 
 use budisteikul\toursdk\Mail\BookingConfirmedMail;
 
@@ -2028,16 +2029,24 @@ class BookingHelper {
 		return $value;
 	}
 	
-	public static function get_count()
+	public static function get_count($table="shoppingcart")
 	{
-		$count = Shoppingcart::whereYear('created_at',date('Y'))->whereMonth('created_at',date('m'))->count();
+		$count = 0;
+		if($table=="shoppingcart")
+		{
+			$count = Shoppingcart::whereYear('created_at',date('Y'))->whereMonth('created_at',date('m'))->count();
+		}
+		if($table=="disbursement")
+		{
+			$count = Disbursement::whereYear('created_at',date('Y'))->whereMonth('created_at',date('m'))->count();
+		}
 		$count++;
 		return GeneralHelper::digitFormat($count,4);
 	}
 
 	public static function get_disbursement_transaction_id()
     {
-    	$count = self::get_count();
+    	$count = self::get_count('disbursement');
         $uuid = "TRF-". date('Ymd') . GeneralHelper::digitFormat(rand(00,99),2) . $count;
         while( Disbursement::where('transaction_id','=',$uuid)->first() ){
             $uuid = "TRF-". date('Ymd') . GeneralHelper::digitFormat(rand(00,99),2) . $count;
@@ -2047,7 +2056,7 @@ class BookingHelper {
 
     public static function get_payment_transaction_id()
     {
-    	$count = self::get_count();
+    	$count = self::get_count('shoppingcart');
         $uuid = "PAY-". date('Ymd') . GeneralHelper::digitFormat(rand(00,99),2) . $count;
         while( ShoppingcartPayment::where('order_id','=',$uuid)->first() ){
             $uuid = "PAY-". date('Ymd') . GeneralHelper::digitFormat(rand(00,99),2) . $count;
@@ -2056,7 +2065,7 @@ class BookingHelper {
     }
 
 	public static function get_ticket(){
-		$count = self::get_count();
+		$count = self::get_count('shoppingcart');
 		$uuid = "VER-". date('Ymd') . GeneralHelper::digitFormat(rand(00,99),2) . $count;
         while( Shoppingcart::where('confirmation_code','=',$uuid)->first() ){
             $uuid = "VER-". date('Ymd') . GeneralHelper::digitFormat(rand(00,99),2) . $count;

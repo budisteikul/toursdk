@@ -1851,8 +1851,8 @@ class BookingHelper {
 		$payment_status = NULL;
 
 		$transaction = new \stdClass();
-        //$transaction->id = Uuid::uuid4()->toString();
-        $transaction->id = self::get_payment_transaction_id();
+        $transaction->id = Uuid::uuid4()->toString();
+        //$transaction->id = self::get_payment_transaction_id();
         $transaction->amount = $shoppingcart->due_now;
         $transaction->payment_provider = $payment_provider;
         $transaction->bank = $bank;

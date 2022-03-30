@@ -32,8 +32,7 @@ class APIController extends Controller
     
     public function test()
     {
-        //BokunHelper::get_cookie();
-        $test = BokunHelper::get_product('9186');
+        $test = Shoppingcart::whereYear('created_at',date('Y'))->whereMonth('created_at',date('m'))->count();
         print_r($test);
     }
 

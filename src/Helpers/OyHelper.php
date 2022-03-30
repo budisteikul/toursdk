@@ -304,7 +304,7 @@ class OyHelper {
           ];
 
           $data1 = self::createEwallet($init_data);
-
+          
           $data->transaction->date_expired = Carbon::parse($data->transaction->date_now)->addMinutes($data->transaction->mins_expired);
 
           $ewallet_url = $data1->ewallet_url;

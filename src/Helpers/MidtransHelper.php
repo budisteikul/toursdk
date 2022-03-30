@@ -18,15 +18,20 @@ class MidtransHelper {
         return env("MIDTRANS_SERVER_KEY");
   }
 
+  public static function env_midtransApiKey()
+  {
+        return env("MIDTRANS_API_KEY");
+  }
+
   public static function midtransApiEndpoint()
   {
         if(env('MIDTRANS_ENV')=="production")
         {
-            $endpoint = "https://api.midtrans.com/v2/charge";
+            $endpoint = "https://app.midtrans.com/iris";
         }
         else
         {
-            $endpoint = "https://api.sandbox.midtrans.com/v2/charge";
+            $endpoint = "https://app.sandbox.midtrans.com/iris";
         }
         return $endpoint;
   }
@@ -63,6 +68,11 @@ class MidtransHelper {
                 $data->bank_name = "bni";
                 $data->bank_code = "009";
                 $data->bank_payment_type = "bni_va";
+            break;
+            case "bca":
+                $data->bank_name = "bca";
+                $data->bank_code = "014";
+                $data->bank_payment_type = "bca_va";
             break;
             case "gopay":
                 $data->bank_name = "gopay";

@@ -26,6 +26,11 @@ class OyHelper {
         return env("APP_NAME");
   }
 
+  public static function env_appUrl()
+  {
+        return env("APP_URL");
+  }
+
   public static function env_oyUseProxy()
   {
         return env("OY_USE_PROXY",false);
@@ -294,7 +299,7 @@ class OyHelper {
             'email' => null,
             'ewallet_code' => $payment->bank_payment_type,
             'mobile_number' => null,
-            'success_redirect_url' => $data->transaction->finish_url,
+            'success_redirect_url' => self::env_appUrl() . $data->transaction->finish_url,
             'expiration_time' => $data->transaction->mins_expired,
           ];
 

@@ -20,7 +20,6 @@ class CreateVendorsTable extends Migration
             $table->string('phone')->nullable();
             $table->string('email')->nullable();
             $table->string('bank_code')->nullable();
-            $table->string('account_holder')->nullable();
             $table->string('account_number')->nullable();
             $table->timestamps(6);
         });

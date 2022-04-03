@@ -367,28 +367,28 @@ class ContentHelper {
         if($promo_code=="") $promo_code = null;
         
         $payment_enable = 'bank_transfer,qris,ewallet,paypal';
-        if($shoppingcart->due_now > 2000000)
+        if($shoppingcart->due_now > 5000000)
         {
             $payment_enable = 'bank_transfer,paypal,ewallet';
         }
         
         $bank_transfer_list[] = [
-            'value' => 'oyindonesia-mandiri', 'label' => 'MANDIRI', 'image' => url('/img/bank/mandiri.png'),
+            'value' => 'doku-mandiri', 'label' => 'MANDIRI', 'image' => url('/img/bank/mandiri.png'),
         ];
         $bank_transfer_list[] = [
-            'value' => 'oyindonesia-permata', 'label' => 'PERMATA', 'image' => url('/img/bank/permata.png'),
+            'value' => 'doku-permata', 'label' => 'PERMATA', 'image' => url('/img/bank/permata.png'),
         ];
         $bank_transfer_list[] = [
             'value' => 'doku-danamon', 'label' => 'DANAMON', 'image' => url('/img/bank/danamon.png'),
         ];
         $bank_transfer_list[] = [
-            'value' => 'oyindonesia-bni', 'label' => 'BNI', 'image' => url('/img/bank/bni.png'),
+            'value' => 'doku-bni', 'label' => 'BNI', 'image' => url('/img/bank/bni.png'),
         ];
         $bank_transfer_list[] = [
-            'value' => 'oyindonesia-bri', 'label' => 'BRI', 'image' => url('/img/bank/bri.png'),
+            'value' => 'doku-bri', 'label' => 'BRI', 'image' => url('/img/bank/bri.png'),
         ];
         $bank_transfer_list[] = [
-            'value' => 'oyindonesia-cimb', 'label' => 'CIMB NIAGA',  'image' => url('/img/bank/cimb.png'),
+            'value' => 'doku-cimb', 'label' => 'CIMB NIAGA',  'image' => url('/img/bank/cimb.png'),
         ];
         $bank_transfer_list[] = [
             'value' => 'doku-mandirisyariah', 'label' => 'BSI', 'image' => url('/img/bank/bsi.png'),

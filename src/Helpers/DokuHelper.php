@@ -132,6 +132,10 @@ class DokuHelper {
         }
         else
         {
+            if($data->transaction->mins_expired==0) {
+                $data->transaction->mins_expired = 60;
+                $data->transaction->date_expired = Carbon::parse($data->transaction->date_now)->addMinutes($data->transaction->mins_expired);
+            }
             $data1 = self::createSnap($data);
             $data2 = self::createCharge($data1->response->payment->token_id,$payment);
 
@@ -203,8 +207,8 @@ class DokuHelper {
              'customer' => [
                 'id' => $data->transaction->id,
                 'name' => $data->contact->name,
-                'email' => $data->contact->email,
-                'phone' => $data->contact->phone
+                //'email' => $data->contact->email,
+                //'phone' => $data->contact->phone
              ]
         ];
 

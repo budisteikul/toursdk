@@ -199,8 +199,8 @@ class MidtransHelper {
             'customer_details' => [
               'first_name' => $data->contact->first_name,
               'last_name' => $data->contact->last_name,
-              'email' => $data->contact->email,
-              'phone' => $data->contact->phone
+              //'email' => $data->contact->email,
+              //'phone' => $data->contact->phone
             ],
             'expiry'=> [
               'start_time' => $data->transaction->date_now,

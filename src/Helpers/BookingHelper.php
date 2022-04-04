@@ -1866,6 +1866,11 @@ class BookingHelper {
         $data->contact = $contact;
         $data->transaction = $transaction;
 
+        if($data->transaction->mins_expired==0) {
+			$data->transaction->mins_expired = 60;
+			$data->transaction->date_expired = Carbon::parse($data->transaction->date_now)->addMinutes($data->transaction->mins_expired);
+        }
+
 		switch($payment_provider)
 		{
 			case "oyindonesia":

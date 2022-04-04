@@ -720,7 +720,9 @@ class ContentHelper {
 
 			$product .= '<h5>'.$shoppingcart_product->title.'</h5>';
 			
-            $product .= ProductHelper::datetotext($shoppingcart_product->date) .' <br />';
+            $thedate = ProductHelper::datetotext($shoppingcart_product->date);
+            if($thedate!=null) $product .= $thedate .' <br />';
+            
 			if($shoppingcart_product->rate!="") $product .= $shoppingcart_product->rate .' <br />';
 			
 

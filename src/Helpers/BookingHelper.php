@@ -2228,7 +2228,7 @@ class BookingHelper {
 									<div class="row h-100">
    										<div class="col-sm-12 my-auto text-center">
     										<h1 class="mb-2 mt-4">'. $merchant_name .'</h1>
-    										<h5 class="mb-2 mt-2">'. self::get_nmid($shoppingcart) .'</h5>
+    										<h5 class="mb-4 mt-2">'. self::get_nmid($shoppingcart) .'</h5>
     										<img id="qris-img" class="img-fluid border border-white" alt="QRIS" style="max-width:250px;" src="data:image/png;base64, '. base64_encode(self::generate_qris($shoppingcart)) .' ">
    										</div>
 									</div>
@@ -2396,9 +2396,9 @@ class BookingHelper {
 
 	public static function generate_qris($shoppingcart)
 	{
-		$path = '/public/img/qrcode-logo.png';
-		$qrcode = QrCode::errorCorrection('H')->format('png')->merge($path,.3,false)->margin(0)->size(630)->generate($shoppingcart->shoppingcart_payment->qrcode);
-		//$qrcode = QrCode::errorCorrection('H')->format('png')->margin(0)->size(630)->generate($shoppingcart->shoppingcart_payment->qrcode);
+		//$path = '/public/img/qrcode-logo.png';
+		//$qrcode = QrCode::errorCorrection('H')->format('png')->merge($path,.3,false)->margin(0)->size(630)->generate($shoppingcart->shoppingcart_payment->qrcode);
+		$qrcode = QrCode::errorCorrection('H')->format('png')->margin(0)->size(630)->generate($shoppingcart->shoppingcart_payment->qrcode);
 		return $qrcode;
 	}
 

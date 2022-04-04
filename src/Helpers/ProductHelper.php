@@ -80,8 +80,8 @@ class ProductHelper {
         return $hasil;
     }
 
-    public static function texttodate($str){
-        $text = $str;
+    public static function texttodate($text){
+        if($text=="Never expires") return null;
         $text = explode('@',$text);
         if(isset($text[1]))
         {
@@ -98,6 +98,7 @@ class ProductHelper {
     }
     
     public static function datetotext($str){
+        if($str==null) return null;
         $date = \DateTime::createFromFormat('Y-m-d H:i:s', $str);
         if($date->format('H:i')=="00:00")
         {

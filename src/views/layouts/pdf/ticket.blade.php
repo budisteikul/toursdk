@@ -146,25 +146,32 @@ body {
         <div style="margin-top:15px; margin-bottom:20px; padding-left:20px; padding-right:20px;">
           <table width="100%" border="0" align="center" cellspacing="0" cellpadding="0">
        	    <tbody>
+                @php
+                $thetanggal = $ProductHelper->datetotext($shoppingcart_product->date);
+                @endphp
         	      <tr>
-        	        <td class="text-opacity">DATE</td>
         	        <td class="text-opacity">NAME</td>
+        	        <td class="text-opacity">
+                  @if($thetanggal!=null)
+                    DATE
+                  @endif
+                  </td>
       	        </tr>
         	      <tr>
         	        <td class="text-no-opacity">
                 @php
-				        $tanggal = $ProductHelper->datetotext($shoppingcart_product->date);
-				        $tanggal = str_ireplace("@","<br>",$tanggal);
-				        @endphp
-                {!! $tanggal !!}
+                $rev_shoppingcarts = $shoppingcart_product->shoppingcart()->first();
+                @endphp
+                {{ $main_contact->firstName }}
+                {{ $main_contact->lastName }} 
                     </td>
         	        <td class="text-no-opacity">
+                @if($thetanggal!=null)   
                 @php
-	  	          $rev_shoppingcarts = $shoppingcart_product->shoppingcart()->first();
-	              @endphp
-                {{ $main_contact->firstName }}
-                {{ $main_contact->lastName }}    
-                    
+                $thetanggal = str_ireplace("@","<br>",$tanggal);
+                @endphp
+                {!! $tanggal !!}
+                @endif
                     </td>
       	        </tr>
    	        </tbody>

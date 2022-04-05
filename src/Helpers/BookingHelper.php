@@ -9,6 +9,7 @@ use budisteikul\toursdk\Helpers\ProductHelper;
 use budisteikul\toursdk\Helpers\PaypalHelper;
 use budisteikul\toursdk\Helpers\MidtransHelper;
 use budisteikul\toursdk\Helpers\OyHelper;
+use budisteikul\toursdk\Helpers\PaydiaHelper;
 use budisteikul\toursdk\Helpers\DokuHelper;
 use budisteikul\toursdk\Helpers\FirebaseHelper;
 use budisteikul\toursdk\Helpers\GeneralHelper;
@@ -1893,6 +1894,13 @@ class BookingHelper {
 				$rate = 1;
 				$payment_status = 4;
 				$response = MidtransHelper::createPayment($data);
+			break;
+			case "paydia":
+				$amount = $shoppingcart->due_now;
+				$currency = 'IDR';
+				$rate = 1;
+				$payment_status = 4;
+				$response = PaydiaHelper::createPayment($data);
 			break;
 			case "paypal":
 				$payment_provider = 'paypal';

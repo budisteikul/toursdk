@@ -1,8 +1,8 @@
 <?php
 namespace budisteikul\toursdk\Helpers;
-use Carbon\Carbon;
 
-class OyHelper { 
+
+class PaydiaHelper { 
   public static function env_appApiUrl()
   {
         return env("APP_API_URL",false);
@@ -107,6 +107,9 @@ class OyHelper {
 
         $data1 = $response->getBody()->getContents();
         $data1 = json_decode($data1);
+
+        print_r($data1);
+        exit();
 
         $response = new \stdClass();
         $response->bank_name = 'paydia';

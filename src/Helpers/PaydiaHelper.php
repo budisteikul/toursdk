@@ -5,7 +5,7 @@ namespace budisteikul\toursdk\Helpers;
 class PaydiaHelper { 
   public static function env_appApiUrl()
   {
-        return env("APP_API_URL",false);
+        return env("APP_API_URL");
   }
 
   public static function env_paydiaUseProxy()

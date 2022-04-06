@@ -762,7 +762,7 @@ class APIController extends Controller
     {
         $data = $request->all();
         $order_id = null;
-        if(isset($data['merchant_trxid'])) $order_id = $data['merchant_trxid'];
+        if(isset($data['refid'])) $order_id = $data['refid'];
         $shoppingcart_payment = ShoppingcartPayment::where('order_id',$order_id)->first();
         if($shoppingcart_payment!==null) {
             $confirmation_code = $shoppingcart_payment->shoppingcart->confirmation_code;

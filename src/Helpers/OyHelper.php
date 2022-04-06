@@ -41,7 +41,7 @@ class OyHelper {
         return env("PROXY_SERVER");
   }
 
-  public static function env_proxyUsermame()
+  public static function env_proxyUsername()
   {
         return env("PROXY_USERNAME");
   }
@@ -61,7 +61,7 @@ class OyHelper {
       $proxy = null;
       if(self::env_oyUseProxy())
       {
-            $proxy = 'http://'. self::env_proxyUsermame() .':'. self::env_proxyPassword() .'@'. self::env_proxyServer() .':'. self::env_proxyPort();
+            $proxy = 'http://'. self::env_proxyUsername() .':'. self::env_proxyPassword() .'@'. self::env_proxyServer() .':'. self::env_proxyPort();
       }
       return $proxy;
   }

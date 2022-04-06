@@ -18,7 +18,7 @@ class PaydiaHelper {
         return env("PROXY_SERVER");
   }
 
-  public static function env_proxyUsermame()
+  public static function env_proxyUsername()
   {
         return env("PROXY_USERNAME");
   }
@@ -38,7 +38,7 @@ class PaydiaHelper {
       $proxy = null;
       if(self::env_paydiaUseProxy())
       {
-            $proxy = 'http://'. self::env_proxyUsermame() .':'. self::env_proxyPassword() .'@'. self::env_proxyServer() .':'. self::env_proxyPort();
+            $proxy = 'http://'. self::env_proxyUsername() .':'. self::env_proxyPassword() .'@'. self::env_proxyServer() .':'. self::env_proxyPort();
       }
       return $proxy;
   }
@@ -87,14 +87,16 @@ class PaydiaHelper {
               'Authorization' => 'Bearer '. base64_encode(self::env_paydiaClientId().':'.self::env_paydiaSecretKey().':'.self::env_paydiaMid())
           ];
 
+        $transaction_id = str_replace("PAY-", "", $data->transaction->id);
+
         $data_json = [
         	'merchantid' => self::env_paydiaMid(),
         	'nominal' => $data->transaction->amount,
         	'tip' => 0,
-        	'ref' => $data->transaction->id,
+        	'ref' => $transaction_id,
         	'callback' => self::env_appApiUrl().'/payment/paydia/confirm',
-        	//'expire' => $data->transaction->mins_expired
-        	'expire' => 5
+        	'expire' => $data->transaction->mins_expired
+        	//'expire' => 5
         ];
 
         $client = new \GuzzleHttp\Client(['headers' => $headers,'http_errors' => false]);
@@ -105,19 +107,18 @@ class PaydiaHelper {
           ]
         );
 
-        $data1 = $response->getBody()->getContents();
-        $data1 = json_decode($data1);
+    $data1 = $response->getBody()->getContents();
+    $data1 = json_decode($data1);
 
-        print_r($data1);
-        exit();
+     
 
-        $response = new \stdClass();
-        $response->bank_name = 'paydia';
+    $response = new \stdClass();
+    $response->bank_name = 'paydia';
 		$response->qrcode = $data1->rawqr;
 		$response->link = null;
-		//$response->expiration_date = $data->transaction->date_expired;
-		$response->expiration_date = 5;
-		$response->order_id = $data->transaction->id;
+		$response->expiration_date = $data->transaction->date_expired;
+		//$response->expiration_date = 5;
+		$response->order_id = $data1->refid;
 		$response->payment_type = 'qris';
 		$response->redirect = $data->transaction->finish_url;
 

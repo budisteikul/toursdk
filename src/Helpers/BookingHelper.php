@@ -2225,7 +2225,7 @@ class BookingHelper {
 						break;
 					case 4:
 
-						$data_qris = get_qris_content($shoppingcart);
+						$data_qris = self::get_qris_content($shoppingcart);
 						return '
 								
 								<div class="card mb-1">

@@ -2225,7 +2225,7 @@ class BookingHelper {
 						break;
 					case 4:
 
-						$merchant_name = self::env_appName();
+						$data_qris = get_qris_content($shoppingcart);
 						return '
 								
 								<div class="card mb-1">
@@ -2240,8 +2240,8 @@ class BookingHelper {
 								<div class="card-img-overlay">
 									<div class="row h-100">
    										<div class="col-sm-12 my-auto text-center">
-    										<h1 class="mb-2 mt-4">'. $merchant_name .'</h1>
-    										<h5 class="mb-4 mt-2">'. self::get_nmid($shoppingcart) .'</h5>
+    										<h1 class="mb-2 mt-4">'. $data_qris->merchant .'</h1>
+    										<h5 class="mb-4 mt-2">'. $data_qris->nmid .'</h5>
     										<img id="qris-img" class="img-fluid border border-white" alt="QRIS" style="max-width:250px;" src="data:image/png;base64, '. base64_encode(self::generate_qris($shoppingcart)) .' ">
    										</div>
 									</div>
@@ -2415,17 +2415,60 @@ class BookingHelper {
 		return $qrcode;
 	}
 
-	public static function get_nmid($shoppingcart)
+	public static function disassembly_qris($new_string)
+	{
+		$dataObj = new \stdClass();
+		while($new_string!="")
+        {
+            $new_object = substr($new_string,0,2);
+            $lenght = substr($new_string,2,2);
+            $value = '';
+            try
+            {
+                $value = @substr($new_string,4,$lenght);
+            }
+            catch(exception $e)
+            {
+                $value ='';
+            }
+            
+            $aaa = $new_object . $lenght . $value;
+            $new_string = str_replace($aaa, "", $new_string);
+            if($new_object==26 || $new_object==51)
+            {
+                $dataObj1 = new \stdClass();
+                $new_string1 = $value;
+                while($new_string1!="")
+                {
+                    $new_object1 = substr($new_string1,0,2);
+                    $lenght1 = substr($new_string1,2,2);
+                    $value1 = @substr($new_string1,4,$lenght1);
+                    $aaa1 = $new_object1 . $lenght1 . $value1;
+                    $new_string1 = str_replace($aaa1, "", $new_string1);
+                    $dataObj1->$new_object1 = $value1;
+                }
+                $dataObj->$new_object = $dataObj1;
+            }
+            else
+            {
+                $dataObj->$new_object = $value;
+            }
+        }
+        return $dataObj;
+	}
+
+	public static function get_qris_content($shoppingcart)
 	{
 		$nmid = "NMID : IDXXXXXXXXXXX";
-		$string = $shoppingcart->shoppingcart_payment->qrcode;
-		$arr = explode("ID.CO.QRIS.WWW",$string);
-        if(isset($arr[1]))
-        {
-            $lenght = substr($arr[1],2,2);
-            $nmid = 'NMID : '. substr($arr[1],4,$lenght);
-        }
-        return $nmid;
+		$merchant = "XXXXX XXXX";
+		$dataObj = self::disassembly_qris($shoppingcart->shoppingcart_payment->qrcode);
+		if(isset($dataObj[51][02])) $nmid = $dataObj[51][02];
+		if(isset($dataObj[59])) $merchant = $dataObj[59];
+
+		$dataObj1 = new \stdClass();
+		$dataObj1->merchant = $merchant;
+		$dataObj1->nmid = $nmid;
+		return $dataObj1;
 	}
 
 	public static function create_manual_pdf($shoppingcart)

@@ -2466,8 +2466,8 @@ class BookingHelper {
 		if(isset($dataObj->{59})) $merchant = $dataObj->{59};
 
 		$dataObj1 = new \stdClass();
-		$dataObj1->merchant = $merchant;
-		$dataObj1->nmid = $nmid;
+		$dataObj1->merchant = strtoupper($merchant);
+		$dataObj1->nmid = 'NMID : '. $nmid;
 		return $dataObj1;
 	}
 

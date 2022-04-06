@@ -32,9 +32,7 @@ class APIController extends Controller
     
     public function test()
     {
-        $string = '00020101021226650013ID.PAYDIA.WWW011893600818022040500202152204050020000000303UKE5204581253033605405280005802ID5914BUDI DAN RATNA6010YOGYAKARTA6105552316242011222040600000307152204050020000000803api630445E9';
-        $data = BookingHelper::disassembly_qris($string);
-        print_r($data);
+
     }
 
     public function __construct()
@@ -42,6 +40,10 @@ class APIController extends Controller
         $this->currency = env("BOKUN_CURRENCY");
         $this->lang = env("BOKUN_LANG");
         $this->midtransServerKey = env("MIDTRANS_SERVER_KEY");
+
+        $this->paydiaClientId = env("PAYDIA_CLIENT_ID");
+        $this->paydiaSecretKey = env("PAYDIA_SECRET_KEY");
+        $this->paydiaMid = env("PAYDIA_MID");
     }
 
     public function product_add(Request $request)
@@ -762,6 +764,14 @@ class APIController extends Controller
     public function confirmpaymentpaydia(Request $request)
     {
         $data = $request->all();
+        $signature = null;
+        if(isset($data['signature'])) $signature = $data['signature'];
+
+        if($signature!=base64_encode($this->paydiaClientId.':'.$this->paydiaSecretKey.':'.$this->paydiaMid))
+        {
+            return response('OK', 200)->header('Content-Type', 'text/plain');
+        }
+
         $order_id = null;
         if(isset($data['refid'])) $order_id = $data['refid'];
         $shoppingcart_payment = ShoppingcartPayment::where('order_id',$order_id)->first();
@@ -776,6 +786,8 @@ class APIController extends Controller
                 }
             }
         }
+
+
         return response('OK', 200)->header('Content-Type', 'text/plain');
     }
 

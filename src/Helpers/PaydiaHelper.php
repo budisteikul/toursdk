@@ -78,11 +78,11 @@ class PaydiaHelper {
 
   public static function createPayment($data)
   {
-  		$url = self::paydiaApiEndpoint();
+  		  $url = self::paydiaApiEndpoint();
         $endpoint = $url . '/qris/generate/';
 
         $headers = [
-              'Accept' => 'application/jsons',
+              'Accept' => '*/*',
               'Content-Type' => 'application/json',
               'Authorization' => 'Bearer '. base64_encode(self::env_paydiaClientId().':'.self::env_paydiaSecretKey().':'.self::env_paydiaMid())
           ];
@@ -99,6 +99,7 @@ class PaydiaHelper {
         	//'expire' => 5
         ];
 
+        
         $client = new \GuzzleHttp\Client(['headers' => $headers,'http_errors' => false]);
         $response = $client->request('POST',$endpoint,
           [
@@ -109,8 +110,6 @@ class PaydiaHelper {
 
     $data1 = $response->getBody()->getContents();
     $data1 = json_decode($data1);
-
-     
 
     $response = new \stdClass();
     $response->bank_name = 'paydia';

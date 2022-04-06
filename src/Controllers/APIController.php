@@ -32,8 +32,9 @@ class APIController extends Controller
     
     public function test()
     {
-        $test = Shoppingcart::whereYear('created_at',date('Y'))->whereMonth('created_at',date('m'))->count();
-        print_r($test);
+        $string = '00020101021226650013ID.PAYDIA.WWW011893600818022040500202152204050020000000303UKE5204581253033605405280005802ID5914BUDI DAN RATNA6010YOGYAKARTA6105552316242011222040600000307152204050020000000803api630445E9';
+        $data = BookingHelper::disassembly_qris($string);
+        print_r($data);
     }
 
     public function __construct()

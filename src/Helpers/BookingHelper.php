@@ -2459,8 +2459,8 @@ class BookingHelper {
 
 	public static function get_qris_content($shoppingcart)
 	{
-		$nmid = "IDXXXXXXXXXXX";
-		$merchant = "XXXXX XXXX";
+		$nmid = "ID1022165253777";
+		$merchant = self::env_appName();
 		$dataObj = self::disassembly_qris($shoppingcart->shoppingcart_payment->qrcode);
 		if(isset($dataObj->{'51'}->{'02'})) $nmid = $dataObj->{'51'}->{'02'};
 		if(isset($dataObj->{'59'})) $merchant = $dataObj->{'59'};

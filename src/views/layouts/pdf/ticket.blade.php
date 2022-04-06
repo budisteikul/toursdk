@@ -170,7 +170,7 @@ body {
                 @php
                 $thetanggal = str_ireplace("@","<br>",$thetanggal);
                 @endphp
-                {!! $tanggal !!}
+                {!! $thetanggal !!}
                 @endif
                     </td>
       	        </tr>

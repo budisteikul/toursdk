@@ -2462,8 +2462,8 @@ class BookingHelper {
 		$nmid = "NMID : IDXXXXXXXXXXX";
 		$merchant = "XXXXX XXXX";
 		$dataObj = self::disassembly_qris($shoppingcart->shoppingcart_payment->qrcode);
-		if(isset($dataObj->51->02)) $nmid = $dataObj->51->02;
-		if(isset($dataObj->59)) $merchant = $dataObj->59;
+		if(isset($dataObj->{51}->{02})) $nmid = $dataObj->{51}->{02};
+		if(isset($dataObj->{59})) $merchant = $dataObj->{59};
 
 		$dataObj1 = new \stdClass();
 		$dataObj1->merchant = $merchant;

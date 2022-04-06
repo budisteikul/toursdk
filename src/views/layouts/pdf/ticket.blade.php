@@ -168,7 +168,7 @@ body {
         	        <td class="text-no-opacity">
                 @if($thetanggal!=null)   
                 @php
-                $thetanggal = str_ireplace("@","<br>",$tanggal);
+                $thetanggal = str_ireplace("@","<br>",$thetanggal);
                 @endphp
                 {!! $tanggal !!}
                 @endif

@@ -265,11 +265,11 @@ class DokuHelper {
         $signature = base64_encode(hash_hmac('sha256', $rawSignature, $secretKey, true));
         $finalSignature = 'HMACSHA256=' . $signature;
 
-        if($signature==$finalSignature)
+        if($request->header('Signature')==$finalSignature)
         {
             $status = true;
         }
-        
+
         return $status;
     }
 

@@ -734,7 +734,7 @@ class APIController extends Controller
 
     public function confirmpaymentdoku(Request $request)
     {
-            if(DokuHelper::checkSignature($request))
+            if(!DokuHelper::checkSignature($request))
             {
                 return response('Invalid Signature', 400)->header('Content-Type', 'text/plain');
             }
@@ -781,7 +781,7 @@ class APIController extends Controller
 
     public function confirmpaymentpaydia(Request $request)
     {
-        if(PaydiaHelper::checkSignature($request))
+        if(!PaydiaHelper::checkSignature($request))
         {
             return response('Invalid Signature', 200)->header('Content-Type', 'text/plain');
         }
@@ -812,7 +812,7 @@ class APIController extends Controller
 
     public function confirmpaymentmidtrans(Request $request)
     {
-            if(MidtransHelper::checkSignature($request))
+            if(!MidtransHelper::checkSignature($request))
             {
                 return response('Invalid Signature', 200)->header('Content-Type', 'text/plain');
             }

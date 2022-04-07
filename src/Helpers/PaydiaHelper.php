@@ -80,7 +80,7 @@ class PaydiaHelper {
   		  $url = self::paydiaApiEndpoint();
         $endpoint = $url . '/qris/generate/';
 
-        
+        $signature = base64_encode(self::env_paydiaClientId().':'.self::env_paydiaSecretKey().':'.self::env_paydiaMid());
 
         $headers = [
               'Accept' => '*/*',
@@ -116,7 +116,7 @@ class PaydiaHelper {
 		$response->qrcode = $data1->rawqr;
 		$response->link = null;
 		$response->expiration_date = $data->transaction->date_expired;
-		
+		$response->authorization_id = $signature;
 		$response->order_id = $data1->refid;
 		$response->payment_type = 'qris';
 		$response->redirect = $data->transaction->finish_url;
@@ -130,7 +130,7 @@ class PaydiaHelper {
      $data = $request->all();
      $signature = null;
      if(isset($data['signature'])) $signature = $data['signature'];
-     if($signature==base64_encode($this->paydiaClientId.':'.$this->paydiaSecretKey.':'.$this->paydiaMid))
+     if($signature==base64_encode(self::env_paydiaClientId().':'.self::env_paydiaSecretKey().':'.self::env_paydiaMid()))
      {
         $status = true;
      }

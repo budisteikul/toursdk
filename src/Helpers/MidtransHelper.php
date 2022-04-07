@@ -277,7 +277,7 @@ class MidtransHelper {
       {
         $status = true;
       }
-      return $status
+      return $status;
   }
 
 }

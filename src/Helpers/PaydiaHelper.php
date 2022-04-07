@@ -1,7 +1,6 @@
 <?php
 namespace budisteikul\toursdk\Helpers;
 
-
 class PaydiaHelper { 
   public static function env_appApiUrl()
   {

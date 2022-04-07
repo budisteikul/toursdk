@@ -1,7 +1,5 @@
 <?php
 namespace budisteikul\toursdk\Helpers;
-use budisteikul\toursdk\Helpers\ImageHelper;
-use Illuminate\Support\Facades\Storage;
 use Carbon\Carbon;
 
 class OyHelper {
@@ -269,15 +267,6 @@ class OyHelper {
 
           $data1 = self::createSnap($data);
           $data2 = self::createCharge($data,$data1->authorization_id,$payment);
-
-
-          //$qrcode = ImageHelper::uploadQrcodeCloudinary($data2->data->qris_url);
-          //$qrcode_url = $qrcode['secure_url'];
-
-          //$path = date('Y-m-d');
-          //$contents = file_get_contents($data2->data->qris_url);
-          //Storage::disk('gcs')->put('qrcode/'. $path .'/'.$data1->snaptoken.'.png', $contents);
-          //$qrcode_url = Storage::disk('gcs')->url('qrcode/'. $path .'/'.$data1->snaptoken.'.png');
 
           $response->payment_type = 'qris';
           $response->bank_name = $payment->bank_name;

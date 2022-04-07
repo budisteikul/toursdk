@@ -1,8 +1,6 @@
 <?php
 namespace budisteikul\toursdk\Helpers;
-use budisteikul\toursdk\Helpers\ImageHelper;
 use Illuminate\Support\Facades\Storage;
-use budisteikul\toursdk\Helpers\FirebaseHelper;
 use Carbon\Carbon;
 use Zxing\QrReader;
 

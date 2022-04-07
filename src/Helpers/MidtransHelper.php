@@ -273,7 +273,7 @@ class MidtransHelper {
       $data = $request->all();
       $signature = null;
       if(isset($data['signature_key'])) $signature = $data['signature_key'];
-      if(hash('sha512', $data['order_id'].$data['status_code'].$data['gross_amount'].$this->midtransServerKey)==$signature)
+      if(hash('sha512', $data['order_id'].$data['status_code'].$data['gross_amount'].self::env_midtransServerKey())==$signature)
       {
         $status = true;
       }

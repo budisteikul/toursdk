@@ -268,5 +268,19 @@ class MidtransHelper {
 
         return $data;
   }
+
+  public static function checkSignature($request)
+  {
+      $status = false;
+      $data = $request->all();
+      $signature = null;
+      if(isset($data['signature_key'])) $signature = $data['signature_key'];
+      if(hash('sha512', $data['order_id'].$data['status_code'].$data['gross_amount'].$this->midtransServerKey)==$signature)
+      {
+        $status = true;
+      }
+      return $status
+  }
+
 }
 ?>

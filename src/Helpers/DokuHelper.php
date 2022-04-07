@@ -138,6 +138,8 @@ class DokuHelper {
         return $response;
     }
 
+
+
     public static function createCharge($token,$payment)
     {
         if($payment->bank_payment_type=="qris_doku")
@@ -244,6 +246,31 @@ class DokuHelper {
 
         $signature = base64_encode(hash_hmac('sha256', $rawSignature, $secret, true));
         return 'HMACSHA256=' . $signature;
+    }
+
+    public static function checkSignature($request)
+    {
+        $status = false;
+        $notificationBody = $request->getContent();
+        $notificationPath = '/'.$request->path();
+        $secretKey = self::env_dokuSecretKey();
+
+        $digest = base64_encode(hash('sha256', $notificationBody, true));
+        $rawSignature = "Client-Id:" . $request->header('Client-Id') . "\n"
+        . "Request-Id:" . $request->header('Request-Id') . "\n"
+        . "Request-Timestamp:" . $request->header('Request-Timestamp') . "\n"
+        . "Request-Target:" . $notificationPath . "\n"
+        . "Digest:" . $digest;
+
+        $signature = base64_encode(hash_hmac('sha256', $rawSignature, $secretKey, true));
+        $finalSignature = 'HMACSHA256=' . $signature;
+
+        if($signature==$finalSignature)
+        {
+            $status = true;
+        }
+        
+        return $status;
     }
 
 }

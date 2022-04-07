@@ -124,5 +124,18 @@ class PaydiaHelper {
 		return $response;
   }
 
+  public static function checkSignature($request)
+  {
+     $status = false;
+     $data = $request->all();
+     $signature = null;
+     if(isset($data['signature'])) $signature = $data['signature'];
+     if($signature==base64_encode($this->paydiaClientId.':'.$this->paydiaSecretKey.':'.$this->paydiaMid))
+     {
+        $status = true;
+     }
+     return $status;
+  }
+
 }
 ?>

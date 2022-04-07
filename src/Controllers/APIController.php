@@ -9,6 +9,10 @@ use budisteikul\toursdk\Helpers\ContentHelper;
 use budisteikul\toursdk\Helpers\FirebaseHelper;
 use budisteikul\toursdk\Helpers\PaypalHelper;
 
+use budisteikul\toursdk\Helpers\DokuHelper;
+use budisteikul\toursdk\Helpers\MidtransHelper;
+use budisteikul\toursdk\Helpers\PaydiaHelper;
+
 use budisteikul\toursdk\Models\Disbursement;
 use budisteikul\toursdk\Models\Category;
 use budisteikul\toursdk\Models\Review;
@@ -32,7 +36,16 @@ class APIController extends Controller
     
     public function test()
     {
+        $data1 = [
+            'aaa' => 'bbb'
+        ];
 
+        $data2 = [
+            'ccc' => 'ddd'
+        ];
+
+        $data1 = array_merge($data1,$data2);
+        print_r($data1);
     }
 
     public function __construct()
@@ -721,7 +734,10 @@ class APIController extends Controller
 
     public function confirmpaymentdoku(Request $request)
     {
-            
+            if(DokuHelper::checkSignature($request))
+            {
+                return response('Invalid Signature', 400)->header('Content-Type', 'text/plain');
+            }
 
             $data = $request->all();
 
@@ -735,14 +751,6 @@ class APIController extends Controller
 
             $shoppingcart_payment = ShoppingcartPayment::where('order_id',$order_id)->first();
             if($shoppingcart_payment!==null) {
-
-                /*
-                $signature = $request->header('Signature');
-                if($signature!=$shoppingcart_payment->authorization_id)
-                {
-                    return response('OK', 200)->header('Content-Type', 'text/plain');
-                }
-                */
 
                 $confirmation_code = $shoppingcart_payment->shoppingcart->confirmation_code;
                 $shoppingcart = Shoppingcart::where('confirmation_code',$confirmation_code)->first();
@@ -773,6 +781,11 @@ class APIController extends Controller
 
     public function confirmpaymentpaydia(Request $request)
     {
+        if(PaydiaHelper::checkSignature($request))
+        {
+            return response('Invalid Signature', 200)->header('Content-Type', 'text/plain');
+        }
+
         $data = $request->all();
         
         $order_id = null;
@@ -806,6 +819,11 @@ class APIController extends Controller
 
     public function confirmpaymentmidtrans(Request $request)
     {
+            if(MidtransHelper::checkSignature($request))
+            {
+                return response('Invalid Signature', 200)->header('Content-Type', 'text/plain');
+            }
+
             $data = $request->all();
 
             $order_id = null;

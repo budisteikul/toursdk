@@ -97,8 +97,6 @@ class MidtransHelper {
   {
         $payment = self::bankCode($data->transaction->bank);
 
-        $signature = hash('sha512', $data->transaction->id.'200'.$data->transaction->amount.self::env_midtransServerKey());
-
         $response = new \stdClass();
         if($payment->bank_payment_type=="permata_va")
         {
@@ -172,7 +170,7 @@ class MidtransHelper {
           $response->order_id = $data->transaction->id;
         }
 
-        $response->authorization_id = $signature;
+        $response->authorization_id = $data1->token;
         return $response;
   }
 

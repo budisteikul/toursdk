@@ -128,7 +128,7 @@ class DokuHelper {
             $response->link = $data2->how_to_pay_url;
         }
 
-        $response->authorization_id = $data1->response->headers->signature;
+        $response->authorization_id = $data1->response->payment->token_id;
         $response->bank_name = $payment->bank_name;
         $response->bank_code = $payment->bank_code;
         $response->redirect = $data->transaction->finish_url;

@@ -99,6 +99,8 @@ class MidtransHelper {
   {
         $payment = self::bankCode($data->transaction->bank);
 
+        $signature = hash('sha512', $data->transaction->id.'200'.$data->transaction->amount.self::env_midtransServerKey());
+
         $response = new \stdClass();
         if($payment->bank_payment_type=="permata_va")
         {
@@ -119,16 +121,6 @@ class MidtransHelper {
 
           $data1 = MidtransHelper::createSnap($data,$payment);
           $data2 = MidtransHelper::chargeSnap($data1->token,$data,$payment);
-
-         
-          //$qrcode = ImageHelper::uploadQrcodeCloudinary($data2['qr_code_url']);
-          //$qrcode_url = $qrcode['secure_url'];
-
-          //$path = date('Y-m-d');
-          //$contents = file_get_contents($data2['qr_code_url']);
-          //Storage::disk('gcs')->put('qrcode/'. $path .'/'.$data1->token.'.png', $contents);
-          //$qrcode_url = Storage::disk('gcs')->url('qrcode/'. $path .'/'.$data1->token.'.png');
-
           
           $contents = file_get_contents($data2['qr_code_url']);
           Storage::disk('local')->put($data1->token.'.png', $contents);
@@ -182,7 +174,7 @@ class MidtransHelper {
           $response->order_id = $data->transaction->id;
         }
 
-        $response->authorization_id = $data1->token;
+        $response->authorization_id = $signature;
         return $response;
   }
 

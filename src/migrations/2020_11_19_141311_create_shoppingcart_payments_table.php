@@ -22,7 +22,7 @@ class CreateShoppingcartPaymentsTable extends Migration
                     ->onDelete('cascade')->onUpdate('cascade');
             
             $table->string('order_id')->nullable();
-            $table->string('authorization_id')->nullable();
+            $table->text('authorization_id')->nullable();
 
             $table->string('payment_provider')->nullable();
             $table->string('payment_type')->nullable();

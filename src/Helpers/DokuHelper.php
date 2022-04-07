@@ -119,20 +119,11 @@ class DokuHelper {
             $data1 = self::createSnap($data);
             $data2 = self::createCharge($data1->response->payment->token_id,$payment);
 
-            
             $response->payment_type = 'qris';
-
-            //$path = date('Y-m-d');
-            //$contents = QrCode::format('png')->size(630)->generate($data2->qr_code);
-            //Storage::disk('gcs')->put('qrcode/'. $path .'/'.$data1->response->payment->token_id.'.png', $contents);
-            //$qrcode_url = Storage::disk('gcs')->url('qrcode/'. $path .'/'.$data1->response->payment->token_id.'.png');
-            
-            $response->authorization_id = $data1->response->payment->token_id;
             $response->qrcode = $data2->qr_code;
         }
         else
         {
-
             $data1 = self::createSnap($data);
             $data2 = self::createCharge($data1->response->payment->token_id,$payment);
 
@@ -141,7 +132,7 @@ class DokuHelper {
             $response->link = $data2->how_to_pay_url;
         }
 
-
+        $response->authorization_id = $data1->response->headers->signature;
         $response->bank_name = $payment->bank_name;
         $response->bank_code = $payment->bank_code;
         $response->redirect = $data->transaction->finish_url;

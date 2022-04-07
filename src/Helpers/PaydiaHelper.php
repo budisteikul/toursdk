@@ -81,10 +81,12 @@ class PaydiaHelper {
   		  $url = self::paydiaApiEndpoint();
         $endpoint = $url . '/qris/generate/';
 
+        $signature = base64_encode(self::env_paydiaClientId().':'.self::env_paydiaSecretKey().':'.self::env_paydiaMid());
+
         $headers = [
               'Accept' => '*/*',
               'Content-Type' => 'application/json',
-              'Authorization' => 'Bearer '. base64_encode(self::env_paydiaClientId().':'.self::env_paydiaSecretKey().':'.self::env_paydiaMid())
+              'Authorization' => 'Bearer '. $signature
           ];
 
         $transaction_id = str_replace("PAY-", "", $data->transaction->id);
@@ -96,7 +98,6 @@ class PaydiaHelper {
         	'ref' => $transaction_id,
         	'callback' => self::env_appApiUrl().'/payment/paydia/confirm',
         	'expire' => $data->transaction->mins_expired
-        	//'expire' => 5
         ];
 
         
@@ -116,7 +117,7 @@ class PaydiaHelper {
 		$response->qrcode = $data1->rawqr;
 		$response->link = null;
 		$response->expiration_date = $data->transaction->date_expired;
-		//$response->expiration_date = 5;
+		$response->authorization_id = $signature;
 		$response->order_id = $data1->refid;
 		$response->payment_type = 'qris';
 		$response->redirect = $data->transaction->finish_url;

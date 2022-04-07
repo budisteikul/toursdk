@@ -721,7 +721,8 @@ class APIController extends Controller
 
     public function confirmpaymentdoku(Request $request)
     {
-        
+            
+
             $data = $request->all();
 
             $order_id = null;
@@ -734,6 +735,13 @@ class APIController extends Controller
 
             $shoppingcart_payment = ShoppingcartPayment::where('order_id',$order_id)->first();
             if($shoppingcart_payment!==null) {
+
+                $signature = $request->header('Signature');
+                if($signature!=$shoppingcart_payment->authorization_id)
+                {
+                    return response('OK', 200)->header('Content-Type', 'text/plain');
+                }
+
                 $confirmation_code = $shoppingcart_payment->shoppingcart->confirmation_code;
                 $shoppingcart = Shoppingcart::where('confirmation_code',$confirmation_code)->first();
                 if($shoppingcart!==null)
@@ -764,18 +772,19 @@ class APIController extends Controller
     public function confirmpaymentpaydia(Request $request)
     {
         $data = $request->all();
-        $signature = null;
-        if(isset($data['signature'])) $signature = $data['signature'];
-
-        if($signature!=base64_encode($this->paydiaClientId.':'.$this->paydiaSecretKey.':'.$this->paydiaMid))
-        {
-            return response('OK', 200)->header('Content-Type', 'text/plain');
-        }
-
+        
         $order_id = null;
         if(isset($data['refid'])) $order_id = $data['refid'];
         $shoppingcart_payment = ShoppingcartPayment::where('order_id',$order_id)->first();
         if($shoppingcart_payment!==null) {
+
+            $signature = null;
+            if(isset($data['signature'])) $signature = $data['signature'];
+            if($signature!=$shoppingcart_payment->authorization_id)
+            {
+                return response('OK', 200)->header('Content-Type', 'text/plain');
+            }
+
             $confirmation_code = $shoppingcart_payment->shoppingcart->confirmation_code;
             $shoppingcart = Shoppingcart::where('confirmation_code',$confirmation_code)->first();
             if($shoppingcart!==null)
@@ -800,12 +809,19 @@ class APIController extends Controller
 
             $shoppingcart_payment = ShoppingcartPayment::where('order_id',$order_id)->first();
             if($shoppingcart_payment!==null) {
+
+                $signature = null;
+                if(isset($data['signature_key'])) $signature = $data['signature_key'];
+                if($signature!=$shoppingcart_payment->authorization_id)
+                {
+                    return response('OK', 200)->header('Content-Type', 'text/plain');
+                }
+
                 $confirmation_code = $shoppingcart_payment->shoppingcart->confirmation_code;
                 $shoppingcart = Shoppingcart::where('confirmation_code',$confirmation_code)->first();
                 if($shoppingcart!==null)
                 {
-                    if(hash('sha512', $order_id.$data['status_code'].$data['gross_amount'].$this->midtransServerKey)==$data['signature_key'])
-                    {
+                    
                         if($data['transaction_status']=="settlement")
                         {
                             BookingHelper::confirm_payment($shoppingcart,"CONFIRMED");
@@ -818,8 +834,6 @@ class APIController extends Controller
                         {
                             BookingHelper::confirm_payment($shoppingcart,"CANCELED");
                         }
-                    
-                    }
                 }
             }
                 

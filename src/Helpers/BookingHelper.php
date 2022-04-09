@@ -2070,9 +2070,9 @@ class BookingHelper {
     public static function get_payment_transaction_id()
     {
     	$count = self::get_count('shoppingcart');
-        $uuid = "PAY-". date('Ymd') . GeneralHelper::digitFormat(rand(00,99),2) . $count;
+        $uuid = date('YmdHis') . GeneralHelper::digitFormat(rand(00,99),2) . $count;
         while( ShoppingcartPayment::where('order_id','=',$uuid)->first() ){
-            $uuid = "PAY-". date('Ymd') . GeneralHelper::digitFormat(rand(00,99),2) . $count;
+            $uuid = date('YmdHis') . GeneralHelper::digitFormat(rand(00,99),2) . $count;
         }
         return $uuid;
     }

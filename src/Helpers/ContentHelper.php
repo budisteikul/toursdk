@@ -376,16 +376,16 @@ class ContentHelper {
             'value' => 'doku-mandiri', 'label' => 'MANDIRI', 'image' => url('/img/bank/mandiri.png'),
         ];
         $bank_transfer_list[] = [
-            'value' => 'doku-permata', 'label' => 'PERMATA', 'image' => url('/img/bank/permata.png'),
+            'value' => 'midtrans-permata', 'label' => 'PERMATA', 'image' => url('/img/bank/permata.png'),
+        ];
+        $bank_transfer_list[] = [
+            'value' => 'midtrans-bni', 'label' => 'BNI', 'image' => url('/img/bank/bni.png'),
+        ];
+        $bank_transfer_list[] = [
+            'value' => 'midtrans-bri', 'label' => 'BRI', 'image' => url('/img/bank/bri.png'),
         ];
         $bank_transfer_list[] = [
             'value' => 'doku-danamon', 'label' => 'DANAMON', 'image' => url('/img/bank/danamon.png'),
-        ];
-        $bank_transfer_list[] = [
-            'value' => 'doku-bni', 'label' => 'BNI', 'image' => url('/img/bank/bni.png'),
-        ];
-        $bank_transfer_list[] = [
-            'value' => 'doku-bri', 'label' => 'BRI', 'image' => url('/img/bank/bri.png'),
         ];
         $bank_transfer_list[] = [
             'value' => 'doku-cimb', 'label' => 'CIMB NIAGA',  'image' => url('/img/bank/cimb.png'),

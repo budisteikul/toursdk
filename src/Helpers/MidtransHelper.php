@@ -67,6 +67,11 @@ class MidtransHelper {
                 $data->bank_code = "009";
                 $data->bank_payment_type = "bni_va";
             break;
+            case "bri":
+                $data->bank_name = "bri";
+                $data->bank_code = "002";
+                $data->bank_payment_type = "bri_va";
+            break;
             case "bca":
                 $data->bank_name = "bca";
                 $data->bank_code = "014";

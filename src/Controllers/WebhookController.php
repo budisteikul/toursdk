@@ -4,6 +4,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use budisteikul\toursdk\Helpers\BookingHelper;
 use budisteikul\toursdk\Models\Shoppingcart;
+use Illuminate\Support\Facades\Storage;
 
 class WebhookController extends Controller
 {
@@ -18,6 +19,9 @@ class WebhookController extends Controller
         if($webhook_app=="bokun")
         {
             $data = json_decode($request->getContent(), true);
+            
+            Storage::disk('gcs')->put(date('YmdHis') '.txt', $data);
+
             switch($request->input('action'))
             {
             case 'BOOKING_CONFIRMED':

@@ -2029,12 +2029,26 @@ class BookingHelper {
 	{
 
 		$rate_oneusd = BokunHelper::get_currency($from); // IDR jadi USD
-		
+		$rate_oneusd = (float)$rate_oneusd;
+
+		// Markup PAYPAL =========================
+		if($from=="IDR" && $to=="USD")
+		{
+			$markup = $rate_oneusd * 4.4 / 100;
+			$rate_oneusd = $rate_oneusd + $markup;
+		}
+		if($from=="USD" && $to=="IDR")
+		{
+			$markup = $rate_oneusd * 4.4 / 100;
+			$rate_oneusd = $rate_oneusd - $markup;
+		}
+		// Markup PAYPAL =========================
+
 		$value = ($amount * $rate_oneusd);
 
 		if($to!="USD")
 		{
-			$rate = BokunHelper::get_currency($to); // EUR jadi USD
+			$rate = BokunHelper::get_currency($to);
 			$value = ($amount * $rate_oneusd / $rate);
 		}
 

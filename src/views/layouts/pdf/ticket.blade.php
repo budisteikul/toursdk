@@ -125,7 +125,9 @@ body {
                     <div class="title">
                     	{{ $shoppingcart_product->title }}
                     	<br>
+                      @if($shoppingcart_product->title!=$shoppingcart_product->rate)
                     	{{ $shoppingcart_product->rate }} 
+                      @endif
                     </div>
                     <div class="qrcode">
 						

@@ -112,7 +112,7 @@ class BookingHelper {
 			$shoppingcart_question->type = 'mainContactDetails';
 			$shoppingcart_question->question_id = 'phoneNumber';
 			$shoppingcart_question->order = 4;
-			$shoppingcart_question->answer = $data['customer']['phoneNumberCountryCode'] .' '. $data['customer']['phoneNumber'];
+			$shoppingcart_question->answer = $data['customer']['phoneNumber'];
 			$shoppingcart_question->save();
 			
 			// product
@@ -169,6 +169,7 @@ class BookingHelper {
 					
 					if($type_product=="product")
 					{
+
 						$new_currency = 'IDR';
 						$new_price = self::convert_currency($lineitems[$j]['unitPrice'],$data['currency'],$new_currency);
 						$new_discount = self::convert_currency($lineitems[$j]['discountedUnitPrice'],$data['currency'],$new_currency);
@@ -1755,14 +1756,8 @@ class BookingHelper {
 		$due_date = null;
 		$date = null;
 
-		if($data_type=="json")
-		{
-			if(isset($shoppingcart->payment->expiration_date)) $date = $shoppingcart->payment->expiration_date;
-		}
-		else
-		{
-			$date = $shoppingcart->shoppingcart_payment->expiration_date;
-		}
+		if(isset($shoppingcart->payment->expiration_date)) $date = $shoppingcart->payment->expiration_date;
+		
 
 		if($date!==null)
 		{

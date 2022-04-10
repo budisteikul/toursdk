@@ -22,14 +22,12 @@ class WebhookController extends Controller
             
             try
             {
-                $data1 = json_encode($data);
+                Storage::disk('gcs')->put('log/'. date('YmdHis') .'.txt', json_encode($data, JSON_PRETTY_PRINT));
             }
             catch(exception $e)
             {
-                $data1 = $data;
+                
             }
-            
-            Storage::disk('gcs')->put('log/'. date('YmdHis') .'.txt', $data1);
 
             switch($request->input('action'))
             {

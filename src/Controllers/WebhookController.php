@@ -19,8 +19,17 @@ class WebhookController extends Controller
         if($webhook_app=="bokun")
         {
             $data = json_decode($request->getContent(), true);
-
-            Storage::disk('gcs')->put('log/'. date('YmdHis') .'.txt', json_encode($data, JSON_PRETTY_PRINT));
+            
+            try
+            {
+                $data1 = json_encode($data);
+            }
+            catch(exception $e)
+            {
+                $data1 = $data;
+            }
+            
+            Storage::disk('gcs')->put('log/'. date('YmdHis') .'.txt', $data1);
 
             switch($request->input('action'))
             {

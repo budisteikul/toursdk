@@ -1758,7 +1758,6 @@ class BookingHelper {
 
 		if(isset($shoppingcart->payment->expiration_date)) $date = $shoppingcart->payment->expiration_date;
 		
-
 		if($date!==null)
 		{
 			$due_date = $date;

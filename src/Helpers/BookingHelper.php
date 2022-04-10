@@ -175,7 +175,7 @@ class BookingHelper {
 				
 				
 				ShoppingcartProduct::where('id',$shoppingcart_product->id)->update([
-					'currency'=>$$lineitems[$j]['totalAsMoney']['currency'],
+					'currency'=>$data['activityBookings'][$i]['sellerInvoice']['currency'],
 					'subtotal'=>$subtotal_product,
 					'discount'=>$total_discount,
 					'total'=>$total_product,

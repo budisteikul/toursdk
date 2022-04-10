@@ -140,6 +140,175 @@ class BookingHelper {
 				$shoppingcart_product->date = ProductHelper::texttodate($data['activityBookings'][$i]['invoice']['dates']);
 				$shoppingcart_product->save();
 				
+				$subtotal_product = 0;
+				$total_discount = 0;
+				$total_product = 0;
+
+				$lineitems = $data['activityBookings'][$i]['sellerInvoice']['customLineItems'];
+
+				
+				for($j=0;$j<count($lineitems);$j++)
+				{
+						$shoppingcart_product_detail = new ShoppingcartProductDetail();
+						$shoppingcart_product_detail->shoppingcart_product_id = $shoppingcart_product->id;
+						$shoppingcart_product_detail->type = 'OTA_SALE';
+						$shoppingcart_product_detail->title = $lineitems[$j]['title'];
+						$shoppingcart_product_detail->people = $data['activityBookings'][$i]['totalParticipants'];
+						$shoppingcart_product_detail->qty = $lineitems[$j]['quantity'];
+						$shoppingcart_product_detail->price = $lineitems[$j]['unitPrice'];
+						$shoppingcart_product_detail->unit_price = 'Price per booking';
+
+						$subtotal = $lineitems[$j]['unitPrice'] * $lineitems[$j]['quantity'];
+						$discount = $lineitems[$j]['discount'] * $lineitems[$j]['quantity'];
+						$total = $subtotal - $discount;
+
+						$shoppingcart_product_detail->currency = $lineitems[$j]['totalAsMoney']['currency'];
+						$shoppingcart_product_detail->discount = $discount;
+						$shoppingcart_product_detail->subtotal = $subtotal;
+						$shoppingcart_product_detail->total = $total;
+						$shoppingcart_product_detail->save();
+						
+						$subtotal_product += $subtotal;
+						$total_discount += $discount;
+						$total_product += $total;
+				}
+				
+				
+				ShoppingcartProduct::where('id',$shoppingcart_product->id)->update([
+					'currency'=>$$lineitems[$j]['totalAsMoney']['currency'],
+					'subtotal'=>$subtotal_product,
+					'discount'=>$total_discount,
+					'total'=>$total_product,
+					'due_now'=>$total_product
+				]);
+				
+				// activity question
+				if(isset($data['activityBookings'][$i]['answers']))
+				{
+				$order = 1;
+				for($k=0;$k<count($data['activityBookings'][$i]['answers']);$k++)
+				{
+						$shoppingcart_question = new ShoppingcartQuestion();
+						$shoppingcart_question->shoppingcart_id = $shoppingcart->id;
+						$shoppingcart_question->type = 'activityBookings';
+						$shoppingcart_question->booking_id = $data['activityBookings'][$i]['bookingId'];
+						$shoppingcart_question->question_id = $data['activityBookings'][$i]['answers'][$k]['id'];
+						$shoppingcart_question->label = $data['activityBookings'][$i]['answers'][$k]['question'];
+						$shoppingcart_question->order = $order;
+						$shoppingcart_question->answer = $data['activityBookings'][$i]['answers'][$k]['answer'];
+						$shoppingcart_question->save();
+						$order++;
+				}
+				}
+			}
+			
+			$grand_discount += $total_discount;
+			$grand_subtotal += $subtotal_product;
+			$grand_total += $total_product;
+			
+
+			$shoppingcart->currency = 'IDR';
+			$shoppingcart->subtotal = $grand_subtotal;
+			$shoppingcart->discount = $grand_discount;
+			$shoppingcart->total = $grand_total;
+			$shoppingcart->due_now = $grand_total;
+			$shoppingcart->save();
+
+
+			$new_currency = 'IDR';
+			$shoppingcart_payment = new ShoppingcartPayment();
+			$shoppingcart_payment->payment_provider = 'none';
+			$shoppingcart_payment->amount = $grand_total;
+			$shoppingcart_payment->rate = self::convert_currency(1,$data['currency'],$new_currency);
+			$shoppingcart_payment->rate_from = $data['currency'];
+			$shoppingcart_payment->rate_to = $new_currency;
+			$shoppingcart_payment->currency = $new_currency;
+			$shoppingcart_payment->payment_status = 2;
+			$shoppingcart_payment->shoppingcart_id = $shoppingcart->id;
+			$shoppingcart_payment->save();
+			
+			
+
+			return $shoppingcart;
+	}
+
+	public static function webhook_insert_shoppingcart_old($data)
+	{
+			$shoppingcart = new Shoppingcart();
+			$shoppingcart->booking_status = 'CONFIRMED';
+			$shoppingcart->confirmation_code = $data['confirmationCode'];
+			if(isset($data['promoCode'])) $shoppingcart->promo_code = $data['promoCode']['code'];
+			$bookingChannel = '';
+			if(isset($data['affiliate']['title']))
+			{
+				$bookingChannel = $data['affiliate']['title'];
+			}
+			else
+			{
+				$bookingChannel = $data['seller']['title'];
+			}
+			$shoppingcart->booking_channel = $bookingChannel;
+			$shoppingcart->session_id = Uuid::uuid4()->toString();
+			$shoppingcart->save();
+			
+			// main contact questions
+			$shoppingcart_question = new ShoppingcartQuestion();
+			$shoppingcart_question->shoppingcart_id = $shoppingcart->id;
+			$shoppingcart_question->type = 'mainContactDetails';
+			$shoppingcart_question->question_id = 'firstName';
+			$shoppingcart_question->order = 1;
+			$shoppingcart_question->answer = $data['customer']['firstName'];
+			$shoppingcart_question->save();
+			
+			$shoppingcart_question = new ShoppingcartQuestion();
+			$shoppingcart_question->shoppingcart_id = $shoppingcart->id;
+			$shoppingcart_question->type = 'mainContactDetails';
+			$shoppingcart_question->question_id = 'lastName';
+			$shoppingcart_question->order = 2;
+			$shoppingcart_question->answer = $data['customer']['lastName'];
+			$shoppingcart_question->save();
+			
+			$shoppingcart_question = new ShoppingcartQuestion();
+			$shoppingcart_question->shoppingcart_id = $shoppingcart->id;
+			$shoppingcart_question->type = 'mainContactDetails';
+			$shoppingcart_question->question_id = 'email';
+			$shoppingcart_question->order = 3;
+			$shoppingcart_question->answer = $data['customer']['email'];
+			$shoppingcart_question->save();
+			
+			$shoppingcart_question = new ShoppingcartQuestion();
+			$shoppingcart_question->shoppingcart_id = $shoppingcart->id;
+			$shoppingcart_question->type = 'mainContactDetails';
+			$shoppingcart_question->question_id = 'phoneNumber';
+			$shoppingcart_question->order = 4;
+			$shoppingcart_question->answer = $data['customer']['phoneNumber'];
+			$shoppingcart_question->save();
+			
+			// product
+			$grand_total = 0;
+			$grand_subtotal = 0;
+			$grand_discount = 0;
+
+			for($i=0;$i<count($data['activityBookings']);$i++)
+			{
+				$shoppingcart_product = new ShoppingcartProduct();
+				$shoppingcart_product->shoppingcart_id = $shoppingcart->id;
+				$shoppingcart_product->booking_id = $data['activityBookings'][$i]['bookingId'];
+				$shoppingcart_product->product_confirmation_code = $data['activityBookings'][$i]['productConfirmationCode'];
+				$shoppingcart_product->product_id = $data['activityBookings'][$i]['productId'];
+				
+				//$shoppingcart_product->image = ImageHelper::thumbnail($product);
+				if(isset($data['activityBookings'][$i]['activity']['photos'][0]['derived'][0]['url']))
+				{
+					$shoppingcart_product->image = $data['activityBookings'][$i]['activity']['photos'][0]['derived'][0]['url'];
+				}
+				
+
+				$shoppingcart_product->title = $data['activityBookings'][$i]['product']['title'];
+				$shoppingcart_product->rate = $data['activityBookings'][$i]['rateTitle'];
+				$shoppingcart_product->date = ProductHelper::texttodate($data['activityBookings'][$i]['invoice']['dates']);
+				$shoppingcart_product->save();
+				
 				$lineitems = $data['activityBookings'][$i]['invoice']['lineItems'];
 				$subtotal_product = 0;
 				$total_discount = 0;

@@ -36,7 +36,7 @@ class WebhookController extends Controller
                 {
                     $shoppingcart = BookingHelper::webhook_insert_shoppingcart($data);
                     BookingHelper::confirm_payment($shoppingcart,"CONFIRMED",true);
-                    //BookingHelper::shoppingcart_mail($shoppingcart);
+                    BookingHelper::shoppingcart_mail($shoppingcart);
                 }
                 return response()->json([
                     "id" => "1",

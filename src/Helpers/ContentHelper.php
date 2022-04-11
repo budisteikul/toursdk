@@ -71,9 +71,13 @@ class ContentHelper {
             }
         } catch (Exception $e) {
         }
-        
-        if($ticket=="") $ticket = 'No Documents <br /><small class="form-text text-muted">* Available when status is paid</small>';
-
+        if($shoppingcart->booking_channel=="WEBSITE") {
+            if($ticket=="") $ticket = 'No Documents <br /><small class="form-text text-muted">* Available when status is paid</small>';
+        }
+        else
+        {
+            $ticket = 'Available at '. $shoppingcart->booking_channel;
+        }
         
         $how_to_pay = array();
         

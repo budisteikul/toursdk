@@ -63,7 +63,7 @@ class BookingHelper {
         return env("APP_NAME");
     }
 
-	public static function webhook_insert_shoppingcart($data)
+	public static function webhook_insert_shoppingcart($data,$sessionId="")
 	{
 			$shoppingcart = new Shoppingcart();
 			$shoppingcart->booking_status = 'CONFIRMED';
@@ -79,7 +79,13 @@ class BookingHelper {
 				$bookingChannel = $data['seller']['title'];
 			}
 			$shoppingcart->booking_channel = $bookingChannel;
-			$shoppingcart->session_id = Uuid::uuid4()->toString();
+			if($sessionId==""){
+				$session_id = Uuid::uuid4()->toString();
+			}
+			else {
+				$session_id = $sessionId;
+			}
+			$shoppingcart->session_id = $session_id;
 			$shoppingcart->save();
 			
 			// main contact questions
@@ -149,17 +155,28 @@ class BookingHelper {
 				
 				for($j=0;$j<count($lineitems);$j++)
 				{
+						if($sessionId==""){
+							$s_quantity = 0;
+							$s_price = 0;
+							$s_discount = 0;
+						}
+						else {
+							$s_quantity = $lineitems[$j]['quantity'];
+							$s_price = $lineitems[$j]['unitPrice'];
+							$s_discount = $lineitems[$j]['discount'];
+						}
+
 						$shoppingcart_product_detail = new ShoppingcartProductDetail();
 						$shoppingcart_product_detail->shoppingcart_product_id = $shoppingcart_product->id;
 						$shoppingcart_product_detail->type = 'product';
 						$shoppingcart_product_detail->title = $lineitems[$j]['title'];
 						$shoppingcart_product_detail->people = $data['activityBookings'][$i]['totalParticipants'];
-						$shoppingcart_product_detail->qty = $lineitems[$j]['quantity'];
-						$shoppingcart_product_detail->price = $lineitems[$j]['unitPrice'];
+						$shoppingcart_product_detail->qty = $s_quantity;
+						$shoppingcart_product_detail->price = $s_price;
 						$shoppingcart_product_detail->unit_price = 'Price per booking';
 
-						$subtotal = $lineitems[$j]['unitPrice'] * $lineitems[$j]['quantity'];
-						$discount = $lineitems[$j]['discount'] * $lineitems[$j]['quantity'];
+						$subtotal = $s_price * $s_quantity;
+						$discount = $s_discount * $s_quantity;
 						$total = $subtotal - $discount;
 
 						$shoppingcart_product_detail->currency = $lineitems[$j]['totalAsMoney']['currency'];
@@ -185,9 +202,9 @@ class BookingHelper {
 				// activity question
 				if(isset($data['activityBookings'][$i]['answers']))
 				{
-				$order = 1;
-				for($k=0;$k<count($data['activityBookings'][$i]['answers']);$k++)
-				{
+					$order = 1;
+					for($k=0;$k<count($data['activityBookings'][$i]['answers']);$k++)
+					{
 						$shoppingcart_question = new ShoppingcartQuestion();
 						$shoppingcart_question->shoppingcart_id = $shoppingcart->id;
 						$shoppingcart_question->type = 'activityBookings';
@@ -198,7 +215,7 @@ class BookingHelper {
 						$shoppingcart_question->answer = $data['activityBookings'][$i]['answers'][$k]['answer'];
 						$shoppingcart_question->save();
 						$order++;
-				}
+					}
 				}
 			}
 			
@@ -206,14 +223,12 @@ class BookingHelper {
 			$grand_subtotal += $subtotal_product;
 			$grand_total += $total_product;
 			
-
 			$shoppingcart->currency = 'IDR';
 			$shoppingcart->subtotal = $grand_subtotal;
 			$shoppingcart->discount = $grand_discount;
 			$shoppingcart->total = $grand_total;
 			$shoppingcart->due_now = $grand_total;
 			$shoppingcart->save();
-
 
 			$new_currency = 'IDR';
 			$shoppingcart_payment = new ShoppingcartPayment();
@@ -227,8 +242,6 @@ class BookingHelper {
 			$shoppingcart_payment->shoppingcart_id = $shoppingcart->id;
 			$shoppingcart_payment->save();
 			
-			
-
 			return $shoppingcart;
 	}
 

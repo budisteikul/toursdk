@@ -40,14 +40,6 @@ class WebhookController extends Controller
                 }
                 return response('OK', 200)->header('Content-Type', 'text/plain');
             break;
-            case 'BOOKING_UPDATED':
-                $shoppingcart = Shoppingcart::where('confirmation_code',$data['confirmationCode'])->firstOrFail();
-                $session_id = $shoppingcart->session_id;
-                $shoppingcart->delete();
-                $shoppingcart = BookingHelper::webhook_insert_shoppingcart($data,$session_id);
-                BookingHelper::confirm_payment($shoppingcart,"CONFIRMED",true);
-                return response('OK', 200)->header('Content-Type', 'text/plain');
-            break;
             case 'BOOKING_ITEM_CANCELLED':
                 $shoppingcart = Shoppingcart::where('confirmation_code',$data['confirmationCode'])->firstOrFail();
                 

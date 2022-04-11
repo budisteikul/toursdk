@@ -50,10 +50,12 @@ class ContentHelper {
 
 	public static function view_receipt($shoppingcart)
 	{
-		$invoice = 'No Documents';
+		$invoice = 'Invoiced to '.$shoppingcart->booking_channel;
         try {
-            if($shoppingcart->shoppingcart_payment->payment_status>0) {
-                $invoice = '<a target="_blank" class="text-theme" href="'.url('/api').'/pdf/invoice/'. $shoppingcart->session_id .'/Invoice-'. $shoppingcart->confirmation_code .'.pdf"><i class="fas fa-file-invoice"></i> Invoice-'. $shoppingcart->confirmation_code .'.pdf</a><br />';
+            if($shoppingcart->booking_channel=="WEBSITE") {
+                if($shoppingcart->shoppingcart_payment->payment_status>0) {
+                    $invoice = '<a target="_blank" class="text-theme" href="'.url('/api').'/pdf/invoice/'. $shoppingcart->session_id .'/Invoice-'. $shoppingcart->confirmation_code .'.pdf"><i class="fas fa-file-invoice"></i> Invoice-'. $shoppingcart->confirmation_code .'.pdf</a><br />';
+                }
             }
         } catch (Exception $e) {
 

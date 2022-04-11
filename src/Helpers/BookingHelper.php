@@ -63,7 +63,7 @@ class BookingHelper {
         return env("APP_NAME");
     }
 
-	public static function webhook_insert_shoppingcart($data,$sessionId="")
+	public static function webhook_insert_shoppingcart($data)
 	{
 			$shoppingcart = new Shoppingcart();
 			$shoppingcart->booking_status = 'CONFIRMED';
@@ -79,13 +79,7 @@ class BookingHelper {
 				$bookingChannel = $data['seller']['title'];
 			}
 			$shoppingcart->booking_channel = $bookingChannel;
-			if($sessionId==""){
-				$session_id = Uuid::uuid4()->toString();
-			}
-			else {
-				$session_id = $sessionId;
-			}
-			$shoppingcart->session_id = $session_id;
+			$shoppingcart->session_id = Uuid::uuid4()->toString();
 			$shoppingcart->save();
 			
 			// main contact questions
@@ -155,16 +149,9 @@ class BookingHelper {
 				
 				for($j=0;$j<count($lineitems);$j++)
 				{
-						if($sessionId==""){
-							$s_quantity = 0;
-							$s_price = 0;
-							$s_discount = 0;
-						}
-						else {
-							$s_quantity = $lineitems[$j]['quantity'];
-							$s_price = $lineitems[$j]['unitPrice'];
-							$s_discount = $lineitems[$j]['discount'];
-						}
+						$s_quantity = $lineitems[$j]['quantity'];
+						$s_price = $lineitems[$j]['unitPrice'];
+						$s_discount = $lineitems[$j]['discount'];
 
 						$shoppingcart_product_detail = new ShoppingcartProductDetail();
 						$shoppingcart_product_detail->shoppingcart_product_id = $shoppingcart_product->id;

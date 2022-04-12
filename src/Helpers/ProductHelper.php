@@ -83,19 +83,18 @@ class ProductHelper {
 
     public static function texttodate($text){
         if($text=="Never expires") return null;
-        Carbon::createFromFormat('D, F d Y - H:i', $text);
-
+        
         //Sat, April 30 2022 - 18:30
         $text = explode('-',$text);
         if(isset($text[1]))
         {
-            $date = \DateTime::createFromFormat('D, F d Y ', $text[0]);
-            $time = \DateTime::createFromFormat(' H:i', $text[1]);
+            $date = Carbon::createFromFormat('D, F d Y ', $text[0]);
+            $time = Carbon::createFromFormat(' H:i', $text[1]);
             $hasil = $date->format('Y-m-d') .' '. $time->format('H:i:00');
         }
         else
         {
-            $date = \DateTime::createFromFormat('D, F d Y ', $text[0]);
+            $date = Carbon::createFromFormat('D, F d Y', $text[0]);
             $hasil = $date->format('Y-m-d') .' 00:00:00';
         }
         return $hasil;

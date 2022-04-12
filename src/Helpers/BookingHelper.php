@@ -777,6 +777,7 @@ class BookingHelper {
 			$sp_rate = $activity[$i]->rate->title;
 			$sp_currency = $contents->customerInvoice->currency;
 			
+			
 			$sp_date = ProductHelper::texttodate($product_invoice[$i]->dates);
 
 			

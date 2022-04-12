@@ -37,8 +37,8 @@ class APIController extends Controller
     
     public function test()
     {
-        $string = 'Sat, April 30 2022 - 18:30';
-        $date = ProductHelper::texttodate($string);
+        $string = 'Sat, April 30 2022';
+        $date = Carbon::createFromFormat('D, F d Y ', $text[0]);
         print_r($date);
     }
 

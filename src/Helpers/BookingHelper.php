@@ -2091,7 +2091,7 @@ class BookingHelper {
 					case 2:
 						return '
 								<div class="card mb-4">
-								<span class="badge badge-success invoice-color-success" style="font-size:20px;"><i class="fab fa-paypal"></i> PAYPAL PAID</span>
+								<span class="badge badge-success invoice-color-success" style="font-size:20px;"><i class="fab fa-paypal"></i> PAID VIA PAYPAL</span>
 								<div class="card-body bg-light">
 								'. $text .'
 								</div>
@@ -2118,13 +2118,13 @@ class BookingHelper {
 					case 2:
 						return '<div class="card mb-4">
 								<span class="badge badge-success invoice-color-success" style="font-size:20px;">
-								<i class="fas fa-university"></i> BANK TRANSFER PAID </span>
+								<i class="fas fa-university"></i> PAID VIA BANK TRANSFER </span>
 								</div>';
 						break;
 					case 3:
 						return '<div class="card mb-4">
 								<span class="badge badge-danger invoice-color-danger" style="font-size:20px;">
-								<i class="fas fa-university"></i> BANK TRANSFER UNPAID </span>
+								<i class="fas fa-university"></i> UNPAID </span>
 								</div>';
 						break;	
 					case 4:
@@ -2165,13 +2165,13 @@ class BookingHelper {
 					case 2:
 						return '<div class="card mb-4">
 								<span class="badge badge-success invoice-color-success" style="font-size:20px;">
-								<i class="fas fa-qrcode"></i> QRIS PAID </span>
+								<i class="fas fa-qrcode"></i> PAID VIA QRIS </span>
 								</div>';
 						break;
 					case 3:
 						return '<div class="card mb-4">
 								<span class="badge badge-danger invoice-color-danger" style="font-size:20px;">
-								<i class="fas fa-qrcode"></i> QRIS UNPAID </span>
+								<i class="fas fa-qrcode"></i> UNPAID </span>
 								</div>';
 						break;
 					case 4:
@@ -2216,13 +2216,13 @@ class BookingHelper {
 					case 2:
 						return '<div class="card mb-4">
 								<span class="badge badge-success invoice-color-success" style="font-size:20px;">
-								<i class="fas fa-wallet"></i> E-WALLET PAID </span>
+								<i class="fas fa-wallet"></i> PAID VIA E-WALLET </span>
 								</div>';
 						break;
 					case 3:
 						return '<div class="card mb-4">
 								<span class="badge badge-danger invoice-color-danger" style="font-size:20px;">
-								<i class="fas fa-wallet"></i> E-WALLET UNPAID </span>
+								<i class="fas fa-wallet"></i> UNPAID </span>
 								</div>';
 						break;
 					case 4:
@@ -2265,11 +2265,11 @@ class BookingHelper {
 				{
 					case 3:
 						return '<div class="card mb-4">
-            				<span class="badge badge-danger invoice-color-danger" style="font-size:20px;">UNPAID</span>
+            				<span class="badge badge-danger invoice-color-danger" style="font-size:20px;">INVOICE CANCELED</span>
 							</div>';
 					default:
 						return '<div class="card mb-4">
-            				<span class="badge badge-success invoice-color-success" style="font-size:20px;">PAID</span>
+            				<span class="badge badge-success invoice-color-success" style="font-size:20px;">INVOICED</span>
 							</div>';
 				}
             	

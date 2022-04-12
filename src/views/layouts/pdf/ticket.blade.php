@@ -130,7 +130,17 @@ body {
                     	{{ $shoppingcart_product->rate }} 
                       @endif
                       <br>
-                      {{ $shoppingcart_product->shoppingcart_product_details()->sum('people') .' Person' }}
+                      @php
+                        $people = 0;
+                      @endphp
+                      @foreach($shoppingcart_product->shoppingcart_product_details as $shoppingcart_product_detail)
+                        @php
+                          $people += $shoppingcart_product_detail->people;
+                        @endphp
+                      @endforeach
+                      @if($people>0)
+                      {{ $people .' Person' }}
+                      @endif
                     </div>
                     <div class="qrcode">
 						

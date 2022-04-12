@@ -62,12 +62,13 @@ body {
   padding-bottom:10px;
 }
 .card_heading .title {
-  padding-top: 5px;
+  padding-top: 10px;
+  margin-top: 10px;
   text-align: center;
   color:#FFFFFF;
   font-size:13px;
-  margin-left:15px;
-  margin-right:15px;
+  margin-left:20px;
+  margin-right:20px;
   opacity:0.8;
   text-transform:uppercase;
 }
@@ -128,6 +129,8 @@ body {
                       @if($shoppingcart_product->title!=$shoppingcart_product->rate)
                     	{{ $shoppingcart_product->rate }} 
                       @endif
+                      <br>
+                      {{ $shoppingcart_product->shoppingcart_product_details()->sum('people') .' Person' }}
                     </div>
                     <div class="qrcode">
 						

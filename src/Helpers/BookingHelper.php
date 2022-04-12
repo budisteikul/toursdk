@@ -2278,8 +2278,6 @@ class BookingHelper {
 		return '';
 	}
 
-	
-
 	public static function get_answer($shoppingcart,$question_id)
 	{
 		$value = '';

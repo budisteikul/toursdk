@@ -1940,7 +1940,7 @@ class BookingHelper {
 		return $status;
 	}
 
-	public static function remove_promocode($sessionId)
+	public static function remove_promocode_v2($sessionId)
 	{
 		$shoppingcart = Cache::get('_'. $sessionId);
 
@@ -1976,14 +1976,14 @@ class BookingHelper {
 		return '';
 	}
 
-	public static function remove_promocode_old($sessionId)
+	public static function remove_promocode($sessionId)
 	{
 		$contents = BokunHelper::get_removepromocode($sessionId);
         self::get_shoppingcart($sessionId,"update",$contents);
         return $contents;
 	}
 
-	public static function apply_promocode($sessionId,$promocode)
+	public static function apply_promocode_v2($sessionId,$promocode)
 	{
 		$status = false;
 		if(self::check_promocode($promocode))
@@ -2050,7 +2050,7 @@ class BookingHelper {
 		return $status;
 	}
 
-	public static function apply_promocode_old($sessionId,$promocode)
+	public static function apply_promocode($sessionId,$promocode)
 	{
 
 		$status = false;
@@ -2063,6 +2063,8 @@ class BookingHelper {
 		}
 		return $status;
 	}
+
+	
 
 	public static function text_rate($shoppingcart,$currency)
 	{

@@ -12,7 +12,7 @@ use budisteikul\toursdk\Helpers\PaypalHelper;
 use budisteikul\toursdk\Helpers\DokuHelper;
 use budisteikul\toursdk\Helpers\MidtransHelper;
 use budisteikul\toursdk\Helpers\PaydiaHelper;
-use budisteikul\toursdk\Helpers\ProductHelper;
+
 
 use budisteikul\toursdk\Models\Disbursement;
 use budisteikul\toursdk\Models\Category;
@@ -37,9 +37,7 @@ class APIController extends Controller
     
     public function test()
     {
-        $string = 'Sat, April 30 2022';
-        $date = Carbon::createFromFormat('D, F d Y ', $text[0]);
-        print_r($date);
+        
     }
 
     public function __construct()

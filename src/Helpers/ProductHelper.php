@@ -84,7 +84,7 @@ class ProductHelper {
     public static function texttodate($text){
         if($text=="Never expires") return null;
         
-        //Sat, April 30 2022 - 18:30
+        
         $text = explode('-',$text);
         if(isset($text[1]))
         {

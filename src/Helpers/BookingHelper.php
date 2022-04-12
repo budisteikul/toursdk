@@ -22,6 +22,7 @@ use budisteikul\toursdk\Models\ShoppingcartQuestion;
 use budisteikul\toursdk\Models\ShoppingcartQuestionOption;
 use budisteikul\toursdk\Models\ShoppingcartPayment;
 use budisteikul\toursdk\Models\Disbursement;
+use budisteikul\toursdk\Models\Voucher;
 
 use budisteikul\toursdk\Mail\BookingConfirmedMail;
 
@@ -1920,12 +1921,7 @@ class BookingHelper {
 		FirebaseHelper::delete($shoppingcart,'receipt');
 	}
 
-	public static function remove_promocode($sessionId)
-	{
-		$contents = BokunHelper::get_removepromocode($sessionId);
-        self::get_shoppingcart($sessionId,"update",$contents);
-        return $contents;
-	}
+	
 
 	public static function remove_activity($sessionId,$bookingId)
 	{
@@ -1934,7 +1930,127 @@ class BookingHelper {
 		return $sessionId;
 	}
 
+	public static function check_promocode($promocode)
+	{
+		$status = false;
+		$voucher = Voucher::where('code',strtoupper($promocode))->first();
+		if ($voucher !== null) {
+   			$status = true;
+		}
+		return $status;
+	}
+
+	public static function remove_promocode($sessionId)
+	{
+		$shoppingcart = Cache::get('_'. $sessionId);
+
+		$due_now_product = 0;
+		$due_on_arrival_product = 0;
+		foreach($shoppingcart->products as $product) 
+		{
+			foreach($product->product_details as $product_detail)
+			{
+				$product_detail->discount = 0;
+				$product_detail->total = $product_detail->subtotal;
+			}
+
+			$deposit = self::get_deposit($product->product_id,$product->subtotal);
+			$product->discount = 0;
+			$product->total = $product->subtotal;
+			$product->due_now = $deposit->due_now;
+			$product->due_on_arrival = $deposit->due_on_arrival;
+
+			$due_now_product += $product->due_now;
+			$due_on_arrival_product += $product->due_on_arrival;
+		}
+
+		$shoppingcart->discount = 0;
+		$shoppingcart->total = $shoppingcart->subtotal;
+		$shoppingcart->due_now = $due_now_product;
+		$shoppingcart->due_on_arrival = $due_on_arrival_product;
+
+		$shoppingcart->promo_code = null;
+
+		Cache::forget('_'. $sessionId);
+		Cache::add('_'. $sessionId, $shoppingcart, 172800);
+		return '';
+	}
+
+	public static function remove_promocode_old($sessionId)
+	{
+		$contents = BokunHelper::get_removepromocode($sessionId);
+        self::get_shoppingcart($sessionId,"update",$contents);
+        return $contents;
+	}
+
 	public static function apply_promocode($sessionId,$promocode)
+	{
+		$status = false;
+		if(self::check_promocode($promocode))
+		{
+			
+			
+			$voucher = Voucher::where('code',strtoupper($promocode))->first();
+			if($voucher->is_percentage)
+			{
+				$status = true;
+
+				$shoppingcart = Cache::get('_'. $sessionId);
+
+				$discount_product = 0;
+				$total_product = 0;
+				$due_now_product = 0;
+				$due_on_arrival_product = 0;
+				foreach($shoppingcart->products as $product) 
+				{
+					$discount_detail = 0;
+					$total_detail = 0;
+
+					foreach($product->product_details as $product_detail)
+					{
+						if($product_detail->type=="product")
+						{
+							$subtotal = $product_detail->subtotal;
+							$discount = $product_detail->subtotal * $voucher->amount / 100;
+							$total = $subtotal - $discount;
+
+							$discount_detail += $discount;
+							$total_detail += $total;
+
+							$product_detail->discount = $discount;
+							$product_detail->total = $total;
+						}
+						
+					}
+					
+					$deposit = self::get_deposit($product->product_id,$total_detail);
+					$product->discount = $discount_detail;
+					$product->total = $total_detail;
+					$product->due_now = $deposit->due_now;
+					$product->due_on_arrival = $deposit->due_on_arrival;
+
+					$discount_product += $product->discount;
+					$total_product += $product->total;
+					$due_now_product += $product->due_now;
+					$due_on_arrival_product += $product->due_on_arrival;
+				}
+
+				$shoppingcart->discount = $discount_product;
+				$shoppingcart->total = $total_product;
+				$shoppingcart->due_now = $due_now_product;
+				$shoppingcart->due_on_arrival = $due_on_arrival_product;
+
+				$shoppingcart->promo_code = strtoupper($promocode);
+
+				Cache::forget('_'. $sessionId);
+        		Cache::add('_'. $sessionId, $shoppingcart, 172800);
+			}
+		}
+
+		return $status;
+	}
+
+	public static function apply_promocode_old($sessionId,$promocode)
 	{
 
 		$status = false;

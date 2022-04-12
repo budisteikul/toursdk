@@ -12,6 +12,7 @@ use budisteikul\toursdk\Helpers\PaypalHelper;
 use budisteikul\toursdk\Helpers\DokuHelper;
 use budisteikul\toursdk\Helpers\MidtransHelper;
 use budisteikul\toursdk\Helpers\PaydiaHelper;
+use budisteikul\toursdk\Helpers\ProductHelper;
 
 use budisteikul\toursdk\Models\Disbursement;
 use budisteikul\toursdk\Models\Category;
@@ -36,16 +37,9 @@ class APIController extends Controller
     
     public function test()
     {
-        $data1 = [
-            'aaa' => 'bbb'
-        ];
-
-        $data2 = [
-            'ccc' => 'ddd'
-        ];
-
-        $data1 = array_merge($data1,$data2);
-        print_r($data1);
+        $string = 'Sat, April 30 2022 - 18:30';
+        $date = ProductHelper::texttodate($string);
+        print_r($date);
     }
 
     public function __construct()
@@ -422,6 +416,9 @@ class APIController extends Controller
     public function addshoppingcart($id,Request $request)
     {
         $contents = BokunHelper::get_addshoppingcart($id,json_decode($request->getContent(), true));
+
+        //print_r($contents);
+        //exit();
 
         $sessionId = $id;
         

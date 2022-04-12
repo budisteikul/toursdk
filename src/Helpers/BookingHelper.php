@@ -237,6 +237,7 @@ class BookingHelper {
 	
 	public static function insert_shoppingcart($contents,$id)
 	{
+
 		Cache::forget('_'. $id);
 		
 		$activity = $contents->activityBookings;
@@ -724,6 +725,7 @@ class BookingHelper {
 
 	public static function update_shoppingcart($contents,$id)
 	{
+
 		$activity = $contents->activityBookings;
 
 		$shoppingcart = Cache::get('_'. $id);
@@ -774,6 +776,7 @@ class BookingHelper {
 			$sp_title = $activity[$i]->activity->title;
 			$sp_rate = $activity[$i]->rate->title;
 			$sp_currency = $contents->customerInvoice->currency;
+			
 			$sp_date = ProductHelper::texttodate($product_invoice[$i]->dates);
 
 			

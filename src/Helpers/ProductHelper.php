@@ -29,6 +29,16 @@ class ProductHelper {
         return $status;
     }
 
+    public static function get_product_id($productId)
+    {
+        $product_id = null;
+        $product = Product::where('bokun_id',$productId)->first();
+        if ($product !== null) {
+            $product_id = $product->id;
+        }
+        return $product_id;
+    }
+
     public static function lang($type,$str){
         $hasil = '';
         if($type=='categories')

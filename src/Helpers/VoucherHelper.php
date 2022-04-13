@@ -2,8 +2,10 @@
 namespace budisteikul\toursdk\Helpers;
 use Illuminate\Http\Request;
 use budisteikul\toursdk\Models\Voucher;
+use budisteikul\toursdk\Models\Product;
 use Illuminate\Support\Facades\Cache;
 use budisteikul\toursdk\Helpers\BookingHelper;
+use budisteikul\toursdk\Helpers\ProductHelper;
 
 class VoucherHelper {
 
@@ -13,6 +15,20 @@ class VoucherHelper {
 		$voucher = Voucher::where('code',strtoupper($promocode))->first();
 		if ($voucher !== null) {
    			$status = true;
+		}
+		return $status;
+	}
+
+	public static function can_apply_voucher($product_id,$voucher_id)
+	{
+		$status = false;
+		$product = Product::where('bokun_id',$product_id)->first();
+		if($product!=null)
+		{
+			if($product->vouchers->contains($voucher_id))
+			{
+				$status = true;
+			}
 		}
 		return $status;
 	}
@@ -28,48 +44,54 @@ class VoucherHelper {
 			$shoppingcart = Cache::get('_'. $sessionId);
     		$voucher = Voucher::where('code',strtoupper($promocode))->first();
 
-    		
 				$shoppingcart_discount = 0;
-				//$shoppingcart_total = 0;
 				$shoppingcart_due_now = 0;
 				$shoppingcart_due_on_arrival = 0;
 				foreach($shoppingcart->products as $product) 
 				{
-					$product_discount = 0;
-
-					foreach($product->product_details as $product_detail)
+					
+					
+					if(self::can_apply_voucher($product->product_id,$voucher->id))
 					{
+						$product_discount = 0;
 
-						$discount = 0;
-
-						if($product_detail->type=="product")
+						foreach($product->product_details as $product_detail)
 						{
-							if($voucher->is_percentage)
+
+							$discount = 0;
+
+							if($product_detail->type=="product")
 							{
-								$discount = $product_detail->subtotal * $voucher->amount / 100;
+								if($voucher->is_percentage)
+								{
+									$discount = $product_detail->subtotal * $voucher->amount / 100;
+								}
+								else
+								{
+									$discount = $voucher->amount / $product_detail->qty;
+								}
 							}
-							else
-							{
-								$discount = $voucher->amount / $product_detail->qty;
-							}
+
+							$total = $product_detail->subtotal - $discount;
+							$product_discount += $discount;
+
+							$product_detail->discount = $discount;
+							$product_detail->total = $total;
+						
 						}
 
-						$total = $product_detail->subtotal - $discount;
-						$product_discount += $discount;
+						if($voucher->is_percentage)
+						{
+							$product->discount = $product_discount;
+						}
+						else
+						{
+							$product->discount = $voucher->amount;
+						}
 
-						$product_detail->discount = $discount;
-						$product_detail->total = $total;
-						
 					}
 					
-					if($voucher->is_percentage)
-					{
-						$product->discount = $product_discount;
-					}
-					else
-					{
-						$product->discount = $voucher->amount;
-					}
+					
 					
 					$product->total = $product->subtotal - $product->discount;
 
@@ -78,7 +100,6 @@ class VoucherHelper {
 					$product->due_on_arrival = $deposit->due_on_arrival;
 
 					$shoppingcart_discount += $product->discount;
-					//$shoppingcart_total += $product->total;
 					$shoppingcart_due_now += $product->due_now;
 					$shoppingcart_due_on_arrival += $product->due_on_arrival;
 				}
@@ -93,6 +114,7 @@ class VoucherHelper {
         		
 			Cache::forget('_'. $sessionId);
 			Cache::add('_'. $sessionId, $shoppingcart, 172800);
+
 		}
 
 		return $status;

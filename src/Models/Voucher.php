@@ -11,4 +11,8 @@ class Voucher extends Model
     protected $dateFormat = 'Y-m-d H:i:s.u';
     protected $fillable = ['code','amount','is_percentage'];
 
+    public function products()
+    {
+        return $this->belongsToMany('budisteikul\toursdk\Models\Products','vouchers_products','voucher_id','product_id')->withTimestamps();
+    }
 }

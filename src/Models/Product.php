@@ -25,4 +25,9 @@ class Product extends Model
     {
         return $this->hasMany(Review::class,'product_id');
     }
+
+    public function vouchers()
+    {
+        return $this->belongsToMany('budisteikul\toursdk\Models\Voucher','vouchers_products','product_id','voucher_id')->withTimestamps();
+    }
 }

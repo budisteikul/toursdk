@@ -28,8 +28,7 @@ class VoucherHelper {
 			$shoppingcart = Cache::get('_'. $sessionId);
     		$voucher = Voucher::where('code',strtoupper($promocode))->first();
 
-    		if($voucher->is_percentage)
-			{
+    		
 				$shoppingcart_discount = 0;
 				$shoppingcart_total = 0;
 				$shoppingcart_due_now = 0;
@@ -37,28 +36,44 @@ class VoucherHelper {
 				foreach($shoppingcart->products as $product) 
 				{
 					$product_discount = 0;
-					$product_total = 0;
 
 					foreach($product->product_details as $product_detail)
 					{
+
+						$discount = 0;
+
 						if($product_detail->type=="product")
 						{
-							$subtotal = $product_detail->subtotal;
-							$discount = $product_detail->subtotal * $voucher->amount / 100;
-							$total = $subtotal - $discount;
-
-							$product_discount += $discount;
-							$product_total += $total;
-
-							$product_detail->discount = $discount;
-							$product_detail->total = $total;
+							if($voucher->is_percentage)
+							{
+								$discount = $product_detail->subtotal * $voucher->amount / 100;
+							}
+							else
+							{
+								$discount = $voucher->amount / $product_detail->qty;
+							}
 						}
+
+						$total = $product_detail->subtotal - $discount;
+						$product_discount += $discount;
+
+						$product_detail->discount = $discount;
+						$product_detail->total = $total;
 						
 					}
 					
-					$deposit = BookingHelper::get_deposit($product->product_id,$product_total);
-					$product->discount = $product_discount;
-					$product->total = $product_total;
+					if($voucher->is_percentage)
+					{
+						$product->discount = $product_discount;
+					}
+					else
+					{
+						$product->discount = $voucher->amount;
+					}
+					
+					$product->total = $product->subtotal - $product->discount;
+
+					$deposit = BookingHelper::get_deposit($product->product_id,$product->total);
 					$product->due_now = $deposit->due_now;
 					$product->due_on_arrival = $deposit->due_on_arrival;
 
@@ -74,7 +89,7 @@ class VoucherHelper {
 				$shoppingcart->due_on_arrival = $shoppingcart_due_on_arrival;
 
 				$shoppingcart->promo_code = strtoupper($promocode);
-			}
+			
         		
 			Cache::forget('_'. $sessionId);
 			Cache::add('_'. $sessionId, $shoppingcart, 172800);

@@ -13,6 +13,7 @@ use budisteikul\toursdk\Helpers\PaydiaHelper;
 use budisteikul\toursdk\Helpers\DokuHelper;
 use budisteikul\toursdk\Helpers\FirebaseHelper;
 use budisteikul\toursdk\Helpers\GeneralHelper;
+use budisteikul\toursdk\Helpers\VoucherHelper;
 
 use budisteikul\toursdk\Models\Product;
 use budisteikul\toursdk\Models\Shoppingcart;
@@ -1933,13 +1934,19 @@ class BookingHelper {
 
 	public static function remove_promocode($sessionId)
 	{
+		VoucherHelper::remove_voucher($sessionId);
+		return '';
+		/*
 		$contents = BokunHelper::get_removepromocode($sessionId);
         self::get_shoppingcart($sessionId,"update",$contents);
         return $contents;
+        */
 	}
 
 	public static function apply_promocode($sessionId,$promocode)
 	{
+		$status = VoucherHelper::apply_voucher($sessionId,$promocode);
+		/*
 		$status = false;
 		$contents = BokunHelper::get_applypromocode($sessionId,$promocode);
 		
@@ -1948,6 +1955,7 @@ class BookingHelper {
 			$status = true;
 			self::get_shoppingcart($sessionId,"update",$contents);
 		}
+		*/
 		return $status;
 	}
 

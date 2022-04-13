@@ -3,6 +3,7 @@ namespace budisteikul\toursdk\Helpers;
 use Illuminate\Http\Request;
 use budisteikul\toursdk\Models\Voucher;
 use Illuminate\Support\Facades\Cache;
+use budisteikul\toursdk\Helpers\BookingHelper;
 
 class VoucherHelper {
 
@@ -18,8 +19,12 @@ class VoucherHelper {
 
 	public static function apply_voucher($sessionId,$promocode)
     {
+    	$status = false;
+
     	if(self::check_voucher($promocode))
 		{
+			$status = true;
+
 			$shoppingcart = Cache::get('_'. $sessionId);
     		$voucher = Voucher::where('code',strtoupper($promocode))->first();
 
@@ -39,7 +44,7 @@ class VoucherHelper {
 						if($product_detail->type=="product")
 						{
 							$subtotal = $product_detail->subtotal;
-							$discount = $product_detail->subtotal * $amount / 100;
+							$discount = $product_detail->subtotal * $voucher->amount / 100;
 							$total = $subtotal - $discount;
 
 							$product_discount += $discount;
@@ -51,7 +56,7 @@ class VoucherHelper {
 						
 					}
 					
-					$deposit = self::get_deposit($product->product_id,$product_totala);
+					$deposit = BookingHelper::get_deposit($product->product_id,$product_total);
 					$product->discount = $product_discount;
 					$product->total = $product_total;
 					$product->due_now = $deposit->due_now;
@@ -74,6 +79,9 @@ class VoucherHelper {
 			Cache::forget('_'. $sessionId);
 			Cache::add('_'. $sessionId, $shoppingcart, 172800);
 		}
+
+		return $status;
+
     }
 
     public static function remove_voucher($sessionId)
@@ -90,7 +98,7 @@ class VoucherHelper {
 				$product_detail->total = $product_detail->subtotal;
 			}
 
-			$deposit = self::get_deposit($product->product_id,$product->subtotal);
+			$deposit = BookingHelper::get_deposit($product->product_id,$product->subtotal);
 			$product->discount = 0;
 			$product->total = $product->subtotal;
 			$product->due_now = $deposit->due_now;

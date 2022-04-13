@@ -13,6 +13,6 @@ class Voucher extends Model
 
     public function products()
     {
-        return $this->belongsToMany('budisteikul\toursdk\Models\Products','vouchers_products','voucher_id','product_id')->withTimestamps();
+        return $this->belongsToMany('budisteikul\toursdk\Models\Product','vouchers_products','voucher_id','product_id')->withTimestamps();
     }
 }

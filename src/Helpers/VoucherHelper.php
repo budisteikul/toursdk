@@ -19,17 +19,19 @@ class VoucherHelper {
 		return $status;
 	}
 
-	public static function can_apply_voucher($product_id,$voucher_id)
+
+	public static function can_apply_voucher($product_id,$voucher_id,$type)
 	{
 		$status = false;
 		$product = Product::where('bokun_id',$product_id)->first();
-		if($product!=null)
-		{
-			if($product->vouchers->contains($voucher_id))
-			{
-				$status = true;
-			}
-		}
+        if($product!=null)
+        {
+            $aaa = $product->vouchers()->where('voucher_id', $voucher_id)->where('type', $type)->get();
+            if(@count($aaa)>0)
+            {
+            	$status = true;
+            }
+        }
 		return $status;
 	}
 
@@ -49,27 +51,15 @@ class VoucherHelper {
 				$shoppingcart_due_on_arrival = 0;
 				foreach($shoppingcart->products as $product) 
 				{
-					
-					
-					if(self::can_apply_voucher($product->product_id,$voucher->id))
-					{
 						$product_discount = 0;
-
+						
 						foreach($product->product_details as $product_detail)
 						{
-
 							$discount = 0;
-
-							if($product_detail->type=="product")
+							
+							if(self::can_apply_voucher($product->product_id,$voucher->id,$product_detail->type))
 							{
-								if($voucher->is_percentage)
-								{
-									$discount = $product_detail->subtotal * $voucher->amount / 100;
-								}
-								else
-								{
-									$discount = $voucher->amount / $product_detail->qty;
-								}
+								$discount = $product_detail->subtotal * $voucher->amount / 100;
 							}
 
 							$total = $product_detail->subtotal - $discount;
@@ -80,19 +70,8 @@ class VoucherHelper {
 						
 						}
 
-						if($voucher->is_percentage)
-						{
-							$product->discount = $product_discount;
-						}
-						else
-						{
-							$product->discount = $voucher->amount;
-						}
-
-					}
-					
-					
-					
+						$product->discount = $product_discount;
+						
 					$product->total = $product->subtotal - $product->discount;
 
 					$deposit = BookingHelper::get_deposit($product->product_id,$product->total);

@@ -28,6 +28,6 @@ class Product extends Model
 
     public function vouchers()
     {
-        return $this->belongsToMany('budisteikul\toursdk\Models\Voucher','vouchers_products','product_id','voucher_id')->withTimestamps();
+        return $this->belongsToMany('budisteikul\toursdk\Models\Voucher','vouchers_products','product_id','voucher_id')->withPivot('type')->withTimestamps();
     }
 }

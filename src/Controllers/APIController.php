@@ -18,6 +18,7 @@ use budisteikul\toursdk\Models\Disbursement;
 use budisteikul\toursdk\Models\Category;
 use budisteikul\toursdk\Models\Review;
 use budisteikul\toursdk\Models\Product;
+use budisteikul\toursdk\Models\Voucher;
 use budisteikul\toursdk\Models\Channel;
 use budisteikul\toursdk\Models\Page;
 use budisteikul\toursdk\Models\Shoppingcart;
@@ -32,12 +33,20 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 
+
+
+
 class APIController extends Controller
 {
     
     public function test()
     {
-        
+        $product = Product::where('bokun_id',6071)->first();
+        if($product!=null)
+        {
+            $aaa = $product->vouchers()->where('voucher_id', 4)->where('type', 'product')->get();
+            print_r(count($aaa));
+        }
     }
 
     public function __construct()

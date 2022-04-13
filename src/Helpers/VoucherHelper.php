@@ -30,7 +30,7 @@ class VoucherHelper {
 
     		
 				$shoppingcart_discount = 0;
-				$shoppingcart_total = 0;
+				//$shoppingcart_total = 0;
 				$shoppingcart_due_now = 0;
 				$shoppingcart_due_on_arrival = 0;
 				foreach($shoppingcart->products as $product) 
@@ -78,13 +78,13 @@ class VoucherHelper {
 					$product->due_on_arrival = $deposit->due_on_arrival;
 
 					$shoppingcart_discount += $product->discount;
-					$shoppingcart_total += $product->total;
+					//$shoppingcart_total += $product->total;
 					$shoppingcart_due_now += $product->due_now;
 					$shoppingcart_due_on_arrival += $product->due_on_arrival;
 				}
 
 				$shoppingcart->discount = $shoppingcart_discount;
-				$shoppingcart->total = $shoppingcart_total;
+				$shoppingcart->total = $shoppingcart->total - $shoppingcart->discount;
 				$shoppingcart->due_now = $shoppingcart_due_now;
 				$shoppingcart->due_on_arrival = $shoppingcart_due_on_arrival;
 

@@ -1185,12 +1185,6 @@ class BookingHelper {
 		return $dataObj;
 	}
 
-	public static function voucher_shoppingcart($id)
-	{
-		
-		
-	}
-
 	public static function get_shoppingcart($id,$action="insert",$contents)
 	{
 

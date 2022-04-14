@@ -424,8 +424,6 @@ class APIController extends Controller
     {
         $contents = BokunHelper::get_addshoppingcart($id,json_decode($request->getContent(), true));
 
-        //print_r($contents);
-        //exit();
 
         $sessionId = $id;
         

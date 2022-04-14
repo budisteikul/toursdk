@@ -719,6 +719,7 @@ class BookingHelper {
 		];
 		
 		Cache::add('_'. $id, $ShoppingCart, 172800);
+		return $shoppingcart;
 	}
 	
 
@@ -1153,6 +1154,7 @@ class BookingHelper {
 		Cache::forget('_'. $id);
 		Cache::add('_'. $id, $shoppingcart, 172800);
 		//===========================================
+		return $shoppingcart;
 	}
 	
 
@@ -1190,14 +1192,17 @@ class BookingHelper {
 
 		if($action=="insert")
 			{
-				self::insert_shoppingcart($contents,$id);
+				$shoppingcart = self::insert_shoppingcart($contents,$id);
 			}
 		if($action=="update")
 			{
-				self::update_shoppingcart($contents,$id);
+				$shoppingcart = self::update_shoppingcart($contents,$id);
 			}
 
-		VoucherHelper::shoppingcart($id);
+		if($shoppingcart->promo_code!=null)
+		{
+			VoucherHelper::apply_voucher($shoppingcart->session_id,$shoppingcart->promo_code);
+		}
 			
 	}
 	
@@ -1947,6 +1952,7 @@ class BookingHelper {
 	public static function apply_promocode($sessionId,$promocode)
 	{
 		$status = VoucherHelper::apply_voucher($sessionId,$promocode);
+
 		/*
 		$status = false;
 		$contents = BokunHelper::get_applypromocode($sessionId,$promocode);

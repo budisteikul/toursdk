@@ -94,10 +94,9 @@ class VoucherHelper {
 			$shoppingcart->due_now = $shoppingcart_due_now;
 			$shoppingcart->due_on_arrival = $shoppingcart_due_on_arrival;
 
-			$shoppingcart->promo_code = strtoupper($promocode);
-			
 			Cache::forget('_'. $sessionId);
 			Cache::add('_'. $sessionId, $shoppingcart, 172800);
+
 
 			return $status;
 	}
@@ -152,29 +151,11 @@ class VoucherHelper {
 				$shoppingcart->due_now = $shoppingcart_due_now;
 				$shoppingcart->due_on_arrival = $shoppingcart_due_on_arrival;
 
-				$shoppingcart->promo_code = strtoupper($promocode);
-			
-        		
 				Cache::forget('_'. $sessionId);
 				Cache::add('_'. $sessionId, $shoppingcart, 172800);
 
 				return $status;
 
-	}
-
-	public static function shoppingcart($id)
-	{
-		$shoppingcart = Cache::get('_'. $id);
-		if($shoppingcart->promo_code!=null)
-		{
-			$status = VoucherHelper::apply_voucher($shoppingcart->session_id,$shoppingcart->promo_code);
-			if(!$status)
-			{
-				$shoppingcart->promo_code = null;
-				Cache::forget('_'. $id);
-				Cache::add('_'. $id, $shoppingcart, 172800);
-			}
-		}
 	}
 
 	public static function apply_voucher($sessionId,$promocode)
@@ -192,6 +173,19 @@ class VoucherHelper {
 				$status = self::apply_voucher_fix($sessionId,$promocode);
 			}
 		}
+
+		$shoppingcart = Cache::get('_'. $sessionId);
+		if($status)
+		{
+			$shoppingcart->promo_code = strtoupper($promocode);
+		}
+		else
+		{
+			$shoppingcart->promo_code = null;
+		}
+		Cache::forget('_'. $sessionId);
+		Cache::add('_'. $sessionId, $shoppingcart, 172800);
+
     	return $status;
     }
 

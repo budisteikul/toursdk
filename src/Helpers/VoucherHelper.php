@@ -40,6 +40,9 @@ class VoucherHelper {
 			$shoppingcart = Cache::get('_'. $sessionId);
     		$voucher = Voucher::where('code',strtoupper($promocode))->first();
 
+    		$shoppingcart_discount = 0;
+			$shoppingcart_due_now = 0;
+			$shoppingcart_due_on_arrival = 0;
     		foreach($shoppingcart->products as $product) 
 			{
 

@@ -1187,18 +1187,7 @@ class BookingHelper {
 
 	public static function voucher_shoppingcart($id)
 	{
-		$shoppingcart = Cache::get('_'. $id);
-		if($shoppingcart->promo_code!=null)
-		{
-			$status = VoucherHelper::apply_voucher($shoppingcart->session_id,$shoppingcart->promo_code);
-			if(!$status)
-			{
-				//$shoppingcart = Cache::get('_'. $id);
-				$shoppingcart->promo_code = null;
-				Cache::forget('_'. $id);
-				Cache::add('_'. $id, $shoppingcart, 172800);
-			}
-		}
+		
 		
 	}
 
@@ -1214,7 +1203,7 @@ class BookingHelper {
 				self::update_shoppingcart($contents,$id);
 			}
 
-		self::voucher_shoppingcart($id);
+		VoucherHelper::shoppingcart($id);
 			
 	}
 	

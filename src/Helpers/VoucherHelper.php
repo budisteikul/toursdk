@@ -35,11 +35,70 @@ class VoucherHelper {
 		return $status;
 	}
 
+	public static function apply_voucher_fix($sessionId,$promocode)
+	{
+			$shoppingcart = Cache::get('_'. $sessionId);
+    		$voucher = Voucher::where('code',strtoupper($promocode))->first();
+
+    		foreach($shoppingcart->products as $product) 
+			{
+
+				$jumlah = 0;
+				foreach($product->product_details as $product_detail)
+				{
+					if(self::can_apply_voucher($product->product_id,$voucher->id,$product_detail->type))
+					{
+						$jumlah++;
+					}
+				}
+
+				$product_discount = 0;
+				foreach($product->product_details as $product_detail)
+				{
+
+					$discount = 0;
+					if(self::can_apply_voucher($product->product_id,$voucher->id,$product_detail->type))
+					{
+						$discount = $voucher->amount / $jumlah;
+					}
+
+					$total = $product_detail->subtotal - $discount;
+					$product_discount += $discount;
+
+					$product_detail->discount = $discount;
+					$product_detail->total = $total;
+				}
+
+				$product->discount = $product_discount;
+						
+				$product->total = $product->subtotal - $product->discount;
+
+				$deposit = BookingHelper::get_deposit($product->product_id,$product->total);
+				$product->due_now = $deposit->due_now;
+				$product->due_on_arrival = $deposit->due_on_arrival;
+
+				$shoppingcart_discount += $product->discount;
+				$shoppingcart_due_now += $product->due_now;
+				$shoppingcart_due_on_arrival += $product->due_on_arrival;
+
+			}
+
+			$shoppingcart->discount = $shoppingcart_discount;
+			$shoppingcart->total = $shoppingcart->total - $shoppingcart->discount;
+			$shoppingcart->due_now = $shoppingcart_due_now;
+			$shoppingcart->due_on_arrival = $shoppingcart_due_on_arrival;
+
+			$shoppingcart->promo_code = strtoupper($promocode);
+			
+			Cache::forget('_'. $sessionId);
+			Cache::add('_'. $sessionId, $shoppingcart, 172800);
+	}
+
 	public static function apply_voucher_percentage($sessionId,$promocode)
 	{
 		
-			$shoppingcart = Cache::get('_'. $sessionId);
-    		$voucher = Voucher::where('code',strtoupper($promocode))->first();
+				$shoppingcart = Cache::get('_'. $sessionId);
+    			$voucher = Voucher::where('code',strtoupper($promocode))->first();
 
 				$shoppingcart_discount = 0;
 				$shoppingcart_due_now = 0;
@@ -86,8 +145,8 @@ class VoucherHelper {
 				$shoppingcart->promo_code = strtoupper($promocode);
 			
         		
-			Cache::forget('_'. $sessionId);
-			Cache::add('_'. $sessionId, $shoppingcart, 172800);
+				Cache::forget('_'. $sessionId);
+				Cache::add('_'. $sessionId, $shoppingcart, 172800);
 
 	}
 
@@ -101,6 +160,10 @@ class VoucherHelper {
     		if($voucher->is_percentage)
 			{
 				self::apply_voucher_percentage($sessionId,$promocode);
+			}
+			else
+			{
+				self::apply_voucher_fix($sessionId,$promocode);
 			}
 		}
     	return $status;

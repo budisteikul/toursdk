@@ -94,25 +94,42 @@ class ProductHelper {
     public static function texttodate($text){
         if($text=="Never expires") return null;
         
-        
-        $text = explode('-',$text);
-        if(isset($text[1]))
-        {
-            $date = Carbon::createFromFormat('D, F d Y ', $text[0]);
-            $time = Carbon::createFromFormat(' H:i', $text[1]);
-            $hasil = $date->format('Y-m-d') .' '. $time->format('H:i:00');
+        if (str_contains($text, '@')) {
+            $text = explode('@',$text);
+            if(isset($text[1]))
+            {
+                $date = Carbon::createFromFormat('D d.M Y ', $text[0]);
+                $time = Carbon::createFromFormat(' H:i', $text[1]);
+                $hasil = $date->format('Y-m-d') .' '. $time->format('H:i:00');
+            }
+            else
+            {
+                $date = Carbon::createFromFormat('D d.M Y', $text[0]);
+                $hasil = $date->format('Y-m-d') .' 00:00:00';
+            }
         }
         else
         {
-            $date = Carbon::createFromFormat('D, F d Y', $text[0]);
-            $hasil = $date->format('Y-m-d') .' 00:00:00';
-        }
+            $text = explode('-',$text);
+            if(isset($text[1]))
+            {
+                $date = Carbon::createFromFormat('D, F d Y ', $text[0]);
+                $time = Carbon::createFromFormat(' H:i', $text[1]);
+                $hasil = $date->format('Y-m-d') .' '. $time->format('H:i:00');
+            }
+            else
+            {
+                $date = Carbon::createFromFormat('D, F d Y', $text[0]);
+                $hasil = $date->format('Y-m-d') .' 00:00:00';
+            }
         return $hasil;
+        }
+        
     }
     
     public static function datetotext($str){
         if($str==null) return null;
-        $date = \DateTime::createFromFormat('Y-m-d H:i:s', $str);
+        $date = Carbon::createFromFormat('Y-m-d H:i:s', $str);
         if($date->format('H:i')=="00:00")
         {
             return $date->format('D d.M Y');

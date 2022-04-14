@@ -247,7 +247,7 @@ class BookingHelper {
 		$s_booking_channel = 'WEBSITE';
 		$s_currency = $contents->customerInvoice->currency;
 		$s_promo_code = NULL;
-		if(isset($contents->promoCode)) $s_promo_code = $contents->promoCode->code;
+		//if(isset($contents->promoCode)) $s_promo_code = $contents->promoCode->code;
 		
 		$grand_total = 0;
 		$grand_subtotal = 0;
@@ -734,6 +734,7 @@ class BookingHelper {
 
 		$shoppingcart->currency = $contents->customerInvoice->currency;
 
+		/*
 		if(isset($contents->promoCode))
 		{
 			$shoppingcart->promo_code = $contents->promoCode->code;
@@ -742,7 +743,8 @@ class BookingHelper {
 		{
 			$shoppingcart->promo_code = null;
 		}
-		
+		*/
+
 		unset($shoppingcart->products);
 		
 		$grand_total = 0;
@@ -1147,8 +1149,6 @@ class BookingHelper {
 
 		$shoppingcart->questions = $ShoppingcartQuestions;
 		
-		
-
 		//===========================================
 		Cache::forget('_'. $id);
 		Cache::add('_'. $id, $shoppingcart, 172800);
@@ -1185,6 +1185,22 @@ class BookingHelper {
 		return $dataObj;
 	}
 
+	public static function voucher_shoppingcart($id)
+	{
+		$shoppingcart = Cache::get('_'. $id);
+		if($shoppingcart->promo_code!=null)
+		{
+			$status = VoucherHelper::apply_voucher($shoppingcart->session_id,$shoppingcart->promo_code);
+			if(!$status)
+			{
+				//$shoppingcart = Cache::get('_'. $id);
+				$shoppingcart->promo_code = null;
+				Cache::forget('_'. $id);
+				Cache::add('_'. $id, $shoppingcart, 172800);
+			}
+		}
+		
+	}
 
 	public static function get_shoppingcart($id,$action="insert",$contents)
 	{
@@ -1197,6 +1213,8 @@ class BookingHelper {
 			{
 				self::update_shoppingcart($contents,$id);
 			}
+
+		self::voucher_shoppingcart($id);
 			
 	}
 	

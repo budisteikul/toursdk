@@ -266,9 +266,9 @@ class BookingHelper {
 			$sp_booking_id = $activity[$i]->id;
 			$sp_product_id = $activity[$i]->activity->id;
 			$sp_image = NULL;
-			if(isset($product_invoice[$i]->product->keyPhoto->derived[2]->url))
+			if(isset($product_invoice[$i]->product->keyPhoto->derived[1]->url))
 			{
-				$sp_image = $product_invoice[$i]->product->keyPhoto->derived[2]->url;
+				$sp_image = $product_invoice[$i]->product->keyPhoto->derived[1]->url;
 			}
 			else
 			{
@@ -764,9 +764,9 @@ class BookingHelper {
 			$sp_booking_id = $activity[$i]->id;
 			$sp_product_id = $activity[$i]->activity->id;
 			$sp_image = NULL;
-			if(isset($product_invoice[$i]->product->keyPhoto->derived[2]->url))
+			if(isset($product_invoice[$i]->product->keyPhoto->derived[1]->url))
 			{
-				$sp_image = $product_invoice[$i]->product->keyPhoto->derived[2]->url;
+				$sp_image = $product_invoice[$i]->product->keyPhoto->derived[1]->url;
 			}
 			else
 			{

@@ -719,7 +719,7 @@ class BookingHelper {
 		];
 		
 		Cache::add('_'. $id, $ShoppingCart, 172800);
-		return $shoppingcart;
+		return $ShoppingCart;
 	}
 	
 

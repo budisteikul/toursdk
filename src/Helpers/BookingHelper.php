@@ -1711,7 +1711,7 @@ class BookingHelper {
 		}
 		else
 		{
-			$date = $shoppingcart->payment()->expiration_date;
+			$date = $shoppingcart->shoppingcart_payment->expiration_date;
 		}
 
 		if($date!==null)

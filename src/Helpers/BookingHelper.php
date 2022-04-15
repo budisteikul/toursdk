@@ -1705,8 +1705,15 @@ class BookingHelper {
 		$due_date = null;
 		$date = null;
 
-		if(isset($shoppingcart->payment->expiration_date)) $date = $shoppingcart->payment->expiration_date;
-		
+		if($data_type=="json")
+		{
+			if(isset($shoppingcart->payment->expiration_date)) $date = $shoppingcart->payment->expiration_date;
+		}
+		else
+		{
+			$date = $shoppingcart->payment()->expiration_date;
+		}
+
 		if($date!==null)
 		{
 			$due_date = $date;

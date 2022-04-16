@@ -99,8 +99,6 @@ class ProductHelper {
             $text = explode('@',$text);
             if(isset($text[1]))
             {
-                print_r($text[0] .' '. $text[1]);
-                print_r('================================');
                 $date = Carbon::createFromFormat('D d.M Y ', $text[0]);
                 $time = Carbon::createFromFormat(' H:i', $text[1]);
                 $hasil = $date->format('Y-m-d') .' '. $time->format('H:i:00');

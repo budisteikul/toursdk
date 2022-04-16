@@ -93,40 +93,54 @@ class ProductHelper {
 
     public static function texttodate($text){
         
+        $hasil = null;
+        $arr_date = array();
+
         if($text=="Never expires") return null;
 
         if (str_contains($text, '@')) {
-            $text = explode('@',$text);
-            if(isset($text[1]))
-            {
-                $date = Carbon::createFromFormat('D d.M Y ', $text[0]);
-                $time = Carbon::createFromFormat(' H:i', $text[1]);
-                $hasil = $date->format('Y-m-d') .' '. $time->format('H:i:00');
-            }
-            else
-            {
-                $date = Carbon::createFromFormat('D d.M Y', $text[0]);
-                $hasil = $date->format('Y-m-d') .' 00:00:00';
-            }
-            return $hasil;
+            $arr_date = explode('@',$text);
+        }
+        else if (str_contains($text, '-')) {
+            $arr_date = explode('-',$text);
+        }
+        else
+        {
+            $arr_date[] = $text;
         }
 
-        if (str_contains($text, '-')) 
+        
+        if(isset($arr_date[1]))
         {
-            $text = explode('-',$text);
-            if(isset($text[1]))
+            
+            try
             {
-                $date = Carbon::createFromFormat('D, F d Y ', $text[0]);
-                $time = Carbon::createFromFormat(' H:i', $text[1]);
-                $hasil = $date->format('Y-m-d') .' '. $time->format('H:i:00');
+                $date = Carbon::createFromFormat('D d.M Y', trim($arr_date[0]));
             }
-            else
+            catch(Exception $e)
             {
-                $date = Carbon::createFromFormat('D, F d Y', $text[0]);
-                $hasil = $date->format('Y-m-d') .' 00:00:00';
+                $date = Carbon::createFromFormat('D, F d Y', trim($arr_date[0]));
             }
-            return $hasil;
+
+            $time = Carbon::createFromFormat('H:i', trim($arr_date[1]));
+            $hasil = $date->format('Y-m-d') .' '. $time->format('H:i:00');
         }
+        else
+        {
+            
+            try
+            {
+                $date = Carbon::createFromFormat('D d.M Y', trim($arr_date[0]));
+            }
+            catch(Exception $e)
+            {
+                $date = Carbon::createFromFormat('D, F d Y', trim($arr_date[0]));
+            }
+
+            $hasil = $date->format('Y-m-d') .' 00:00:00';
+        }
+        return $hasil;
+        
     }
     
     public static function datetotext($str){

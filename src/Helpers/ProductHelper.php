@@ -112,7 +112,6 @@ class ProductHelper {
         
         if(isset($arr_date[1]))
         {
-            
             try
             {
                 $date = Carbon::createFromFormat('D d.M Y', trim($arr_date[0]));
@@ -127,7 +126,6 @@ class ProductHelper {
         }
         else
         {
-            
             try
             {
                 $date = Carbon::createFromFormat('D d.M Y', trim($arr_date[0]));

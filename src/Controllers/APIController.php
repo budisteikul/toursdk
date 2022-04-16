@@ -33,7 +33,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 
-
+use Illuminate\Support\Facades\URL;
 
 
 class APIController extends Controller
@@ -41,18 +41,17 @@ class APIController extends Controller
     
     public function test()
     {
-        $str = 'Sat 16.Apr 2022 @ 18:30';
-        if($str==null) return null;
-        $date = Carbon::createFromFormat('Y-m-d H:i:s', $str);
-        if($date->format('H:i')=="00:00")
-        {
-            $hasil = $date->format('D d.M Y');
+        print_r(URL::temporarySignedRoute(
+            'loggedin', now()->addMinutes(5), ['session_id' => '389a4972-1484-4dac-89c7-7f10c26da37c','confirmation_code' => 'VIA-15051726']
+        ));
+    }
+
+    public function test2($session_id,Request $request)
+    {
+        if (! $request->hasValidSignature()) {
+            abort(401);
         }
-        else
-        {
-            $hasil = $date->format('D d.M Y @ H:i');
-        }
-        print_r($hasil);
+        print_r($session_id);
     }
 
     public function __construct()

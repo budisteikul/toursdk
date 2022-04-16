@@ -41,12 +41,18 @@ class APIController extends Controller
     
     public function test()
     {
-        $product = Product::where('bokun_id',6071)->first();
-        if($product!=null)
+        $str = 'Sat 16.Apr 2022 @ 18:30';
+        if($str==null) return null;
+        $date = Carbon::createFromFormat('Y-m-d H:i:s', $str);
+        if($date->format('H:i')=="00:00")
         {
-            $aaa = $product->vouchers()->where('voucher_id', 4)->where('type', 'product')->get();
-            print_r(count($aaa));
+            $hasil = $date->format('D d.M Y');
         }
+        else
+        {
+            $hasil = $date->format('D d.M Y @ H:i');
+        }
+        print_r($hasil);
     }
 
     public function __construct()

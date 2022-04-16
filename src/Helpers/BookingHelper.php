@@ -782,9 +782,7 @@ class BookingHelper {
 			
 			
 			$sp_date = ProductHelper::texttodate($product_invoice[$i]->dates);
-
 			
-
 			$subtotal_product = 0;
 			$total_discount = 0;
 			$total_product = 0;
@@ -1189,7 +1187,6 @@ class BookingHelper {
 
 	public static function get_shoppingcart($id,$action="insert",$contents)
 	{
-
 		if($action=="insert")
 			{
 				$shoppingcart = self::insert_shoppingcart($contents,$id);

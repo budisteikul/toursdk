@@ -92,6 +92,7 @@ class ProductHelper {
     }
 
     public static function texttodate($text){
+        
         if($text=="Never expires") return null;
         
         if (str_contains($text, '@')) {
@@ -107,6 +108,7 @@ class ProductHelper {
                 $date = Carbon::createFromFormat('D d.M Y', $text[0]);
                 $hasil = $date->format('Y-m-d') .' 00:00:00';
             }
+            return $hasil;
         }
         else
         {
@@ -122,9 +124,8 @@ class ProductHelper {
                 $date = Carbon::createFromFormat('D, F d Y', $text[0]);
                 $hasil = $date->format('Y-m-d') .' 00:00:00';
             }
-        return $hasil;
+            return $hasil;
         }
-        
     }
     
     public static function datetotext($str){

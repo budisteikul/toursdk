@@ -136,6 +136,7 @@ class ContentHelper {
 
 	public static function view_shoppingcart($shoppingcart)
 	{
+        
 		$dataShoppingcart = array();
         $dataProducts = array();
 
@@ -222,6 +223,8 @@ class ContentHelper {
 
                 }
             }
+
+
 
             $dataProducts[] = array(
                 'booking_id' => $shoppingcart_product->booking_id,

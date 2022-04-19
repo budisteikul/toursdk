@@ -34,24 +34,37 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 
 use Illuminate\Support\Facades\URL;
-
+use Stripe;
 
 class APIController extends Controller
 {
     
     public function test()
     {
-        print_r(URL::temporarySignedRoute(
-            'loggedin', now()->addMinutes(5), ['session_id' => '389a4972-1484-4dac-89c7-7f10c26da37c','confirmation_code' => 'VIA-15051726']
-        ));
-    }
+        /*
+        Stripe\Stripe::setApiKey(env("STRIPE_SECRET_KEY"));
+        $intent = Stripe\PaymentIntent::create([
+            'amount' => 50,
+            'currency' => 'usd',
+            'metadata' => ['integration_check' => 'accept_a_payment'],
+            'capture_method' => 'manual',
+        ]);
+        return response()->json([
+                'intent' => $intent
+            ], 200);
+        */
 
-    public function test2($session_id,Request $request)
-    {
-        if (! $request->hasValidSignature()) {
-            abort(401);
-        }
-        print_r($session_id);
+        $stripe = new Stripe\StripeClient(env("STRIPE_SECRET_KEY"));
+        $stripe->paymentIntents->create(
+            [
+                'amount' => 50,
+                'currency' => 'usd',
+                'automatic_payment_methods' => ['enabled' => true],
+            ]
+        );
+        return response()->json([
+                'intent' => $intent
+            ], 200);
     }
 
     public function __construct()
@@ -895,6 +908,13 @@ class APIController extends Controller
                 ], 200);
 
             }
+            else if($payment=="stripe")
+            {
+                return response()->json([
+                    "message" => "success",
+                    "id" => 3,
+                ]);
+            }
             else if($payment=="qris")
             {
                 BookingHelper::set_bookingStatus($sessionId,'PENDING');
@@ -946,6 +966,97 @@ class APIController extends Controller
                 "text" => $text
             ]);
             
+    }
+
+    public function stripe_jscript($sessionId)
+    {
+        $jscript = '
+        jQuery(document).ready(function($) {
+            $("#submitCheckout").slideUp("slow");
+            $("#paymentContainer").html(\'<div id="payment-request-button"></div>\');
+
+            $.ajax({
+                data: {
+                    "_token": $("meta[name=csrf-token]").attr("content"),
+                    "name": $(\'#name\').val(),
+                },
+                type: \'POST\',
+                url: \''. env('APP_API_URL') .'/test\'
+             }).done(function( data ) {
+                 
+                 console.log(data);
+
+                 var stripe = Stripe(\''. env("STRIPE_PUBLISHABLE_KEY") .'\', {
+                    apiVersion: "2020-08-27",
+                    });
+
+                 var paymentRequest = stripe.paymentRequest({
+                    country: \'US\',
+                    currency: \'usd\',
+                    total: {
+                        label: \'Demo total\',
+                        amount: 50,
+                    },
+                    requestPayerName: true,
+                    requestPayerEmail: true,
+                });
+
+                var elements = stripe.elements();
+
+                var prButton = elements.create(\'paymentRequestButton\', {
+                    paymentRequest: paymentRequest,
+                });
+
+                paymentRequest.canMakePayment().then(function(result) {
+                if (result) {
+                    prButton.mount(\'#payment-request-button\');
+                } else {
+                    document.getElementById(\'payment-request-button\').style.display = \'none\';
+                }
+                });
+
+            });
+
+        });
+        ';
+        return response($jscript)->header('Content-Type', 'application/javascript');
+    }
+
+    public function stripe_jscript_card($sessionId)
+    {
+        $jscript = '
+        jQuery(document).ready(function($) {
+            $("#submitCheckout").slideUp("slow");
+            $("#paymentContainer").html(\'<form id="payment-form"><div class="form-control mb-2" style="height:47px;" id="card-element"></div><div id="card-errors" role="alert"></div><button style="height:47px;" class="btn btn-lg btn-block btn-theme" id="submit"><strong>Pay</strong></button></form>\');
+
+            $.ajax({
+                data: {
+                    "_token": $("meta[name=csrf-token]").attr("content"),
+                    "name": $(\'#name\').val(),
+                },
+                type: \'POST\',
+                url: \''. env('APP_API_URL') .'/test\'
+             }).done(function( data ) {
+                 
+                 var stripe = Stripe(\''. env("STRIPE_PUBLISHABLE_KEY") .'\');
+                 var elements = stripe.elements();
+
+                 var style = {
+                    base: {
+                        color: "#32325d",
+                        fontSize: "16px",
+                        lineHeight: "34px"
+                    }
+                 };
+
+                 var card = elements.create("card", { style: style });
+                 card.mount("#card-element");
+
+            });
+
+        });
+        ';
+        return response($jscript)->header('Content-Type', 'application/javascript');
     }
 
     public function paypal_jscript($sessionId)

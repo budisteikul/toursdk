@@ -370,7 +370,7 @@ class ContentHelper {
         $promo_code = $shoppingcart->promo_code;
         if($promo_code=="") $promo_code = null;
         
-        $payment_enable = 'bank_transfer,qris,ewallet,paypal';
+        $payment_enable = 'bank_transfer,qris,ewallet,paypal,stripe';
         if($shoppingcart->due_now > 5000000)
         {
             $payment_enable = 'bank_transfer,paypal,ewallet';
@@ -437,7 +437,9 @@ class ContentHelper {
                 'paypal_currency' => self::env_paypalCurrency(),
                 'payment_enable' => $payment_enable,
                 'bank_transfer_list' => $bank_transfer_list,
-                'ewallet_list' => $ewallet_list
+                'ewallet_list' => $ewallet_list,
+                'stripe_currency' => 'USD',
+                'total_stripe' => BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'USD'),
             );
 
         return $dataShoppingcart;

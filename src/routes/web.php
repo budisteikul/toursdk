@@ -45,6 +45,7 @@
 	Route::post('/api/payment/paydia/confirm', 'budisteikul\toursdk\Controllers\APIController@confirmpaymentpaydia');
 
 	//Create Payment
+	Route::get('/api/payment/stripe/jscript/{sessionId}', 'budisteikul\toursdk\Controllers\APIController@stripe_jscript');
 	Route::get('/api/payment/paypal/jscript/{sessionId}', 'budisteikul\toursdk\Controllers\APIController@paypal_jscript');
 	Route::post('/api/payment/paypal', 'budisteikul\toursdk\Controllers\APIController@createpaymentpaypal');
 	Route::get('/api/payment/{payment_type}/jscript/{sessionId}', 'budisteikul\toursdk\Controllers\APIController@payment_jscript');
@@ -70,4 +71,5 @@
 
 	//TEST
 	Route::get('/test', 'budisteikul\toursdk\Controllers\APIController@test');
+	Route::post('/api/test', 'budisteikul\toursdk\Controllers\APIController@test');
 

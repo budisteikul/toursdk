@@ -1859,6 +1859,21 @@ class BookingHelper {
 
 				$response = PaypalHelper::createPayment($data);
 			break;
+			case "stripe":
+				$payment_provider = 'stripe';
+				$amount = self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'USD');
+				$currency = 'USD';
+				$rate = self::convert_currency(1,'USD',$shoppingcart->currency);
+				$rate_from = $shoppingcart->currency;
+				$rate_to = 'USD';
+
+				$data->transaction->amount = $amount;
+				$data->transaction->currency = $currency;
+
+				$payment_status = 0;
+
+				$response = StripeHelper::createPayment($data);
+			break;
 			default:
 				$payment_provider = 'none';
 				$amount = $shoppingcart->due_now;

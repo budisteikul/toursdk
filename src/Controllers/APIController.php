@@ -963,7 +963,7 @@ class APIController extends Controller
         $jscript = '
         jQuery(document).ready(function($) {
             $("#submitCheckout").slideUp("slow");
-            $("#paymentContainer").html(\'<form id="payment-form"><div class="mb-2" id="payment-request-button"></div><hr /><div class="form-control mb-2" style="height:47px;" id="card-element"></div><div id="card-errors" role="alert"></div><button style="height:47px;" class="btn btn-lg btn-block btn-theme" id="submit"><strong>Pay Now</strong></button></form>\');
+            $("#paymentContainer").html(\'<form id="payment-form"><div id="stripe-wallet" class="pt-2 pb-2 justify-content-center"><h2>Pay with</h2><div id="payment-request-button"></div><div class="mt-2 mb-2" style="width: 100%; height: 12px; border-bottom: 1px solid #D0D0D0; text-align: center"><span style="color: #D0D0D0; font-size: 12px; background-color: #FFFFFF; padding: 0 10px;">or pay with card</span></div></div><div class="form-control mt-2 mb-2" style="height:47px;" id="card-element"></div><div id="card-errors" role="alert"></div><button style="height:47px;" class="btn btn-lg btn-block btn-theme" id="submit"><strong>Pay Now</strong></button></form>\');
 
             /*
             $.ajax({
@@ -1005,7 +1005,7 @@ class APIController extends Controller
                     if (result) {
                         prButton.mount(\'#payment-request-button\');
                     } else {
-                        document.getElementById(\'payment-request-button\').style.display = \'none\';
+                        document.getElementById(\'stripe-wallet\').style.display = \'none\';
                     }
                  });
                  

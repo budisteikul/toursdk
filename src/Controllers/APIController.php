@@ -41,7 +41,7 @@ class APIController extends Controller
     
     public function test()
     {
-        /*
+        
         Stripe\Stripe::setApiKey(env("STRIPE_SECRET_KEY"));
         $intent = Stripe\PaymentIntent::create([
             'amount' => 50,
@@ -52,19 +52,7 @@ class APIController extends Controller
         return response()->json([
                 'intent' => $intent
             ], 200);
-        */
-
-        $stripe = new Stripe\StripeClient(env("STRIPE_SECRET_KEY"));
-        $stripe->paymentIntents->create(
-            [
-                'amount' => 50,
-                'currency' => 'usd',
-                'automatic_payment_methods' => ['enabled' => true],
-            ]
-        );
-        return response()->json([
-                'intent' => $intent
-            ], 200);
+       
     }
 
     public function __construct()
@@ -968,13 +956,16 @@ class APIController extends Controller
             
     }
 
+    
+
     public function stripe_jscript($sessionId)
     {
         $jscript = '
         jQuery(document).ready(function($) {
             $("#submitCheckout").slideUp("slow");
-            $("#paymentContainer").html(\'<div id="payment-request-button"></div>\');
+            $("#paymentContainer").html(\'<form id="payment-form"><div class="mb-2" id="payment-request-button"></div><hr /><div class="form-control mb-2" style="height:47px;" id="card-element"></div><div id="card-errors" role="alert"></div><button style="height:47px;" class="btn btn-lg btn-block btn-theme" id="submit"><strong>Pay Now</strong></button></form>\');
 
+            /*
             $.ajax({
                 data: {
                     "_token": $("meta[name=csrf-token]").attr("content"),
@@ -983,13 +974,14 @@ class APIController extends Controller
                 type: \'POST\',
                 url: \''. env('APP_API_URL') .'/test\'
              }).done(function( data ) {
-                 
-                 console.log(data);
+             */  
+                 //console.log(data);
 
                  var stripe = Stripe(\''. env("STRIPE_PUBLISHABLE_KEY") .'\', {
                     apiVersion: "2020-08-27",
-                    });
+                 });
 
+                 
                  var paymentRequest = stripe.paymentRequest({
                     country: \'US\',
                     currency: \'usd\',
@@ -999,47 +991,24 @@ class APIController extends Controller
                     },
                     requestPayerName: true,
                     requestPayerEmail: true,
-                });
-
-                var elements = stripe.elements();
-
-                var prButton = elements.create(\'paymentRequestButton\', {
-                    paymentRequest: paymentRequest,
-                });
-
-                paymentRequest.canMakePayment().then(function(result) {
-                if (result) {
-                    prButton.mount(\'#payment-request-button\');
-                } else {
-                    document.getElementById(\'payment-request-button\').style.display = \'none\';
-                }
-                });
-
-            });
-
-        });
-        ';
-        return response($jscript)->header('Content-Type', 'application/javascript');
-    }
-
-    public function stripe_jscript_card($sessionId)
-    {
-        $jscript = '
-        jQuery(document).ready(function($) {
-            $("#submitCheckout").slideUp("slow");
-            $("#paymentContainer").html(\'<form id="payment-form"><div class="form-control mb-2" style="height:47px;" id="card-element"></div><div id="card-errors" role="alert"></div><button style="height:47px;" class="btn btn-lg btn-block btn-theme" id="submit"><strong>Pay</strong></button></form>\');
-
-            $.ajax({
-                data: {
-                    "_token": $("meta[name=csrf-token]").attr("content"),
-                    "name": $(\'#name\').val(),
-                },
-                type: \'POST\',
-                url: \''. env('APP_API_URL') .'/test\'
-             }).done(function( data ) {
+                 });
                  
-                 var stripe = Stripe(\''. env("STRIPE_PUBLISHABLE_KEY") .'\');
+
                  var elements = stripe.elements();
+
+                 
+                 var prButton = elements.create(\'paymentRequestButton\', {
+                    paymentRequest: paymentRequest,
+                 });
+
+                 paymentRequest.canMakePayment().then(function(result) {
+                    if (result) {
+                        prButton.mount(\'#payment-request-button\');
+                    } else {
+                        document.getElementById(\'payment-request-button\').style.display = \'none\';
+                    }
+                 });
+                 
 
                  var style = {
                     base: {
@@ -1052,7 +1021,7 @@ class APIController extends Controller
                  var card = elements.create("card", { style: style });
                  card.mount("#card-element");
 
-            });
+            //});
 
         });
         ';

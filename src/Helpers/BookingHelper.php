@@ -1846,9 +1846,9 @@ class BookingHelper {
 			break;
 			case "paypal":
 				$payment_provider = 'paypal';
-				$amount = self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,self::env_paypalCurrency());
+				$amount = self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,self::env_paypalCurrency(),"PAYPAL");
 				$currency = self::env_paypalCurrency();
-				$rate = self::convert_currency(1,self::env_paypalCurrency(),$shoppingcart->currency);
+				$rate = self::convert_currency(1,self::env_paypalCurrency(),$shoppingcart->currency,"PAYPAL");
 				$rate_from = $shoppingcart->currency;
 				$rate_to = self::env_paypalCurrency();
 
@@ -1967,10 +1967,10 @@ class BookingHelper {
 
 	
 
-	public static function text_rate($shoppingcart,$currency)
+	public static function text_rate($shoppingcart,$currency,$markup="")
 	{
-		$amount = 'Total : '. self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,$currency) .' '. $currency;
-		$value = $amount .'<br />Rate : 1 '. $currency .' = '. self::convert_currency(1,$currency,$shoppingcart->currency) .' '. $shoppingcart->currency;
+		$amount = '<span class="badge badge-success" style="font-size:11px;">Total : '. self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,$currency,$markup) .' '. $currency .'</span>';
+		$value = $amount .'<br />Rate : 1 '. $currency .' = '. self::convert_currency(1,$currency,$shoppingcart->currency,$markup) .' '. $shoppingcart->currency;
 		return $value;
 	}
 
@@ -1981,24 +1981,28 @@ class BookingHelper {
 		return $value;
 	}
 
-	public static function convert_currency($amount,$from,$to)
+	public static function convert_currency($amount,$from,$to,$markup="")
 	{
 
 		$rate_oneusd = BokunHelper::get_currency($from); // IDR jadi USD
 		$rate_oneusd = (float)$rate_oneusd;
 
-		// Markup PAYPAL =========================
-		if($from=="IDR" && $to=="USD")
+		if($markup=="PAYPAL")
 		{
-			$markup = $rate_oneusd * 4.4 / 100;
-			$rate_oneusd = $rate_oneusd + $markup;
-		}
-		if($from=="USD" && $to=="IDR")
-		{
-			$markup = $rate_oneusd * 4.4 / 100;
-			$rate_oneusd = $rate_oneusd - $markup;
-		}
+			// Markup PAYPAL =========================
+			if($from=="IDR" && $to=="USD")
+			{
+				$markup = $rate_oneusd * 4.4 / 100;
+				$rate_oneusd = $rate_oneusd + $markup;
+			}
+			if($from=="USD" && $to=="IDR")
+			{
+				$markup = $rate_oneusd * 4.4 / 100;
+				$rate_oneusd = $rate_oneusd - $markup;
+			}
 		// Markup PAYPAL =========================
+		}
+		
 
 		$value = ($amount * $rate_oneusd);
 
@@ -2127,6 +2131,38 @@ class BookingHelper {
 						return '
 								<div class="card mb-4">
 								<span class="badge badge-danger invoice-color-danger" style="font-size:20px;"><i class="fab fa-paypal"></i> PAYPAL VOIDED</span>
+								<div class="card-body bg-light">
+								'. $text .'
+								</div>
+								</div>';
+					break;
+					default:
+						return '';
+				}
+            }
+            if($shoppingcart->shoppingcart_payment->payment_provider=="stripe")
+            {
+            	$text = '';
+
+            	$text .= 'Total : '.$shoppingcart->shoppingcart_payment->currency.' '. $shoppingcart->shoppingcart_payment->amount .'<br />';
+				$text .= 'Rate : '. BookingHelper::get_rate($shoppingcart) .'<br />';
+            	
+
+            	switch($shoppingcart->shoppingcart_payment->payment_status)
+				{
+					case 2:
+						return '
+								<div class="card mb-4">
+								<span class="badge badge-success invoice-color-success" style="font-size:20px;"><i class="fas fa-credit-card"></i> PAID VIA CARD</span>
+								<div class="card-body bg-light">
+								'. $text .'
+								</div>
+								</div>';
+					break;
+					case 3:
+						return '
+								<div class="card mb-4">
+								<span class="badge badge-danger invoice-color-danger" style="font-size:20px;"><i class="fas fa-credit-card"></i> UNPAID</span>
 								<div class="card-body bg-light">
 								'. $text .'
 								</div>

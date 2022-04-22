@@ -426,22 +426,28 @@ class ContentHelper {
                 'subtotal' => GeneralHelper::numberFormat($shoppingcart->subtotal),
                 'discount' => GeneralHelper::numberFormat($shoppingcart->discount),
                 'total' => GeneralHelper::numberFormat($shoppingcart->total),
-                'total_paypal' => BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,self::env_paypalCurrency()),
+                
                 'due_now' => GeneralHelper::numberFormat($shoppingcart->due_now),
                 'due_on_arrival' => GeneralHelper::numberFormat($shoppingcart->due_on_arrival),
                 'products' => $dataProducts,
                 'mainQuestions' => $dataMainQuestion,
                 'productQuestions' => $dataProductQuestion,
-                'rate_paypal' => BookingHelper::text_rate($shoppingcart,self::env_paypalCurrency()),
                 'paypal_client_id' => self::env_paypalClientId(),
-                'paypal_currency' => self::env_paypalCurrency(),
+                
                 'payment_enable' => $payment_enable,
                 'bank_transfer_list' => $bank_transfer_list,
                 'ewallet_list' => $ewallet_list,
+
+                'paypal_currency' => self::env_paypalCurrency(),
+                'paypal_total' => BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,self::env_paypalCurrency(),"PAYPAL"),
+                'paypal_rate' => BookingHelper::text_rate($shoppingcart,self::env_paypalCurrency(),"PAYPAL"),
+
                 'stripe_currency' => 'USD',
-                'total_stripe' => BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'USD'),
+                'stripe_total' => BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'USD'),
+                'stripe_rate' => BookingHelper::text_rate($shoppingcart,'USD'),
+
                 'idr_currency' => 'IDR',
-                'total_idr' => BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'IDR'),
+                'idr_total' => BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'IDR'),
             );
 
         return $dataShoppingcart;

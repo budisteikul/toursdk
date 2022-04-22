@@ -440,6 +440,8 @@ class ContentHelper {
                 'ewallet_list' => $ewallet_list,
                 'stripe_currency' => 'USD',
                 'total_stripe' => BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'USD'),
+                'idr_currency' => 'IDR',
+                'total_idr' => BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'IDR'),
             );
 
         return $dataShoppingcart;

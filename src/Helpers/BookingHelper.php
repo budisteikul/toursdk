@@ -2007,8 +2007,15 @@ class BookingHelper {
 			$rate = BokunHelper::get_currency($to);
 			$value = ($amount * $rate_oneusd / $rate);
 		}
-
-		$value = number_format((float)$value, 2, '.', '');
+		
+		if($to!="IDR")
+		{
+			$value = number_format((float)$value, 2, '.', '');
+		}
+		else
+		{
+			$value = number_format($value, 0, ',', ',');
+		}
 		return $value;
 	}
 	

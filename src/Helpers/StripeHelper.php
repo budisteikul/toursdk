@@ -18,13 +18,14 @@ class StripeHelper {
   	public static function createPayment($data)
   	{
   		$amount = number_format((float)$data->transaction->amount, 2, '.', '');
+  		$amount = bcmul($amount, 100);
 
   		Stripe\Stripe::setApiKey(self::env_stripeSecretKey());
   		$intent = Stripe\PaymentIntent::create([
   			'amount' => $amount,
   			'currency' => 'usd',
   			'metadata' => ['integration_check' => 'accept_a_payment'],
-  			'capture_method' => 'manual',
+  			//'capture_method' => 'manual',
 		]);
 
   		$response = new \stdClass();

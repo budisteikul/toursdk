@@ -1969,9 +1969,14 @@ class BookingHelper {
 
 	public static function text_rate($shoppingcart,$currency,$markup="")
 	{
+		/*
 		$amount = '<span class="badge badge-success" style="font-size:11px;">Total : '. self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,$currency,$markup) .' '. $currency .'</span>';
 		$value = $amount .'<br />Rate : 1 '. $currency .' = '. self::convert_currency(1,$currency,$shoppingcart->currency,$markup) .' '. $shoppingcart->currency;
-		return $value;
+		*/
+		$value = '1 '. $currency .' = '. self::convert_currency(1,$currency,$shoppingcart->currency,$markup) .' '. $shoppingcart->currency;
+		$amount = $value .'<br /><span class="badge badge-success" style="font-size:11px;">Total : '. self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,$currency,$markup) .' '. $currency .'</span>';
+		
+		return $amount;
 	}
 
 	public static function get_rate($shoppingcart)

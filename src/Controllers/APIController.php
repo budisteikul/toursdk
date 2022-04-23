@@ -612,6 +612,44 @@ class APIController extends Controller
             ], 200);
     }
     
+    public function confirmpaymentstripe(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'sessionId' => ['required', 'string', 'max:255'],
+            'authorizationID' => ['required', 'string', 'max:255'],
+        ]);
+        
+        if ($validator->fails()) {
+            $errors = $validator->errors();
+            return response()->json($errors);
+        }
+
+        $sessionId = $request->input('sessionId');
+        $authorizationID = $request->input('authorizationID');
+        $shoppingcart = Cache::get('_'. $sessionId);
+
+        if($shoppingcart->payment->authorization_id!=$authorizationID)
+        {
+            return response()->json([
+                    "id" => "2",
+                    "message" => 'Error'
+                ]);
+        }
+        
+        $shoppingcart->payment->payment_status = 1;
+        
+        Cache::forget('_'. $sessionId);
+        Cache::add('_'. $sessionId, $shoppingcart, 172800);
+        
+        BookingHelper::set_bookingStatus($sessionId,'CONFIRMED');
+        $shoppingcart = BookingHelper::confirm_booking($sessionId);
+
+        return response()->json([
+                    "id" => "1",
+                    "message" => "/booking/receipt/".$shoppingcart->session_id."/".$shoppingcart->confirmation_code
+                ]);
+    }
+
     public function confirmpaymentpaypal(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -864,6 +902,14 @@ class APIController extends Controller
             return response()->json($response);
     }
 
+    public function createpaymentstripe(Request $request)
+    {
+            $sessionId = $request->header('sessionId');
+            BookingHelper::set_confirmationCode($sessionId);
+            $response = BookingHelper::create_payment($sessionId,"stripe");
+            return response()->json($response);
+    }
+
 
     public function checkout(Request $request)
     {
@@ -960,22 +1006,13 @@ class APIController extends Controller
 
     public function stripe_jscript($sessionId)
     {
+        $shoppingcart = Cache::get('_'. $sessionId);
         $jscript = '
-        jQuery(document).ready(function($) {
+        
             $("#submitCheckout").slideUp("slow");
-            $("#paymentContainer").html(\'<form id="payment-form"><div id="stripe-wallet" class="pt-2 pb-2 justify-content-center"><h2>Pay with</h2><div id="payment-request-button"></div><div class="mt-2 mb-2" style="width: 100%; height: 12px; border-bottom: 1px solid #D0D0D0; text-align: center"><span style="color: #D0D0D0; font-size: 12px; background-color: #FFFFFF; padding: 0 10px;">or pay with card</span></div></div><div class="form-control mt-2 mb-2" style="height:47px;" id="card-element"></div><div id="card-errors" role="alert"></div><button style="height:47px;" class="btn btn-lg btn-block btn-theme" id="submit"><strong>Pay Now</strong></button></form>\');
+            $("#paymentContainer").html(\'<form id="payment-form"><div id="stripe-wallet" class="pt-2 pb-2 justify-content-center"><h2>Pay with</h2><div id="payment-request-button"></div><div class="mt-2 mb-2" style="width: 100%; height: 12px; border-bottom: 1px solid #D0D0D0; text-align: center"><span style="color: #D0D0D0; font-size: 12px; background-color: #FFFFFF; padding: 0 10px;">or pay with card</span></div></div><div class="form-control mt-2 mb-2" style="height:47px;" id="card-element"></div><div id="card-errors" role="alert"></div><button style="height:47px;" class="btn btn-lg btn-block btn-theme" id="submit"><strong>Pay Now</strong></button></form><div id=\"loader\" class=\"mb-4\"></div><div id=\"text-alert\" class=\"text-center\"></div>\');
 
-            /*
-            $.ajax({
-                data: {
-                    "_token": $("meta[name=csrf-token]").attr("content"),
-                    "name": $(\'#name\').val(),
-                },
-                type: \'POST\',
-                url: \''. env('APP_API_URL') .'/test\'
-             }).done(function( data ) {
-             */  
-                 //console.log(data);
+            
 
                  var stripe = Stripe(\''. env("STRIPE_PUBLISHABLE_KEY") .'\', {
                     apiVersion: "2020-08-27",
@@ -986,8 +1023,8 @@ class APIController extends Controller
                     country: \'US\',
                     currency: \'usd\',
                     total: {
-                        label: \'Demo total\',
-                        amount: 50,
+                        label: \''. env('APP_NAME') .'\',
+                        amount: '.bcmul(BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'USD'),100).',
                     },
                     requestPayerName: true,
                     requestPayerEmail: true,
@@ -1021,9 +1058,90 @@ class APIController extends Controller
                  var card = elements.create("card", { style: style });
                  card.mount("#card-element");
 
-            //});
+                var form = document.getElementById(\'payment-form\');
+                form.addEventListener(\'submit\', function(ev) {
+                   
+                    ev.preventDefault();
 
-        });
+                    $("#loader").show();
+                    $("#alert-payment").slideUp("slow");
+                    $("#submit").attr("disabled", true);
+                    $("#submit").html(\'<i class="fa fa-spinner fa-spin"></i>\');
+
+                    $.ajax({
+                    beforeSend: function(request) {
+                        request.setRequestHeader(\'sessionId\', \''. $shoppingcart->session_id .'\');
+                    },
+                    type: \'POST\',
+                    url: \''. env('APP_API_URL') .'/payment/stripe\'
+                }).done(function( data ) {
+                    
+                    $("#payment-form").slideUp("slow");  
+                    $("#proses").hide();
+                    $("#loader").addClass("loader");
+                    $("#text-alert").show();
+                    $("#text-alert").prepend( "Please wait and do not close the browser or refresh the page" );
+
+                    stripe.confirmCardPayment(data.intent.client_secret, {
+                        payment_method: {
+                            card: card
+                        }
+                    }).then(function(result) {
+
+                        console.log(result);
+
+                        if (result.error) {
+
+                            $("#text-alert").hide();
+                            $("#text-alert").empty();
+                            $("#loader").hide();
+                            $("#loader").removeClass("loader");
+                            $("#payment-form").slideDown("slow");
+                            $("#submit").attr("disabled", false);
+                            $("#submit").html(\'<strong>Pay Now</strong>\');
+                            $(\'#alert-payment\').html(\'<div id="alert-failed" class="alert alert-danger text-center mt-2" role="alert"><h2 style="margin-bottom:10px; margin-top:10px;"><i class="far fa-frown"></i> \'+ result.error.message +\'</h2></div>\');
+                            $(\'#alert-payment\').fadeIn("slow");
+
+                        } else {
+                            
+                            if (result.paymentIntent.status === \'succeeded\' || result.paymentIntent.status === \'requires_capture\') {
+                                
+                                    $("#text-alert").hide();
+                                    $("#text-alert").empty();
+                                    $("#loader").hide();
+                                    $("#loader").removeClass("loader");
+                                    $(\'#alert-payment\').html(\'<div id="alert-success" class="alert alert-primary text-center" role="alert"><h2 style="margin-bottom:10px; margin-top:10px;"><i class="far fa-smile"></i> Payment Successful!</h2></div>\');
+                                    $(\'#alert-payment\').fadeIn("slow");
+
+                                $.ajax({
+                                data: {
+                                    "authorizationID": result.paymentIntent.id,
+                                    "sessionId": \''.$sessionId.'\',
+                                },
+                                type: \'POST\',
+                                url: \''. url('/api') .'/payment/stripe/confirm\'
+                                }).done(function(data) {
+                                if(data.id=="1")
+                                {
+                                    window.openAppRoute(data.message); 
+                                }
+
+                                }).fail(function(error) {
+                                    console.log(error);
+                                });
+
+
+
+
+
+                                
+                            }
+                        }
+                    });
+                });
+                });
+       
+
         ';
         return response($jscript)->header('Content-Type', 'application/javascript');
     }
@@ -1035,7 +1153,7 @@ class APIController extends Controller
         jQuery(document).ready(function($) {
 
             $("#submitCheckout").slideUp("slow");  
-            $("#paymentContainer").html(\'<div id="proses"><h2>Pay with</h2><div id="paypal-button-container"></div></div><div id=\"loader\" class=\"mb-4\"></div><div id=\"text-alert\" class=\"text-center\"></div>\');
+            $("#paymentContainer").html(\'<div id="proses"><h2 class="mt-0">Pay with</h2><div id="paypal-button-container"></div></div><div id=\"loader\" class=\"mb-4\"></div><div id=\"text-alert\" class=\"text-center\"></div>\');
            
             paypal.Buttons({
                 createOrder: function() {

@@ -62,8 +62,8 @@ body {
   padding-bottom:10px;
 }
 .card_heading .title {
-  padding-top: 10px;
-  margin-top: 10px;
+  padding-top: 5px;
+  margin-top: 5px;
   text-align: center;
   color:#FFFFFF;
   font-size:13px;
@@ -73,8 +73,8 @@ body {
   text-transform:uppercase;
 }
 .card_heading .qrcode {
-  padding-top: 10px;
-  margin-top: 10px;
+  padding-top: 5px;
+  margin-top: 5px;
   text-align: center;
   color:#FFFFFF;
   font-size:13px;

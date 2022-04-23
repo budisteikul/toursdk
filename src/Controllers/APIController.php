@@ -1281,18 +1281,22 @@ class APIController extends Controller
                             payment_method: e.paymentMethod.id
                         }, {handleActions:false});
                     
-                    if(error) {
-                        e.complete("fail");
-                    }
-
-
-                    console.log(paymentIntent);
-
                     $("#payment-form").slideUp("slow");  
                     $("#proses").hide();
                     $("#loader").addClass("loader");
                     $("#text-alert").show();
                     $("#text-alert").prepend( "Please wait and do not close the browser or refresh the page" );
+
+                    if(error) {
+                        e.complete("fail");
+                        $("#text-alert").hide();
+                        $("#text-alert").empty();
+                        $("#loader").hide();
+                        $("#loader").removeClass("loader");
+                        $(\'#alert-payment\').html(\'<div id="alert-failed" class="alert alert-danger text-center mt-2" role="alert"><h2 style="margin-bottom:10px; margin-top:10px;"><i class="far fa-frown"></i> Payment Failed</h2></div>\');
+                        $(\'#alert-payment\').fadeIn("slow");
+                    }
+
                     e.complete("success");
 
 
@@ -1303,12 +1307,12 @@ class APIController extends Controller
                             if(result.error)
                             {
                                 // failed
-                                 e.complete("fail");
+                                e.complete("fail");
                                 $("#text-alert").hide();
                                 $("#text-alert").empty();
                                 $("#loader").hide();
                                 $("#loader").removeClass("loader");
-                                $(\'#alert-payment\').html(\'<div id="alert-failed" class="alert alert-danger text-center mt-2" role="alert"><h2 style="margin-bottom:10px; margin-top:10px;"><i class="far fa-frown"></i> \'+ result.error.message +\'</h2></div>\');
+                                $(\'#alert-payment\').html(\'<div id="alert-failed" class="alert alert-danger text-center mt-2" role="alert"><h2 style="margin-bottom:10px; margin-top:10px;"><i class="far fa-frown"></i> Payment Failed</h2></div>\');
                                 $(\'#alert-payment\').fadeIn("slow");
                             }
                             else

@@ -69,9 +69,5 @@
 	Route::post('/webhook/{webhook_app}', 'budisteikul\toursdk\Controllers\WebhookController@webhook');
 	Route::get('/webhook/{webhook_app}', 'budisteikul\toursdk\Controllers\WebhookController@webhook');
 
-	Route::get('/loggedin/{session_id}', 'budisteikul\toursdk\Controllers\APIController@test2')->name('loggedin');
-
-	//TEST
-	Route::get('/test', 'budisteikul\toursdk\Controllers\APIController@test');
-	Route::post('/api/test', 'budisteikul\toursdk\Controllers\APIController@test');
+	
 

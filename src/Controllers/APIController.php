@@ -636,11 +636,11 @@ class APIController extends Controller
                 ]);
         }
         
-        $shoppingcart->payment->payment_status = 1;
+        $shoppingcart->payment->payment_status = 2;
         
         Cache::forget('_'. $sessionId);
         Cache::add('_'. $sessionId, $shoppingcart, 172800);
-        
+
         BookingHelper::set_bookingStatus($sessionId,'CONFIRMED');
         $shoppingcart = BookingHelper::confirm_booking($sessionId);
 
@@ -1004,13 +1004,134 @@ class APIController extends Controller
 
     
 
+    public function stripe_jscript__($sessionId)
+    {
+        $shoppingcart = Cache::get('_'. $sessionId);
+        $jscript = '
+        
+            $("#submitCheckout").slideUp("slow");
+            $("#paymentContainer").html(\'<form id="payment-form"><div class="form-control mt-2 mb-2" style="height:47px;" id="card-element"></div><div id="card-errors" role="alert"></div><button style="height:47px;" class="btn btn-lg btn-block btn-theme" id="submit"><strong>Pay with card</strong></button></form><div id=\"loader\" class=\"mb-4\"></div><div id=\"text-alert\" class=\"text-center\"></div>\');
+
+                 var stripe = Stripe(\''. env("STRIPE_PUBLISHABLE_KEY") .'\', {
+                    apiVersion: "2020-08-27",
+                 });
+
+                 var elements = stripe.elements();
+
+                 var style = {
+                    base: {
+                        color: "#32325d",
+                        fontSize: "16px",
+                        lineHeight: "34px"
+                    }
+                 };
+
+                 var card = elements.create("card", { style: style });
+                 card.mount("#card-element");
+
+                var form = document.getElementById(\'payment-form\');
+                form.addEventListener(\'submit\', function(ev) {
+                   
+                    ev.preventDefault();
+
+                    $("#loader").show();
+                    $("#alert-payment").slideUp("slow");
+                    $("#submit").attr("disabled", true);
+                    $("#submit").html(\'<i class="fa fa-spinner fa-spin"></i>\');
+
+                    $.ajax({
+                    beforeSend: function(request) {
+                        request.setRequestHeader(\'sessionId\', \''. $shoppingcart->session_id .'\');
+                    },
+                    type: \'POST\',
+                    url: \''. env('APP_API_URL') .'/payment/stripe\'
+                }).done(function( data ) {
+                    
+                    $("#payment-form").slideUp("slow");  
+                    $("#proses").hide();
+                    $("#loader").addClass("loader");
+                    $("#text-alert").show();
+                    $("#text-alert").prepend( "Please wait and do not close the browser or refresh the page" );
+
+                    stripe.confirmCardPayment(data.intent.client_secret, {
+                        payment_method: {
+                            card: card
+                        }
+                    }).then(function(result) {
+
+                       
+
+                        if (result.error) {
+
+                            $("#text-alert").hide();
+                            $("#text-alert").empty();
+                            $("#loader").hide();
+                            $("#loader").removeClass("loader");
+                            $("#payment-form").slideDown("slow");
+                            $("#submit").attr("disabled", false);
+                            $("#submit").html(\'<strong>Pay with card</strong>\');
+                            $(\'#alert-payment\').html(\'<div id="alert-failed" class="alert alert-danger text-center mt-2" role="alert"><h2 style="margin-bottom:10px; margin-top:10px;"><i class="far fa-frown"></i> \'+ result.error.message +\'</h2></div>\');
+                            $(\'#alert-payment\').fadeIn("slow");
+
+                        } else {
+                            
+                            if (result.paymentIntent.status === \'succeeded\' || result.paymentIntent.status === \'requires_capture\') {
+                                
+                                    
+
+                                $.ajax({
+                                data: {
+                                    "authorizationID": result.paymentIntent.id,
+                                    "sessionId": \''.$sessionId.'\',
+                                },
+                                type: \'POST\',
+                                url: \''. url('/api') .'/payment/stripe/confirm\'
+                                }).done(function(data) {
+                                if(data.id=="1")
+                                {
+                                    $("#text-alert").hide();
+                                    $("#text-alert").empty();
+                                    $("#loader").hide();
+                                    $("#loader").removeClass("loader");
+                                    $(\'#alert-payment\').html(\'<div id="alert-success" class="alert alert-primary text-center" role="alert"><h2 style="margin-bottom:10px; margin-top:10px;"><i class="far fa-smile"></i> Payment Successful!</h2></div>\');
+                                    $(\'#alert-payment\').fadeIn("slow");
+                                    window.openAppRoute(data.message); 
+                                }
+
+                                }).fail(function(error) {
+                                    
+                                });
+
+
+
+
+
+                                
+                            }
+                        }
+                    });
+                });
+
+
+
+                
+
+
+
+                });
+       
+
+        ';
+        return response($jscript)->header('Content-Type', 'application/javascript');
+    }
+
     public function stripe_jscript($sessionId)
     {
         $shoppingcart = Cache::get('_'. $sessionId);
         $jscript = '
         
             $("#submitCheckout").slideUp("slow");
-            $("#paymentContainer").html(\'<form id="payment-form"><div id="stripe-wallet" class="pt-2 pb-2 justify-content-center"><h2>Pay with</h2><div id="payment-request-button"></div><div class="mt-2 mb-2" style="width: 100%; height: 12px; border-bottom: 1px solid #D0D0D0; text-align: center"><span style="color: #D0D0D0; font-size: 12px; background-color: #FFFFFF; padding: 0 10px;">or pay with card</span></div></div><div class="form-control mt-2 mb-2" style="height:47px;" id="card-element"></div><div id="card-errors" role="alert"></div><button style="height:47px;" class="btn btn-lg btn-block btn-theme" id="submit"><strong>Pay Now</strong></button></form><div id=\"loader\" class=\"mb-4\"></div><div id=\"text-alert\" class=\"text-center\"></div>\');
+            $("#paymentContainer").html(\'<form id="payment-form"><div id="stripe-wallet" class="pt-2 pb-2 justify-content-center"><h2>Pay with</h2><div id="payment-request-button"></div><div class="mt-2 mb-2" style="width: 100%; height: 12px; border-bottom: 1px solid #D0D0D0; text-align: center"><span style="color: #D0D0D0; font-size: 12px; background-color: #FFFFFF; padding: 0 10px;">or pay with card</span></div></div><div class="form-control mt-2 mb-2" style="height:47px;" id="card-element"></div><div id="card-errors" role="alert"></div><button style="height:47px;" class="btn btn-lg btn-block btn-theme" id="submit"><strong>Pay with card</strong></button></form><div id=\"loader\" class=\"mb-4\"></div><div id=\"text-alert\" class=\"text-center\"></div>\');
 
             
 
@@ -1088,7 +1209,7 @@ class APIController extends Controller
                         }
                     }).then(function(result) {
 
-                        console.log(result);
+                       
 
                         if (result.error) {
 
@@ -1098,7 +1219,7 @@ class APIController extends Controller
                             $("#loader").removeClass("loader");
                             $("#payment-form").slideDown("slow");
                             $("#submit").attr("disabled", false);
-                            $("#submit").html(\'<strong>Pay Now</strong>\');
+                            $("#submit").html(\'<strong>Pay with card</strong>\');
                             $(\'#alert-payment\').html(\'<div id="alert-failed" class="alert alert-danger text-center mt-2" role="alert"><h2 style="margin-bottom:10px; margin-top:10px;"><i class="far fa-frown"></i> \'+ result.error.message +\'</h2></div>\');
                             $(\'#alert-payment\').fadeIn("slow");
 
@@ -1106,12 +1227,7 @@ class APIController extends Controller
                             
                             if (result.paymentIntent.status === \'succeeded\' || result.paymentIntent.status === \'requires_capture\') {
                                 
-                                    $("#text-alert").hide();
-                                    $("#text-alert").empty();
-                                    $("#loader").hide();
-                                    $("#loader").removeClass("loader");
-                                    $(\'#alert-payment\').html(\'<div id="alert-success" class="alert alert-primary text-center" role="alert"><h2 style="margin-bottom:10px; margin-top:10px;"><i class="far fa-smile"></i> Payment Successful!</h2></div>\');
-                                    $(\'#alert-payment\').fadeIn("slow");
+                                    
 
                                 $.ajax({
                                 data: {
@@ -1123,11 +1239,17 @@ class APIController extends Controller
                                 }).done(function(data) {
                                 if(data.id=="1")
                                 {
+                                    $("#text-alert").hide();
+                                    $("#text-alert").empty();
+                                    $("#loader").hide();
+                                    $("#loader").removeClass("loader");
+                                    $(\'#alert-payment\').html(\'<div id="alert-success" class="alert alert-primary text-center" role="alert"><h2 style="margin-bottom:10px; margin-top:10px;"><i class="far fa-smile"></i> Payment Successful!</h2></div>\');
+                                    $(\'#alert-payment\').fadeIn("slow");
                                     window.openAppRoute(data.message); 
                                 }
 
                                 }).fail(function(error) {
-                                    console.log(error);
+                                    
                                 });
 
 
@@ -1139,8 +1261,114 @@ class APIController extends Controller
                         }
                     });
                 });
+
+
                 });
-       
+
+
+
+                paymentRequest.on(\'paymentmethod\', async(e) => {
+
+                    const {intent} = await fetch("'. env('APP_API_URL') .'/payment/stripe", {
+                        method: "POST",
+                        credentials: \'same-origin\',
+                        headers: {
+                            "sessionId" : "'. $shoppingcart->session_id .'",
+                        },
+                    }).then(r => r.json());
+                    
+                    const {error,paymentIntent} = await stripe.confirmCardPayment(intent.client_secret,{
+                            payment_method: e.paymentMethod.id
+                        }, {handleActions:false});
+                    
+                    if(error) {
+                        e.complete("fail");
+                    }
+
+
+                    console.log(paymentIntent);
+
+                    $("#payment-form").slideUp("slow");  
+                    $("#proses").hide();
+                    $("#loader").addClass("loader");
+                    $("#text-alert").show();
+                    $("#text-alert").prepend( "Please wait and do not close the browser or refresh the page" );
+                    e.complete("success");
+
+
+
+                    if(paymentIntent.status == "requires_action")
+                    {
+                        stripe.confirmCardPayment(intent.client_secret).then(function(result){
+                            if(result.error)
+                            {
+                                // failed
+                                 e.complete("fail");
+                                $("#text-alert").hide();
+                                $("#text-alert").empty();
+                                $("#loader").hide();
+                                $("#loader").removeClass("loader");
+                                $(\'#alert-payment\').html(\'<div id="alert-failed" class="alert alert-danger text-center mt-2" role="alert"><h2 style="margin-bottom:10px; margin-top:10px;"><i class="far fa-frown"></i> \'+ result.error.message +\'</h2></div>\');
+                                $(\'#alert-payment\').fadeIn("slow");
+                            }
+                            else
+                            {
+                                // success
+                                $.ajax({
+                                data: {
+                                    "authorizationID": paymentIntent.id,
+                                    "sessionId": \''.$sessionId.'\',
+                                },
+                                type: \'POST\',
+                                url: \''. url('/api') .'/payment/stripe/confirm\'
+                                }).done(function(data) {
+                                if(data.id=="1")
+                                {
+                                    e.complete("success");
+                                    $("#text-alert").hide();
+                                    $("#text-alert").empty();
+                                    $("#loader").hide();
+                                    $("#loader").removeClass("loader");
+                                    $(\'#alert-payment\').html(\'<div id="alert-success" class="alert alert-primary text-center" role="alert"><h2 style="margin-bottom:10px; margin-top:10px;"><i class="far fa-smile"></i> Payment Successful!</h2></div>\');
+                                    $(\'#alert-payment\').fadeIn("slow");
+                                    window.openAppRoute(data.message); 
+                                }
+
+                                }).fail(function(error) {
+                                    
+                                });
+                            }
+                        });
+                        
+                    } else {
+                                // success
+                                $.ajax({
+                                data: {
+                                    "authorizationID": paymentIntent.id,
+                                    "sessionId": \''.$sessionId.'\',
+                                },
+                                type: \'POST\',
+                                url: \''. url('/api') .'/payment/stripe/confirm\'
+                                }).done(function(data) {
+                                if(data.id=="1")
+                                {
+                                    e.complete("success");
+                                    $("#text-alert").hide();
+                                    $("#text-alert").empty();
+                                    $("#loader").hide();
+                                    $("#loader").removeClass("loader");
+                                    $(\'#alert-payment\').html(\'<div id="alert-success" class="alert alert-primary text-center" role="alert"><h2 style="margin-bottom:10px; margin-top:10px;"><i class="far fa-smile"></i> Payment Successful!</h2></div>\');
+                                    $(\'#alert-payment\').fadeIn("slow");
+                                    window.openAppRoute(data.message); 
+                                }
+
+                                }).fail(function(error) {
+                                    
+                                });
+                    }
+
+                });
+            
 
         ';
         return response($jscript)->header('Content-Type', 'application/javascript');

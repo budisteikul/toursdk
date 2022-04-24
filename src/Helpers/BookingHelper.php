@@ -2312,15 +2312,15 @@ class BookingHelper {
 						$button = null;
 						if($shoppingcart->shoppingcart_payment->bank_name=="gopay")
 						{
-							$button = '<a class="btn btn-outline-secondary w-100" href="'. $shoppingcart->shoppingcart_payment->redirect .'"><b class="invoice-hilang"> Open <img height="30" src="'. url('/img/ewallet/gopay.png') .'" /> App</b></a>';
+							$button = '<a class="btn btn-theme w-100" href="'. $shoppingcart->shoppingcart_payment->redirect .'"><b class="invoice-hilang"> Open <img height="30" src="'. url('/img/ewallet/gopay-light.png') .'" /> app</b></a>';
 						}
 						if($shoppingcart->shoppingcart_payment->bank_name=="shopeepay")
 						{
-							$button = '<a class="btn btn-outline-secondary w-100" href="'. $shoppingcart->shoppingcart_payment->redirect .'"><b class="invoice-hilang"> Open <img height="30" src="'. url('/img/ewallet/shopeepay.png') .'" /> App</b></a>';
+							$button = '<a class="btn btn-theme w-100" href="'. $shoppingcart->shoppingcart_payment->redirect .'"><b class="invoice-hilang"> Open <img height="30" src="'. url('/img/ewallet/shopeepay-light.png') .'" /> app</b></a>';
 						}
 						if($shoppingcart->shoppingcart_payment->bank_name=="linkaja")
 						{
-							$button = '<a class="btn btn-outline-secondary w-100" href="'. $shoppingcart->shoppingcart_payment->redirect .'"><b class="invoice-hilang"> Open <img height="30" src="'. url('/img/ewallet/linkaja.png') .'" /> App</b></a>';
+							$button = '<a class="btn btn-theme w-100" href="'. $shoppingcart->shoppingcart_payment->redirect .'"><b class="invoice-hilang"> Open <img height="30" src="'. url('/img/ewallet/linkaja-light.png') .'" /> app</b></a>';
 						}
 						
 						return '

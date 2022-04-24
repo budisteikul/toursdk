@@ -114,6 +114,7 @@ class MidtransHelper {
           $response->va_number = $data2['permata_va_number'];
           $response->expiration_date = $data->transaction->date_expired;
           $response->order_id = $data->transaction->id;
+          $response->redirect = $data->transaction->finish_url;
         }
         else if($payment->bank_payment_type=="gopay")
         {

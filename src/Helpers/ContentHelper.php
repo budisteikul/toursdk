@@ -447,7 +447,7 @@ class ContentHelper {
                 'stripe_rate' => BookingHelper::text_rate($shoppingcart,'USD'),
 
                 'idr_currency' => 'IDR',
-                'idr_total' => BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'IDR'),
+                'idr_total' => GeneralHelper::numberFormat(BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'IDR')),
             );
 
         return $dataShoppingcart;

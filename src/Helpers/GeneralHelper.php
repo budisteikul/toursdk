@@ -54,9 +54,11 @@ class GeneralHelper {
         }
     }
 
-    public static function numberFormat($exp)
+    public static function numberFormat($exp,$currency="")
     {
-        if(env('BOKUN_CURRENCY')=="IDR")
+        if($currency=="") $currency = env('BOKUN_CURRENCY');
+
+        if($currency=="IDR")
         {
             return number_format($exp, 0, ',',',');
         }

@@ -1795,9 +1795,8 @@ class BookingHelper {
 		$payment_status = NULL;
 
 		$transaction = new \stdClass();
-        //$transaction->id = Uuid::uuid4()->toString();
         $transaction->id = self::get_payment_transaction_id();
-        $transaction->amount = $shoppingcart->due_now;
+        $transaction->amount = $amount;
         $transaction->payment_provider = $payment_provider;
         $transaction->bank = $bank;
         $transaction->mins_expired = $mins_expired;
@@ -1817,31 +1816,48 @@ class BookingHelper {
 		switch($payment_provider)
 		{
 			case "oyindonesia":
-				$amount = $shoppingcart->due_now;
+				$amount = number_format(self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'IDR'), 0, '.','');
+
 				$currency = 'IDR';
 				$rate = 1;
 				$payment_status = 4;
+
+				$data->transaction->amount = $amount;
+				$data->transaction->currency = $currency;
+
 				$response = OyHelper::createPayment($data);
 			break;
 			case "doku":
-				$amount = $shoppingcart->due_now;
+				$amount = number_format(self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'IDR'), 0, '.','');
 				$currency = 'IDR';
 				$rate = 1;
 				$payment_status = 4;
+
+				$data->transaction->amount = $amount;
+				$data->transaction->currency = $currency;
+
 				$response = DokuHelper::createPayment($data);
 			break;
 			case "midtrans":
-				$amount = $shoppingcart->due_now;
+				$amount = number_format(self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'IDR'), 0, '.','');
 				$currency = 'IDR';
 				$rate = 1;
 				$payment_status = 4;
+
+				$data->transaction->amount = $amount;
+				$data->transaction->currency = $currency;
+
 				$response = MidtransHelper::createPayment($data);
 			break;
 			case "paydia":
-				$amount = $shoppingcart->due_now;
+				$amount = number_format(self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'IDR'), 0, '.','');
 				$currency = 'IDR';
 				$rate = 1;
 				$payment_status = 4;
+
+				$data->transaction->amount = $amount;
+				$data->transaction->currency = $currency;
+
 				$response = PaydiaHelper::createPayment($data);
 			break;
 			case "paypal":
@@ -1877,7 +1893,7 @@ class BookingHelper {
 			default:
 				$payment_provider = 'none';
 				$amount = $shoppingcart->due_now;
-				$currency = 'IDR';
+				$currency = $shoppingcart->currency;
 				$rate = 1;
 				$payment_status = 0;
 		}
@@ -2017,14 +2033,14 @@ class BookingHelper {
 			$value = ($amount * $rate_oneusd / $rate);
 		}
 		
-		if($to!="IDR")
-		{
+		//if($to!="IDR")
+		//{
 			$value = number_format((float)$value, 2, '.', '');
-		}
-		else
-		{
-			$value = number_format($value, 0, ',', ',');
-		}
+		//}
+		//else
+		//{
+			//$value = number_format($value, 0, ',', ',');
+		//}
 		return $value;
 	}
 	

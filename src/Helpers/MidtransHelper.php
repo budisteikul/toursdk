@@ -161,28 +161,13 @@ class MidtransHelper {
           $data1 = MidtransHelper::createSnap($data,$payment);
           $data2 = MidtransHelper::chargeSnap($data1->token,$data,$payment);
           
-          $contents = file_get_contents($data2['qr_code_url']);
-          Storage::disk('local')->put($data1->token.'.png', $contents);
-          $file = Storage::disk('local')->path($data1->token.'.png');
-          $qrcode = new QrReader($file);
-          $qrcode_content = $qrcode->text();
-
           $response->bank_name = $payment->bank_name;
-          $response->qrcode = $qrcode_content;
           $response->link = null;
           $response->expiration_date = $data->transaction->date_expired;
           $response->order_id = $data->transaction->id;
 
-          if($data->transaction->bank=="qris")
-          {
-            $response->payment_type = 'qris';
-            $response->redirect = $data->transaction->finish_url;
-          }
-          else
-          {
-            $response->payment_type = 'ewallet';
-            $response->redirect = $data2['deeplink_url'];
-          }
+          $response->payment_type = 'ewallet';
+          $response->redirect = $data2['deeplink_url'];
           
         }
         else if($payment->bank_payment_type=="echannel")

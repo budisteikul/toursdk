@@ -82,6 +82,11 @@ class MidtransHelper {
                 $data->bank_code = "";
                 $data->bank_payment_type = "gopay";
             break;
+            case "shopeepay":
+                $data->bank_name = "shopeepay";
+                $data->bank_code = "";
+                $data->bank_payment_type = "shopeepay";
+            break;
             case "qris":
                 $data->bank_name = "gopay";
                 $data->bank_code = "";
@@ -145,6 +150,38 @@ class MidtransHelper {
           {
             $response->payment_type = 'ewallet';
             $response->redirect = str_ireplace("gojek://","https://gojek.link/",$data2['deeplink_url']);
+          }
+          
+        }
+        else if($payment->bank_payment_type=="shopeepay")
+        {
+          $data->transaction->mins_expired = 60;
+          $data->transaction->date_expired = Carbon::parse($data->transaction->date_now)->addMinutes($data->transaction->mins_expired);
+
+          $data1 = MidtransHelper::createSnap($data,$payment);
+          $data2 = MidtransHelper::chargeSnap($data1->token,$data,$payment);
+          
+          $contents = file_get_contents($data2['qr_code_url']);
+          Storage::disk('local')->put($data1->token.'.png', $contents);
+          $file = Storage::disk('local')->path($data1->token.'.png');
+          $qrcode = new QrReader($file);
+          $qrcode_content = $qrcode->text();
+
+          $response->bank_name = $payment->bank_name;
+          $response->qrcode = $qrcode_content;
+          $response->link = null;
+          $response->expiration_date = $data->transaction->date_expired;
+          $response->order_id = $data->transaction->id;
+
+          if($data->transaction->bank=="qris")
+          {
+            $response->payment_type = 'qris';
+            $response->redirect = $data->transaction->finish_url;
+          }
+          else
+          {
+            $response->payment_type = 'ewallet';
+            $response->redirect = $data2['deeplink_url'];
           }
           
         }

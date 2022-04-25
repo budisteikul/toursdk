@@ -11,6 +11,11 @@ class MidtransHelper {
         return env("APP_URL");
   }
 
+  public static function env_appApiUrl()
+  {
+        return env("APP_API_URL");
+  }
+
   public static function env_midtransServerKey()
   {
         return env("MIDTRANS_SERVER_KEY");
@@ -254,6 +259,7 @@ class MidtransHelper {
         $headers = [
               'Accept' => 'application/jsons',
               'Content-Type' => 'application/json',
+              'X-Override-Notification' => self::env_appApiUrl() .'/payment/midtrans/confirm',
               'Authorization' => 'Basic '. base64_encode(self::env_midtransServerKey()),
           ];
         

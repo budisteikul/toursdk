@@ -1037,7 +1037,7 @@ class APIController extends Controller
                     $("#loader").show();
                     $("#alert-payment").slideUp("slow");
                     $("#submit").attr("disabled", true);
-                    $("#submit").html(\'<i class="fa fa-spinner fa-spin"></i>\');
+                    $("#submit").html(\' <i class="fa fa-spinner fa-spin fa-fw"></i>  processing... \');
 
                     $.ajax({
                     beforeSend: function(request) {
@@ -1187,7 +1187,7 @@ class APIController extends Controller
                     $("#loader").show();
                     $("#alert-payment").slideUp("slow");
                     $("#submit").attr("disabled", true);
-                    $("#submit").html(\'<i class="fa fa-spinner fa-spin"></i>\');
+                    $("#submit").html(\' <i class="fa fa-spinner fa-spin fa-fw"></i>  processing... \');
 
                     $.ajax({
                     beforeSend: function(request) {

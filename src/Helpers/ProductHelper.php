@@ -109,31 +109,17 @@ class ProductHelper {
             $arr_date[] = $text;
         }
 
-        
+
         if(isset($arr_date[1]))
         {
-            try
-            {
-                $date = Carbon::createFromFormat('D d.M Y', trim($arr_date[0]));
-            }
-            catch(Exception $e)
-            {
-                $date = Carbon::createFromFormat('D, F d Y', trim($arr_date[0]));
-            }
+            $date = Carbon::createFromFormat('D, F d Y', trim($arr_date[0]));
 
             $time = Carbon::createFromFormat('H:i', trim($arr_date[1]));
             $hasil = $date->format('Y-m-d') .' '. $time->format('H:i:00');
         }
         else
         {
-            try
-            {
-                $date = Carbon::createFromFormat('D d.M Y', trim($arr_date[0]));
-            }
-            catch(Exception $e)
-            {
-                $date = Carbon::createFromFormat('D, F d Y', trim($arr_date[0]));
-            }
+            $date = Carbon::createFromFormat('D, F d Y', trim($arr_date[0]));
 
             $hasil = $date->format('Y-m-d') .' 00:00:00';
         }

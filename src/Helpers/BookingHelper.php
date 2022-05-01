@@ -2268,7 +2268,7 @@ class BookingHelper {
 								</div>
 								<div class="card mb-1 img-fluid invoice-hilang"  style="min-height:450px; max-width:505px;">
 								
-								<img class="card-img-top" src="'. url('/img/qris-template.jpg') .'" alt="Card image" style="width:100%">
+								<!-- img class="card-img-top" src="'. url('/img/qris-template.jpg') .'" alt="Card image" style="width:100%" -->
 								
 								
 								<div class="card-img-overlay">

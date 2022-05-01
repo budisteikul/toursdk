@@ -92,10 +92,15 @@ class MidtransHelper {
                 $data->bank_code = "";
                 $data->bank_payment_type = "shopeepay";
             break;
-            case "qris":
+            case "qris_gopay":
                 $data->bank_name = "gopay";
                 $data->bank_code = "";
-                $data->bank_payment_type = "gopay";
+                $data->bank_payment_type = "qris";
+            break;
+            case "qris_shopeepay":
+                $data->bank_name = "shopeepay";
+                $data->bank_code = "";
+                $data->bank_payment_type = "qris";
             break;
             default:
                 return response()->json([
@@ -134,29 +139,29 @@ class MidtransHelper {
           $data1 = MidtransHelper::createSnap($data,$payment);
           $data2 = MidtransHelper::chargeSnap($data1->token,$data,$payment);
           
-          $contents = file_get_contents($data2['qr_code_url']);
-          Storage::disk('local')->put($data1->token.'.png', $contents);
-          $file = Storage::disk('local')->path($data1->token.'.png');
-          $qrcode = new QrReader($file);
-          $qrcode_content = $qrcode->text();
-
           $response->bank_name = $payment->bank_name;
-          $response->qrcode = $qrcode_content;
+          $response->link = null;
+          $response->expiration_date = $data->transaction->date_expired;
+          $response->order_id = $data->transaction->id;
+          $response->payment_type = 'ewallet';
+          $response->redirect = str_ireplace("gojek://","https://gojek.link/",$data2['deeplink_url']);
+        }
+        else if($payment->bank_payment_type=="qris")
+        {
+          $data->transaction->mins_expired = 60;
+          $data->transaction->date_expired = Carbon::parse($data->transaction->date_now)->addMinutes($data->transaction->mins_expired);
+
+          $data1 = MidtransHelper::createSnap($data,$payment);
+          $data2 = MidtransHelper::chargeSnap($data1->token,$data,$payment);
+          
+          $response->bank_name = $payment->bank_name;
+          $response->qrcode = $data2['qr_string'];
           $response->link = null;
           $response->expiration_date = $data->transaction->date_expired;
           $response->order_id = $data->transaction->id;
 
-          if($data->transaction->bank=="qris")
-          {
-            $response->payment_type = 'qris';
-            $response->redirect = $data->transaction->finish_url;
-          }
-          else
-          {
-            $response->payment_type = 'ewallet';
-            $response->redirect = str_ireplace("gojek://","https://gojek.link/",$data2['deeplink_url']);
-          }
-          
+          $response->payment_type = 'qris';
+          $response->redirect = $data->transaction->finish_url;
         }
         else if($payment->bank_payment_type=="shopeepay")
         {
@@ -173,11 +178,9 @@ class MidtransHelper {
 
           $response->payment_type = 'ewallet';
           $response->redirect = $data2['deeplink_url'];
-          
         }
         else if($payment->bank_payment_type=="echannel")
         {
-
           $data1 = MidtransHelper::createSnap($data,$payment);
           $data2 = MidtransHelper::chargeSnap($data1->token,$data,$payment);
 
@@ -278,10 +281,28 @@ class MidtransHelper {
         $data = [
               'customer_details' => [
                 'email' => $data->contact->email,
-               ],
-              'payment_type' => $payment->bank_payment_type
+               ]
             ];
-      
+        
+        if($payment->bank_payment_type=="qris")
+        {
+                $data_payment_type = [
+                  'payment_type' => $payment->bank_payment_type,
+                  'payment_params' => [
+                      'acquirer' => [$payment->bank_name]
+                  ]
+                ];
+        }
+        else
+        {
+              $data_payment_type = [
+                'payment_type' => $payment->bank_payment_type
+              ];
+        }
+        
+
+        $data = array_merge($data,$data_payment_type);
+
         $endpoint = self::midtransSnapEndpoint() ."/snap/v2/transactions/". $token ."/charge";
 
         $headers = [

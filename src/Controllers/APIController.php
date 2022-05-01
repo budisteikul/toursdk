@@ -1006,6 +1006,8 @@ class APIController extends Controller
     public function stripe_jscript($sessionId)
     {
         $shoppingcart = Cache::get('_'. $sessionId);
+        $amount = BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'USD');
+        $amount = $amount * 100;
         $jscript = '
         
             $("#submitCheckout").slideUp("slow");
@@ -1023,7 +1025,7 @@ class APIController extends Controller
                     currency: \'usd\',
                     total: {
                         label: \''. env('APP_NAME') .'\',
-                        amount: '.BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'USD') * 100.',
+                        amount: '. $amount .',
                     },
                     requestPayerName: true,
                     requestPayerEmail: true,

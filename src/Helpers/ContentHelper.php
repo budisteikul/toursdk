@@ -371,10 +371,10 @@ class ContentHelper {
         if($promo_code=="") $promo_code = null;
         
         $payment_enable = 'bank_transfer,qris,ewallet,paypal,stripe';
-        if($shoppingcart->due_now > 5000000)
-        {
-            $payment_enable = 'bank_transfer,paypal,ewallet';
-        }
+        //if($shoppingcart->due_now > 5000000)
+        //{
+            //$payment_enable = 'bank_transfer,qris,ewallet,paypal,stripe';
+        //}
         
         $bank_transfer_list[] = [
             'value' => 'doku-mandiri', 'label' => 'MANDIRI', 'image' => url('/img/bank/mandiri.png'),

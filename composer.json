@@ -15,7 +15,8 @@
         "superbalist/laravel-google-cloud-storage": "^2.2",
         "ext-gd": "*",
         "bacon/bacon-qr-code": "1.0.*",
-        "illuminate/support": ">=5.0.0"
+        "illuminate/support": ">=5.0.0",
+        "stripe/stripe-php": "^7.124"
     },
     "autoload": {
         "psr-0": {

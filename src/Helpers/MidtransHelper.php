@@ -92,12 +92,12 @@ class MidtransHelper {
                 $data->bank_code = "";
                 $data->bank_payment_type = "shopeepay";
             break;
-            case "qris_gopay":
+            case "gopay_qris":
                 $data->bank_name = "gopay";
                 $data->bank_code = "";
                 $data->bank_payment_type = "qris";
             break;
-            case "qris_shopeepay":
+            case "shopeepay_qris":
                 $data->bank_name = "shopeepay";
                 $data->bank_code = "";
                 $data->bank_payment_type = "qris";

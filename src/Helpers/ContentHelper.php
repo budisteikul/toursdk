@@ -412,11 +412,6 @@ class ContentHelper {
             'value' => 'midtrans-shopeepay', 'label' => 'SHOPEEPAY', 'image' => url('/img/ewallet/shopeepay.png'),
         ];
         
-        $ewallet_list[] = [
-            'value' => 'oyindonesia-linkaja', 'label' => 'LINKAJA', 'image' => url('/img/ewallet/linkaja.png'),
-        ];
-        
-
 
         $dataShoppingcart[] = array(
                 'id' => $shoppingcart->session_id,

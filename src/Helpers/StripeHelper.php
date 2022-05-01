@@ -18,7 +18,8 @@ class StripeHelper {
   	public static function createPayment($data)
   	{
   		$amount = number_format((float)$data->transaction->amount, 2, '.', '');
-  		$amount = bcmul($amount, 100);
+  		//$amount = bcmul($amount, 100);
+  		$amount = $amount * 100;
 
   		Stripe\Stripe::setApiKey(self::env_stripeSecretKey());
   		$intent = Stripe\PaymentIntent::create([

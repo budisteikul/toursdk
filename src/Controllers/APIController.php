@@ -1023,7 +1023,7 @@ class APIController extends Controller
                     currency: \'usd\',
                     total: {
                         label: \''. env('APP_NAME') .'\',
-                        amount: '.bcmul(BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'USD'),100).',
+                        amount: '.BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'USD') * 100.',
                     },
                     requestPayerName: true,
                     requestPayerEmail: true,

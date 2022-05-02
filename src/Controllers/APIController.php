@@ -980,17 +980,17 @@ class APIController extends Controller
                 $redirect_type = 2;
                 if($shoppingcart->shoppingcart_payment->bank_name=="gopay")
                 {
-                    $text = '<img src="'. url('/img/ewallet/gopay-light.png') .'" height="30" />';
+                    $text = '<img class="ml-2 mr-2" src="'. url('/img/ewallet/gopay-light.png') .'" height="30" />';
                 }
                 if($shoppingcart->shoppingcart_payment->bank_name=="shopeepay")
                 {
-                    $text = '<img src="'. url('/img/ewallet/shopeepay-light.png') .'" height="30" />';
+                    $text = '<img class="ml-2 mr-2" src="'. url('/img/ewallet/shopeepay-light.png') .'" height="30" />';
                 }
                 if($shoppingcart->shoppingcart_payment->bank_name=="linkaja")
                 {
-                    $text = '<img src="'. url('/img/ewallet/linkaja-light.png') .'" height="30" />';
+                    $text = '<img class="ml-2 mr-2" src="'. url('/img/ewallet/linkaja-light.png') .'" height="30" />';
                 }
-                $text = '<strong>Pay with '. $text .'</strong>';
+                $text = '<strong>Click to pay with '. $text .'</strong>';
             }
 
             return response()->json([

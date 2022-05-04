@@ -90,16 +90,18 @@ class PaydiaHelper {
 
         $transaction_id = str_replace("PAY-", "", $data->transaction->id);
 
+       
+        
         $data_json = [
         	'merchantid' => self::env_paydiaMid(),
-        	'nominal' => $data->transaction->amount,
+        	'nominal' => (int)$data->transaction->amount,
         	'tip' => 0,
         	'ref' => $transaction_id,
         	'callback' => self::env_appApiUrl().'/payment/paydia/confirm',
         	'expire' => $data->transaction->mins_expired
         ];
-
         
+
         $client = new \GuzzleHttp\Client(['headers' => $headers,'http_errors' => false]);
         $response = $client->request('POST',$endpoint,
           [
@@ -111,6 +113,7 @@ class PaydiaHelper {
     $data1 = $response->getBody()->getContents();
     $data1 = json_decode($data1);
 
+   
     $response = new \stdClass();
     $response->bank_name = 'paydia';
 		$response->qrcode = $data1->rawqr;

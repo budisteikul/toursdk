@@ -103,41 +103,6 @@ class OyHelper {
         return $endpoint;
   }
 
-  public static function createDisbursement($disbursement)
-  {
-        $endpoint = self::oyApiEndpoint() ."/api/remit";
-        $headers = [
-              'Accept' => 'application/jsons',
-              'Content-Type' => 'application/json',
-              'x-oy-username' => self::env_oyUsername(),
-              'x-api-key' => self::env_oyApiKey(),
-          ];
-
-        $data = [
-          'recipient_bank' => $disbursement->bank_code,
-          'recipient_account' => $disbursement->account_number,
-          'amount' => $disbursement->amount,
-          'note' => $disbursement->reference,
-          'partner_trx_id' => $disbursement->transaction_id,
-        ];
-
-        
-        
-        $client = new \GuzzleHttp\Client(['headers' => $headers,'http_errors' => false]);
-        $response = $client->request('POST',$endpoint,
-          [
-            'json' => $data,
-            'proxy' => self::oyUseProxy()
-          ]
-        );
-
-        $data = $response->getBody()->getContents();
-        $data = json_decode($data);
-        
-        return $data;
-       
-  }
-
 
   public static function bankCode($bank)
   {

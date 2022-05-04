@@ -13,8 +13,6 @@ use budisteikul\toursdk\Helpers\DokuHelper;
 use budisteikul\toursdk\Helpers\MidtransHelper;
 use budisteikul\toursdk\Helpers\PaydiaHelper;
 
-
-use budisteikul\toursdk\Models\Disbursement;
 use budisteikul\toursdk\Models\Category;
 use budisteikul\toursdk\Models\Review;
 use budisteikul\toursdk\Models\Product;
@@ -707,21 +705,6 @@ class APIController extends Controller
 
         switch($request->input('action'))
             {
-                case 'DISBURSEMENT':
-                     $data = $request->all();
-                        $transaction_id = $data['partner_trx_id'];
-                        $status = $data['status']['code'];
-
-                        $disbursement = Disbursement::where('transaction_id',$transaction_id)->first();
-                        if($disbursement!==null)
-                        {
-                            if($status=="000")
-                            {
-                                $disbursement->status = 2;
-                                $disbursement->save();
-                            }
-                        }
-                break;
                 case 'CHECKOUT':
                     $data = $request->all();
                     if(isset($data['partner_tx_id'])) $order_id = $data['partner_tx_id'];

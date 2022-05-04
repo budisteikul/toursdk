@@ -22,7 +22,6 @@ use budisteikul\toursdk\Models\ShoppingcartProductDetail;
 use budisteikul\toursdk\Models\ShoppingcartQuestion;
 use budisteikul\toursdk\Models\ShoppingcartQuestionOption;
 use budisteikul\toursdk\Models\ShoppingcartPayment;
-use budisteikul\toursdk\Models\Disbursement;
 
 use budisteikul\toursdk\Mail\BookingConfirmedMail;
 
@@ -2051,23 +2050,9 @@ class BookingHelper {
 		{
 			$count = Shoppingcart::whereYear('created_at',date('Y'))->whereMonth('created_at',date('m'))->count();
 		}
-		if($table=="disbursement")
-		{
-			$count = Disbursement::whereYear('created_at',date('Y'))->whereMonth('created_at',date('m'))->count();
-		}
 		$count++;
 		return GeneralHelper::digitFormat($count,4);
 	}
-
-	public static function get_disbursement_transaction_id()
-    {
-    	$count = self::get_count('disbursement');
-        $uuid = "TRF-". date('Ymd') . GeneralHelper::digitFormat(rand(00,99),2) . $count;
-        while( Disbursement::where('transaction_id','=',$uuid)->first() ){
-            $uuid = "TRF-". date('Ymd') . GeneralHelper::digitFormat(rand(00,99),2) . $count;
-        }
-        return $uuid;
-    }
 
     public static function get_payment_transaction_id()
     {

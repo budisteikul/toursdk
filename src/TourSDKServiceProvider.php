@@ -42,9 +42,6 @@ class TourSDKServiceProvider extends ServiceProvider
         $this->loadMigrationsFrom(__DIR__.'/migrations/2020_11_19_141259_create_shoppingcart_question_options_table.php');
         $this->loadMigrationsFrom(__DIR__.'/migrations/2020_11_19_141311_create_shoppingcart_payments_table.php');
 		
-        $this->loadMigrationsFrom(__DIR__.'/migrations/2022_02_12_110221_create_vendors_table.php');
-
-        $this->loadMigrationsFrom(__DIR__.'/migrations/2022_02_16_085613_create_disbursements_table.php');
 
         $this->loadMigrationsFrom(__DIR__.'/migrations/2022_04_12_195049_create_vouchers_table.php');
         $this->loadMigrationsFrom(__DIR__.'/migrations/2022_04_13_194552_create_vouchers_products_table.php');

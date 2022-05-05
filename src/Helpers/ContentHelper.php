@@ -370,7 +370,7 @@ class ContentHelper {
         $promo_code = $shoppingcart->promo_code;
         if($promo_code=="") $promo_code = null;
         
-        $payment_enable = 'bank_transfer,qris,ewallet,paypal,stripe';
+        $payment_enable = 'localpayment,qris,paypal,stripe';
         //if($shoppingcart->due_now > 5000000)
         //{
             //$payment_enable = 'bank_transfer,qris,ewallet,paypal,stripe';
@@ -408,6 +408,16 @@ class ContentHelper {
             'value' => 'midtrans-shopeepay', 'label' => 'SHOPEEPAY', 'image' => url('/img/ewallet/shopeepay.png'),
         ];
         
+        $grouped_payment[] = [
+            'label' => 'Bank transfer',
+            'options' => $bank_transfer_list
+        ];
+
+        $grouped_payment[] = [
+            'label' => 'E-wallet',
+            'options' => $ewallet_list
+        ];
+
 
         $dataShoppingcart[] = array(
                 'id' => $shoppingcart->session_id,
@@ -426,6 +436,7 @@ class ContentHelper {
                 'paypal_client_id' => self::env_paypalClientId(),
                 
                 'payment_enable' => $payment_enable,
+                'localpayment_list' => $grouped_payment,
                 'bank_transfer_list' => $bank_transfer_list,
                 'ewallet_list' => $ewallet_list,
 

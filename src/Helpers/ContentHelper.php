@@ -370,7 +370,7 @@ class ContentHelper {
         $promo_code = $shoppingcart->promo_code;
         if($promo_code=="") $promo_code = null;
         
-        $payment_enable = 'localpayment,qris,paypal,stripe';
+        $payment_enable = 'localpayment,qris,paypal,stripe,bank_transfer,ewallet';
         //if($shoppingcart->due_now > 5000000)
         //{
             //$payment_enable = 'bank_transfer,qris,ewallet,paypal,stripe';

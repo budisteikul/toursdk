@@ -370,35 +370,32 @@ class ContentHelper {
         $promo_code = $shoppingcart->promo_code;
         if($promo_code=="") $promo_code = null;
         
-        $payment_enable = 'localpayment,qris,paypal,stripe,bank_transfer,ewallet';
-        //if($shoppingcart->due_now > 5000000)
-        //{
-            //$payment_enable = 'bank_transfer,qris,ewallet,paypal,stripe';
-        //}
+        $payment_enable = 'localpayment,qris,paypal,stripe';
+        
         
         $bank_transfer_list[] = [
-            'value' => 'doku-mandiri', 'label' => '', 'image' => url('/img/bank/mandiri.png'),
+            'value' => 'doku-mandiri', 'label' => 'MANDIRI', 'image' => url('/img/bank/mandiri.png'),
         ];
         $bank_transfer_list[] = [
-            'value' => 'midtrans-permata', 'label' => '', 'image' => url('/img/bank/permata.png'),
+            'value' => 'midtrans-permata', 'label' => 'PERMATA', 'image' => url('/img/bank/permata.png'),
         ];
         $bank_transfer_list[] = [
-            'value' => 'midtrans-bni', 'label' => '', 'image' => url('/img/bank/bni.png'),
+            'value' => 'midtrans-bni', 'label' => 'BNI', 'image' => url('/img/bank/bni.png'),
         ];
         $bank_transfer_list[] = [
-            'value' => 'midtrans-bri', 'label' => '', 'image' => url('/img/bank/bri.png'),
+            'value' => 'midtrans-bri', 'label' => 'BRI', 'image' => url('/img/bank/bri.png'),
         ];
         $bank_transfer_list[] = [
-            'value' => 'doku-danamon', 'label' => '', 'image' => url('/img/bank/danamon.png'),
+            'value' => 'doku-danamon', 'label' => 'DANAMON', 'image' => url('/img/bank/danamon.png'),
         ];
         $bank_transfer_list[] = [
-            'value' => 'doku-cimb', 'label' => '',  'image' => url('/img/bank/cimb.png'),
+            'value' => 'doku-cimb', 'label' => 'CIMB NIAGA',  'image' => url('/img/bank/cimb.png'),
         ];
         $bank_transfer_list[] = [
-            'value' => 'doku-mandirisyariah', 'label' => '', 'image' => url('/img/bank/bsi.png'),
+            'value' => 'doku-mandirisyariah', 'label' => 'BSI', 'image' => url('/img/bank/bsi.png'),
         ];
         $bank_transfer_list[] = [
-            'value' => 'doku-doku', 'label' => '', 'image' => url('/img/bank/doku.png'),
+            'value' => 'doku-doku', 'label' => 'DOKU', 'image' => url('/img/bank/doku.png'),
         ];
         
         $ewallet_list[] = [
@@ -407,13 +404,15 @@ class ContentHelper {
         $ewallet_list[] = [
             'value' => 'midtrans-shopeepay', 'label' => '', 'image' => url('/img/ewallet/shopeepay.png'),
         ];
+        /*
         $ewallet_list[] = [
             'value' => 'oyindonesia-linkaja', 'label' => '', 'image' => url('/img/ewallet/linkaja.png'),
         ];
         $ewallet_list[] = [
             'value' => 'oyindonesia-dana', 'label' => '', 'image' => url('/img/ewallet/dana.png'),
         ];
-        
+        */
+
         $grouped_payment[] = [
             'label' => 'Bank transfer',
             'options' => $bank_transfer_list
@@ -443,8 +442,6 @@ class ContentHelper {
                 
                 'payment_enable' => $payment_enable,
                 'localpayment_list' => $grouped_payment,
-                'bank_transfer_list' => $bank_transfer_list,
-                'ewallet_list' => $ewallet_list,
 
                 'paypal_currency' => self::env_paypalCurrency(),
                 'paypal_total' => BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,self::env_paypalCurrency(),"PAYPAL"),

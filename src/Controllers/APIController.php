@@ -40,16 +40,7 @@ class APIController extends Controller
     public function test()
     {
         
-        Stripe\Stripe::setApiKey(env("STRIPE_SECRET_KEY"));
-        $intent = Stripe\PaymentIntent::create([
-            'amount' => 50,
-            'currency' => 'usd',
-            'metadata' => ['integration_check' => 'accept_a_payment'],
-            'capture_method' => 'manual',
-        ]);
-        return response()->json([
-                'intent' => $intent
-            ], 200);
+        
        
     }
 
@@ -922,14 +913,15 @@ class APIController extends Controller
 
                 return response()->json([
                     'message' => 'success',
+                    'payment' => 'paypal',
                 ], 200);
 
             }
             else if($payment=="stripe")
             {
                 return response()->json([
-                    "message" => "success",
-                    "id" => 3,
+                    'message' => 'success',
+                    'payment' => 'stripe',
                 ]);
             }
             else if($payment=="qris")

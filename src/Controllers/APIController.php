@@ -914,6 +914,7 @@ class APIController extends Controller
                 return response()->json([
                     'message' => 'success',
                     'payment' => 'paypal',
+                    'id' => 3
                 ], 200);
 
             }
@@ -951,7 +952,8 @@ class APIController extends Controller
             $text = null;
             $redirect_type = 1;
             $redirect = $shoppingcart->shoppingcart_payment->redirect;
-            if(substr($redirect,0,1)!="/")
+
+            if($shoppingcart->shoppingcart_payment->payment_type=="ewallet")
             {
                 $redirect_type = 2;
                 if($shoppingcart->shoppingcart_payment->bank_name=="gopay")

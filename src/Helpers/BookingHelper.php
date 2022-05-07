@@ -2307,6 +2307,10 @@ class BookingHelper {
 						{
 							$button = '<a class="btn btn-theme w-100" href="'. $shoppingcart->shoppingcart_payment->redirect .'"><b class="invoice-hilang"> Click to pay with<img class="ml-2 mr-2" height="30" src="'. url('/img/ewallet/linkaja-light.png') .'" /></b></a>';
 						}
+						if($shoppingcart->shoppingcart_payment->bank_name=="dana")
+						{
+							$button = '<a class="btn btn-theme w-100" href="'. $shoppingcart->shoppingcart_payment->redirect .'"><b class="invoice-hilang"> Click to pay with<img class="ml-2 mr-2" height="30" src="'. url('/img/ewallet/dana-light.png') .'" /></b></a>';
+						}
 						
 						return '
 								<div class="card mb-1">

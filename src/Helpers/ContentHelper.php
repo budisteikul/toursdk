@@ -407,6 +407,12 @@ class ContentHelper {
         $ewallet_list[] = [
             'value' => 'midtrans-shopeepay', 'label' => 'SHOPEEPAY', 'image' => url('/img/ewallet/shopeepay.png'),
         ];
+        $ewallet_list[] = [
+            'value' => 'oyindonesia-linkaja', 'label' => 'LINKAJA', 'image' => url('/img/ewallet/linkaja.png'),
+        ];
+        $ewallet_list[] = [
+            'value' => 'oyindonesia-dana', 'label' => 'DANA', 'image' => url('/img/ewallet/dana.png'),
+        ];
         
         $grouped_payment[] = [
             'label' => 'Bank transfer',

@@ -973,6 +973,10 @@ class APIController extends Controller
                 {
                     $text = '<img class="ml-2 mr-2" src="'. url('/img/ewallet/linkaja-light.png') .'" height="30" />';
                 }
+                if($shoppingcart->shoppingcart_payment->bank_name=="dana")
+                {
+                    $text = '<img class="ml-2 mr-2" src="'. url('/img/ewallet/dana-light.png') .'" height="30" />';
+                }
                 $text = '<strong>Click to pay with '. $text .'</strong>';
             }
 

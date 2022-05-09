@@ -8,6 +8,7 @@ use budisteikul\toursdk\Helpers\BookingHelper;
 use budisteikul\toursdk\Helpers\ContentHelper;
 use budisteikul\toursdk\Helpers\FirebaseHelper;
 use budisteikul\toursdk\Helpers\PaypalHelper;
+use budisteikul\toursdk\Helpers\RapydHelper;
 
 use budisteikul\toursdk\Helpers\DokuHelper;
 use budisteikul\toursdk\Helpers\MidtransHelper;
@@ -34,6 +35,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\URL;
 use Stripe;
 
+
 class APIController extends Controller
 {
     
@@ -41,7 +43,6 @@ class APIController extends Controller
     {
         
         
-       
     }
 
     public function __construct()

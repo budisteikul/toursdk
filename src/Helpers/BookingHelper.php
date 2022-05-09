@@ -11,6 +11,7 @@ use budisteikul\toursdk\Helpers\MidtransHelper;
 use budisteikul\toursdk\Helpers\OyHelper;
 use budisteikul\toursdk\Helpers\PaydiaHelper;
 use budisteikul\toursdk\Helpers\DokuHelper;
+use budisteikul\toursdk\Helpers\RapydHelper;
 use budisteikul\toursdk\Helpers\FirebaseHelper;
 use budisteikul\toursdk\Helpers\GeneralHelper;
 use budisteikul\toursdk\Helpers\VoucherHelper;
@@ -1814,6 +1815,22 @@ class BookingHelper {
 
 		switch($payment_provider)
 		{
+			case "rapyd":
+				$payment_provider = 'rapyd';
+				$amount = number_format(self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'SGD'), 0, '.','');
+				$currency = 'SGD';
+				$rate = self::convert_currency(1,'SGD',$shoppingcart->currency);
+				$rate_from = $shoppingcart->currency;
+				$rate_to = 'SGD';
+
+				$data->transaction->amount = $amount;
+				$data->transaction->currency = $currency;
+
+				$payment_status = 4;
+
+				$response = RapydHelper::createPayment($data);
+
+			break;
 			case "oyindonesia":
 				$amount = number_format(self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'IDR'), 0, '.','');
 
@@ -2196,6 +2213,16 @@ class BookingHelper {
 								</div>';
 						break;	
 					case 4:
+						$amount_text = null;
+						if($shoppingcart->shoppingcart_payment->currency=="IDR")
+						{
+							$amount_text = GeneralHelper::formatRupiah($shoppingcart->shoppingcart_payment->amount);
+						}
+						else
+						{
+							$amount_text = $shoppingcart->shoppingcart_payment->currency .' '. $shoppingcart->shoppingcart_payment->amount;
+						}
+
 						return '
 								<div class="card mb-1">
 								<span class="badge badge-info invoice-color-info" style="font-size:20px;">
@@ -2214,7 +2241,7 @@ class BookingHelper {
 								
 								 </div>
 								<div>Total Bill : </div>
-								<div class="mb-2"><b>'. GeneralHelper::formatRupiah($shoppingcart->shoppingcart_payment->amount) .'</b> <button onclick="copyToClipboard(\'#va_total\')" id="va_total_button" data-toggle="tooltip" data-placement="right" title="Copied" data-trigger="click" class="btn btn-light btn-sm invoice-hilang"><i class="far fa-copy"></i></button></div>
+								<div class="mb-2"><b>'. $amount_text .'</b> <button onclick="copyToClipboard(\'#va_total\')" id="va_total_button" data-toggle="tooltip" data-placement="right" title="Copied" data-trigger="click" class="btn btn-light btn-sm invoice-hilang"><i class="far fa-copy"></i></button></div>
 
 								
 								</div>

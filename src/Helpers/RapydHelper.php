@@ -1,5 +1,7 @@
 <?php
 namespace budisteikul\toursdk\Helpers;
+use Zxing\QrReader;
+use Storage;
 
 class RapydHelper {
 
@@ -37,6 +39,88 @@ class RapydHelper {
         return $endpoint;
     }
 
+    public static function bankCode($bank)
+    {
+        $data = new \stdClass();
+        switch($bank)
+        {
+            case "fast":
+                $data->bank_name = "dbs";
+                $data->bank_code = "7171";
+                $data->bank_payment_type = "sg_fast_bank";
+            break;
+            case "paynow":
+                $data->bank_name = "dbs";
+                $data->bank_code = "7171";
+                $data->bank_payment_type = "sg_paynow_bank";
+            break;
+            default:
+                return response()->json([
+                    "message" => 'Error'
+                ]);   
+        }
+
+        return $data;
+    }
+
+    public static function createPayment($data)
+    {
+        $payment = self::bankCode($data->transaction->bank);
+        $response = new \stdClass();
+
+        if($payment->bank_payment_type=="sg_paynow_bank")
+        {
+            $body = [
+                'amount' => $data->transaction->amount,
+                'currency' => 'SGD',
+                'payment_method' => [
+                    'type' => 'sg_paynow_bank',
+                    'fields' => []
+                ]
+            ];
+
+            $data1 = self::make_request('post','/v1/payments',$body);
+
+            $qrcode = $data1['data']['visual_codes']['PayNow QR'];
+            list($type, $qrcode) = explode(';', $qrcode);
+            list(, $qrcode)      = explode(',', $qrcode);
+            $contents = base64_decode($qrcode);
+
+            $path = date('YmdHis');
+            $disk = Storage::disk('gcs');
+            $disk->put('qrcode/'. $path .'/'.$data1['data']['id'].'.png', $contents);
+            $url = $disk->url('qrcode/'. $path .'/'.$data1['data']['id'].'.png');
+            $qrcode = new QrReader($url);
+
+            $response->payment_type = 'qris';
+            $response->qrcode = $qrcode->text();
+        }
+        else
+        {
+            $body = [
+                'amount' => $data->transaction->amount,
+                'currency' => 'SGD',
+                'payment_method' => [
+                    'type' => 'sg_fast_bank',
+                    'fields' => []
+                ]
+            ];
+
+            $data1 = self::make_request('post','/v1/payments',$body);
+            $response->payment_type = 'bank_transfer';
+            $response->va_number = $data1['data']['textual_codes']['DBS Account No'];
+        }
+
+        $response->authorization_id = $data1['data']['id'];
+        $response->bank_name = $payment->bank_name;
+        $response->bank_code = $payment->bank_code;
+        $response->redirect = $data->transaction->finish_url;
+        $response->expiration_date = $data->transaction->date_expired;
+        $response->order_id = $data->transaction->id;
+        
+        return $response;
+    }
+
     public static function make_request($method, $path, $body = null) {
         $base_url = self::rapydApiEndpoint();
         $access_key = self::env_rapydAccessKey();     // The access key received from Rapyd.
@@ -45,7 +129,7 @@ class RapydHelper {
         $idempotency = self::generate_string();       // Unique for each request.
         $http_method = $method;                       // Lower case.
         $salt = self::generate_string();              // Randomly generated for each request.
-        $date = new DateTime();
+        $date = new \DateTime();
         $timestamp = $date->getTimestamp();           // Current Unix time.
 
         $body_string = !is_null($body) ? json_encode($body,JSON_UNESCAPED_SLASHES) : '';

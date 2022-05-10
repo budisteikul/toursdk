@@ -41,7 +41,7 @@
 	Route::post('/api/payment/stripe/confirm', 'budisteikul\toursdk\Controllers\APIController@confirmpaymentstripe');
 	Route::post('/api/payment/paypal/confirm', 'budisteikul\toursdk\Controllers\APIController@confirmpaymentpaypal');
 	Route::post('/api/payment/doku/confirm', 'budisteikul\toursdk\Controllers\APIController@confirmpaymentdoku');
-	Route::post('/api/payment/oy/confirm', 'budisteikul\toursdk\Controllers\APIController@confirmpaymentoy');
+	//Route::post('/api/payment/oy/confirm', 'budisteikul\toursdk\Controllers\APIController@confirmpaymentoy');
 	Route::post('/api/payment/oy/callback', 'budisteikul\toursdk\Controllers\APIController@callbackpaymentoy');
 	Route::post('/api/payment/midtrans/confirm', 'budisteikul\toursdk\Controllers\APIController@confirmpaymentmidtrans');
 	Route::post('/api/payment/paydia/confirm', 'budisteikul\toursdk\Controllers\APIController@confirmpaymentpaydia');
@@ -71,4 +71,4 @@
 	Route::get('/webhook/{webhook_app}', 'budisteikul\toursdk\Controllers\WebhookController@webhook');
 
 	
-	Route::get('/test', 'budisteikul\toursdk\Controllers\APIController@test');
+	//Route::get('/test', 'budisteikul\toursdk\Controllers\APIController@test');

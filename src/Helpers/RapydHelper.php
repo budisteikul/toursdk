@@ -111,12 +111,12 @@ class RapydHelper {
             $response->va_number = $data1['data']['textual_codes']['DBS Account No'];
         }
 
-        $response->authorization_id = $data1['data']['id'];
+        //$response->authorization_id = $data1['data']['id'];
         $response->bank_name = $payment->bank_name;
         $response->bank_code = $payment->bank_code;
         $response->redirect = $data->transaction->finish_url;
         $response->expiration_date = $data->transaction->date_expired;
-        $response->order_id = $data->transaction->id;
+        $response->order_id = $data1['data']['id'];
         
         return $response;
     }

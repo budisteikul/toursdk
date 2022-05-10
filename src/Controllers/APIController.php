@@ -751,7 +751,29 @@ class APIController extends Controller
         return response('OK', 200)->header('Content-Type', 'text/plain');
     }
 
-    
+    public function confirmpaymentrapyd(Request $request)
+    {
+            $data = $request->all();
+            $order_id = null;
+            $transaction_status = null;
+
+            if(isset($data['data']['id'])) $order_id = $data['data']['id'];
+            if(isset($data['data']['status'])) $transaction_status = $data['data']['status'];
+
+            $shoppingcart_payment = ShoppingcartPayment::where('order_id',$order_id)->first();
+            if($shoppingcart_payment!==null) {
+                $confirmation_code = $shoppingcart_payment->shoppingcart->confirmation_code;
+                $shoppingcart = Shoppingcart::where('confirmation_code',$confirmation_code)->first();
+                if($shoppingcart!==null)
+                {
+                    if($transaction_status=="CLO")
+                    {
+                        BookingHelper::confirm_payment($shoppingcart,"CONFIRMED");
+                    }
+                }
+            }
+            return response('OK', 200)->header('Content-Type', 'text/plain');
+    }
 
     public function confirmpaymentdoku(Request $request)
     {

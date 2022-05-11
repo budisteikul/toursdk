@@ -69,6 +69,21 @@ class RapydHelper {
                 $data->bank_code = "008";
                 $data->bank_payment_type = "id_mandiri_bank";
             break;
+            case "bri":
+                $data->bank_name = "bri";
+                $data->bank_code = "002";
+                $data->bank_payment_type = "id_bri_bank";
+            break;
+            case "bni":
+                $data->bank_name = "bni";
+                $data->bank_code = "009";
+                $data->bank_payment_type = "id_bni_bank";
+            break;
+            case "danamon":
+                $data->bank_name = "danamon";
+                $data->bank_code = "011";
+                $data->bank_payment_type = "id_danamon_bank";
+            break;
             default:
                 return response()->json([
                     "message" => 'Error'

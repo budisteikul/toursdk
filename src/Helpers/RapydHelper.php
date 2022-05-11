@@ -59,10 +59,15 @@ class RapydHelper {
                 $data->bank_code = "022";
                 $data->bank_payment_type = "id_cimb_bank";
             break;
-            case "maybank":
-                $data->bank_name = "maybank";
-                $data->bank_code = "016";
-                $data->bank_payment_type = "id_maybank_bank";
+            case "permata":
+                $data->bank_name = "permata";
+                $data->bank_code = "013";
+                $data->bank_payment_type = "id_permata_bank";
+            break;
+            case "mandiri":
+                $data->bank_name = "mandiri";
+                $data->bank_code = "008";
+                $data->bank_payment_type = "id_mandiri_bank";
             break;
             default:
                 return response()->json([
@@ -105,7 +110,7 @@ class RapydHelper {
             $response->payment_type = 'qris';
             $response->qrcode = $qrcode->text();
         }
-        else
+        else if($payment->bank_payment_type=="sg_fast_bank")
         {
             $body = [
                 'amount' => $data->transaction->amount,
@@ -119,6 +124,22 @@ class RapydHelper {
             $data1 = self::make_request('post','/v1/payments',$body);
             $response->payment_type = 'bank_transfer';
             $response->va_number = $data1['data']['textual_codes']['DBS Account No'];
+        }
+        else
+        {
+            $body = [
+                'amount' => $data->transaction->amount,
+                'currency' => 'IDR',
+                'payment_method' => [
+                    'type' => $payment->bank_payment_type,
+                    'fields' => []
+                ]
+            ];
+
+            $data1 = self::make_request('post','/v1/payments',$body);
+
+            $response->payment_type = 'bank_transfer';
+            $response->va_number = $data1['data']['textual_codes']['pairing_code'];
         }
 
         //$response->authorization_id = $data1['data']['id'];

@@ -1817,11 +1817,21 @@ class BookingHelper {
 		{
 			case "rapyd":
 				$payment_provider = 'rapyd';
-				$amount = number_format(self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'SGD'), 0, '.','');
-				$currency = 'SGD';
-				$rate = self::convert_currency(1,'SGD',$shoppingcart->currency);
-				$rate_from = $shoppingcart->currency;
-				$rate_to = 'SGD';
+				if($data->transaction->bank=="paynow" || $data->transaction->bank=="fast")
+				{
+					$amount = number_format(self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'SGD'), 0, '.','');
+					$currency = 'SGD';
+					$rate = self::convert_currency(1,'SGD',$shoppingcart->currency);
+					$rate_from = $shoppingcart->currency;
+					$rate_to = 'SGD';
+				}
+				else
+				{
+					$amount = number_format(self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'IDR'), 0, '.','');
+					$currency = 'IDR';
+					$rate = 1;
+					$payment_status = 4;
+				}
 
 				$data->transaction->amount = $amount;
 				$data->transaction->currency = $currency;

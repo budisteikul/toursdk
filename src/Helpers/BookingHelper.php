@@ -2281,23 +2281,22 @@ class BookingHelper {
 						break;
 					case 4:
 
-						$data_qris = self::get_qris_content($shoppingcart);
+						//$data_qris = self::get_qris_content($shoppingcart);
 						return '
 								
 								<div class="card mb-1">
 								<span class="badge badge-info invoice-color-info" style="font-size:20px;">
 								<i class="fas fa-qrcode"></i> WAITING FOR PAYMENT </span>
 								</div>
-								<div class="card mb-1 img-fluid invoice-hilang"  style="min-height:450px; max-width:505px;">
+								<div class="card mb-1 img-fluid invoice-hilang"  style="min-height:360px; max-width:505px;">
 								
 								<!-- img class="card-img-top" src="'. url('/img/qris-template.jpg') .'" alt="Card image" style="width:100%" -->
 								
 								
 								<div class="card-img-overlay">
 									<div class="row h-100">
-   										<div class="col-sm-12 my-auto text-center">
-    										<h1 class="mb-2 mt-4">'. $data_qris->merchant .'</h1>
-    										<h5 class="mb-4 mt-2">'. $data_qris->nmid .'</h5>
+   										<div class="col-sm-12 text-center">
+    										<img id="qris-img" class="img-fluid border border-white mb-2 mt-2" alt="QRIS LOGO" style="max-width:250px;" src="'. url('/img/qris-logo.png') .'">
     										<img id="qris-img" class="img-fluid border border-white" alt="QRIS" style="max-width:250px;" src="data:image/png;base64, '. base64_encode(self::generate_qris($shoppingcart)) .' ">
    										</div>
 									</div>

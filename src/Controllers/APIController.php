@@ -986,21 +986,24 @@ class APIController extends Controller
 
             if($shoppingcart->shoppingcart_payment->payment_type=="ewallet")
             {
-                $redirect_type = 2;
                 if($shoppingcart->shoppingcart_payment->bank_name=="gopay")
                 {
+                    $redirect_type = 2;
                     $text = '<img class="ml-2 mr-2" src="'. url('/img/ewallet/gopay-light.png') .'" height="30" />';
                 }
                 if($shoppingcart->shoppingcart_payment->bank_name=="shopeepay")
                 {
+                    $redirect_type = 2;
                     $text = '<img class="ml-2 mr-2" src="'. url('/img/ewallet/shopeepay-light.png') .'" height="30" />';
                 }
                 if($shoppingcart->shoppingcart_payment->bank_name=="linkaja")
                 {
+                    $redirect_type = 2;
                     $text = '<img class="ml-2 mr-2" src="'. url('/img/ewallet/linkaja-light.png') .'" height="30" />';
                 }
                 if($shoppingcart->shoppingcart_payment->bank_name=="dana")
                 {
+                    $redirect_type = 4;
                     $text = '<img class="ml-2 mr-2" src="'. url('/img/ewallet/dana-light.png') .'" height="30" />';
                 }
                 $text = '<strong>Click to pay with '. $text .'</strong>';

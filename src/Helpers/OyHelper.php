@@ -263,7 +263,12 @@ class OyHelper {
           $data->transaction->date_expired = Carbon::parse($data->transaction->date_now)->addMinutes($data->transaction->mins_expired);
 
           $ewallet_url = $data1->ewallet_url;
-          
+
+          if($payment->bank_payment_type=="dana_ewallet")
+          {
+              $ewallet_url = str_replace("https://link.dana.id/pay","https://m.dana.id/m/portal/cashier/checkout",$ewallet_url);
+          }
+
           $response->payment_type = 'ewallet';
           $response->bank_name = $payment->bank_name;
           $response->bank_code = null;

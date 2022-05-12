@@ -41,16 +41,7 @@ class APIController extends Controller
     
     public function test()
     {
-       /*
-        $body = [
-            'token' => 'payment_d10ceb72c128cec858a2f59f414e4175',
-            'param1' => '345792128101357260',
-            'param2' => '28000'
-        ];
-
-        $test = RapydHelper::make_request('post','/v1/payments/completePayment',$body);
-        print_r($test);
-        */
+       
     }
 
     public function __construct()

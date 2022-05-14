@@ -3,7 +3,6 @@
 namespace budisteikul\toursdk\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use budisteikul\toursdk\Helpers\FirebaseHelper;
 
 class Shoppingcart extends Model
 {

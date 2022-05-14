@@ -269,6 +269,11 @@ class OyHelper {
               $ewallet_url = str_replace("https://link.dana.id/pay","https://m.dana.id/m/portal/cashier/checkout",$ewallet_url);
           }
 
+          if($payment->bank_payment_type=="linkaja_ewallet")
+          {
+              $ewallet_url = str_replace("linkaja://","https://linkaja.id/",$ewallet_url);
+          }
+
           $response->payment_type = 'ewallet';
           $response->bank_name = $payment->bank_name;
           $response->bank_code = null;

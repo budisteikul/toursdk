@@ -144,8 +144,8 @@ class MidtransHelper {
           $response->expiration_date = $data->transaction->date_expired;
           $response->order_id = $data->transaction->id;
           $response->payment_type = 'ewallet';
-          $response->redirect = str_ireplace("gojek://","https://gojek.link/",$data2['deeplink_url']);
-          //$response->redirect = $data2['deeplink_url'];
+          //$response->redirect = str_ireplace("gojek://","https://gojek.link/",$data2['deeplink_url']);
+          $response->redirect = $data2['deeplink_url'];
         }
         else if($payment->bank_payment_type=="qris")
         {

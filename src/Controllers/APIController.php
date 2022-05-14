@@ -970,8 +970,12 @@ class APIController extends Controller
             }
             
             $shoppingcart = BookingHelper::confirm_booking($sessionId);
+            
+            
 
             $text = null;
+            $session_id = $shoppingcart->session_id;
+            $confirmation_code = $shoppingcart->confirmation_code;
             $redirect_type = 1;
             $redirect = $shoppingcart->shoppingcart_payment->redirect;
 
@@ -1000,11 +1004,15 @@ class APIController extends Controller
                 $text = '<strong>Click to pay with '. $text .'</strong>';
             }
 
+           
+
             return response()->json([
                 "message" => "success",
                 "id" => $redirect_type,
                 "redirect" => $redirect,
-                "text" => $text
+                "text" => $text,
+                "session_id" => $session_id,
+                "confirmation_code" => $confirmation_code
             ]);
             
     }

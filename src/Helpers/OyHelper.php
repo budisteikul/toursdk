@@ -271,7 +271,7 @@ class OyHelper {
 
           if($payment->bank_payment_type=="linkaja_ewallet")
           {
-              $ewallet_url = str_replace("linkaja://","https://linkaja.id/",$ewallet_url);
+              $ewallet_url = str_replace("linkaja://","https://",$ewallet_url);
           }
 
           $response->payment_type = 'ewallet';

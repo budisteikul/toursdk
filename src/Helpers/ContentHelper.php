@@ -374,41 +374,41 @@ class ContentHelper {
         
         
         $bank_transfer_list[] = [
-            'value' => 'doku-mandiri', 'label' => 'MANDIRI', 'image' => url('/img/bank/mandiri.png'),
+            'value' => 'doku-mandiri', 'label' => 'MANDIRI', 'image' => '/img/bank/mandiri.png',
         ];
         $bank_transfer_list[] = [
-            'value' => 'midtrans-permata', 'label' => 'PERMATA', 'image' => url('/img/bank/permata.png'),
+            'value' => 'midtrans-permata', 'label' => 'PERMATA', 'image' => '/img/bank/permata.png',
         ];
         $bank_transfer_list[] = [
-            'value' => 'midtrans-bni', 'label' => 'BNI', 'image' => url('/img/bank/bni.png'),
+            'value' => 'midtrans-bni', 'label' => 'BNI', 'image' => '/img/bank/bni.png',
         ];
         $bank_transfer_list[] = [
-            'value' => 'midtrans-bri', 'label' => 'BRI', 'image' => url('/img/bank/bri.png'),
+            'value' => 'midtrans-bri', 'label' => 'BRI', 'image' => '/img/bank/bri.png',
         ];
         $bank_transfer_list[] = [
-            'value' => 'doku-danamon', 'label' => 'DANAMON', 'image' => url('/img/bank/danamon.png'),
+            'value' => 'doku-danamon', 'label' => 'DANAMON', 'image' => '/img/bank/danamon.png',
         ];
         $bank_transfer_list[] = [
-            'value' => 'doku-cimb', 'label' => 'CIMB NIAGA',  'image' => url('/img/bank/cimb.png'),
+            'value' => 'doku-cimb', 'label' => 'CIMB NIAGA',  'image' => '/img/bank/cimb.png',
         ];
         $bank_transfer_list[] = [
-            'value' => 'doku-mandirisyariah', 'label' => 'BSI', 'image' => url('/img/bank/bsi.png'),
+            'value' => 'doku-mandirisyariah', 'label' => 'BSI', 'image' => '/img/bank/bsi.png',
         ];
         $bank_transfer_list[] = [
-            'value' => 'doku-doku', 'label' => 'DOKU', 'image' => url('/img/bank/doku.png'),
+            'value' => 'doku-doku', 'label' => 'DOKU', 'image' => '/img/bank/doku.png',
         ];
         
         $ewallet_list[] = [
-            'value' => 'midtrans-gopay', 'label' => '', 'image' => url('/img/ewallet/gopay.png'),
+            'value' => 'midtrans-gopay', 'label' => '', 'image' => '/img/ewallet/gopay.png',
         ];
         $ewallet_list[] = [
-            'value' => 'midtrans-shopeepay', 'label' => '', 'image' => url('/img/ewallet/shopeepay.png'),
+            'value' => 'midtrans-shopeepay', 'label' => '', 'image' => '/img/ewallet/shopeepay.png',
         ];
         $ewallet_list[] = [
-            'value' => 'oyindonesia-dana', 'label' => '', 'image' => url('/img/ewallet/dana.png'),
+            'value' => 'oyindonesia-dana', 'label' => '', 'image' => '/img/ewallet/dana.png',
         ];
         $ewallet_list[] = [
-            'value' => 'oyindonesia-linkaja', 'label' => '', 'image' => url('/img/ewallet/linkaja.png'),
+            'value' => 'oyindonesia-linkaja', 'label' => '', 'image' => '/img/ewallet/linkaja.png',
         ];
 
         $grouped_payment[] = [

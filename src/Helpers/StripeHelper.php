@@ -26,7 +26,7 @@ class StripeHelper {
   			'amount' => $amount,
   			'currency' => 'usd',
   			'metadata' => ['integration_check' => 'accept_a_payment'],
-  			'capture_method' => 'manual',
+  			//'capture_method' => 'manual',
 		]);
 
   		$response = new \stdClass();

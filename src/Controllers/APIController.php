@@ -13,6 +13,7 @@ use budisteikul\toursdk\Helpers\RapydHelper;
 use budisteikul\toursdk\Helpers\DokuHelper;
 use budisteikul\toursdk\Helpers\MidtransHelper;
 use budisteikul\toursdk\Helpers\PaydiaHelper;
+use budisteikul\toursdk\Helpers\GeneralHelper;
 
 use budisteikul\toursdk\Models\Category;
 use budisteikul\toursdk\Models\Review;
@@ -41,7 +42,31 @@ class APIController extends Controller
     
     public function test()
     {
+       $qris = '00020101021126570011ID.DANA.WWW011893600915326833114002092683311400303UKE51440014ID.CO.QRIS.WWW0215ID10221477535970303UKE5204799953033605802ID5913VERTIKAL TRIP6011Kab. Bantul61055575163047AAD';
+       $qris_dinamic = '00020101021226570011ID.DANA.WWW011893600915326833114002092683311400303UKE51440014ID.CO.QRIS.WWW0215ID10221477535970303UKE52047999530336054065000005802ID5913VERTIKAL TRIP6011Kab. Bantul6105557516304E74A';
+
+
+       $test = BookingHelper::disassembly_qris2($qris);
+
+       print_r($qris.'<br />');
+
+       $aaa = null;
+       $array = json_decode(json_encode($test), true);
+       $array['01'] = 12;
+       $array['54'] = 500000;
+       $ccc = ksort($array);
        
+       print_r($ccc);
+       exit();
+       foreach($ccc as $key=>$value)
+       {
+            $aaa .= $key .GeneralHelper::digitFormat(strlen($value),2).$value;
+            
+       }
+
+      
+
+       print_r($aaa);
     }
 
     public function __construct()

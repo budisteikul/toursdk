@@ -2514,6 +2514,30 @@ class BookingHelper {
         return $dataObj;
 	}
 
+	public static function disassembly_qris2($new_string)
+	{
+		$dataObj = new \stdClass();
+		while($new_string!="")
+        {
+            $new_object = substr($new_string,0,2);
+            $lenght = substr($new_string,2,2);
+            $value = '';
+            try
+            {
+                $value = @substr($new_string,4,$lenght);
+            }
+            catch(exception $e)
+            {
+                $value ='';
+            }
+            
+            $aaa = $new_object . $lenght . $value;
+            $new_string = str_replace($aaa, "", $new_string);
+            $dataObj->$new_object = $value;
+        }
+        return $dataObj;
+	}
+
 	public static function get_qris_content($shoppingcart)
 	{
 		$nmid = "ID1022165253777";

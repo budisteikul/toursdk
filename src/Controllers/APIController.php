@@ -42,31 +42,7 @@ class APIController extends Controller
     
     public function test()
     {
-       $qris = '00020101021126570011ID.DANA.WWW011893600915326833114002092683311400303UKE51440014ID.CO.QRIS.WWW0215ID10221477535970303UKE5204799953033605802ID5913VERTIKAL TRIP6011Kab. Bantul61055575163047AAD';
-       $qris_dinamic = '00020101021226570011ID.DANA.WWW011893600915326833114002092683311400303UKE51440014ID.CO.QRIS.WWW0215ID10221477535970303UKE52047999530336054065000005802ID5913VERTIKAL TRIP6011Kab. Bantul6105557516304E74A';
-
-
-       $test = BookingHelper::disassembly_qris2($qris);
-
-       print_r($qris.'<br />');
-
-       $aaa = null;
-       $array = json_decode(json_encode($test), true);
-       $array['01'] = 12;
-       $array['54'] = 500000;
-       $ccc = ksort($array);
        
-       print_r($ccc);
-       exit();
-       foreach($ccc as $key=>$value)
-       {
-            $aaa .= $key .GeneralHelper::digitFormat(strlen($value),2).$value;
-            
-       }
-
-      
-
-       print_r($aaa);
     }
 
     public function __construct()
@@ -74,10 +50,6 @@ class APIController extends Controller
         $this->currency = env("BOKUN_CURRENCY");
         $this->lang = env("BOKUN_LANG");
         $this->midtransServerKey = env("MIDTRANS_SERVER_KEY");
-
-        $this->paydiaClientId = env("PAYDIA_CLIENT_ID");
-        $this->paydiaSecretKey = env("PAYDIA_SECRET_KEY");
-        $this->paydiaMid = env("PAYDIA_MID");
     }
 
     public function product_add(Request $request)
@@ -996,8 +968,6 @@ class APIController extends Controller
             
             $shoppingcart = BookingHelper::confirm_booking($sessionId);
             
-            
-
             $text = null;
             $session_id = $shoppingcart->session_id;
             $confirmation_code = $shoppingcart->confirmation_code;
@@ -1006,30 +976,9 @@ class APIController extends Controller
 
             if($shoppingcart->shoppingcart_payment->payment_type=="ewallet")
             {
-                if($shoppingcart->shoppingcart_payment->bank_name=="gopay")
-                {
-                    $redirect_type = 2;
-                    $text = '<img class="ml-2 mr-2" src="'. url('/img/ewallet/gopay-light.png') .'" height="30" />';
-                }
-                if($shoppingcart->shoppingcart_payment->bank_name=="shopeepay")
-                {
-                    $redirect_type = 2;
-                    $text = '<img class="ml-2 mr-2" src="'. url('/img/ewallet/shopeepay-light.png') .'" height="30" />';
-                }
-                if($shoppingcart->shoppingcart_payment->bank_name=="linkaja")
-                {
-                    $redirect_type = 2;
-                    $text = '<img class="ml-2 mr-2" src="'. url('/img/ewallet/linkaja-light.png') .'" height="30" />';
-                }
-                if($shoppingcart->shoppingcart_payment->bank_name=="dana")
-                {
-                    $redirect_type = 4;
-                    $text = '<img class="ml-2 mr-2" src="'. url('/img/ewallet/dana-light.png') .'" height="30" />';
-                }
-                $text = '<strong>Click to pay with '. $text .'</strong>';
+                $redirect_type = 2;
+                $text = '<strong>Click to pay with <img class="ml-2 mr-2" src="/img/ewallet/'.$shoppingcart->shoppingcart_payment->bank_name.'-light.png" height="30" /></strong>';
             }
-
-           
 
             return response()->json([
                 "message" => "success",

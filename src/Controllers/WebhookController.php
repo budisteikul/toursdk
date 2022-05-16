@@ -16,6 +16,23 @@ class WebhookController extends Controller
 
 	public function webhook($webhook_app,Request $request)
     {
+        if($webhook_app=="wise")
+        {
+            $data = json_decode($request->getContent(), true);
+
+            try
+            {
+                Storage::disk('gcs')->put('log/'. date('YmdHis') .'.txt', json_encode($data, JSON_PRETTY_PRINT));
+            }
+            catch(exception $e)
+            {
+                
+            }
+
+            return response('OK', 200)->header('Content-Type', 'text/plain');
+        }
+
+
         if($webhook_app=="bokun")
         {
             $data = json_decode($request->getContent(), true);
@@ -49,6 +66,7 @@ class WebhookController extends Controller
             break;
             }
         }
+
         return response('ERROR', 200)->header('Content-Type', 'text/plain');
     }
 

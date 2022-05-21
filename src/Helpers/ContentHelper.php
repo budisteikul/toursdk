@@ -374,7 +374,7 @@ class ContentHelper {
         
         
         $bank_transfer_list[] = [
-            'value' => 'doku-mandiri', 'label' => 'MANDIRI', 'image' => '/img/bank/mandiri.png',
+            'value' => 'duitku-mandiri', 'label' => 'MANDIRI', 'image' => '/img/bank/mandiri.png',
         ];
         $bank_transfer_list[] = [
             'value' => 'midtrans-permata', 'label' => 'PERMATA', 'image' => '/img/bank/permata.png',

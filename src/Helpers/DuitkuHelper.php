@@ -47,6 +47,11 @@ class DuitkuHelper {
                 $data->bank_code = "523";
                 $data->bank_payment_type = "S1";
             break;
+            case "mandiri":
+                $data->bank_name = "mandiri";
+                $data->bank_code = "008";
+                $data->bank_payment_type = "M2";
+            break;
             case "ovo":
                 $data->bank_name = "ovo";
                 $data->bank_code = "";

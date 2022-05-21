@@ -1755,7 +1755,7 @@ class BookingHelper {
 
 	
 
-	public static function create_payment($sessionId,$payment_provider="none",$bank="")
+	public static function create_payment($sessionId,$payment_provider="none",$bank="",$param1="")
 	{
 		$shoppingcart = Cache::get('_'. $sessionId);
 
@@ -1870,6 +1870,11 @@ class BookingHelper {
 
 				$data->transaction->amount = $amount;
 				$data->transaction->currency = $currency;
+
+				if($data->transaction->bank == 'ovo')
+				{
+					$contact->phone = $param1;
+				}
 
 				$response = DuitkuHelper::createPayment($data);
 			break;

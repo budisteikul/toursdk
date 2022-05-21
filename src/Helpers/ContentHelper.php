@@ -410,6 +410,9 @@ class ContentHelper {
         $ewallet_list[] = [
             'value' => 'oyindonesia-linkaja', 'label' => '', 'image' => '/img/ewallet/linkaja.png',
         ];
+        $ewallet_list[] = [
+            'value' => 'ovo', 'label' => '', 'image' => '/img/ewallet/ovo.png',
+        ];
 
         $grouped_payment[] = [
             'label' => 'Bank transfer',

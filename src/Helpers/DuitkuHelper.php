@@ -69,11 +69,22 @@ class DuitkuHelper {
         $data->transaction->mins_expired = 60;
 		$data->transaction->date_expired = Carbon::parse($data->transaction->date_now)->addMinutes($data->transaction->mins_expired);
 
-		$data1 = self::createSnap($data);
-        $data2 = self::createCharge($data1->reference,$payment);
+        if($payment->bank_payment_type=="OV")
+        {
+            $data1 = self::createSnap($data);
+            $data2 = self::createCharge($data1->reference,$payment,$data->contact->phone);
+            $response->payment_type = 'ewallet';
+        }
+        else
+        {
+            $data1 = self::createSnap($data);
+            $data2 = self::createCharge($data1->reference,$payment);
+            $response->payment_type = 'bank_transfer';
+            $response->va_number = $data2->vaNumber;
+        }
+		
 
-		$response->payment_type = 'bank_transfer';
-		$response->va_number = $data2->vaNumber;
+		
 
 		$response->authorization_id = $data1->reference;
         $response->bank_name = $payment->bank_name;
@@ -85,12 +96,22 @@ class DuitkuHelper {
         return $response;
     }
 
-    public static function createCharge($token,$payment)
+    public static function createCharge($token,$payment,$param1="")
     {
+        if($payment->bank_payment_type=="OV")
+        {
+            $data = [
+                'paymentMethod' => $payment->bank_payment_type,
+                'phoneNumber' => $param1,
+            ];
+        }
+        else
+        {
+            $data = [
+                'paymentMethod' => $payment->bank_payment_type,
+            ];
+        }
         
-        $data = [
-            'paymentMethod' => $payment->bank_payment_type,
-        ];
 
         $headers = [
               'Accept' => 'application/jsons',

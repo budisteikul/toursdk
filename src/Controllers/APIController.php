@@ -939,6 +939,14 @@ class APIController extends Controller
             return response()->json($response);
     }
 
+    public function createpaymentovo(Request $request)
+    {
+            $phoneNumber = $request->input('phoneNumber');
+            $sessionId = $request->input('sessionId');
+            BookingHelper::set_bookingStatus($sessionId,'PENDING');
+            BookingHelper::set_confirmationCode($sessionId);
+            BookingHelper::create_payment($sessionId,"duitku","ovo",$phoneNumber);
+    }
 
     public function checkout(Request $request)
     {
@@ -981,6 +989,14 @@ class APIController extends Controller
                     'id' => 3
                 ]);
             }
+            else if($payment=="ovo")
+            {
+                return response()->json([
+                    'message' => 'success',
+                    'payment' => 'ovo',
+                    'id' => 3
+                ]);
+            }
             else if($payment=="qris")
             {
                 BookingHelper::set_bookingStatus($sessionId,'PENDING');
@@ -996,6 +1012,7 @@ class APIController extends Controller
 
                 if(isset($payment_arr[0])) $payment_provider = $payment_arr[0];
                 if(isset($payment_arr[1])) $payment_bank = $payment_arr[1];
+
 
                 BookingHelper::set_bookingStatus($sessionId,'PENDING');
                 BookingHelper::set_confirmationCode($sessionId);
@@ -1027,6 +1044,39 @@ class APIController extends Controller
             
     }
 
+    public function ovo_jscript($sessionId)
+    {
+        $shoppingcart = Cache::get('_'. $sessionId);
+        $jscript = '
+            $("#submitCheckout").slideUp("slow");
+            $("#paymentContainer").html(\'<div class="form-row mb-4 mt-2"><div class="col-xs-2"><input type="text" style="height:47px; width:50px;" class="form-control  disabled" value="+62" disabled></div><div class="col"><input id="ovoPhoneNumber" type="text" style="height:47px" class="form-control" placeholder="85743112112"></div></div><button id="submit" onClick="createpaymentovo()" class="btn btn-lg btn-block btn-theme" style="height:47px"><strong>Click to pay with <img class="ml-2 mr-2" src="/img/ewallet/ovo-light.png" height="30" /></strong></button>\');
+
+            function createpaymentovo()
+            {
+                            var phoneNumber = "0"+ document.getElementById("ovoPhoneNumber").value;
+                            $("#ovoPhoneNumber").attr("disabled", true);
+                            $("#submit").attr("disabled", true);
+                            $("#submit").html(\' <i class="fa fa-spinner fa-spin fa-fw"></i>  processing... \');
+                            $.ajax({
+                                data: {
+                                    "sessionId": \''.$sessionId.'\',
+                                    "paymentMethod": "OV",
+                                    "phoneNumber": phoneNumber,
+                                },
+                                type: \'POST\',
+                                url: \''. url('/api') .'/payment/ovo\'
+                                }).done(function(data) {
+                                    
+
+                                }).fail(function(error) {
+                                    
+                            });
+
+                            return false;
+            }
+        ';
+        return response($jscript)->header('Content-Type', 'application/javascript');
+    }
 
     public function stripe_jscript($sessionId)
     {

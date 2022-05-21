@@ -871,6 +871,10 @@ class APIController extends Controller
                         {
                             BookingHelper::confirm_payment($shoppingcart,"CONFIRMED");
                         }
+                        else if($data['resultCode']=="01")
+                        {
+                            BookingHelper::confirm_payment($shoppingcart,"PENDING");
+                        }
                         else
                         {
                             BookingHelper::confirm_payment($shoppingcart,"CANCELED");

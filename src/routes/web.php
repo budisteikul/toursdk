@@ -44,6 +44,7 @@
 	//Route::post('/api/payment/oy/confirm', 'budisteikul\toursdk\Controllers\APIController@confirmpaymentoy');
 	Route::post('/api/payment/oy/callback', 'budisteikul\toursdk\Controllers\APIController@callbackpaymentoy');
 	Route::post('/api/payment/midtrans/confirm', 'budisteikul\toursdk\Controllers\APIController@confirmpaymentmidtrans');
+	Route::post('/api/payment/duitku/confirm', 'budisteikul\toursdk\Controllers\APIController@confirmpaymentduitku');
 	Route::post('/api/payment/paydia/confirm', 'budisteikul\toursdk\Controllers\APIController@confirmpaymentpaydia');
 
 	//Create Payment

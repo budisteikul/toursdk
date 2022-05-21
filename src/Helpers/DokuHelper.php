@@ -193,7 +193,7 @@ class DokuHelper {
              'customer' => [
                 'id' => $data->transaction->id,
                 'name' => $data->contact->name,
-                //'email' => $data->contact->email,
+                'email' => $data->contact->email,
                 //'phone' => $data->contact->phone
              ]
         ];

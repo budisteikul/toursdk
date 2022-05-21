@@ -9,6 +9,7 @@ use budisteikul\toursdk\Helpers\ContentHelper;
 use budisteikul\toursdk\Helpers\FirebaseHelper;
 use budisteikul\toursdk\Helpers\PaypalHelper;
 use budisteikul\toursdk\Helpers\RapydHelper;
+use budisteikul\toursdk\Helpers\DuitkuHelper;
 
 use budisteikul\toursdk\Helpers\DokuHelper;
 use budisteikul\toursdk\Helpers\MidtransHelper;
@@ -845,6 +846,37 @@ class APIController extends Controller
             }
         }
 
+
+        return response('OK', 200)->header('Content-Type', 'text/plain');
+    }
+
+    public function confirmpaymentduitku(Request $request)
+    {
+        if(!DuitkuHelper::checkSignature($request))
+        {
+            return response('Invalid Signature', 200)->header('Content-Type', 'text/plain');
+        }
+
+        $data = $request->all();
+
+        $order_id = null;
+        if(isset($data['merchantOrderId'])) $order_id = $data['merchantOrderId'];
+        $shoppingcart_payment = ShoppingcartPayment::where('order_id',$order_id)->first();
+        if($shoppingcart_payment!==null) {
+            $confirmation_code = $shoppingcart_payment->shoppingcart->confirmation_code;
+            $shoppingcart = Shoppingcart::where('confirmation_code',$confirmation_code)->first();
+            if($shoppingcart!==null)
+            {
+                        if($data['resultCode']=="00")
+                        {
+                            BookingHelper::confirm_payment($shoppingcart,"CONFIRMED");
+                        }
+                        else
+                        {
+                            BookingHelper::confirm_payment($shoppingcart,"CANCELED");
+                        }
+            }
+        }
 
         return response('OK', 200)->header('Content-Type', 'text/plain');
     }

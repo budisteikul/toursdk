@@ -7,6 +7,7 @@ use budisteikul\toursdk\Helpers\BokunHelper;
 use budisteikul\toursdk\Helpers\ImageHelper;
 use budisteikul\toursdk\Helpers\ProductHelper;
 use budisteikul\toursdk\Helpers\PaypalHelper;
+use budisteikul\toursdk\Helpers\DuitkuHelper;
 use budisteikul\toursdk\Helpers\MidtransHelper;
 use budisteikul\toursdk\Helpers\OyHelper;
 use budisteikul\toursdk\Helpers\PaydiaHelper;
@@ -42,6 +43,11 @@ class BookingHelper {
 	public static function env_paypalCurrency()
     {
         return env("PAYPAL_CURRENCY");
+    }
+
+    public static function env_mailgunDomain()
+    {
+        return env("MAILGUN_DOMAIN");
     }
 
     public static function env_bokunCurrency()
@@ -1762,7 +1768,8 @@ class BookingHelper {
         $contact->first_name = $first_name;
         $contact->last_name = $last_name;
         $contact->name = $first_name .' '. $last_name;
-        $contact->email = $email;
+        //$contact->email = $email;
+        $contact->email =  strtolower($shoppingcart->confirmation_code .'@'. self::env_mailgunDomain());
         $contact->phone = $phone;
 
         $due_date = self::due_date($shoppingcart);
@@ -1797,6 +1804,7 @@ class BookingHelper {
 		$transaction = new \stdClass();
         $transaction->id = self::get_payment_transaction_id();
         $transaction->amount = $amount;
+        $transaction->confirmation_code = $shoppingcart->confirmation_code;
         $transaction->payment_provider = $payment_provider;
         $transaction->bank = $bank;
         $transaction->mins_expired = $mins_expired;
@@ -1852,6 +1860,18 @@ class BookingHelper {
 				$data->transaction->currency = $currency;
 
 				$response = OyHelper::createPayment($data);
+			break;
+			case "duitku":
+				$amount = number_format(self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'IDR'), 0, '.','');
+
+				$currency = 'IDR';
+				$rate = 1;
+				$payment_status = 4;
+
+				$data->transaction->amount = $amount;
+				$data->transaction->currency = $currency;
+
+				$response = DuitkuHelper::createPayment($data);
 			break;
 			case "doku":
 				$amount = number_format(self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'IDR'), 0, '.','');

@@ -28,7 +28,7 @@ class DuitkuHelper {
   	{
         if(self::env_duitkuEnv()=="production")
         {
-            $endpoint = "https://api.duitku.com";
+            $endpoint = "https://api-prod.duitku.com";
         }
         else
         {

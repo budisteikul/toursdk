@@ -68,10 +68,6 @@ class DuitkuHelper {
 
     public static function createPayment($data)
     {
-        
-        $status = true;
-        return $status;
-
     	$payment = self::bankCode($data->transaction->bank);
         $response = new \stdClass();
 
@@ -91,7 +87,6 @@ class DuitkuHelper {
             }
 
             return $status;
-            //$response->payment_type = 'ewallet';
         }
         else
         {

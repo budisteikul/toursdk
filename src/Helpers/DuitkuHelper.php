@@ -77,11 +77,13 @@ class DuitkuHelper {
         if($payment->bank_payment_type=="OV")
         {
             $status = false;
+            $statusCode = null;
 
             $data1 = self::createSnap($data);
             $data2 = self::createCharge($data1->reference,$payment,$data->contact->phone);
             
-            if($data2->statusCode=="00")
+            if(isset($data2->statusCode)) $statusCode = $data2->statusCode;
+            if($statusCode=="00")
             {
                 $status = true;
             }

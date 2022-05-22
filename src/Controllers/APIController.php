@@ -1140,7 +1140,6 @@ class APIController extends Controller
                                     {
                                         window.stopListener(data.session_id,data.confirmation_code);
                                         window.startListener(data.session_id,data.confirmation_code);
-                                        //window.openAppRoute(data.redirect); 
                                     }
 
                                 }).fail(function(error) {

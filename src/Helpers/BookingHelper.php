@@ -1818,7 +1818,8 @@ class BookingHelper {
 		$payment_status = NULL;
 
 		$transaction = new \stdClass();
-        $transaction->id = self::get_payment_transaction_id();
+        //$transaction->id = self::get_payment_transaction_id();
+        $transaction->id = $shoppingcart->confirmation_code;
         $transaction->amount = $amount;
         $transaction->confirmation_code = $shoppingcart->confirmation_code;
         $transaction->payment_provider = $payment_provider;

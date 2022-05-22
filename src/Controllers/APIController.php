@@ -956,6 +956,7 @@ class APIController extends Controller
             $phoneNumber = $request->input('phoneNumber');
             $sessionId = $request->input('sessionId');
 
+
             if(substr($phoneNumber,0,1)=="0")
             {
                 $phoneNumber = substr($phoneNumber,1);
@@ -967,6 +968,7 @@ class APIController extends Controller
 
             $status = BookingHelper::create_payment($sessionId,"duitku","ovo",$phoneNumber);
 
+            
             if(!$status)
             {
                 return response()->json([
@@ -975,18 +977,15 @@ class APIController extends Controller
             }
             else
             {
-                $shoppingcart = Cache::get('_'. $sessionId);
-
-                $shoppingcart->payment->payment_status = 2;
-        
-                Cache::forget('_'. $sessionId);
-                Cache::add('_'. $sessionId, $shoppingcart, 172800);
-
+                
+                BookingHelper::set_paymentStatus($sessionId,2);
                 BookingHelper::set_bookingStatus($sessionId,'CONFIRMED');
                 $shoppingcart = BookingHelper::confirm_booking($sessionId);
 
                 return response()->json([
                     'message' => 'success',
+                    "session_id" => $shoppingcart->session_id,
+                    "confirmation_code" => $shoppingcart->confirmation_code,
                     'redirect' => "/booking/receipt/".$shoppingcart->session_id."/".$shoppingcart->confirmation_code,
                 ]);
             }
@@ -1139,7 +1138,9 @@ class APIController extends Controller
 
                                     if(data.message=="success")
                                     {
-                                        window.openAppRoute(data.redirect); 
+                                        window.stopListener(data.session_id,data.confirmation_code);
+                                        window.startListener(data.session_id,data.confirmation_code);
+                                        //window.openAppRoute(data.redirect); 
                                     }
 
                                 }).fail(function(error) {

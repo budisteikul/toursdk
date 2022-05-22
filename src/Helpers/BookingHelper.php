@@ -1608,6 +1608,15 @@ class BookingHelper {
         return $shoppingcart;
 	}
 
+	public static function set_paymentStatus($sessionId,$payment_status='')
+	{
+		$shoppingcart = Cache::get('_'. $sessionId);
+        $shoppingcart->payment->payment_status = $payment_status;
+        Cache::forget('_'. $sessionId);
+        Cache::add('_'. $sessionId, $shoppingcart, 172800);
+        return $shoppingcart;
+	}
+
 	public static function set_confirmationCode($sessionId)
 	{
 		$shoppingcart = Cache::get('_'. $sessionId);

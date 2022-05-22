@@ -88,7 +88,9 @@ class PaydiaHelper {
               'Authorization' => 'Bearer '. $signature
           ];
 
-        $transaction_id = str_replace("PAY-", "", $data->transaction->id);
+        $transaction_id = $data->transaction->id;
+        $transaction_id = str_replace("PAY-", "", $transaction_id);
+        $transaction_id = str_replace("VER-", "", $transaction_id);
 
        
         

@@ -68,6 +68,10 @@ class DuitkuHelper {
 
     public static function createPayment($data)
     {
+        
+        $status = true;
+        return $status;
+
     	$payment = self::bankCode($data->transaction->bank);
         $response = new \stdClass();
 
@@ -76,10 +80,18 @@ class DuitkuHelper {
 
         if($payment->bank_payment_type=="OV")
         {
+            $status = false;
+
             $data1 = self::createSnap($data);
             $data2 = self::createCharge($data1->reference,$payment,$data->contact->phone);
-            print_r($data2);
-            $response->payment_type = 'ewallet';
+            
+            if($data2->statusCode=="00")
+            {
+                $status = true;
+            }
+
+            return $status;
+            //$response->payment_type = 'ewallet';
         }
         else
         {
@@ -89,9 +101,6 @@ class DuitkuHelper {
             $response->va_number = $data2->vaNumber;
         }
 		
-
-		
-
 		$response->authorization_id = $data1->reference;
         $response->bank_name = $payment->bank_name;
         $response->bank_code = $payment->bank_code;

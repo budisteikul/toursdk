@@ -1874,6 +1874,9 @@ class BookingHelper {
 				if($data->transaction->bank == 'ovo')
 				{
 					$contact->phone = $param1;
+					$payment_provider = 'duitku';
+					$payment_type = 'ewallet';
+					$bank_name = 'ovo';
 				}
 
 				$response = DuitkuHelper::createPayment($data);

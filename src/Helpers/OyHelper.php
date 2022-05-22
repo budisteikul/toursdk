@@ -251,7 +251,7 @@ class OyHelper {
             'customer_id' => $data->transaction->id,
             'partner_trx_id' => $data->transaction->id,
             'amount' => $data->transaction->amount,
-            'email' => null,
+            'email' => $data->contact->email,
             'ewallet_code' => $payment->bank_payment_type,
             'mobile_number' => null,
             'success_redirect_url' => self::env_appUrl() . $data->transaction->finish_url,
@@ -291,7 +291,7 @@ class OyHelper {
             'is_lifetime' => false,
             'expiration_time' => $data->transaction->mins_expired,
             'username_display' => $data->contact->first_name,
-            'email' => null,
+            'email' => $data->contact->email,
             'partner_trx_id' => $data->transaction->id,
             'trx_counter' => 1,
           ];
@@ -334,7 +334,7 @@ class OyHelper {
                 'sender_name' => $data->contact->name,
                 'sender_phone' => NULL,
                 'sender_notes' => NULL,
-                'sender_email' => NULL,
+                'sender_email' => $data->contact->email,
                 'email_active' => false,
                 'card_sender' => $payment->bank_payment_type
             ];
@@ -367,7 +367,7 @@ class OyHelper {
                 'admin_fee' => 0,
                 'sender_phone' => NULL,
                 'sender_notes' => NULL,
-                'sender_email' => NULL,
+                'sender_email' => $data->contact->email,
                 'sender_name' => $data->contact->name,
                 'ewallet_type' => $payment->bank_payment_type,
                 'email_active' => false
@@ -399,7 +399,7 @@ class OyHelper {
                 'admin_fee' => 0,
                 'sender_phone' => NULL,
                 'sender_notes' => NULL,
-                'sender_email' => NULL,
+                'sender_email' => $data->contact->email,
                 'sender_name' => $data->contact->name,
                 'card_sender' => $payment->bank_code,
                 'device_id' => NULL,
@@ -444,7 +444,7 @@ class OyHelper {
           'partner_tx_id' => $data->transaction->id,
           'sender_name' => $data->contact->name,
           'amount' => $data->transaction->amount,
-          'email' => null,
+          'email' => $data->contact->email,
           'phone_number' => null,
           'username_display' => self::env_appName(),
           'is_open' => false,

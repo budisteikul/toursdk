@@ -1599,6 +1599,13 @@ class BookingHelper {
 		
 	}
 
+	public static function set_maskingEmail($shoppingcart)
+	{
+		$front_email = str_replace("-",".",$shoppingcart->confirmation_code);
+		$email = strtolower($front_email.'@'.self::env_mailgunDomain());
+		return $email;
+	}
+
 	public static function set_bookingStatus($sessionId,$booking_status='CONFIRMED')
 	{
 		$shoppingcart = Cache::get('_'. $sessionId);
@@ -1778,7 +1785,7 @@ class BookingHelper {
         $contact->last_name = $last_name;
         $contact->name = $first_name .' '. $last_name;
         //$contact->email = $email;
-        $contact->email =  strtolower($shoppingcart->confirmation_code .'@'. self::env_mailgunDomain());
+        $contact->email = BookingHelper::set_maskingEmail($shoppingcart);
         $contact->phone = $phone;
 
         $due_date = self::due_date($shoppingcart);

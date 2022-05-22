@@ -939,34 +939,6 @@ class APIController extends Controller
             return response()->json($response);
     }
 
-    public function confirmpaymentovo(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'sessionId' => ['required', 'string', 'max:255'],
-        ]);
-        
-        if ($validator->fails()) {
-            $errors = $validator->errors();
-            return response()->json($errors);
-        }
-
-        $sessionId = $request->input('sessionId');
-        $shoppingcart = Cache::get('_'. $sessionId);
-
-        $shoppingcart->payment->payment_status = 2;
-        
-        Cache::forget('_'. $sessionId);
-        Cache::add('_'. $sessionId, $shoppingcart, 172800);
-
-        BookingHelper::set_bookingStatus($sessionId,'CONFIRMED');
-        $shoppingcart = BookingHelper::confirm_booking($sessionId);
-
-        return response()->json([
-                    "id" => "1",
-                    "message" => "/booking/receipt/".$shoppingcart->session_id."/".$shoppingcart->confirmation_code
-                ]);
-    }
-
     public function createpaymentovo(Request $request)
     {
             $validator = Validator::make($request->all(), [
@@ -992,7 +964,9 @@ class APIController extends Controller
 
             BookingHelper::set_bookingStatus($sessionId,'PENDING');
             BookingHelper::set_confirmationCode($sessionId);
+
             $status = BookingHelper::create_payment($sessionId,"duitku","ovo",$phoneNumber);
+
             if(!$status)
             {
                 return response()->json([
@@ -1001,8 +975,19 @@ class APIController extends Controller
             }
             else
             {
+                $shoppingcart = Cache::get('_'. $sessionId);
+
+                $shoppingcart->payment->payment_status = 2;
+        
+                Cache::forget('_'. $sessionId);
+                Cache::add('_'. $sessionId, $shoppingcart, 172800);
+
+                BookingHelper::set_bookingStatus($sessionId,'CONFIRMED');
+                $shoppingcart = BookingHelper::confirm_booking($sessionId);
+
                 return response()->json([
                     'message' => 'success',
+                    'redirect' => "/booking/receipt/".$shoppingcart->session_id."/".$shoppingcart->confirmation_code,
                 ]);
             }
 
@@ -1109,7 +1094,7 @@ class APIController extends Controller
         $shoppingcart = Cache::get('_'. $sessionId);
         $jscript = '
             $("#submitCheckout").slideUp("slow");
-            $("#paymentContainer").html(\'<div class="form-row mb-4 mt-2"><div class="col-xs-2"><input type="text" style="height:47px; width:50px;" class="form-control  disabled" value="+62" disabled></div><div class="col"><input id="ovoPhoneNumber" type="text" style="height:47px" class="form-control" placeholder="85743112112"></div></div><button id="submit" onClick="createpaymentovo()" class="btn btn-lg btn-block btn-theme" style="height:47px"><strong>Click to pay with <img class="ml-2 mr-2" src="/img/ewallet/ovo-light.png" height="30" /></strong></button>\');
+            $("#paymentContainer").html(\'<div class="form-row mb-4 mt-2"><div class="col-xs-2"><input type="text" style="height:47px; width:50px;" class="form-control  disabled" value="+62" disabled></div><div class="col"><input id="ovoPhoneNumber" type="text" style="height:47px" class="form-control" placeholder="85743112112"></div></div><div id=\"text-alert\" class=\"text-center mb-4 mt-2\"></div><button id="submit" onClick="createpaymentovo()" class="btn btn-lg btn-block btn-theme" style="height:47px"><strong>Click to pay with <img class="ml-2 mr-2" src="/img/ewallet/ovo-light.png" height="30" /></strong></button>\');
 
             function createpaymentovo()
             {
@@ -1118,6 +1103,10 @@ class APIController extends Controller
                             $("#ovoPhoneNumber").attr("disabled", true);
                             $("#submit").attr("disabled", true);
                             $("#submit").html(\' <i class="fa fa-spinner fa-spin fa-fw"></i>  processing... \');
+
+                            $("#text-alert").show();
+                            $("#text-alert").html( "Please check OVO app on your mobile phone, to process payment" );
+                            
                             $.ajax({
                                 data: {
                                     "sessionId": \''.$sessionId.'\',
@@ -1128,6 +1117,9 @@ class APIController extends Controller
                                 url: \''. url('/api') .'/payment/ovo\'
                                 }).done(function(data) {
                                     
+                                    $("#text-alert").hide();
+                                    $("#text-alert").html( "" );
+
                                     if(data.message=="required")
                                     {
                                         $("#ovoPhoneNumber").attr("disabled", false);
@@ -1137,6 +1129,7 @@ class APIController extends Controller
 
                                     if(data.message=="failed")
                                     {
+                                        
                                         $(\'#alert-payment\').html(\'<div id="alert-failed" class="alert alert-danger text-center mt-2" role="alert"><h2 style="margin-bottom:10px; margin-top:10px;"><i class="far fa-frown"></i> Transaction failed</h2></div>\');
                                         $(\'#alert-payment\').fadeIn("slow");
                                         $("#ovoPhoneNumber").attr("disabled", false);
@@ -1146,24 +1139,14 @@ class APIController extends Controller
 
                                     if(data.message=="success")
                                     {
-                                        $.ajax({
-                                        data: {
-                                            "sessionId": \''.$sessionId.'\',
-                                        },
-                                        type: \'POST\',
-                                        url: \''. url('/api') .'/payment/ovo/confirm\'
-                                        }).done(function(data) {
-                                            if(data.id=="1")
-                                            {
-                                                window.openAppRoute(data.message); 
-                                            }
-
-                                        }).fail(function(error) {
-                                    
-                                        });
+                                        window.openAppRoute(data.redirect); 
                                     }
 
                                 }).fail(function(error) {
+
+                                        $("#text-alert").hide();
+                                        $("#text-alert").html( "" );
+
                                         $(\'#alert-payment\').html(\'<div id="alert-failed" class="alert alert-danger text-center mt-2" role="alert"><h2 style="margin-bottom:10px; margin-top:10px;"><i class="far fa-frown"></i> Transaction failed</h2></div>\');
                                         $(\'#alert-payment\').fadeIn("slow");
                                         $("#ovoPhoneNumber").attr("disabled", false);

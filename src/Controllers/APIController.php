@@ -969,8 +969,27 @@ class APIController extends Controller
 
     public function createpaymentovo(Request $request)
     {
+            $validator = Validator::make($request->all(), [
+                'sessionId' => ['required', 'string', 'max:255'],
+                'phoneNumber' => ['required', 'string', 'max:255'],
+                'paymentMethod' => ['required', 'string', 'max:255'],
+            ]);
+        
+            if ($validator->fails()) {
+                return response()->json([
+                    'message' => 'required',
+                ]);
+            }
+
             $phoneNumber = $request->input('phoneNumber');
             $sessionId = $request->input('sessionId');
+
+            if(substr($phoneNumber,0,1)=="0")
+            {
+                $phoneNumber = substr($phoneNumber,1);
+            }
+            $phoneNumber = "0". $phoneNumber;
+
             BookingHelper::set_bookingStatus($sessionId,'PENDING');
             BookingHelper::set_confirmationCode($sessionId);
             $status = BookingHelper::create_payment($sessionId,"duitku","ovo",$phoneNumber);
@@ -1094,7 +1113,7 @@ class APIController extends Controller
 
             function createpaymentovo()
             {
-                            var phoneNumber = "0"+ document.getElementById("ovoPhoneNumber").value;
+                            var phoneNumber = document.getElementById("ovoPhoneNumber").value;
                             $("#alert-payment").slideUp("slow");
                             $("#ovoPhoneNumber").attr("disabled", true);
                             $("#submit").attr("disabled", true);
@@ -1109,6 +1128,13 @@ class APIController extends Controller
                                 url: \''. url('/api') .'/payment/ovo\'
                                 }).done(function(data) {
                                     
+                                    if(data.message=="required")
+                                    {
+                                        $("#ovoPhoneNumber").attr("disabled", false);
+                                        $("#submit").attr("disabled", false);
+                                        $("#submit").html(\' <strong>Click to pay with <img class="ml-2 mr-2" src="/img/ewallet/ovo-light.png" height="30" /></strong> \');
+                                    }
+
                                     if(data.message=="failed")
                                     {
                                         $(\'#alert-payment\').html(\'<div id="alert-failed" class="alert alert-danger text-center mt-2" role="alert"><h2 style="margin-bottom:10px; margin-top:10px;"><i class="far fa-frown"></i> Transaction failed</h2></div>\');

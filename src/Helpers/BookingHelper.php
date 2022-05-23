@@ -1894,6 +1894,7 @@ class BookingHelper {
 					$payment_provider = 'duitku';
 					$payment_type = 'ewallet';
 					$bank_name = 'ovo';
+					$redirect = $data->transaction->finish_url;
 				}
 
 				$response = DuitkuHelper::createPayment($data);

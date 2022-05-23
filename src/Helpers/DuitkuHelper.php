@@ -57,6 +57,11 @@ class DuitkuHelper {
                 $data->bank_code = "";
                 $data->bank_payment_type = "OV";
             break;
+            case "dana":
+                $data->bank_name = "dana";
+                $data->bank_code = "";
+                $data->bank_payment_type = "DA";
+            break;
             default:
                 return response()->json([
                     "message" => 'Error'
@@ -68,11 +73,12 @@ class DuitkuHelper {
 
     public static function createPayment($data)
     {
-    	$payment = self::bankCode($data->transaction->bank);
+    	  
+        $payment = self::bankCode($data->transaction->bank);
         $response = new \stdClass();
 
         $data->transaction->mins_expired = 60;
-		$data->transaction->date_expired = Carbon::parse($data->transaction->date_now)->addMinutes($data->transaction->mins_expired);
+		    $data->transaction->date_expired = Carbon::parse($data->transaction->date_now)->addMinutes($data->transaction->mins_expired);
 
         if($payment->bank_payment_type=="OV")
         {
@@ -87,8 +93,15 @@ class DuitkuHelper {
             {
                 $status = true;
             }
-
+            
             return $status;
+        }
+        else if($payment->bank_payment_type=="DA")
+        {
+            $data1 = self::createSnap($data);
+            $data2 = self::createCharge($data1->reference,$payment);
+            $response->payment_type = 'ewallet';
+            $response->redirect = $data->transaction->finish_url;
         }
         else
         {
@@ -96,12 +109,12 @@ class DuitkuHelper {
             $data2 = self::createCharge($data1->reference,$payment);
             $response->payment_type = 'bank_transfer';
             $response->va_number = $data2->vaNumber;
+            $response->redirect = $data->transaction->finish_url;
         }
 		
-		$response->authorization_id = $data1->reference;
+		    $response->authorization_id = $data1->reference;
         $response->bank_name = $payment->bank_name;
         $response->bank_code = $payment->bank_code;
-        $response->redirect = $data->transaction->finish_url;
         $response->expiration_date = $data->transaction->date_expired;
         $response->order_id = $data->transaction->id;
         

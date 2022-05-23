@@ -105,6 +105,8 @@ class DuitkuHelper {
         {
             $data1 = self::createSnap($data);
             $data2 = self::createCharge($data1->reference,$payment);
+            print_r($data2);
+            exit();
             $response->payment_type = 'ewallet';
             $response->redirect = $data2->paymentUrl;
         }

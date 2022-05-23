@@ -405,14 +405,13 @@ class ContentHelper {
             'value' => 'midtrans-shopeepay', 'label' => '', 'image' => '/img/ewallet/shopeepay.png',
         ];
         $ewallet_list[] = [
-            'value' => 'duitku-dana', 'label' => '', 'image' => '/img/ewallet/dana.png',
+            'value' => 'ovo', 'label' => '', 'image' => '/img/ewallet/ovo.png',
+        ];
+        $ewallet_list[] = [
+            'value' => 'oyindonesia-dana', 'label' => '', 'image' => '/img/ewallet/dana.png',
         ];
         $ewallet_list[] = [
             'value' => 'oyindonesia-linkaja', 'label' => '', 'image' => '/img/ewallet/linkaja.png',
-        ];
-        
-        $ewallet_list[] = [
-            'value' => 'ovo', 'label' => '', 'image' => '/img/ewallet/ovo.png',
         ];
         
 

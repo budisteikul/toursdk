@@ -4,6 +4,11 @@ use Carbon\Carbon;
 
 class DuitkuHelper {
 
+  public static function env_appUrl()
+    {
+        return env("APP_URL");
+    }
+
 	public static function env_appApiUrl()
   	{
         return env("APP_API_URL");
@@ -100,10 +105,8 @@ class DuitkuHelper {
         {
             $data1 = self::createSnap($data);
             $data2 = self::createCharge($data1->reference,$payment);
-            print_r($data2);
-            exit();
             $response->payment_type = 'ewallet';
-            $response->redirect = $data->transaction->finish_url;
+            $response->redirect = $data2->paymentUrl;
         }
         else
         {
@@ -171,7 +174,7 @@ class DuitkuHelper {
     	$email = $data->contact->email; // email pelanggan anda
     	$customerVaName = $data->contact->name; // tampilan nama pada tampilan konfirmasi bank
     	$callbackUrl = self::env_appApiUrl().'/payment/duitku/confirm'; // url untuk callback
-    	$returnUrl = $data->transaction->finish_url; // url untuk redirect
+    	$returnUrl = self::env_appUrl() . $data->transaction->finish_url; // url untuk redirect
     	$expiryPeriod = $data->transaction->mins_expired; // atur waktu kadaluarsa dalam hitungan menit
     	//$signature = md5($merchantCode . $merchantOrderId . $paymentAmount . $apiKey);
         $timestamp = round(microtime(true) * 1000);

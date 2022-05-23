@@ -207,9 +207,7 @@ class DuitkuHelper {
               'x-duitku-merchantcode' => self::env_duitkuMerchantCode(),
           ];
 
-        print_r($headers);
-        print_r($data);
-        //https://api-sandbox.duitku.com/api/merchant/createInvoice
+        
 
         $url = self::duitkuApiEndpoint();
         $targetPath = '/api/merchant/createInvoice';

@@ -210,6 +210,11 @@ class DuitkuHelper {
             'signature' => $signature,
         ];
 
+        $headers = [
+              'Accept' => 'application/jsons',
+              'Content-Type' => 'application/json',
+          ];
+          
         $url = self::duitkuApiEndpoint();
         $targetPath = '/webapi/api/merchant/v2/inquiry';
         $endpoint = $url . $targetPath;

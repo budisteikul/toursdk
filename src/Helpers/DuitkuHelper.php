@@ -118,7 +118,7 @@ class DuitkuHelper {
         {
             //$data1 = self::createSnap($data);
             //$data2 = self::createCharge($data1->reference,$payment);
-            $data1 = self::createTransaction($data);
+            $data1 = self::createTransaction($data,$payment);
             print_r($data1);
             //print_r($data2);
             exit();

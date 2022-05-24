@@ -180,7 +180,7 @@ class DuitkuHelper {
         return $data;
     }
 
-    public static function createTransaction($data)
+    public static function createTransaction($data,$payment)
     {
         $merchantCode = self::env_duitkuMerchantCode(); // dari duitku
         $apiKey = self::env_duitkuApiKey(); // dari duitku

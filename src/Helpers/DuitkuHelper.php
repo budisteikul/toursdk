@@ -116,8 +116,11 @@ class DuitkuHelper {
         }
         else if($payment->bank_payment_type=="DA")
         {
-            //$data1 = self::createSnap($data);
+            $data1 = self::createSnap($data);
             //$data2 = self::createCharge($data1->reference,$payment);
+            print_r($data1);
+            exit();
+
             $data1 = self::createTransaction($data,$payment);
             $response->payment_type = 'ewallet';
             $response->redirect = $data1->paymentUrl;

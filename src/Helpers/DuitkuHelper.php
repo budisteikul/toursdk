@@ -119,11 +119,8 @@ class DuitkuHelper {
             //$data1 = self::createSnap($data);
             //$data2 = self::createCharge($data1->reference,$payment);
             $data1 = self::createTransaction($data,$payment);
-            print_r($data1);
-            //print_r($data2);
-            exit();
             $response->payment_type = 'ewallet';
-            $response->redirect = $data2->paymentUrl;
+            $response->redirect = $data1->paymentUrl;
         }
         else
         {
@@ -214,7 +211,7 @@ class DuitkuHelper {
               'Accept' => 'application/jsons',
               'Content-Type' => 'application/json',
           ];
-          
+
         $url = self::duitkuApiEndpoint();
         $targetPath = '/webapi/api/merchant/v2/inquiry';
         $endpoint = $url . $targetPath;

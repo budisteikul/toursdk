@@ -96,7 +96,7 @@ class DuitkuHelper {
         $response = new \stdClass();
 
         $data->transaction->mins_expired = 60;
-		    $data->transaction->date_expired = Carbon::parse($data->transaction->date_now)->addMinutes($data->transaction->mins_expired);
+        $data->transaction->date_expired = Carbon::parse($data->transaction->date_now)->addMinutes($data->transaction->mins_expired);
 
         if($payment->bank_payment_type=="OV")
         {
@@ -117,8 +117,9 @@ class DuitkuHelper {
         else if($payment->bank_payment_type=="DA")
         {
             $data1 = self::createSnap($data);
-            //$data2 = self::createCharge($data1->reference,$payment);
+            $data2 = self::createCharge($data1->reference,$payment);
             print_r($data1);
+            print_r($data2);
             exit();
 
             $data1 = self::createTransaction($data,$payment);
@@ -134,7 +135,7 @@ class DuitkuHelper {
             $response->redirect = $data->transaction->finish_url;
         }
 		
-		    $response->authorization_id = $data1->reference;
+        $response->authorization_id = $data1->reference;
         $response->bank_name = $payment->bank_name;
         $response->bank_code = $payment->bank_code;
         $response->expiration_date = $data->transaction->date_expired;
@@ -237,7 +238,7 @@ class DuitkuHelper {
     	$merchantCode = self::env_duitkuMerchantCode(); // dari duitku
     	$apiKey = self::env_duitkuApiKey(); // dari duitku
     	$paymentAmount = $data->transaction->amount;
-    	//$paymentMethod = $payment->bank_payment_type; // VC = Credit Card
+    	//$paymentMethod = "DA"; // VC = Credit Card
     	$merchantOrderId = $data->transaction->id; // dari merchant, unik
     	$productDetails = 'Payment for '. $data->transaction->confirmation_code;
     	$email = $data->contact->email; // email pelanggan anda

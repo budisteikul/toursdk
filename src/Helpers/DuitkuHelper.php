@@ -265,7 +265,7 @@ class DuitkuHelper {
             'merchantCode' => $merchantCode,
             'apiKey' => $apiKey,
             'paymentAmount' => (int)$paymentAmount,
-            //'paymentMethod' => $paymentMethod,
+            'paymentMethod' => "DA",
             'merchantOrderId' => $merchantOrderId,
             'productDetails' => $productDetails,
             'email' => $email,
@@ -278,7 +278,6 @@ class DuitkuHelper {
         ];
 
         $headers = [
-              'Accept' => 'application/jsons',
               'Content-Type' => 'application/json',
               'Content-Length' => strlen(json_encode($data)),
               'x-duitku-signature' => $signature,

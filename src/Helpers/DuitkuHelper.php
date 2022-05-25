@@ -251,6 +251,16 @@ class DuitkuHelper {
         $phoneNumber = $data->contact->phone;
         $signature = hash("sha256", $merchantCode . $timestamp . $apiKey);
 
+        
+        $customerDetail = [
+            'firstName' => $data->contact->first_name,
+            'lastName' => $data->contact->last_name,
+            'email' => $data->contact->email,
+            'phoneNumber' => $data->contact->phone,
+            'billingAddress' => NULL,
+            'shippingAddress' => NULL,
+        ];
+
     	$data = [
             'merchantCode' => $merchantCode,
             'apiKey' => $apiKey,
@@ -263,6 +273,7 @@ class DuitkuHelper {
             'callbackUrl' => $callbackUrl,
             'returnUrl' => $returnUrl,
             'expiryPeriod' => $expiryPeriod,
+            'customerDetail' => $customerDetail,
             //'signature' => $signature,
         ];
 

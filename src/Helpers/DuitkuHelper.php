@@ -116,10 +116,10 @@ class DuitkuHelper {
         }
         else if($payment->bank_payment_type=="DA")
         {
-            //$data1 = self::createSnap($data);
-            //$data2 = self::createCharge($data1->reference,$payment);
-            //print_r($data1);
-            //print_r($data2);
+            $data1 = self::createSnap($data);
+            $data2 = self::createCharge($data1->reference,$payment);
+            print_r($data1);
+            print_r($data2);
             //exit();
 
             $data1 = self::createTransaction($data,$payment);

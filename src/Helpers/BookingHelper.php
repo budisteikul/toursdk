@@ -1606,6 +1606,13 @@ class BookingHelper {
 		return $email;
 	}
 
+	public static function set_maskingPhone($shoppingcart)
+	{
+		$phoneNumber = str_replace("VER-","",$shoppingcart->confirmation_code);
+		$phoneNumber = '+62'. $phoneNumber;
+		return $phoneNumber;
+	}
+
 	public static function set_bookingStatus($sessionId,$booking_status='CONFIRMED')
 	{
 		$shoppingcart = Cache::get('_'. $sessionId);
@@ -1786,7 +1793,8 @@ class BookingHelper {
         $contact->name = $first_name .' '. $last_name;
         //$contact->email = $email;
         $contact->email = BookingHelper::set_maskingEmail($shoppingcart);
-        $contact->phone = $phone;
+        $contact->phone = BookingHelper::set_maskingPhone($shoppingcart);
+        //$contact->phone = $phone;
 
         $due_date = self::due_date($shoppingcart);
 

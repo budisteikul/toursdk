@@ -248,6 +248,7 @@ class DuitkuHelper {
     	$expiryPeriod = $data->transaction->mins_expired; // atur waktu kadaluarsa dalam hitungan menit
     	//$signature = md5($merchantCode . $merchantOrderId . $paymentAmount . $apiKey);
         $timestamp = round(microtime(true) * 1000);
+        $phoneNumber = $data->contact->phone;
         $signature = hash("sha256", $merchantCode . $timestamp . $apiKey);
 
     	$data = [

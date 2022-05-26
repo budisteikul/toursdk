@@ -168,6 +168,7 @@ class RapydHelper {
     }
 
     public static function make_request($method, $path, $body = null) {
+        
         $base_url = self::rapydApiEndpoint();
         $access_key = self::env_rapydAccessKey();     // The access key received from Rapyd.
         $secret_key = self::env_rapydSecretKey();     // Never transmit the secret key by itself.

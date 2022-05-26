@@ -116,9 +116,9 @@ class DuitkuHelper {
         }
         else if($payment->bank_payment_type=="DA")
         {
-            //$data1 = self::createTransaction($data,$payment);
+            $data1 = self::createTransaction($data,$payment);
 
-            $data1 = self::createSnap($data);
+            //$data1 = self::createSnap($data);
             $data2 = self::createCharge($data1->reference,$payment);
             print_r($data1);
             print_r($data2);
@@ -213,7 +213,7 @@ class DuitkuHelper {
         ];
 
         $headers = [
-              'Accept' => 'application/jsons',
+              'Accept' => 'application/json',
               'Content-Type' => 'application/json',
           ];
 
@@ -257,7 +257,7 @@ class DuitkuHelper {
             'merchantCode' => $merchantCode,
             'apiKey' => $apiKey,
             'paymentAmount' => (int)$paymentAmount,
-            'paymentMethod' => "DA",
+            //'paymentMethod' => "DA",
             'merchantOrderId' => $merchantOrderId,
             'productDetails' => $productDetails,
             'email' => $email,
@@ -266,7 +266,7 @@ class DuitkuHelper {
             'returnUrl' => $returnUrl,
             'expiryPeriod' => $expiryPeriod,
             'email' => $data->contact->email,
-            'phoneNumber' => $data->contact->phone,
+            //'phoneNumber' => $data->contact->phone,
             //'signature' => $signature,
         ];
 

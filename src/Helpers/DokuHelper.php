@@ -92,6 +92,11 @@ class DokuHelper {
                 $data->bank_code = "";
                 $data->bank_payment_type = "qris_doku";
             break;
+            case "ovo":
+                $data->bank_name = "ovo";
+                $data->bank_code = "";
+                $data->bank_payment_type = "ovo";
+            break;
             default:
                 return response()->json([
                     "message" => 'Error'
@@ -113,15 +118,27 @@ class DokuHelper {
             $data->transaction->date_expired = Carbon::parse($data->transaction->date_now)->addMinutes($data->transaction->mins_expired);
 
             $data1 = self::createSnap($data);
-            $data2 = self::createCharge($data1->response->payment->token_id,$payment);
+            $data2 = self::createCharge($data1->response->payment->token_id,$data,$payment);
 
             $response->payment_type = 'qris';
             $response->qrcode = $data2->qr_code;
         }
+        else if($payment->bank_payment_type=="ovo")
+        {
+            $data->transaction->mins_expired = 60;
+            $data->transaction->date_expired = Carbon::parse($data->transaction->date_now)->addMinutes($data->transaction->mins_expired);
+
+            $data1 = self::createSnap($data);
+            $data2 = self::createCharge($data1->response->payment->token_id,$data,$payment);
+
+            print_r($data1);
+            print_r($data2);
+            exit();
+        }
         else
         {
             $data1 = self::createSnap($data);
-            $data2 = self::createCharge($data1->response->payment->token_id,$payment);
+            $data2 = self::createCharge($data1->response->payment->token_id,$data,$payment);
 
             $response->payment_type = 'bank_transfer';
             $response->va_number = $data2->payment_code;
@@ -140,7 +157,7 @@ class DokuHelper {
 
 
 
-    public static function createCharge($token,$payment)
+    public static function createCharge($token,$data,$payment)
     {
         if($payment->bank_payment_type=="qris_doku")
         {
@@ -148,6 +165,14 @@ class DokuHelper {
                 'token_id' => $token
             ];
             $targetPath = '/checkout/v1/payment/'.$token.'/generate-qris';
+        }
+        else if($payment->bank_payment_type=="ovo")
+        {
+            $data = [
+                'token_id' => $token,
+                'customer_phone' => $data->contact->phone
+            ];
+            $targetPath = '/checkout/v1/payment/'.$token.'/emoney-ovo';
         }
         else
         {

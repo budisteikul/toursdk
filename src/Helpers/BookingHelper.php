@@ -1916,6 +1916,15 @@ class BookingHelper {
 				$data->transaction->amount = $amount;
 				$data->transaction->currency = $currency;
 
+				if($data->transaction->bank == 'ovo')
+				{
+					$contact->phone = $param1;
+					$payment_provider = 'doku';
+					$payment_type = 'ewallet';
+					$bank_name = 'ovo';
+					$redirect = $data->transaction->finish_url;
+				}
+
 				$response = DokuHelper::createPayment($data);
 			break;
 			case "midtrans":

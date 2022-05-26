@@ -399,14 +399,15 @@ class ContentHelper {
         ];
         
         $ewallet_list[] = [
+            'value' => 'ovo', 'label' => '', 'image' => '/img/ewallet/ovo.png',
+        ];
+        $ewallet_list[] = [
             'value' => 'midtrans-gopay', 'label' => '', 'image' => '/img/ewallet/gopay.png',
         ];
         $ewallet_list[] = [
             'value' => 'midtrans-shopeepay', 'label' => '', 'image' => '/img/ewallet/shopeepay.png',
         ];
-        $ewallet_list[] = [
-            'value' => 'ovo', 'label' => '', 'image' => '/img/ewallet/ovo.png',
-        ];
+        
         /*
         $ewallet_list[] = [
             'value' => 'oyindonesia-dana', 'label' => '', 'image' => '/img/ewallet/dana.png',
@@ -417,14 +418,16 @@ class ContentHelper {
         */
 
         $grouped_payment[] = [
+            'label' => 'E-wallet',
+            'options' => $ewallet_list
+        ];
+        
+        $grouped_payment[] = [
             'label' => 'Bank transfer',
             'options' => $bank_transfer_list
         ];
 
-        $grouped_payment[] = [
-            'label' => 'E-wallet',
-            'options' => $ewallet_list
-        ];
+        
 
 
         $dataShoppingcart[] = array(

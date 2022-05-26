@@ -374,10 +374,11 @@ class ContentHelper {
         
         
         $bank_transfer_list[] = [
-            'value' => 'doku-mandiri', 'label' => 'MANDIRI', 'image' => '/img/bank/mandiri.png',
-        ];
-        $bank_transfer_list[] = [
             'value' => 'midtrans-permata', 'label' => 'PERMATA', 'image' => '/img/bank/permata.png',
+        ];
+        /*
+        $bank_transfer_list[] = [
+            'value' => 'doku-mandiri', 'label' => 'MANDIRI', 'image' => '/img/bank/mandiri.png',
         ];
         $bank_transfer_list[] = [
             'value' => 'midtrans-bni', 'label' => 'BNI', 'image' => '/img/bank/bni.png',
@@ -397,6 +398,7 @@ class ContentHelper {
         $bank_transfer_list[] = [
             'value' => 'doku-doku', 'label' => 'DOKU', 'image' => '/img/bank/doku.png',
         ];
+        */
         
         $ewallet_list[] = [
             'value' => 'ovo', 'label' => '', 'image' => '/img/ewallet/ovo.png',
@@ -421,7 +423,7 @@ class ContentHelper {
             'label' => 'E-wallet',
             'options' => $ewallet_list
         ];
-        
+
         $grouped_payment[] = [
             'label' => 'Bank transfer',
             'options' => $bank_transfer_list

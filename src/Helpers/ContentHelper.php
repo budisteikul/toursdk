@@ -372,13 +372,11 @@ class ContentHelper {
         
         $payment_enable = 'localpayment,qris,paypal,stripe';
         
-        
-        $bank_transfer_list[] = [
-            'value' => 'midtrans-permata', 'label' => 'PERMATA', 'image' => '/img/bank/permata.png',
-        ];
-        
         $bank_transfer_list[] = [
             'value' => 'doku-mandiri', 'label' => 'MANDIRI', 'image' => '/img/bank/mandiri.png',
+        ];
+        $bank_transfer_list[] = [
+            'value' => 'midtrans-permata', 'label' => 'PERMATA', 'image' => '/img/bank/permata.png',
         ];
         $bank_transfer_list[] = [
             'value' => 'midtrans-bni', 'label' => 'BNI', 'image' => '/img/bank/bni.png',
@@ -420,14 +418,16 @@ class ContentHelper {
         */
 
         $grouped_payment[] = [
+            'label' => 'Bank transfer',
+            'options' => $bank_transfer_list
+        ];
+
+        $grouped_payment[] = [
             'label' => 'E-wallet',
             'options' => $ewallet_list
         ];
 
-        $grouped_payment[] = [
-            'label' => 'Bank transfer',
-            'options' => $bank_transfer_list
-        ];
+        
 
         
 

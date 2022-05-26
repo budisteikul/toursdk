@@ -376,7 +376,7 @@ class ContentHelper {
         $bank_transfer_list[] = [
             'value' => 'midtrans-permata', 'label' => 'PERMATA', 'image' => '/img/bank/permata.png',
         ];
-        /*
+        
         $bank_transfer_list[] = [
             'value' => 'doku-mandiri', 'label' => 'MANDIRI', 'image' => '/img/bank/mandiri.png',
         ];
@@ -398,8 +398,8 @@ class ContentHelper {
         $bank_transfer_list[] = [
             'value' => 'doku-doku', 'label' => 'DOKU', 'image' => '/img/bank/doku.png',
         ];
-        */
         
+
         $ewallet_list[] = [
             'value' => 'ovo', 'label' => '', 'image' => '/img/ewallet/ovo.png',
         ];

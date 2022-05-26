@@ -400,15 +400,15 @@ class ContentHelper {
 
         
         $ewallet_list[] = [
-            'value' => 'midtrans-gopay', 'label' => '', 'image' => '/img/ewallet/gopay.png',
+            'value' => 'midtrans-gopay', 'label' => 'GOPAY', 'image' => '/img/ewallet/gopay.png',
         ];
         $ewallet_list[] = [
-            'value' => 'midtrans-shopeepay', 'label' => '', 'image' => '/img/ewallet/shopeepay.png',
+            'value' => 'midtrans-shopeepay', 'label' => 'SHOPEEPAY', 'image' => '/img/ewallet/shopeepay.png',
         ];
         $ewallet_list[] = [
-            'value' => 'ovo', 'label' => '', 'image' => '/img/ewallet/ovo.png',
+            'value' => 'ovo', 'label' => 'OVO', 'image' => '/img/ewallet/ovo.png',
         ];
-        
+
         /*
         $ewallet_list[] = [
             'value' => 'oyindonesia-dana', 'label' => '', 'image' => '/img/ewallet/dana.png',

@@ -43,7 +43,9 @@ class APIController extends Controller
     
     public function test()
     {
-       
+        $aaa = '{"merchantOrderId":"1653499797207","merchantUserInfo":"","productDetails":"Classic simple note you can customize.","email":"John.Doe87@gmail.com","phoneNumber":"081665114988","callbackUrl":"http://example.com","returnUrl":"http://example.com","paymentMethod":"","customerVaName":"","expiryPeriod":10,"additionalParam":"","paymentAmount":120000,"itemDetails":[{"name":"Classic Simple Note","price":120000,"quantity":1}],"customerDetail":{"firstName":"John","lastName":"Doe","email":"John.Doe87@gmail.com","phoneNumber":"081665114988","registerDate":"2019-12-23T02:56:34.606Z","billingAddress":{"firstName":"John","lastName":"Doe","address":"Graha Mas Blok A No. 9 Jl. Raya Perjuangan 1, RT.3/RW.7, Kb. Jeruk, Kec. Kb. Jeruk, jakarta, Daerah Khusus Ibukota Jakarta 11530","city":"Jakarta","postalCode":"11530","phone":"081665114988","countryCode":"ID"},"shippingAddress":{"firstName":"John","lastName":"Doe","address":"Graha Mas Blok A No. 9 Jl. Raya Perjuangan 1, RT.3/RW.7, Kb. Jeruk, Kec. Kb. Jeruk, jakarta, Daerah Khusus Ibukota Jakarta 11530","city":"Jakarta","postalCode":"11530","phone":"081665114988","countryCode":"ID"}}}';
+        $bbb = json_decode($aaa);
+        print_r($bbb);
     }
 
     public function __construct()

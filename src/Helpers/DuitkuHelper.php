@@ -116,13 +116,15 @@ class DuitkuHelper {
         }
         else if($payment->bank_payment_type=="DA")
         {
+            //$data1 = self::createTransaction($data,$payment);
+
             $data1 = self::createSnap($data);
             $data2 = self::createCharge($data1->reference,$payment);
             print_r($data1);
             print_r($data2);
-            //exit();
+            exit();
 
-            $data1 = self::createTransaction($data,$payment);
+            
             $response->payment_type = 'ewallet';
             $response->redirect = $data1->paymentUrl;
         }
@@ -162,7 +164,6 @@ class DuitkuHelper {
         
 
         $headers = [
-              'Accept' => 'application/jsons',
               'Content-Type' => 'application/json',
           ];
 
@@ -238,7 +239,7 @@ class DuitkuHelper {
     	$merchantCode = self::env_duitkuMerchantCode(); // dari duitku
     	$apiKey = self::env_duitkuApiKey(); // dari duitku
     	$paymentAmount = $data->transaction->amount;
-    	//$paymentMethod = "DA"; // VC = Credit Card
+    	$paymentMethod = "DA"; // VC = Credit Card
     	$merchantOrderId = $data->transaction->id; // dari merchant, unik
     	$productDetails = 'Payment for '. $data->transaction->confirmation_code;
     	$email = $data->contact->email; // email pelanggan anda
@@ -252,15 +253,6 @@ class DuitkuHelper {
         $signature = hash("sha256", $merchantCode . $timestamp . $apiKey);
 
         
-        $customerDetail = [
-            'firstName' => $data->contact->first_name,
-            'lastName' => $data->contact->last_name,
-            'email' => $data->contact->email,
-            'phoneNumber' => $data->contact->phone,
-            'billingAddress' => NULL,
-            'shippingAddress' => NULL,
-        ];
-
     	$data = [
             'merchantCode' => $merchantCode,
             'apiKey' => $apiKey,
@@ -273,7 +265,8 @@ class DuitkuHelper {
             'callbackUrl' => $callbackUrl,
             'returnUrl' => $returnUrl,
             'expiryPeriod' => $expiryPeriod,
-            'customerDetail' => $customerDetail,
+            'email' => $data->contact->email,
+            'phoneNumber' => $data->contact->phone,
             //'signature' => $signature,
         ];
 

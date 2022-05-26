@@ -125,15 +125,22 @@ class DokuHelper {
         }
         else if($payment->bank_payment_type=="ovo")
         {
+            $status = false;
+            $payment_status = null;
+
             $data->transaction->mins_expired = 60;
             $data->transaction->date_expired = Carbon::parse($data->transaction->date_now)->addMinutes($data->transaction->mins_expired);
 
             $data1 = self::createSnap($data);
             $data2 = self::createCharge($data1->response->payment->token_id,$data,$payment);
 
-            print_r($data1);
-            print_r($data2);
-            exit();
+            if(isset($data2->status)) $payment_status = $data2->status;
+            if($payment_status=="SUCCESS")
+            {
+                $status = true;
+            }
+
+            return $status;
         }
         else
         {

@@ -2396,19 +2396,19 @@ class BookingHelper {
 						$button = null;
 						if($shoppingcart->shoppingcart_payment->bank_name=="gopay")
 						{
-							$button = '<a class="btn btn-theme w-100" href="'. $shoppingcart->shoppingcart_payment->redirect .'"><b class="invoice-hilang"> Click to pay with<img class="ml-2 mr-2" height="30" src="'. url('/img/ewallet/gopay-light.png') .'" /></b></a>';
+							$button = '<a class="btn btn-theme w-100" href="'. $shoppingcart->shoppingcart_payment->redirect .'"><b class="invoice-hilang"> Click to pay with<img alt="GOPAY" class="ml-2 mr-2" height="30" src="/img/ewallet/gopay-light.png" /></b></a>';
 						}
 						if($shoppingcart->shoppingcart_payment->bank_name=="shopeepay")
 						{
-							$button = '<a class="btn btn-theme w-100" href="'. $shoppingcart->shoppingcart_payment->redirect .'"><b class="invoice-hilang"> Click to pay with<img class="ml-2 mr-2" height="30" src="'. url('/img/ewallet/shopeepay-light.png') .'" /></b></a>';
+							$button = '<a class="btn btn-theme w-100" href="'. $shoppingcart->shoppingcart_payment->redirect .'"><b class="invoice-hilang"> Click to pay with<img alt="SHOPEEPAY" class="ml-2 mr-2" height="30" src="/img/ewallet/shopeepay-light.png" /></b></a>';
 						}
 						if($shoppingcart->shoppingcart_payment->bank_name=="linkaja")
 						{
-							$button = '<a class="btn btn-theme w-100" href="'. $shoppingcart->shoppingcart_payment->redirect .'"><b class="invoice-hilang"> Click to pay with<img class="ml-2 mr-2" height="30" src="'. url('/img/ewallet/linkaja-light.png') .'" /></b></a>';
+							$button = '<a class="btn btn-theme w-100" href="'. $shoppingcart->shoppingcart_payment->redirect .'"><b class="invoice-hilang"> Click to pay with<img alt="LINKAJA" class="ml-2 mr-2" height="30" src="/img/ewallet/linkaja-light.png" /></b></a>';
 						}
 						if($shoppingcart->shoppingcart_payment->bank_name=="dana")
 						{
-							$button = '<a class="btn btn-theme w-100" href="'. $shoppingcart->shoppingcart_payment->redirect .'"><b class="invoice-hilang"> Click to pay with<img class="ml-2 mr-2" height="30" src="'. url('/img/ewallet/dana-light.png') .'" /></b></a>';
+							$button = '<a class="btn btn-theme w-100" href="'. $shoppingcart->shoppingcart_payment->redirect .'"><b class="invoice-hilang"> Click to pay with<img alt="DANA" class="ml-2 mr-2" height="30" src="/img/ewallet/dana-light.png" /></b></a>';
 						}
 						
 						return '

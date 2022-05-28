@@ -370,7 +370,7 @@ class ContentHelper {
         $promo_code = $shoppingcart->promo_code;
         if($promo_code=="") $promo_code = null;
         
-        $payment_enable = 'localpayment,qris,paypal,stripe';
+        $payment_enable = 'localpayment,paypal,stripe';
         
         $bank_transfer_list[] = [
             'value' => 'doku-mandiri', 'label' => 'MANDIRI', 'image' => '/img/bank/mandiri.png',
@@ -397,7 +397,9 @@ class ContentHelper {
             'value' => 'doku-doku', 'label' => 'DOKU', 'image' => '/img/bank/doku.png',
         ];
         
-
+        $qrcode_list[] = [
+            'value' => 'qris', 'label' => '', 'image' => '/img/ewallet/qris.png',
+        ];
         
         $ewallet_list[] = [
             'value' => 'midtrans-gopay', 'label' => '', 'image' => '/img/ewallet/gopay.png',
@@ -419,16 +421,17 @@ class ContentHelper {
         */
 
         $grouped_payment[] = [
-            'label' => 'Bank transfer',
-            'options' => $bank_transfer_list
+            'label' => 'QRIS',
+            'options' => $qrcode_list
         ];
-
         $grouped_payment[] = [
             'label' => 'E-wallet',
             'options' => $ewallet_list
         ];
-
-        
+        $grouped_payment[] = [
+            'label' => 'Bank transfer',
+            'options' => $bank_transfer_list
+        ];
 
         
 

@@ -1016,53 +1016,52 @@ class APIController extends Controller
             
             $payment = $data['payment'];
 
-            if($payment=="paypal") {
-
-                return response()->json([
-                    'message' => 'success',
-                    'payment' => 'paypal',
-                    'id' => 3
-                ], 200);
-
-            }
-            else if($payment=="stripe")
+            switch($payment)
             {
-                return response()->json([
-                    'message' => 'success',
-                    'payment' => 'stripe',
-                    'id' => 3
-                ]);
-            }
-            else if($payment=="ovo")
-            {
-                return response()->json([
-                    'message' => 'success',
-                    'payment' => 'ovo',
-                    'id' => 3
-                ]);
-            }
-            else if($payment=="qris")
-            {
-                BookingHelper::set_bookingStatus($sessionId,'PENDING');
-                BookingHelper::set_confirmationCode($sessionId);
-                BookingHelper::create_payment($sessionId,"doku","qris");
-            }
-            else
-            {
-                $payment_arr = explode("-",$payment);
+                case 'paypal':
+                    return response()->json([
+                        'message' => 'success',
+                        'payment' => 'paypal',
+                        'id' => 3
+                    ], 200);
+                break;
 
-                $payment_provider = NULL;
-                $payment_bank = NULL;
+                case 'stripe':
+                    return response()->json([
+                        'message' => 'success',
+                        'payment' => 'stripe',
+                        'id' => 3
+                    ]);
+                break;
 
-                if(isset($payment_arr[0])) $payment_provider = $payment_arr[0];
-                if(isset($payment_arr[1])) $payment_bank = $payment_arr[1];
+                case 'ovo':
+                    return response()->json([
+                        'message' => 'success',
+                        'payment' => 'ovo',
+                        'id' => 3
+                    ]);
+                break;
 
+                case 'qris':
+                    BookingHelper::set_bookingStatus($sessionId,'PENDING');
+                    BookingHelper::set_confirmationCode($sessionId);
+                    BookingHelper::create_payment($sessionId,"doku","qris");
+                break;
 
-                BookingHelper::set_bookingStatus($sessionId,'PENDING');
-                BookingHelper::set_confirmationCode($sessionId);
-                BookingHelper::create_payment($sessionId,$payment_provider,$payment_bank);
+                default:
+                    $payment_arr = explode("-",$payment);
+
+                    $payment_provider = NULL;
+                    $payment_bank = NULL;
+
+                    if(isset($payment_arr[0])) $payment_provider = $payment_arr[0];
+                    if(isset($payment_arr[1])) $payment_bank = $payment_arr[1];
+
+                    BookingHelper::set_bookingStatus($sessionId,'PENDING');
+                    BookingHelper::set_confirmationCode($sessionId);
+                    BookingHelper::create_payment($sessionId,$payment_provider,$payment_bank);
             }
-            
+
             $shoppingcart = BookingHelper::confirm_booking($sessionId);
             
             $text = null;

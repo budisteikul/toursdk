@@ -2,6 +2,7 @@
 namespace budisteikul\toursdk\Helpers;
 use Zxing\QrReader;
 use Storage;
+use Carbon\Carbon;
 
 class TazapayHelper {
 
@@ -77,6 +78,9 @@ class TazapayHelper {
     {
         $payment = self::bankCode($data->transaction->bank);
         $response = new \stdClass();
+
+        $data->transaction->mins_expired = 3;
+        $data->transaction->date_expired = Carbon::parse($data->transaction->date_now)->addMinutes($data->transaction->mins_expired);
 
         $body = [
             'email' => $data->contact->email,

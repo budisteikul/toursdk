@@ -2394,14 +2394,17 @@ class BookingHelper {
 								<span class="badge badge-info invoice-color-info" style="font-size:20px;">
 								<i class="fas fa-qrcode"></i> WAITING FOR PAYMENT </span>
 								</div>
-								<div class="card mb-1 img-fluid invoice-hilang"  style="min-height:360px; max-width:505px;">
+								<div class="card mb-1 img-fluid invoice-hilang"  style="min-height:390px; max-width:505px;">
 								
 								<div class="card-img-overlay">
 									<div class="row h-100">
    										<div class="col-sm-12 text-center">
    											<img id="paynow-img" class="img-fluid border border-white mb-2 mt-2" alt="PAYNOW LOGO" style="max-width:250px;" src="'. url('/img/paynow-logo.png') .'">
     										<img id="paynow-img" class="img-fluid border border-white" alt="PAYNOW" style="max-width:250px;" src="data:image/png;base64, '. base64_encode(self::generate_qris($shoppingcart)) .' ">
+    										<br /><br />
+    										<span><strong>Amount :</strong> '. $shoppingcart->shoppingcart_payment->currency .' '. $shoppingcart->shoppingcart_payment->amount .'</span>
    										</div>
+
 									</div>
   								</div>
 								

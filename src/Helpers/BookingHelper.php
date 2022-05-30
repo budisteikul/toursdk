@@ -2375,6 +2375,7 @@ class BookingHelper {
 									<div class="row h-100">
    										<div class="col-sm-12 text-center">
     										<img id="qris-img" class="img-fluid border border-white mb-2 mt-2" alt="QRIS LOGO" style="max-width:250px;" src="'. url('/img/qris-logo.png') .'">
+    										<br />
     										<img id="qris-img" class="img-fluid border border-white" alt="QRIS" style="max-width:250px;" src="data:image/png;base64, '. base64_encode(self::generate_qris($shoppingcart)) .' ">
    										</div>
 									</div>
@@ -2400,6 +2401,7 @@ class BookingHelper {
 									<div class="row h-100">
    										<div class="col-sm-12 text-center">
    											<img id="paynow-img" class="img-fluid border border-white mb-2 mt-2" alt="PAYNOW LOGO" style="max-width:250px;" src="'. url('/img/paynow-logo.png') .'">
+   											<br />
     										<img id="paynow-img" class="img-fluid border border-white" alt="PAYNOW" style="max-width:250px;" src="data:image/png;base64, '. base64_encode(self::generate_qris($shoppingcart)) .' ">
     										<br /><br />
     										<span><strong>Amount :</strong> '. $shoppingcart->shoppingcart_payment->currency .' '. $shoppingcart->shoppingcart_payment->amount .'</span>

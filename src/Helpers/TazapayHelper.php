@@ -102,7 +102,7 @@ class TazapayHelper {
             'seller_id' => self::env_tazapaySellerID(),
             'txn_description' => 'Payment for '. $data->transaction->confirmation_code,
             'invoice_currency' => 'SGD',
-            'invoice_amount' => $data->transaction->amount,
+            'invoice_amount' => (int)$data->transaction->amount,
         ];
 
         $tazapay = self::make_request('POST','/v1/escrow/',$body);

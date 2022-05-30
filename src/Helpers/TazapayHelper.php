@@ -133,12 +133,14 @@ class TazapayHelper {
         ];
 
         $tazapay = self::make_request('POST','/v1/escrow/payment',$body,$tazapay['data']['session_token']);
-            
+
+            print_r($tazapay);
+            exit();
             $qrcode = $tazapay['data']['qr_code'];
             list($type, $qrcode) = explode(';', $qrcode);
             list(, $qrcode)      = explode(',', $qrcode);
             $contents = base64_decode($qrcode);
-            
+
             $path = date('YmdHis');
             $disk = Storage::disk('gcs');
             $disk->put('qrcode/'. $path .'/'.$data->transaction->confirmation_code.'.png', $contents);

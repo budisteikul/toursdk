@@ -91,8 +91,7 @@ class TazapayHelper {
         ];
 
         $tazapay = self::make_request('POST','/v1/user',$body);
-        print_r($body);
-        print_r($tazapay);
+       
 
         $body = [
             'txn_type' => 'service',
@@ -106,8 +105,7 @@ class TazapayHelper {
         ];
 
         $tazapay = self::make_request('POST','/v1/escrow/',$body);
-        print_r($body);
-        print_r($tazapay);
+       
         $txn_no = $tazapay['data']['txn_no'];
 
         $body = [
@@ -118,16 +116,14 @@ class TazapayHelper {
         ];
 
         $tazapay = self::make_request('POST','/v1/session/payment',$body);
-        print_r($body);
-        print_r($tazapay);
+      
 
         $redirect_url = $tazapay['data']['redirect_url'];
         $redirect_url_array = explode("/",$redirect_url);
         $auth_id = end($redirect_url_array);
 
         $tazapay = self::make_request('GET','/v1/session/payment/'.$auth_id);
-        print_r($body);
-        print_r($tazapay);
+       
             
         $body = [
                 'escrow_id' => $tazapay['data']['escrow_id'],
@@ -140,8 +136,7 @@ class TazapayHelper {
         ];
 
         $tazapay = self::make_request('POST','/v1/escrow/payment',$body,$tazapay['data']['session_token']);
-        print_r($body);
-        print_r($tazapay);
+       
 
             $qrcode = $tazapay['data']['qr_code'];
             list($type, $qrcode) = explode(';', $qrcode);

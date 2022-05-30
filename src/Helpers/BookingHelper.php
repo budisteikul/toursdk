@@ -13,6 +13,7 @@ use budisteikul\toursdk\Helpers\OyHelper;
 use budisteikul\toursdk\Helpers\PaydiaHelper;
 use budisteikul\toursdk\Helpers\DokuHelper;
 use budisteikul\toursdk\Helpers\RapydHelper;
+use budisteikul\toursdk\Helpers\DanaHelper;
 use budisteikul\toursdk\Helpers\FirebaseHelper;
 use budisteikul\toursdk\Helpers\GeneralHelper;
 use budisteikul\toursdk\Helpers\VoucherHelper;
@@ -1891,6 +1892,18 @@ class BookingHelper {
 
 				$response = RapydHelper::createPayment($data);
 
+			break;
+			case "dana":
+				$amount = number_format(self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'IDR'), 0, '.','');
+
+				$currency = 'IDR';
+				$rate = 1;
+				$payment_status = 4;
+
+				$data->transaction->amount = $amount;
+				$data->transaction->currency = $currency;
+
+				$response = DanaHelper::createPayment($data);
 			break;
 			case "oyindonesia":
 				$amount = number_format(self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'IDR'), 0, '.','');

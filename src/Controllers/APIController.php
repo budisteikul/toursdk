@@ -14,6 +14,7 @@ use budisteikul\toursdk\Helpers\DuitkuHelper;
 use budisteikul\toursdk\Helpers\DokuHelper;
 use budisteikul\toursdk\Helpers\MidtransHelper;
 use budisteikul\toursdk\Helpers\PaydiaHelper;
+use budisteikul\toursdk\Helpers\DanaHelper;
 use budisteikul\toursdk\Helpers\GeneralHelper;
 
 use budisteikul\toursdk\Models\Category;
@@ -43,7 +44,9 @@ class APIController extends Controller
     
     public function test()
     {
-        
+        $test = DanaHelper::danaCreateOrder();
+        //$test = base64_encode('MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCz5U5NtTTmNPZG1q700+TZqX6QCvRDXonwylwyJRxOCosKexefr5qtwymtjBnAhB39CP2ZgA7jxvaDuBYp4DejSeBDaVytq9wi2vncTFG8ri1JONspKe3SEIAMngWhYRU30tr2rZDTUJrzJ3gXXcGEmmPhugc7pBreIr6PAQUi+V25zEj3i4nZ5y/RyRXNreD0iko4mLxaEW3rzdnly4rMiKoKvUN9RvJBeBIGt7GfnYw3HTrunJYLvDwwK8WsJLf/vi7BTQLzErGbaundpqEOptyEPTbF7e6Z0TyvzpQzFdh3913KdEC6K/T/SEMF6pVTeDkKe4VDtNPwGoyrkqhpAgMBAAECggEAXeFH2OO85Ho1H8i/awL9hd2fL9qXmGTIxcFFFeIqAEwePWz5ahtBNHcJ1AiuE7qez8MWXTnoC1R0p061OktJncxa3bMpa3SpoAL4q8+kRDv9ZB3ouXWpJ5v2xx7cP1ijsws1u8/eKXkCM+ygDkmeSO4tO8pSJfzBDLXDDmvw20u5MzEEMzRSZaCg3QtnD5YtlPnbo7yIt/j+LWROzFFggctkrQX0qrSOhduXAdR3cJNm4g4wzZZMP07L9aToZ7xQGVECnmfIxKXmFZflVVwt9bmCgbVsPykIuOmC9neoUBN06r3ZA2s6SBDr3BWDc+1rV/ZMlXvHlLXEHEVUQ64spQKBgQDg7xsqX69hEmUN9z+K+5hfpwIEHqd9XVOTEAOIfs27FFV2AYBDnyoa65WJrA0UiihiNtdzsV1e3aVARwGsSOwAdPs/b6EKuhHM1KtfVhgF+uotIZon7oCC88reTYThtY133if/1+hvHgsespigIze5WxAjj5N3yIfyBB4oOOV2IwKBgQDMvc0Bm+fS/Bs65Nt5W5tp0h0aqwDk5F9BnpScS01yhT/P7xSU+X3giBocaFLF8etYBh4wuMgCE2W51gLLUezqfSM9SfGteP04by/bRSFArfUyQv9pBLP75yi0PSgmf1S1E619sKUe8cHKhJMyNUajA0zXYJnTI11CrLumMpICAwKBgD4Hkk1AL+QsJ3QPgBV6xo1yR+sM7RF0YCzJGMBWf7OcquitB0sepITh/M4HhV/prbNP/mBoRCB6LS0pp7t0LKj/mZ3n0dhccbYz28KhwmQ7ysKBZrqmWghC5OojJIb+AzJQMGWsi+vAtD5V8CMRMzfJdgzodjltMpg6LHrZHeZTAoGAI5xztu7uIJV3CwRZZD9ZxcslAslxi15pbxltEc5LNzsUAU+9Tbgje9VQbVZ75zAP1iyiPak2KJ5FGFCwBbtHMPX5FiTxY1HjAVjdgw8AHKblOgvLLvIBeDQZsVfdzuxgyGoWyADch4hXQ6lRjO8VTS86w09rEf1ZsEopDVxIZw8CgYEAm+C5NFiJ1LrydVz2dQl6m5w8GmS7UopscgsfYOXkosoD+7TwzhmKHm4zgx2Dx6+LcP/+M7xk51vBCgOFxZ3cf+WQ7epAXqgxvtoVrg1YdLq0jP8JHgPlZbWvAE+Va1dUQeJ1cMyzfPurmw81jxMerv4Dexk+5Avskx1ah2kHgxY=');
+        print_r($test);
     }
 
     public function __construct()

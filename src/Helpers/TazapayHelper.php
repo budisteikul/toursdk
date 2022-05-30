@@ -90,7 +90,7 @@ class TazapayHelper {
             'last_name' => $data->contact->last_name,
         ];
 
-        $tazapay = make_request('POST','/v1/user',$body);
+        $tazapay = self::make_request('POST','/v1/user',$body);
 
         $body = [
             'txn_type' => 'service',
@@ -100,10 +100,10 @@ class TazapayHelper {
             'seller_id' => self::env_tazapaySelerID(),
             'txn_description' => 'PAYMENT FOR BLABLABLA',
             'invoice_currency' => 'SGD',
-            'invoice_amount' => 1,
+            'invoice_amount' => $data->transaction->amount,
         ];
 
-        $tazapay = make_request('POST','/v1/escrow/',$body);
+        $tazapay = self::make_request('POST','/v1/escrow/',$body);
 
         $txn_no = $tazapay['data']['txn_no'];
 
@@ -114,13 +114,13 @@ class TazapayHelper {
             'callback_url' => self::env_appApiUrl() .'/payment/tazapay/confirm'
         ];
 
-        $tazapay = make_request('POST','/v1/session/payment',$body);
+        $tazapay = self::make_request('POST','/v1/session/payment',$body);
 
         $redirect_url = $tazapay['data']['redirect_url'];
         $redirect_url_array = explode("/",$redirect_url);
         $auth_id = end($redirect_url_array);
 
-        $tazapay = make_request('GET','/v1/session/payment/'.$auth_id);
+        $tazapay = self::make_request('GET','/v1/session/payment/'.$auth_id);
 
         $body = [
                 'escrow_id' => $tazapay['data']['escrow_id'],
@@ -132,7 +132,7 @@ class TazapayHelper {
                 'is_first_payment' => null,
         ];
 
-        $tazapay = make_request('POST','/v1/escrow/payment',$body,$tazapay['data']['session_token']);
+        $tazapay = self::make_request('POST','/v1/escrow/payment',$body,$tazapay['data']['session_token']);
 
             $qrcode = $tazapay['data']['qr_code'];
             list($type, $qrcode) = explode(';', $qrcode);

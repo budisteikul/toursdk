@@ -2343,7 +2343,7 @@ class BookingHelper {
 						return '';
 				}
             }
-            if($shoppingcart->shoppingcart_payment->payment_type=="qris")
+            if($shoppingcart->shoppingcart_payment->payment_type=="qris" || $shoppingcart->shoppingcart_payment->payment_type=="paynow")
             {
 
             	switch($shoppingcart->shoppingcart_payment->payment_status)
@@ -2361,18 +2361,15 @@ class BookingHelper {
 								</div>';
 						break;
 					case 4:
-
-						//$data_qris = self::get_qris_content($shoppingcart);
-						return '
+						if($shoppingcart->shoppingcart_payment->payment_type=="qris")
+						{
+							return '
 								
 								<div class="card mb-1">
 								<span class="badge badge-info invoice-color-info" style="font-size:20px;">
 								<i class="fas fa-qrcode"></i> WAITING FOR PAYMENT </span>
 								</div>
 								<div class="card mb-1 img-fluid invoice-hilang"  style="min-height:360px; max-width:505px;">
-								
-								<!-- img class="card-img-top" src="'. url('/img/qris-template.jpg') .'" alt="Card image" style="width:100%" -->
-								
 								
 								<div class="card-img-overlay">
 									<div class="row h-100">
@@ -2388,6 +2385,33 @@ class BookingHelper {
 								<a href="'. self::env_appApiUrl() .'/qrcode/'.$shoppingcart->session_id.'/'. $shoppingcart->confirmation_code .'" type="button" class="invoice-hilang btn btn-success invoice-hilang ">or Download QRCODE <i class="fas fa-download"></i> </a>
 								</div>
 								';
+						}
+						else
+						{
+							return '
+								
+								<div class="card mb-1">
+								<span class="badge badge-info invoice-color-info" style="font-size:20px;">
+								<i class="fas fa-qrcode"></i> WAITING FOR PAYMENT </span>
+								</div>
+								<div class="card mb-1 img-fluid invoice-hilang"  style="min-height:360px; max-width:505px;">
+								
+								<div class="card-img-overlay">
+									<div class="row h-100">
+   										<div class="col-sm-12 text-center">
+    										<img id="qris-img" class="img-fluid border border-white" alt="PAYNOW" style="max-width:250px;" src="data:image/png;base64, '. base64_encode(self::generate_qris($shoppingcart)) .' ">
+   										</div>
+									</div>
+  								</div>
+								
+								</div>
+								<div class="card mb-4">
+								<a href="'. self::env_appApiUrl() .'/qrcode/'.$shoppingcart->session_id.'/'. $shoppingcart->confirmation_code .'" type="button" class="invoice-hilang btn btn-success invoice-hilang ">or Download QRCODE <i class="fas fa-download"></i> </a>
+								</div>
+								';
+						}
+						//$data_qris = self::get_qris_content($shoppingcart);
+						
 						break;
 					default:
 						return '';

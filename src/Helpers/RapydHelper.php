@@ -132,7 +132,7 @@ class RapydHelper {
             $url = $disk->url('qrcode/'. $path .'/'.$data->transaction->confirmation_code.'.png');
             $qrcode = new QrReader($url);
 
-            $response->payment_type = 'qris';
+            $response->payment_type = 'paynow';
             $response->qrcode = $qrcode->text();
         }
         else if($payment->bank_payment_type=="sg_fast_bank")

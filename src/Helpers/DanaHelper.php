@@ -57,9 +57,19 @@ class DanaHelper {
 
     public static function createPayment($data)
     {
-        $data = danaCreateOrder($data);
-        $redirect_url = $data['response']['body']['checkoutUrl'];
+        $response = new \stdClass();
 
+        $data->transaction->mins_expired = 60;
+        $data->transaction->date_expired = Carbon::parse($data->transaction->date_now)->addMinutes($data->transaction->mins_expired);
+        $data->transaction->amount = $data->transaction->amount * 100;
+
+        $data1 = self::danaCreateOrder($data);
+
+        $redirect_url = $data1['response']['body']['checkoutUrl'];
+        $acquirementId = $data1['response']['body']['acquirementId'];
+        print_r($data1);
+        
+        $response->authorization_id = $acquirementId;
         $response->bank_name = 'dana';
         $response->link = null;
         $response->expiration_date = $data->transaction->date_expired;
@@ -67,6 +77,50 @@ class DanaHelper {
         $response->payment_type = 'ewallet';
         $response->redirect = $redirect_url;
         return $response;
+    }
+
+    public static function danaCreateSPI($merchantTransId,$acquirementId,$orderAmount)
+    {
+        $requestData = [
+            'head' => [
+                'version'      => '2.0',
+                'function'     => 'dana.acquiring.order.finishNotify',
+                'clientId'     => self::env_danaClientId(),
+                'reqTime'      => date('Y-m-d\TH:i:sP'),
+                'reqMsgId'     => Uuid::uuid4()->toString(),
+            ],
+            'body' => [
+                'merchantId'      => self::env_danaMerchantId(),
+                'merchantTransId' => $merchantTransId,
+                'acquirementId'   => $acquirementId,
+                'acquirementStatus'   => 'SUCCESS',
+                'orderAmount'   => $orderAmount,
+                'createdTime'   => date('Y-m-d\TH:i:sP'),
+                'finishedTime'   => date('Y-m-d\TH:i:sP', strtotime('now +1 hour')),
+            ]
+        ];
+
+        $data_json = self::composeRequest($requestData);
+        
+        
+        $endpoint = self::danaApiEndpoint() ."/dana/acquiring/order/finishNotify.htm";
+
+        $headers = [
+              'Content-Type' => 'application/json',
+              'Cache-control' => 'no-cache',
+              'X-DANA-SDK' => 'PHP',
+              'X-DANA-SDK-VERSION' => '1.0'
+          ];
+
+        $client = new \GuzzleHttp\Client(['headers' => $headers,'http_errors' => false]);
+        $response = $client->request('POST',$endpoint,
+          ['json' => $data_json]
+        );
+
+        $data = $response->getBody()->getContents();
+        $data = json_decode($data,true);
+
+        return $data;
     }
 
     public static function danaCreateOrder($data)
@@ -116,6 +170,9 @@ class DanaHelper {
             'mcc'              => '123',
             'merchantId'       => self::env_danaMerchantId(),
             'extendInfo'       => '',
+            'paymentPreference' => [
+                'disabledPayMethods' => 'OTC^CREDIT_CARD^VIRTUAL_ACCOUNT^DEBIT_CARD^DIRECT_DEBIT_CREDIT_CARD^DIRECT_DEBIT_DEBIT_CARD'
+            ],
             'notificationUrls' => [
                     [
                         'type' => 'PAY_RETURN',

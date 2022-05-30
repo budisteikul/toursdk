@@ -40,6 +40,7 @@
 	Route::post('/api/payment/rapyd/confirm', 'budisteikul\toursdk\Controllers\APIController@confirmpaymentrapyd');
 	Route::post('/api/payment/stripe/confirm', 'budisteikul\toursdk\Controllers\APIController@confirmpaymentstripe');
 	Route::post('/api/payment/tazapay/confirm', 'budisteikul\toursdk\Controllers\APIController@confirmpaymenttazapay');
+	Route::post('/api/payment/dana/confirm', 'budisteikul\toursdk\Controllers\APIController@confirmpaymentdana');
 	
 	Route::post('/api/payment/paypal/confirm', 'budisteikul\toursdk\Controllers\APIController@confirmpaymentpaypal');
 	Route::post('/api/payment/doku/confirm', 'budisteikul\toursdk\Controllers\APIController@confirmpaymentdoku');

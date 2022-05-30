@@ -164,9 +164,9 @@ class TazapayHelper {
         $access_key = self::env_tazapayAccessKey();     // The access key received from Rapyd.
         $secret_key = self::env_tazapaySecretKey();     // Never transmit the secret key by itself.
 
-        $idempotency = generate_string();      // Unique for each request.
+        $idempotency = self::generate_string();      // Unique for each request.
         $http_method = $method;                // Lower case.
-        $salt = generate_string();             // Randomly generated for each request.
+        $salt = self::generate_string();             // Randomly generated for each request.
         $date = new DateTime();
         $timestamp = $date->getTimestamp();    // Current Unix time.
 

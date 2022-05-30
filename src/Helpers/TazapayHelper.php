@@ -33,7 +33,7 @@ class TazapayHelper {
 
     public static function env_tazapaySelerID()
     {
-        return env("TAZAPAY_SELER_ID");
+        return env("TAZAPAY_SELLER_ID");
     }
 
   	public static function generate_string($length=12)
@@ -105,9 +105,7 @@ class TazapayHelper {
         ];
 
         $tazapay = self::make_request('POST','/v1/escrow/',$body);
-        print_r($body);
-        print_r($tazapay);
-        exit();
+        
         $txn_no = $tazapay['data']['txn_no'];
 
         $body = [

@@ -772,6 +772,30 @@ class APIController extends Controller
             return response('OK', 200)->header('Content-Type', 'text/plain');
     }
 
+    public function confirmpaymenttazapay(Request $request)
+    {
+            $data = $request->all();
+            $order_id = null;
+            $transaction_status = null;
+
+            if(isset($data['txn_no'])) $order_id = $data['txn_no'];
+            if(isset($data['state'])) $transaction_status = $data['state'];
+
+            $shoppingcart_payment = ShoppingcartPayment::where('order_id',$order_id)->first();
+            if($shoppingcart_payment!==null) {
+                $confirmation_code = $shoppingcart_payment->shoppingcart->confirmation_code;
+                $shoppingcart = Shoppingcart::where('confirmation_code',$confirmation_code)->first();
+                if($shoppingcart!==null)
+                {
+                    if($transaction_status=="Escrow_Funds_Received")
+                    {
+                        BookingHelper::confirm_payment($shoppingcart,"CONFIRMED");
+                    }
+                }
+            }
+            return response('OK', 200)->header('Content-Type', 'text/plain');
+    }
+
     public function confirmpaymentdoku(Request $request)
     {
             if(!DokuHelper::checkSignature($request))

@@ -79,7 +79,7 @@ class TazapayHelper {
         $payment = self::bankCode($data->transaction->bank);
         $response = new \stdClass();
 
-        $data->transaction->mins_expired = 3;
+        $data->transaction->mins_expired = 60;
         $data->transaction->date_expired = Carbon::parse($data->transaction->date_now)->addMinutes($data->transaction->mins_expired);
 
         $body = [
@@ -91,7 +91,7 @@ class TazapayHelper {
         ];
 
         $tazapay = self::make_request('POST','/v1/user',$body);
-       
+        print_r($tazapay);
 
         $body = [
             'txn_type' => 'service',

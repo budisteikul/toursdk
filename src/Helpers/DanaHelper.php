@@ -61,13 +61,13 @@ class DanaHelper {
 
         $data->transaction->mins_expired = 60;
         $data->transaction->date_expired = Carbon::parse($data->transaction->date_now)->addMinutes($data->transaction->mins_expired);
-        $data->transaction->amount = $data->transaction->amount * 100;
+        
 
         $data1 = self::danaCreateOrder($data);
 
         $redirect_url = $data1['response']['body']['checkoutUrl'];
         $acquirementId = $data1['response']['body']['acquirementId'];
-        print_r($data1);
+       
         
         $response->authorization_id = $acquirementId;
         $response->bank_name = 'dana';
@@ -77,6 +77,48 @@ class DanaHelper {
         $response->payment_type = 'ewallet';
         $response->redirect = $redirect_url;
         return $response;
+    }
+
+    public static function danaQueryOrder($orderId,$acquirementId)
+    {
+        $requestData = [
+            'head' => [
+                'version'      => '2.0',
+                'function'     => 'dana.acquiring.order.query',
+                'clientId'     => self::env_danaClientId(),
+                'clientSecret' => self::env_danaClientSecret(),
+                'reqTime'      => date('Y-m-d\TH:i:sP'),
+                'reqMsgId'     => Uuid::uuid4()->toString(),
+                'reserve'      => '{}',
+            ],
+            'body' => [
+                'merchantId'      => self::env_danaMerchantId(),
+                'acquirementId'   => $acquirementId,
+                'merchantTransId' => $orderId,
+                'extendInfo'      => '',
+            ]
+        ];
+
+        $data_json = self::composeRequest($requestData);
+        
+        $endpoint = self::danaApiEndpoint() ."/dana/acquiring/order/query.htm";
+
+        $headers = [
+              'Content-Type' => 'application/json',
+              'Cache-control' => 'no-cache',
+              'X-DANA-SDK' => 'PHP',
+              'X-DANA-SDK-VERSION' => '1.0'
+          ];
+
+        $client = new \GuzzleHttp\Client(['headers' => $headers,'http_errors' => false]);
+        $response = $client->request('POST',$endpoint,
+          ['json' => $data_json]
+        );
+
+        $data = $response->getBody()->getContents();
+        $data = json_decode($data,true);
+
+        return $data;
     }
 
     public static function danaCreateSPI($merchantTransId,$acquirementId,$orderAmount)
@@ -162,7 +204,7 @@ class DanaHelper {
                 'orderMemo'         => '',
                 'createdTime'       => date('Y-m-d\TH:i:sP'),
                 'orderAmount'       => [
-                    'value'    => $data->transaction->amount, //aaaaaaa
+                    'value'    => $data->transaction->amount * 100, //aaaaaaa
                     'currency' => 'IDR'
                 ],
             ],

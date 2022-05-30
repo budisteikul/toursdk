@@ -167,7 +167,7 @@ class TazapayHelper {
         $idempotency = self::generate_string();      // Unique for each request.
         $http_method = $method;                // Lower case.
         $salt = self::generate_string();             // Randomly generated for each request.
-        $date = new DateTime();
+        $date = new \DateTime();
         $timestamp = $date->getTimestamp();    // Current Unix time.
 
         $body_string = !is_null($body) ? json_encode($body,JSON_UNESCAPED_SLASHES) : '';

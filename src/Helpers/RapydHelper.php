@@ -128,8 +128,8 @@ class RapydHelper {
 
             $path = date('YmdHis');
             $disk = Storage::disk('gcs');
-            $disk->put('qrcode/'. $path .'/'.$data1['data']['id'].'.png', $contents);
-            $url = $disk->url('qrcode/'. $path .'/'.$data1['data']['id'].'.png');
+            $disk->put('qrcode/'. $path .'/'.$data->transaction->confirmation_code.'.png', $contents);
+            $url = $disk->url('qrcode/'. $path .'/'.$data->transaction->confirmation_code.'.png');
             $qrcode = new QrReader($url);
 
             $response->payment_type = 'qris';

@@ -78,7 +78,7 @@ class TazapayHelper {
     {
         $payment = self::bankCode($data->transaction->bank);
         $response = new \stdClass();
-
+        
         $data->transaction->mins_expired = 60;
         $data->transaction->date_expired = Carbon::parse($data->transaction->date_now)->addMinutes($data->transaction->mins_expired);
 
@@ -91,7 +91,7 @@ class TazapayHelper {
         ];
 
         $tazapay = self::make_request('POST','/v1/user',$body);
-        print_r($tazapay);
+
 
         $body = [
             'txn_type' => 'service',
@@ -168,11 +168,11 @@ class TazapayHelper {
         $access_key = self::env_tazapayAccessKey();     // The access key received from Rapyd.
         $secret_key = self::env_tazapaySecretKey();     // Never transmit the secret key by itself.
 
-        $idempotency = self::generate_string();      // Unique for each request.
-        $http_method = $method;                // Lower case.
-        $salt = self::generate_string();             // Randomly generated for each request.
+        $idempotency = self::generate_string();         // Unique for each request.
+        $http_method = $method;                         // Lower case.
+        $salt = self::generate_string();                // Randomly generated for each request.
         $date = new \DateTime();
-        $timestamp = $date->getTimestamp();    // Current Unix time.
+        $timestamp = $date->getTimestamp();             // Current Unix time.
 
         $body_string = !is_null($body) ? json_encode($body,JSON_UNESCAPED_SLASHES) : '';
         $sig_string = "$http_method$path$salt$timestamp$access_key$secret_key";

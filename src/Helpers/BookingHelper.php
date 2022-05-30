@@ -2399,7 +2399,8 @@ class BookingHelper {
 								<div class="card-img-overlay">
 									<div class="row h-100">
    										<div class="col-sm-12 text-center">
-    										<img id="qris-img" class="img-fluid border border-white" alt="PAYNOW" style="max-width:250px;" src="data:image/png;base64, '. base64_encode(self::generate_qris($shoppingcart)) .' ">
+   											<img id="paynow-img" class="img-fluid border border-white mb-2 mt-2" alt="PAYNOW LOGO" style="max-width:250px;" src="'. url('/img/paynow-logo.png') .'">
+    										<img id="paynow-img" class="img-fluid border border-white" alt="PAYNOW" style="max-width:250px;" src="data:image/png;base64, '. base64_encode(self::generate_qris($shoppingcart)) .' ">
    										</div>
 									</div>
   								</div>
@@ -2573,7 +2574,10 @@ class BookingHelper {
 	{
 		if($shoppingcart->shoppingcart_payment->payment_type=="paynow")
 		{
-			
+			//$path = '/public/img/paynow-logo.png';
+			//$qrcode = QrCode::errorCorrection('H')->format('png')->merge($path,.3,false)->margin(0)->size(630)->color(124, 26, 120)->generate($shoppingcart->shoppingcart_payment->qrcode);
+			$qrcode = QrCode::errorCorrection('H')->format('png')->margin(0)->size(630)->color(124, 26, 120)->generate($shoppingcart->shoppingcart_payment->qrcode);
+			return $qrcode;
 		}
 		else
 		{

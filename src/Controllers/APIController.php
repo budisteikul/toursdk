@@ -44,7 +44,7 @@ class APIController extends Controller
     
     public function test()
     {
-        $data2 = DanaHelper::danaQueryOrder('VER-20220530290011','20220530111212800110166234800682602');
+        $data2 = DanaHelper::danaQueryOrder('VER-20220531860001');
         print_r($data2);
         exit();
     }

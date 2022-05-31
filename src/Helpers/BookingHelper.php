@@ -1358,20 +1358,30 @@ class BookingHelper {
 
 	public static function get_firstAvailability($activityId,$year,$month)
 	{
-		
+		$dateObj = Carbon::now()->timestamp * 1000;
+		$localizedDate = null;
+		$value = [];
+
 		$availability = self::get_calendar($activityId,$year,$month);
-		$count_availability = count($availability->firstAvailableDay->availabilities);
 		
-		$dateObj = $availability->firstAvailableDay->dateObj;
+		if($availability->firstAvailableDay!=null)
+		{
+			$count_availability = count($availability->firstAvailableDay->availabilities);
+			$dateObj = $availability->firstAvailableDay->dateObj;
+
+			
+
+			for($i=0;$i<$count_availability;$i++)
+			{
+				$value[] = $availability->firstAvailableDay->availabilities[$i]->activityAvailability;
+			}
+		}
+		
 		$month = date("n",$dateObj/1000);
 		$year = date("Y",$dateObj/1000);
 		$day = date("d",$dateObj/1000);
 		$localizedDate = GeneralHelper::dateFormat($year.'-'.$month.'-'.$day,11);
-
-		for($i=0;$i<$count_availability;$i++)
-		{
-			$value[] = $availability->firstAvailableDay->availabilities[$i]->activityAvailability;
-		}
+		
 		
 		$dataObj[] = [
 			'date' => $dateObj,

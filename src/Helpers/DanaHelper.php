@@ -64,7 +64,7 @@ class DanaHelper {
         
 
         $data1 = self::danaCreateOrder($data);
-
+        print_r($data1);
         $redirect_url = $data1['response']['body']['checkoutUrl'];
         $acquirementId = $data1['response']['body']['acquirementId'];
        
@@ -79,7 +79,7 @@ class DanaHelper {
         return $response;
     }
 
-    public static function danaQueryOrder($orderId,$acquirementId)
+    public static function danaQueryOrder($orderId)
     {
         $requestData = [
             'head' => [
@@ -89,11 +89,11 @@ class DanaHelper {
                 'clientSecret' => self::env_danaClientSecret(),
                 'reqTime'      => date('Y-m-d\TH:i:sP'),
                 'reqMsgId'     => Uuid::uuid4()->toString(),
+                'accessToken'  => '',
                 'reserve'      => '{}',
             ],
             'body' => [
                 'merchantId'      => self::env_danaMerchantId(),
-                'acquirementId'   => $acquirementId,
                 'merchantTransId' => $orderId,
                 'extendInfo'      => '',
             ]
@@ -136,7 +136,7 @@ class DanaHelper {
                 'merchantTransId' => $merchantTransId,
                 'acquirementId'   => $acquirementId,
                 'acquirementStatus'   => 'SUCCESS',
-                'orderAmount'   => $orderAmount,
+                'orderAmount'   => $orderAmount * 100,
                 'createdTime'   => date('Y-m-d\TH:i:sP'),
                 'finishedTime'   => date('Y-m-d\TH:i:sP', strtotime('now +1 hour')),
             ]

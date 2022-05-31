@@ -44,7 +44,7 @@ class APIController extends Controller
     
     public function test()
     {
-        $data2 = DanaHelper::danaQueryOrder('VER-20220531860001');
+        $data2 = DanaHelper::danaCreateSPI('VER-20220531980005','20220531111212800110166831600685349',28000);
         print_r($data2);
         exit();
     }
@@ -802,23 +802,13 @@ class APIController extends Controller
     public function confirmpaymentdana(Request $request)
     {
             $data = $request->all();
-            $order_id = null;
-            $transaction_status = null;
-
-            if(isset($data['txn_no'])) $order_id = $data['txn_no'];
-            if(isset($data['state'])) $transaction_status = $data['state'];
-
-            $shoppingcart_payment = ShoppingcartPayment::where('order_id',$order_id)->first();
-            if($shoppingcart_payment!==null) {
-                $confirmation_code = $shoppingcart_payment->shoppingcart->confirmation_code;
-                $shoppingcart = Shoppingcart::where('confirmation_code',$confirmation_code)->first();
-                if($shoppingcart!==null)
-                {
-                    if($transaction_status=="Escrow_Funds_Received")
-                    {
-                        BookingHelper::confirm_payment($shoppingcart,"CONFIRMED");
-                    }
-                }
+            try
+            {
+                Storage::disk('gcs')->put('log/'. date('YmdHis') .'.txt', json_encode($data, JSON_PRETTY_PRINT));
+            }
+            catch(exception $e)
+            {
+                
             }
             return response('OK', 200)->header('Content-Type', 'text/plain');
     }

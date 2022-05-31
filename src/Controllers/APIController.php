@@ -44,9 +44,7 @@ class APIController extends Controller
     
     public function test()
     {
-        $data2 = DanaHelper::danaCreateSPI('VER-20220531980005','20220531111212800110166831600685349',28000);
-        print_r($data2);
-        exit();
+        
     }
 
     public function __construct()
@@ -801,7 +799,7 @@ class APIController extends Controller
 
     public function confirmpaymentdana(Request $request)
     {
-            $data = $request->all();
+            $data = json_decode($request->getContent(), true);
             try
             {
                 Storage::disk('gcs')->put('log/'. date('YmdHis') .'.txt', json_encode($data, JSON_PRETTY_PRINT));

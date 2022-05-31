@@ -36,6 +36,9 @@
 	//Receipt
 	Route::get('/api/receipt/{sessionId}/{confirmationCode}', 'budisteikul\toursdk\Controllers\APIController@receipt');
 
+	//Redirect Callback
+	//Route::get('/api/redirect/dana/{sessionId}/{confirmationCode}', 'budisteikul\toursdk\Controllers\APIController@confirmpaymentdana');
+
 	//Callback Payment
 	Route::post('/api/payment/rapyd/confirm', 'budisteikul\toursdk\Controllers\APIController@confirmpaymentrapyd');
 	Route::post('/api/payment/stripe/confirm', 'budisteikul\toursdk\Controllers\APIController@confirmpaymentstripe');

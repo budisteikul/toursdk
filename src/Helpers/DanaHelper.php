@@ -61,14 +61,16 @@ class DanaHelper {
 
         $data->transaction->mins_expired = 60;
         $data->transaction->date_expired = Carbon::parse($data->transaction->date_now)->addMinutes($data->transaction->mins_expired);
-        
+        $data->transaction->dana_created_time = date('Y-m-d\TH:i:sP');
+        $data->transaction->dana_expired_time = date('Y-m-d\TH:i:sP', strtotime('+1 hour'));
 
         $data1 = self::danaCreateOrder($data);
-        print_r($data1);
+
         $redirect_url = $data1['response']['body']['checkoutUrl'];
         $acquirementId = $data1['response']['body']['acquirementId'];
        
-        
+        $data2 = self::danaCreateSPI($data,$acquirementId);
+
         $response->authorization_id = $acquirementId;
         $response->bank_name = 'dana';
         $response->link = null;
@@ -79,7 +81,64 @@ class DanaHelper {
         return $response;
     }
 
-    public static function danaQueryOrder($orderId)
+    public static function danaCreateSPI($data,$acquirementId)
+    {
+        //$merchantTransId = $shoppingcart->confirmation_code; 
+        //$acquirementId  = $shoppingcart->shoppingcart_payment->authorization_id; 
+        //$acquirementStatus = 'CLOSED || SUCCESS';
+        //$orderAmount = $shoppingcart->shoppingcart_payment->amount * 100;
+        //$createdTime = date('Y-m-d\TH:i:sP');
+        //$finishedTime = date('Y-m-d\TH:i:sP', strtotime('+1 hour'));
+
+        $merchantTransId = $data->transaction->id; 
+        $acquirementId  = $acquirementId; 
+        $acquirementStatus = 'CLOSED || SUCCESS';
+        $orderAmount = $data->transaction->amount * 100;
+        $createdTime = $data->transaction->dana_created_time;
+        $finishedTime = $data->transaction->dana_expired_time;
+
+        $requestData = [
+            'head' => [
+                'version'      => '2.0',
+                'function'     => 'dana.acquiring.order.finishNotify',
+                'clientId'     => self::env_danaClientId(),
+                'reqTime'      => date('Y-m-d\TH:i:sP'),
+                'reqMsgId'     => Uuid::uuid4()->toString(),
+            ],
+            'body' => [
+                'merchantId'      => self::env_danaMerchantId(),
+                'merchantTransId' => $merchantTransId,
+                'acquirementId'   => $acquirementId,
+                'acquirementStatus'   => $acquirementStatus,
+                'orderAmount'   => $orderAmount,
+                'createdTime'   => $createdTime,
+                'finishedTime'   => $finishedTime,
+            ]
+        ];
+
+        $data_json = self::composeRequest($requestData);
+        
+        $endpoint = self::danaApiEndpoint() ."/dana/acquiring/order/finishNotify.htm";
+
+        $headers = [
+              'Content-Type' => 'application/json',
+              'Cache-control' => 'no-cache',
+              'X-DANA-SDK' => 'PHP',
+              'X-DANA-SDK-VERSION' => '1.0'
+          ];
+
+        $client = new \GuzzleHttp\Client(['headers' => $headers,'http_errors' => false]);
+        $response = $client->request('POST',$endpoint,
+          ['json' => $data_json]
+        );
+
+        $data = $response->getBody()->getContents();
+        $data = json_decode($data,true);
+
+        return $data;
+    }
+
+    public static function danaQueryOrder($acquirementId)
     {
         $requestData = [
             'head' => [
@@ -89,13 +148,11 @@ class DanaHelper {
                 'clientSecret' => self::env_danaClientSecret(),
                 'reqTime'      => date('Y-m-d\TH:i:sP'),
                 'reqMsgId'     => Uuid::uuid4()->toString(),
-                'accessToken'  => '',
                 'reserve'      => '{}',
             ],
             'body' => [
-                'merchantId'      => self::env_danaMerchantId(),
-                'merchantTransId' => $orderId,
-                'extendInfo'      => '',
+                'merchantId'      => '216620050002011111869',
+                'acquirementId' => '20220531111212800110166332600683242',
             ]
         ];
 
@@ -121,116 +178,74 @@ class DanaHelper {
         return $data;
     }
 
-    public static function danaCreateSPI($merchantTransId,$acquirementId,$orderAmount)
-    {
-        $requestData = [
-            'head' => [
-                'version'      => '2.0',
-                'function'     => 'dana.acquiring.order.finishNotify',
-                'clientId'     => self::env_danaClientId(),
-                'reqTime'      => date('Y-m-d\TH:i:sP'),
-                'reqMsgId'     => Uuid::uuid4()->toString(),
-            ],
-            'body' => [
-                'merchantId'      => self::env_danaMerchantId(),
-                'merchantTransId' => $merchantTransId,
-                'acquirementId'   => $acquirementId,
-                'acquirementStatus'   => 'SUCCESS',
-                'orderAmount'   => $orderAmount * 100,
-                'createdTime'   => date('Y-m-d\TH:i:sP'),
-                'finishedTime'   => date('Y-m-d\TH:i:sP', strtotime('now +1 hour')),
-            ]
-        ];
-
-        $data_json = self::composeRequest($requestData);
-        
-        
-        $endpoint = self::danaApiEndpoint() ."/dana/acquiring/order/finishNotify.htm";
-
-        $headers = [
-              'Content-Type' => 'application/json',
-              'Cache-control' => 'no-cache',
-              'X-DANA-SDK' => 'PHP',
-              'X-DANA-SDK-VERSION' => '1.0'
-          ];
-
-        $client = new \GuzzleHttp\Client(['headers' => $headers,'http_errors' => false]);
-        $response = $client->request('POST',$endpoint,
-          ['json' => $data_json]
-        );
-
-        $data = $response->getBody()->getContents();
-        $data = json_decode($data,true);
-
-        return $data;
-    }
+    
 
     public static function danaCreateOrder($data)
     {
-        
 
-    $requestData = [
-        'head' => [
-          'version'      => '2.0',
-          'function'     => 'dana.acquiring.order.createOrder',
-          'clientId'     => self::env_danaClientId(),
-          'clientSecret' => self::env_danaClientSecret(),
-          'reqTime'      => date('Y-m-d\TH:i:sP'),
-          'reqMsgId'     => Uuid::uuid4()->toString(),
-          //'accessToken'  => $accessToken ? $accessToken : '',
-          'reserve'      => '{}',
-        ],
-        'body' => [
-            'envInfo'          => [
-                'terminalType'       => 'SYSTEM',
-                'osType'             => '',
-                'extendInfo'         => '',
-                'orderOsType'        => '',
-                'sdkVersion'         => '',
-                'websiteLanguage'    => '',
-                'tokenId'            => '',
-                'sessionId'          => '',
-                'appVersion'         => '',
-                'merchantAppVersion' => '',
-                'clientKey'          => '',
-                'orderTerminalType'  => 'SYSTEM',
-                'clientIp'           => '',
-                'sourcePlatform'     => 'IPG'
+        $requestData = [
+            'head' => [
+                'version'      => '2.0',
+                'function'     => 'dana.acquiring.order.createOrder',
+                'clientId'     => self::env_danaClientId(),
+                'clientSecret' => self::env_danaClientSecret(),
+                'reqTime'      => date('Y-m-d\TH:i:sP'),
+                'reqMsgId'     => Uuid::uuid4()->toString(),
+                //'accessToken'  => $accessToken ? $accessToken : '',
+                'reserve'      => '{}',
             ],
-            'order'            => [
-                'expiryTime'        => date('Y-m-d\TH:i:sP', strtotime('now +1 hour')),
-                'orderTitle'        => 'Payment for '. $data->transaction->confirmation_code,
-                'merchantTransId'   => $data->transaction->confirmation_code,
-                'orderMemo'         => '',
-                'createdTime'       => date('Y-m-d\TH:i:sP'),
-                'orderAmount'       => [
-                    'value'    => $data->transaction->amount * 100, //aaaaaaa
-                    'currency' => 'IDR'
+            'body' => [
+                'envInfo'          => [
+                    'terminalType'       => 'SYSTEM',
+                    'osType'             => '',
+                    'extendInfo'         => '',
+                    'orderOsType'        => '',
+                    'sdkVersion'         => '',
+                    'websiteLanguage'    => '',
+                    'tokenId'            => '',
+                    'sessionId'          => '',
+                    'appVersion'         => '',
+                    'merchantAppVersion' => '',
+                    'clientKey'          => '',
+                    'orderTerminalType'  => 'SYSTEM',
+                    'clientIp'           => '',
+                    'sourcePlatform'     => 'IPG'
                 ],
-            ],
-            'productCode'      => '51051000100000000001',
-            'mcc'              => '123',
-            'merchantId'       => self::env_danaMerchantId(),
-            'extendInfo'       => '',
-            'paymentPreference' => [
-                'disabledPayMethods' => 'OTC^CREDIT_CARD^VIRTUAL_ACCOUNT^DEBIT_CARD^DIRECT_DEBIT_CREDIT_CARD^DIRECT_DEBIT_DEBIT_CARD'
-            ],
-            'notificationUrls' => [
+                'order'            => [
+                    'expiryTime'        => $data->transaction->dana_expired_time,
+                    'orderTitle'        => 'Payment for order ID '. $data->transaction->confirmation_code,
+                    'merchantTransId'   => $data->transaction->confirmation_code,
+                    'orderMemo'         => '',
+                    'createdTime'       => $data->transaction->created_time,
+                    'orderAmount'       => [
+                        'value'    => $data->transaction->amount * 100,
+                        'currency' => 'IDR'
+                    ],
+                ],
+                'productCode'      => '51051000100000000001',
+                'mcc'              => '123',
+                'merchantId'       => self::env_danaMerchantId(),
+                'extendInfo'       => '',
+                'paymentPreference' => [
+                    'disabledPayMethods' => 'OTC || CREDIT_CARD || VIRTUAL_ACCOUNT || DEBIT_CARD || DIRECT_DEBIT_CREDIT_CARD || DIRECT_DEBIT_DEBIT_CARD'
+                ],
+                'notificationUrls' => [
                     [
                         'type' => 'PAY_RETURN',
-                        'url'  => self::env_appUrl() . $data->transaction->finish_url
+                        //'url'  => self::env_appUrl() . $data->transaction->finish_url
+                        'url'  => 'https://www.vertikaltrip.com/booking/checkout'
                     ],
                     [
                         'type' => 'NOTIFICATION',
-                        'url'  => self::env_appApiUrl() .'/payment/dana/confirm'
+                        //'url'  => self::env_appApiUrl() .'/payment/dana/confirm'
+                        'url'  => 'https://sandbox.vertikaltrip.com/payment/dana/confirm'
                     ],
+                ]
             ]
-        ]
 
-    ];
+        ];
 
         $data_json = self::composeRequest($requestData);
-        
         
         $endpoint = self::danaApiEndpoint() ."/dana/acquiring/order/createOrder.htm";
 

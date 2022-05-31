@@ -83,13 +83,6 @@ class DanaHelper {
 
     public static function danaCreateSPI($data,$acquirementId)
     {
-        //$merchantTransId = $shoppingcart->confirmation_code; 
-        //$acquirementId  = $shoppingcart->shoppingcart_payment->authorization_id; 
-        //$acquirementStatus = 'CLOSED || SUCCESS';
-        //$orderAmount = $shoppingcart->shoppingcart_payment->amount * 100;
-        //$createdTime = date('Y-m-d\TH:i:sP');
-        //$finishedTime = date('Y-m-d\TH:i:sP', strtotime('+1 hour'));
-
         $merchantTransId = $data->transaction->id; 
         $acquirementId  = $acquirementId; 
         $acquirementStatus = 'CLOSED || SUCCESS';
@@ -138,46 +131,6 @@ class DanaHelper {
         return $data;
     }
 
-    public static function danaQueryOrder($acquirementId)
-    {
-        $requestData = [
-            'head' => [
-                'version'      => '2.0',
-                'function'     => 'dana.acquiring.order.query',
-                'clientId'     => self::env_danaClientId(),
-                'clientSecret' => self::env_danaClientSecret(),
-                'reqTime'      => date('Y-m-d\TH:i:sP'),
-                'reqMsgId'     => Uuid::uuid4()->toString(),
-                'reserve'      => '{}',
-            ],
-            'body' => [
-                'merchantId'      => '216620050002011111869',
-                'acquirementId' => '20220531111212800110166332600683242',
-            ]
-        ];
-
-        $data_json = self::composeRequest($requestData);
-        
-        $endpoint = self::danaApiEndpoint() ."/dana/acquiring/order/query.htm";
-
-        $headers = [
-              'Content-Type' => 'application/json',
-              'Cache-control' => 'no-cache',
-              'X-DANA-SDK' => 'PHP',
-              'X-DANA-SDK-VERSION' => '1.0'
-          ];
-
-        $client = new \GuzzleHttp\Client(['headers' => $headers,'http_errors' => false]);
-        $response = $client->request('POST',$endpoint,
-          ['json' => $data_json]
-        );
-
-        $data = $response->getBody()->getContents();
-        $data = json_decode($data,true);
-
-        return $data;
-    }
-
     
 
     public static function danaCreateOrder($data)
@@ -191,7 +144,6 @@ class DanaHelper {
                 'clientSecret' => self::env_danaClientSecret(),
                 'reqTime'      => date('Y-m-d\TH:i:sP'),
                 'reqMsgId'     => Uuid::uuid4()->toString(),
-                //'accessToken'  => $accessToken ? $accessToken : '',
                 'reserve'      => '{}',
             ],
             'body' => [
@@ -216,7 +168,7 @@ class DanaHelper {
                     'orderTitle'        => 'Payment for order ID '. $data->transaction->confirmation_code,
                     'merchantTransId'   => $data->transaction->confirmation_code,
                     'orderMemo'         => '',
-                    'createdTime'       => $data->transaction->created_time,
+                    'createdTime'       => $data->transaction->dana_created_time,
                     'orderAmount'       => [
                         'value'    => $data->transaction->amount * 100,
                         'currency' => 'IDR'

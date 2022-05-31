@@ -71,6 +71,9 @@ class DanaHelper {
        
         $data2 = self::danaCreateSPI($data,$acquirementId);
 
+        print_r($data1);
+        print_r($data2);
+
         $response->authorization_id = $acquirementId;
         $response->bank_name = 'dana';
         $response->link = null;

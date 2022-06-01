@@ -746,7 +746,7 @@ class APIController extends Controller
                     }
                 break;
             }
-        return response('OK', 200)->header('Content-Type', 'text/plain');
+        return response('SUCCESS', 200)->header('Content-Type', 'text/plain');
     }
 
     public function confirmpaymentrapyd(Request $request)
@@ -770,7 +770,7 @@ class APIController extends Controller
                     }
                 }
             }
-            return response('OK', 200)->header('Content-Type', 'text/plain');
+            return response('SUCCESS', 200)->header('Content-Type', 'text/plain');
     }
 
     public function confirmpaymenttazapay(Request $request)
@@ -794,7 +794,7 @@ class APIController extends Controller
                     }
                 }
             }
-            return response('OK', 200)->header('Content-Type', 'text/plain');
+            return response('SUCCESS', 200)->header('Content-Type', 'text/plain');
     }
 
     public function confirmpaymentdana(Request $request)
@@ -865,7 +865,7 @@ class APIController extends Controller
             }
                 
         
-        return response('OK', 200)->header('Content-Type', 'text/plain');
+        return response('SUCCESS', 200)->header('Content-Type', 'text/plain');
     }
 
     public function confirmpaymentpaydia(Request $request)
@@ -896,7 +896,7 @@ class APIController extends Controller
         }
 
 
-        return response('OK', 200)->header('Content-Type', 'text/plain');
+        return response('SUCCESS', 200)->header('Content-Type', 'text/plain');
     }
 
     public function confirmpaymentduitku(Request $request)
@@ -931,7 +931,7 @@ class APIController extends Controller
             }
         }
 
-        return response('OK', 200)->header('Content-Type', 'text/plain');
+        return response('SUCCESS', 200)->header('Content-Type', 'text/plain');
     }
 
     public function confirmpaymentmidtrans(Request $request)
@@ -969,7 +969,7 @@ class APIController extends Controller
                 }
             }
                 
-            return response('OK', 200)->header('Content-Type', 'text/plain');
+            return response('SUCCESS', 200)->header('Content-Type', 'text/plain');
     }
 
     public function createpaymentpaypal(Request $request)

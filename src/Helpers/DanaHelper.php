@@ -41,6 +41,11 @@ class DanaHelper {
         return env("DANA_PRIVATE_KEY");
     }
 
+    public static function env_danaPublicKey()
+    {
+        return env("DANA_PUBLIC_KEY");
+    }
+
     public static function danaApiEndpoint()
     {
         if(self::env_danaEnv()=="production")
@@ -185,18 +190,17 @@ class DanaHelper {
                 'merchantId'       => self::env_danaMerchantId(),
                 'extendInfo'       => '',
                 'paymentPreference' => [
-                    'disabledPayMethods' => 'OTC^CREDIT_CARD^VIRTUAL_ACCOUNT^DEBIT_CARD^DIRECT_DEBIT_CREDIT_CARD^DIRECT_DEBIT_DEBIT_CARD'
+                    'disabledPayMethods' => 'OTC^DEBIT_CARD'
                 ],
                 'notificationUrls' => [
                     [
                         'type' => 'PAY_RETURN',
                         'url'  => self::env_appUrl() . $data->transaction->finish_url
-                        //'url'  => 'https://sandbox.vertikaltrip.com/cms/booking'
                     ],
                     [
                         'type' => 'NOTIFICATION',
-                        //'url'  => self::env_appApiUrl() .'/payment/dana/confirm'
-                        'url'  => 'https://webhook.site/c4b00549-10be-440d-b994-bbff550d34e5'
+                        'url'  => self::env_appApiUrl() .'/payment/dana/confirm'
+                        //'url'  => 'https://webhook.site/c4b00549-10be-440d-b994-bbff550d34e5'
                     ],
                 ]
             ]
@@ -254,6 +258,20 @@ class DanaHelper {
       return $requestPayload;
     }
 
-    
+    public static function checkSignature($data)
+    {
+        $payloadText = json_encode($data);
+        $firstOffset = strpos($payloadText, '{"head"');
+        $lastOffset  = strpos($payloadText, ',"signature"');
+        $body        = substr($payloadText, $firstOffset, $lastOffset - $firstOffset);
+
+        $payloadObject   = json_decode($payloadText, true);
+        $signatureBase64 = $payloadObject['signature'];
+
+        $binarySignature = base64_decode($signatureBase64);
+        $publicKey = self::env_danaPublicKey();
+
+        return (bool)openssl_verify($body, $binarySignature, $publicKey, OPENSSL_ALGO_SHA256);
+    }
 
 }

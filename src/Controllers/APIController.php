@@ -800,6 +800,16 @@ class APIController extends Controller
     public function confirmpaymentdana(Request $request)
     {
             $data = $request->all();
+
+            if(!DanaHelper::checkSignature($data))
+            {
+                return response('Invalid Signature', 400)->header('Content-Type', 'text/plain');
+            }
+            return response('SUCCESS', 200)->header('Content-Type', 'text/plain');
+            //$test = DanaHelper::checkSignature($data);
+            //print_r($test);    
+            exit();
+
             $order_id = null;
             $transaction_status = null;
 

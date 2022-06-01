@@ -444,7 +444,6 @@ class ContentHelper {
                 'subtotal' => GeneralHelper::numberFormat($shoppingcart->subtotal),
                 'discount' => GeneralHelper::numberFormat($shoppingcart->discount),
                 'total' => GeneralHelper::numberFormat($shoppingcart->total),
-                
                 'due_now' => GeneralHelper::numberFormat($shoppingcart->due_now),
                 'due_on_arrival' => GeneralHelper::numberFormat($shoppingcart->due_on_arrival),
                 'products' => $dataProducts,
@@ -455,14 +454,22 @@ class ContentHelper {
                 'payment_enable' => $payment_enable,
                 'localpayment_list' => $grouped_payment,
 
+                // Paynow Currency
+                'sgd_currency' => 'SGD',
+                'sgd_total' => BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'SGD'),
+                'sgd_rate' => BookingHelper::text_rate($shoppingcart,'SGD'),
+
+                // Paypal Currency
                 'paypal_currency' => self::env_paypalCurrency(),
                 'paypal_total' => BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,self::env_paypalCurrency(),"PAYPAL"),
                 'paypal_rate' => BookingHelper::text_rate($shoppingcart,self::env_paypalCurrency(),"PAYPAL"),
 
+                // Stripe Currency
                 'stripe_currency' => 'USD',
                 'stripe_total' => BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'USD'),
                 'stripe_rate' => BookingHelper::text_rate($shoppingcart,'USD'),
 
+                // Local Payment Currency
                 'idr_currency' => 'IDR',
                 'idr_total' => GeneralHelper::numberFormat(BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'IDR')),
             );

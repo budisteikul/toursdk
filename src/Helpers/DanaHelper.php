@@ -88,7 +88,7 @@ class DanaHelper {
     {
         $merchantTransId = $data->transaction->id; 
         $acquirementId  = $acquirementId; 
-        $acquirementStatus = 'CLOSED || SUCCESS';
+        $acquirementStatus = 'SUCCESS';
         $orderAmount = $data->transaction->amount * 100;
         $createdTime = $data->transaction->dana_created_time;
         $finishedTime = $data->transaction->dana_expired_time;
@@ -102,11 +102,14 @@ class DanaHelper {
                 'reqMsgId'     => Uuid::uuid4()->toString(),
             ],
             'body' => [
-                'merchantId'      => self::env_danaMerchantId(),
+                //'merchantId'      => self::env_danaMerchantId(),
                 'merchantTransId' => $merchantTransId,
                 'acquirementId'   => $acquirementId,
                 'acquirementStatus'   => $acquirementStatus,
-                'orderAmount'   => $orderAmount,
+                'orderAmount'   => [
+                                'currency' => 'IDR',
+                                'value' => $orderAmount
+                ],
                 'createdTime'   => $createdTime,
                 'finishedTime'   => $finishedTime,
             ]
@@ -182,18 +185,18 @@ class DanaHelper {
                 'merchantId'       => self::env_danaMerchantId(),
                 'extendInfo'       => '',
                 'paymentPreference' => [
-                    'disabledPayMethods' => 'OTC || CREDIT_CARD || VIRTUAL_ACCOUNT || DEBIT_CARD || DIRECT_DEBIT_CREDIT_CARD || DIRECT_DEBIT_DEBIT_CARD'
+                    'disabledPayMethods' => 'OTC^CREDIT_CARD^VIRTUAL_ACCOUNT^DEBIT_CARD^DIRECT_DEBIT_CREDIT_CARD^DIRECT_DEBIT_DEBIT_CARD'
                 ],
                 'notificationUrls' => [
                     [
                         'type' => 'PAY_RETURN',
-                        //'url'  => self::env_appUrl() . $data->transaction->finish_url
-                        'url'  => 'https://sandbox.vertikaltrip.com/cms/booking'
+                        'url'  => self::env_appUrl() . $data->transaction->finish_url
+                        //'url'  => 'https://sandbox.vertikaltrip.com/cms/booking'
                     ],
                     [
                         'type' => 'NOTIFICATION',
-                        //'url'  => self::env_appApiUrl() .'/payment/dana/confirm'
-                        'url'  => 'https://webhook.site/#!/cb949324-c2af-4c11-8341-dcfae6f52221'
+                        'url'  => self::env_appApiUrl() .'/payment/dana/confirm'
+                        //'url'  => 'https://webhook.site/c4b00549-10be-440d-b994-bbff550d34e5'
                     ],
                 ]
             ]

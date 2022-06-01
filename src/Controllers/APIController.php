@@ -799,14 +799,24 @@ class APIController extends Controller
 
     public function confirmpaymentdana(Request $request)
     {
-            $data = json_decode($request->getContent(), true);
-            try
-            {
-                Storage::disk('gcs')->put('log/'. date('YmdHis') .'.txt', json_encode($data, JSON_PRETTY_PRINT));
-            }
-            catch(exception $e)
-            {
-                
+            $data = $request->all();
+            $order_id = null;
+            $transaction_status = null;
+
+            if(isset($data['request']['body']['merchantTransId'])) $order_id = $data['request']['body']['merchantTransId'];
+            if(isset($data['request']['body']['acquirementStatus'])) $transaction_status = $data['request']['body']['acquirementStatus'];
+
+            $shoppingcart_payment = ShoppingcartPayment::where('order_id',$order_id)->first();
+            if($shoppingcart_payment!==null) {
+                $confirmation_code = $shoppingcart_payment->shoppingcart->confirmation_code;
+                $shoppingcart = Shoppingcart::where('confirmation_code',$confirmation_code)->first();
+                if($shoppingcart!==null)
+                {
+                    if($transaction_status=="SUCCESS")
+                    {
+                        BookingHelper::confirm_payment($shoppingcart,"CONFIRMED");
+                    }
+                }
             }
             return response('OK', 200)->header('Content-Type', 'text/plain');
     }
@@ -1079,6 +1089,12 @@ class APIController extends Controller
                         'payment' => 'ovo',
                         'id' => 3
                     ]);
+                break;
+
+                case 'dana':
+                    BookingHelper::set_bookingStatus($sessionId,'PENDING');
+                    BookingHelper::set_confirmationCode($sessionId);
+                    BookingHelper::create_payment($sessionId,"dana","");
                 break;
 
                 case 'qris':

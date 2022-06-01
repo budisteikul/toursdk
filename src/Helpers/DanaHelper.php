@@ -188,12 +188,12 @@ class DanaHelper {
                     [
                         'type' => 'PAY_RETURN',
                         //'url'  => self::env_appUrl() . $data->transaction->finish_url
-                        'url'  => 'https://www.vertikaltrip.com/booking/checkout'
+                        'url'  => 'https://sandbox.vertikaltrip.com/cms/booking'
                     ],
                     [
                         'type' => 'NOTIFICATION',
                         //'url'  => self::env_appApiUrl() .'/payment/dana/confirm'
-                        'url'  => 'https://sandbox.vertikaltrip.com/payment/dana/confirm'
+                        'url'  => 'https://webhook.site/#!/cb949324-c2af-4c11-8341-dcfae6f52221'
                     ],
                 ]
             ]

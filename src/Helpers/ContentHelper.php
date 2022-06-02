@@ -456,9 +456,9 @@ class ContentHelper {
                 'localpayment_list' => $grouped_payment,
 
                 // Paynow Currency
-                'sgd_currency' => 'SGD',
-                'sgd_total' => BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'SGD'),
-                'sgd_rate' => BookingHelper::text_rate($shoppingcart,'SGD'),
+                'paynow_currency' => 'SGD',
+                'paynow_total' => BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'SGD'),
+                'paynow_rate' => BookingHelper::text_rate($shoppingcart,'SGD'),
 
                 // Paypal Currency
                 'paypal_currency' => self::env_paypalCurrency(),

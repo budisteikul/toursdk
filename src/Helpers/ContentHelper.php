@@ -370,7 +370,7 @@ class ContentHelper {
         $promo_code = $shoppingcart->promo_code;
         if($promo_code=="") $promo_code = null;
         
-        $payment_enable = 'localpayment,paypal,stripe';
+        $payment_enable = 'localpayment,paypal,stripe,paynow';
         
         $bank_transfer_list[] = [
             'value' => 'doku-mandiri', 'label' => 'MANDIRI', 'image' => '/img/bank/mandiri.png',

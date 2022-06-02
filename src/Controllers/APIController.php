@@ -1109,6 +1109,12 @@ class APIController extends Controller
                     BookingHelper::create_payment($sessionId,"doku","qris");
                 break;
 
+                case 'paynow':
+                    BookingHelper::set_bookingStatus($sessionId,'PENDING');
+                    BookingHelper::set_confirmationCode($sessionId);
+                    BookingHelper::create_payment($sessionId,"tazapay","paynow");
+                break;
+
                 default:
                     $payment_arr = explode("-",$payment);
 

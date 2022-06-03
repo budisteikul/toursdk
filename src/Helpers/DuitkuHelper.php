@@ -134,10 +134,10 @@ class DuitkuHelper {
             //$data1 = self::createTransaction($data,$payment);
 
             $data1 = self::createSnap($data);
-            $data2 = self::createCharge($data1->reference,$payment);
+            //$data2 = self::createCharge($data1->reference,$payment);
             //$data2 = self::createCharge($data1->reference,$payment);
             print_r($data1);
-            print_r($data2);
+            //print_r($data2);
             exit();
 
             $response->payment_type = 'ewallet';
@@ -234,7 +234,8 @@ class DuitkuHelper {
         $email = $data->contact->email; // email pelanggan anda
         $customerVaName = $data->contact->name; // tampilan nama pada tampilan konfirmasi bank
         $callbackUrl = self::env_appApiUrl().'/payment/duitku/confirm'; // url untuk callback
-        $returnUrl = self::env_appUrl() . $data->transaction->finish_url; // url untuk redirect
+        //$returnUrl = self::env_appUrl() . $data->transaction->finish_url; // url untuk redirect
+        $returnUrl = 'https://sandbox.vertikaltrip.com' . $data->transaction->finish_url;
         $expiryPeriod = $data->transaction->mins_expired; // atur waktu kadaluarsa dalam hitungan menit
         $signature = md5($merchantCode . $merchantOrderId . $paymentAmount . $apiKey);
 

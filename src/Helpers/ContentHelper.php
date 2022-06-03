@@ -470,6 +470,10 @@ class ContentHelper {
                 'stripe_total' => BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'USD'),
                 'stripe_rate' => BookingHelper::text_rate($shoppingcart,'USD'),
 
+                'localpayment_currency' => 'IDR',
+                'localpayment_total' => GeneralHelper::numberFormat(BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'IDR')),
+                'localpayment_rate' => BookingHelper::text_rate($shoppingcart,'IDR'),
+
                 // Local Payment Currency
                 'idr_currency' => 'IDR',
                 'idr_total' => GeneralHelper::numberFormat(BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'IDR')),

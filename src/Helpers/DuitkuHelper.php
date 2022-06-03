@@ -75,6 +75,16 @@ class DuitkuHelper {
                 $data->bank_code = "";
                 $data->bank_payment_type = "OV";
             break;
+            case "linkaja":
+                $data->bank_name = "linkaja";
+                $data->bank_code = "";
+                $data->bank_payment_type = "LA";
+            break;
+            case "linkaja_qris":
+                $data->bank_name = "linkaja";
+                $data->bank_code = "";
+                $data->bank_payment_type = "LQ";
+            break;
             case "dana":
                 $data->bank_name = "dana";
                 $data->bank_code = "";
@@ -113,6 +123,33 @@ class DuitkuHelper {
             }
 
             return $status;
+        }
+        else if($payment->bank_payment_type=="LA")
+        {
+            //$data1 = self::createTransaction($data,$payment);
+
+            $data1 = self::createSnap($data);
+            //$data2 = self::createCharge($data1->reference,$payment);
+            header("Location: ". $data1->paymentUrl);
+            exit();
+            print_r($data1);
+            //print_r($data2);
+            exit();
+
+            $response->payment_type = 'ewallet';
+            $response->redirect = $data1->paymentUrl;
+        }
+        else if($payment->bank_payment_type=="LQ")
+        {
+            $data1 = self::createTransaction($data,$payment);
+
+            $response->bank_name = $payment->bank_name;
+            $response->qrcode = $data1->qrString;
+            $response->link = null;
+            
+            $response->payment_type = 'qris';
+            $response->redirect = $data->transaction->finish_url;
+            
         }
         else if($payment->bank_payment_type=="DA")
         {
@@ -257,7 +294,7 @@ class DuitkuHelper {
             'merchantCode' => $merchantCode,
             'apiKey' => $apiKey,
             'paymentAmount' => (int)$paymentAmount,
-            //'paymentMethod' => "DA",
+            'paymentMethod' => "LA",
             'merchantOrderId' => $merchantOrderId,
             'productDetails' => $productDetails,
             'email' => $email,

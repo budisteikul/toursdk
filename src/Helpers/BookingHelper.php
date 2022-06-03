@@ -2120,7 +2120,7 @@ class BookingHelper {
 		$value = $amount .'<br />Rate : 1 '. $currency .' = '. self::convert_currency(1,$currency,$shoppingcart->currency,$markup) .' '. $shoppingcart->currency;
 		*/
 		$value = '1 '. $currency .' = '. self::convert_currency(1,$currency,$shoppingcart->currency,$markup) .' '. $shoppingcart->currency;
-		$amount = $value .'<br /><span class="badge badge-success" style="font-size:11px;">Total : '. self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,$currency,$markup) .' '. $currency .'</span>';
+		$amount = $value .'<div class="mt-2"><span class="badge badge-success" style="font-size:12px;">Total : '. self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,$currency,$markup) .' '. $currency .'</span></div>';
 		
 		return $amount;
 	}

@@ -14,6 +14,11 @@ class DuitkuHelper {
         return env("APP_API_URL");
   	}
 
+    public static function env_appName()
+    {
+        return env("APP_NAME");
+    }
+
 	public static function env_duitkuEnv()
   	{
         return env("DUITKU_ENV");
@@ -129,11 +134,10 @@ class DuitkuHelper {
             //$data1 = self::createTransaction($data,$payment);
 
             $data1 = self::createSnap($data);
+            $data2 = self::createCharge($data1->reference,$payment);
             //$data2 = self::createCharge($data1->reference,$payment);
-            header("Location: ". $data1->paymentUrl);
-            exit();
             print_r($data1);
-            //print_r($data2);
+            print_r($data2);
             exit();
 
             $response->payment_type = 'ewallet';
@@ -156,7 +160,7 @@ class DuitkuHelper {
             //$data1 = self::createTransaction($data,$payment);
 
             $data1 = self::createSnap($data);
-            //$data2 = self::createCharge($data1->reference,$payment);
+            $data2 = self::createCharge($data1->reference,$payment);
             print_r($data1);
             print_r($data2);
             exit();
@@ -226,13 +230,22 @@ class DuitkuHelper {
         $paymentAmount = $data->transaction->amount;
         $paymentMethod = $payment->bank_payment_type; // VC = Credit Card
         $merchantOrderId = $data->transaction->id; // dari merchant, unik
-        $productDetails = 'Payment for '. $data->transaction->confirmation_code;
+        $productDetails = 'Payment for '. self::env_appName();
         $email = $data->contact->email; // email pelanggan anda
         $customerVaName = $data->contact->name; // tampilan nama pada tampilan konfirmasi bank
         $callbackUrl = self::env_appApiUrl().'/payment/duitku/confirm'; // url untuk callback
         $returnUrl = self::env_appUrl() . $data->transaction->finish_url; // url untuk redirect
         $expiryPeriod = $data->transaction->mins_expired; // atur waktu kadaluarsa dalam hitungan menit
         $signature = md5($merchantCode . $merchantOrderId . $paymentAmount . $apiKey);
+
+        $item1 = array(
+            'name' => $data->transaction->confirmation_code,
+            'price' => (int)$paymentAmount,
+            'quantity' => 1);
+
+        $itemDetails = array(
+            $item1
+        );
 
         $data = [
             'merchantCode' => $merchantCode,
@@ -247,6 +260,7 @@ class DuitkuHelper {
             'returnUrl' => $returnUrl,
             'expiryPeriod' => $expiryPeriod,
             'signature' => $signature,
+            'itemDetails' => $itemDetails,
         ];
 
         $headers = [
@@ -276,9 +290,9 @@ class DuitkuHelper {
     	$merchantCode = self::env_duitkuMerchantCode(); // dari duitku
     	$apiKey = self::env_duitkuApiKey(); // dari duitku
     	$paymentAmount = $data->transaction->amount;
-    	$paymentMethod = "DA"; // VC = Credit Card
+    	//$paymentMethod = "DA"; // VC = Credit Card
     	$merchantOrderId = $data->transaction->id; // dari merchant, unik
-    	$productDetails = 'Payment for '. $data->transaction->confirmation_code;
+    	$productDetails = 'Payment for '. self::env_appName();
     	$email = $data->contact->email; // email pelanggan anda
     	$customerVaName = $data->contact->name; // tampilan nama pada tampilan konfirmasi bank
     	$callbackUrl = self::env_appApiUrl().'/payment/duitku/confirm'; // url untuk callback
@@ -289,12 +303,20 @@ class DuitkuHelper {
         $phoneNumber = $data->contact->phone;
         $signature = hash("sha256", $merchantCode . $timestamp . $apiKey);
 
-        
+        $item1 = array(
+            'name' => $data->transaction->confirmation_code,
+            'price' => (int)$paymentAmount,
+            'quantity' => 1);
+
+        $itemDetails = array(
+            $item1
+        );
+
     	$data = [
             'merchantCode' => $merchantCode,
             'apiKey' => $apiKey,
             'paymentAmount' => (int)$paymentAmount,
-            'paymentMethod' => "LA",
+            //'paymentMethod' => "LA",
             'merchantOrderId' => $merchantOrderId,
             'productDetails' => $productDetails,
             'email' => $email,
@@ -303,6 +325,7 @@ class DuitkuHelper {
             'returnUrl' => $returnUrl,
             'expiryPeriod' => $expiryPeriod,
             'email' => $data->contact->email,
+            'itemDetails' => $itemDetails,
             //'phoneNumber' => $data->contact->phone,
             //'signature' => $signature,
         ];

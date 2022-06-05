@@ -64,11 +64,6 @@ class RapydHelper {
                 $data->bank_code = "";
                 $data->bank_payment_type = "sg_paynow_bank";
             break;
-            case "poli":
-                $data->bank_name = "poli";
-                $data->bank_code = "";
-                $data->bank_payment_type = "au_poli_bank";
-            break;
             case "cimb":
                 $data->bank_name = "cimb niaga";
                 $data->bank_code = "022";
@@ -166,23 +161,6 @@ class RapydHelper {
             $response->payment_type = 'bank_transfer';
             $response->va_number = $data1['data']['textual_codes']['DBS Account No'];
             $response->redirect = $data->transaction->finish_url;
-        }
-        else if($data->transaction->bank=="poli")
-        {
-            $body = [
-                'amount' => $data->transaction->amount,
-                'currency' => $data->transaction->currency,
-                'complete_payment_url' => self::env_appUrl() . $data->transaction->finish_url,
-                'error_payment_url' => self::env_appUrl() . $data->transaction->finish_url,
-                'payment_method' => [
-                    'type' => $payment->bank_payment_type,
-                    'fields' => []
-                ]
-            ];
-
-            $data1 = self::make_request('post','/v1/payments',$body);
-            $response->payment_type = 'bank_redirect';
-            $response->redirect = $data1['data']['redirect_url'];
         }
         else
         {

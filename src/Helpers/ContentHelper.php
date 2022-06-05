@@ -460,6 +460,11 @@ class ContentHelper {
                 'paynow_total' => BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'SGD'),
                 'paynow_rate' => BookingHelper::text_rate($shoppingcart,'SGD'),
 
+                // POLI Currency
+                'poli_currency' => 'AUD',
+                'poli_total' => BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'AUD'),
+                'poli_rate' => BookingHelper::text_rate($shoppingcart,'AUD'),
+
                 // Paypal Currency
                 'paypal_currency' => self::env_paypalCurrency(),
                 'paypal_total' => BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,self::env_paypalCurrency(),"PAYPAL"),

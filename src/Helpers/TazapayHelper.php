@@ -61,9 +61,14 @@ class TazapayHelper {
         switch($bank)
         {
             case "paynow":
-                $data->bank_name = "dbs";
-                $data->bank_code = "7171";
+                $data->bank_name = "paynow";
+                $data->bank_code = "";
                 $data->bank_payment_type = "sg_paynow_bank";
+            break;
+            case "poli":
+                $data->bank_name = "poli";
+                $data->bank_code = "";
+                $data->bank_payment_type = "au_poli_bank";
             break;
             default:
                 return response()->json([

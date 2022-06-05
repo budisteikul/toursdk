@@ -1870,6 +1870,15 @@ class BookingHelper {
 					$rate_to = 'SGD';
 				}
 
+				if($data->transaction->bank=="poli")
+				{
+					$amount = number_format(self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'AUD'), 0, '.','');
+					$currency = 'AUD';
+					$rate = self::convert_currency(1,'AUD',$shoppingcart->currency);
+					$rate_from = $shoppingcart->currency;
+					$rate_to = 'AUD';
+				}
+
 				$data->transaction->amount = $amount;
 				$data->transaction->currency = $currency;
 

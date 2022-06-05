@@ -2375,7 +2375,7 @@ class BookingHelper {
 						return '';
 				}
             }
-            if($shoppingcart->shoppingcart_payment->payment_type=="qris" || $shoppingcart->shoppingcart_payment->payment_type=="paynow")
+            if($shoppingcart->shoppingcart_payment->payment_type=="qrcode")
             {
 
             	switch($shoppingcart->shoppingcart_payment->payment_status)
@@ -2383,7 +2383,7 @@ class BookingHelper {
 					case 2:
 						return '<div class="card mb-4">
 								<span class="badge badge-success invoice-color-success" style="font-size:20px;">
-								<i class="fas fa-qrcode"></i> PAID VIA QRIS </span>
+								<i class="fas fa-qrcode"></i> PAID VIA QRCODE </span>
 								</div>';
 						break;
 					case 3:
@@ -2393,7 +2393,7 @@ class BookingHelper {
 								</div>';
 						break;
 					case 4:
-						if($shoppingcart->shoppingcart_payment->payment_type=="qris")
+						if($shoppingcart->shoppingcart_payment->bank_name=="paynow")
 						{
 							return '
 								
@@ -2401,15 +2401,18 @@ class BookingHelper {
 								<span class="badge badge-info invoice-color-info" style="font-size:20px;">
 								<i class="fas fa-qrcode"></i> WAITING FOR PAYMENT </span>
 								</div>
-								<div class="card mb-1 img-fluid invoice-hilang"  style="min-height:360px; max-width:505px;">
+								<div class="card mb-1 img-fluid invoice-hilang"  style="min-height:390px; max-width:505px;">
 								
 								<div class="card-img-overlay">
 									<div class="row h-100">
    										<div class="col-sm-12 text-center">
-    										<img id="qris-img" class="img-fluid border border-white mb-2 mt-2" alt="QRIS LOGO" style="max-width:250px;" src="'. url('/img/qris-logo.png') .'">
-    										<br />
-    										<img id="qris-img" class="img-fluid border border-white" alt="QRIS" style="max-width:250px;" src="data:image/png;base64, '. base64_encode(self::generate_qris($shoppingcart)) .' ">
+   											<img id="paynow-img" class="img-fluid border border-white mb-2 mt-2" alt="PAYNOW LOGO" style="max-width:250px;" src="'. url('/img/paynow-logo.png') .'">
+   											<br />
+    										<img id="paynow-img" class="img-fluid border border-white" alt="PAYNOW" style="max-width:250px;" src="data:image/png;base64, '. base64_encode(self::generate_qrcode($shoppingcart)) .' ">
+    										<br /><br />
+    										<span><strong>Amount :</strong> '. $shoppingcart->shoppingcart_payment->currency .' '. $shoppingcart->shoppingcart_payment->amount .'</span>
    										</div>
+
 									</div>
   								</div>
 								
@@ -2427,18 +2430,15 @@ class BookingHelper {
 								<span class="badge badge-info invoice-color-info" style="font-size:20px;">
 								<i class="fas fa-qrcode"></i> WAITING FOR PAYMENT </span>
 								</div>
-								<div class="card mb-1 img-fluid invoice-hilang"  style="min-height:390px; max-width:505px;">
+								<div class="card mb-1 img-fluid invoice-hilang"  style="min-height:360px; max-width:505px;">
 								
 								<div class="card-img-overlay">
 									<div class="row h-100">
    										<div class="col-sm-12 text-center">
-   											<img id="paynow-img" class="img-fluid border border-white mb-2 mt-2" alt="PAYNOW LOGO" style="max-width:250px;" src="'. url('/img/paynow-logo.png') .'">
-   											<br />
-    										<img id="paynow-img" class="img-fluid border border-white" alt="PAYNOW" style="max-width:250px;" src="data:image/png;base64, '. base64_encode(self::generate_qris($shoppingcart)) .' ">
-    										<br /><br />
-    										<span><strong>Amount :</strong> '. $shoppingcart->shoppingcart_payment->currency .' '. $shoppingcart->shoppingcart_payment->amount .'</span>
+    										<img id="qris-img" class="img-fluid border border-white mb-2 mt-2" alt="QRIS LOGO" style="max-width:250px;" src="'. url('/img/qris-logo.png') .'">
+    										<br />
+    										<img id="qris-img" class="img-fluid border border-white" alt="QRIS" style="max-width:250px;" src="data:image/png;base64, '. base64_encode(self::generate_qrcode($shoppingcart)) .' ">
    										</div>
-
 									</div>
   								</div>
 								
@@ -2447,6 +2447,7 @@ class BookingHelper {
 								<a href="'. self::env_appApiUrl() .'/qrcode/'.$shoppingcart->session_id.'/'. $shoppingcart->confirmation_code .'" type="button" class="invoice-hilang btn btn-success invoice-hilang ">or Download QRCODE <i class="fas fa-download"></i> </a>
 								</div>
 								';
+							
 						}
 						//$data_qris = self::get_qris_content($shoppingcart);
 						
@@ -2607,9 +2608,9 @@ class BookingHelper {
 		return $access;
 	}
 
-	public static function generate_qris($shoppingcart)
+	public static function generate_qrcode($shoppingcart)
 	{
-		if($shoppingcart->shoppingcart_payment->payment_type=="paynow")
+		if($shoppingcart->shoppingcart_payment->bank_name=="paynow")
 		{
 			//$path = '/public/img/paynow-logo.png';
 			//$qrcode = QrCode::errorCorrection('H')->format('png')->merge($path,.3,false)->margin(0)->size(630)->color(124, 26, 120)->generate($shoppingcart->shoppingcart_payment->qrcode);

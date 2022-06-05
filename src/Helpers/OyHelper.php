@@ -233,7 +233,7 @@ class OyHelper {
           $data1 = self::createSnap($data);
           $data2 = self::createCharge($data,$data1->authorization_id,$payment);
 
-          $response->payment_type = 'qris';
+          $response->payment_type = 'qrcode';
           $response->bank_name = $payment->bank_name;
           $response->qrcode = $data2->data->qris_content;
           $response->authorization_id = $data1->authorization_id;

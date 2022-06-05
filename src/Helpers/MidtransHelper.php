@@ -161,7 +161,7 @@ class MidtransHelper {
           $response->expiration_date = $data->transaction->date_expired;
           $response->order_id = $data->transaction->id;
 
-          $response->payment_type = 'qris';
+          $response->payment_type = 'qrcode';
           $response->redirect = $data->transaction->finish_url;
         }
         else if($payment->bank_payment_type=="shopeepay")

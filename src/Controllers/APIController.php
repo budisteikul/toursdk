@@ -76,7 +76,7 @@ class APIController extends Controller
     public function downloadQrcode($sessionId,$id)
     {
         $shoppingcart = Shoppingcart::where('confirmation_code',$id)->where('session_id',$sessionId)->firstOrFail();
-        $qrcode = BookingHelper::generate_qris($shoppingcart);
+        $qrcode = BookingHelper::generate_qrcode($shoppingcart);
         $path = Storage::disk('local')->put($shoppingcart->confirmation_code .'.png', $qrcode);
         return response()->download(storage_path('app').'/'.$shoppingcart->confirmation_code .'.png')->deleteFileAfterSend(true);
     }
@@ -1142,6 +1142,12 @@ class APIController extends Controller
                 $redirect_type = 2;
                 $text = '<strong>Click to pay with <img class="ml-2 mr-2" src="/img/ewallet/'.$shoppingcart->shoppingcart_payment->bank_name.'-light.png" height="30" /></strong>';
             }
+
+            if($shoppingcart->shoppingcart_payment->payment_type=="bank_redirect")
+            {
+                $redirect_type = 3;
+            }
+
 
             return response()->json([
                 "message" => "success",

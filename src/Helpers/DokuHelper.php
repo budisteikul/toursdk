@@ -90,7 +90,7 @@ class DokuHelper {
             case "qris":
                 $data->bank_name = "doku";
                 $data->bank_code = "";
-                $data->bank_payment_type = "qris_doku";
+                $data->bank_payment_type = "qrcode";
             break;
             case "ovo":
                 $data->bank_name = "ovo";
@@ -112,7 +112,7 @@ class DokuHelper {
 
         $response = new \stdClass();
 
-        if($payment->bank_payment_type=="qris_doku")
+        if($payment->bank_payment_type=="qrcode")
         {
             $data->transaction->mins_expired = 60;
             $data->transaction->date_expired = Carbon::parse($data->transaction->date_now)->addMinutes($data->transaction->mins_expired);
@@ -120,7 +120,7 @@ class DokuHelper {
             $data1 = self::createSnap($data);
             $data2 = self::createCharge($data1->response->payment->token_id,$data,$payment);
 
-            $response->payment_type = 'qris';
+            $response->payment_type = 'qrcode';
             $response->qrcode = $data2->qr_code;
         }
         else if($payment->bank_payment_type=="ovo")
@@ -166,7 +166,7 @@ class DokuHelper {
 
     public static function createCharge($token,$data,$payment)
     {
-        if($payment->bank_payment_type=="qris_doku")
+        if($payment->bank_payment_type=="qrcode")
         {
             $data = [
                 'token_id' => $token

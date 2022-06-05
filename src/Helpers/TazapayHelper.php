@@ -63,11 +63,15 @@ class TazapayHelper {
             case "paynow":
                 $data->bank_name = "paynow";
                 $data->bank_code = "";
+                $data->bank_currency = "SGD";
+                $data->bank_country = "SG";
                 $data->bank_payment_type = "sg_paynow_bank";
             break;
             case "poli":
                 $data->bank_name = "poli";
                 $data->bank_code = "";
+                $data->bank_currency = "AUD";
+                $data->bank_country = "AU";
                 $data->bank_payment_type = "au_poli_bank";
             break;
             default:
@@ -89,7 +93,7 @@ class TazapayHelper {
 
         $body = [
             'email' => $data->contact->email,
-            'country' => 'SG',
+            'country' => $payment->bank_country,
             'ind_bus_type' => 'Individual',
             'first_name' => $data->contact->first_name,
             'last_name' => $data->contact->last_name,
@@ -105,7 +109,7 @@ class TazapayHelper {
             'buyer_id' => $tazapay['data']['account_id'],
             'seller_id' => self::env_tazapaySellerID(),
             'txn_description' => 'Payment for '. $data->transaction->confirmation_code,
-            'invoice_currency' => 'SGD',
+            'invoice_currency' => $payment->bank_currency,
             'invoice_amount' => (int)$data->transaction->amount,
         ];
 
@@ -132,17 +136,19 @@ class TazapayHelper {
             
         $body = [
                 'escrow_id' => $tazapay['data']['escrow_id'],
-                'payment_method' => 'sg_paynow_bank',
+                'payment_method' => $payment->bank_payment_type,
                 'redirect' => $redirect_url,
                 'provider' => 'rapyd',
-                'currency' => 'SGD',
+                'currency' => $payment->bank_currency,
                 'document' => null,
                 'is_first_payment' => null,
         ];
 
         $tazapay = self::make_request('POST','/v1/escrow/payment',$body,$tazapay['data']['session_token']);
-       
-
+        
+        
+        if($data->transaction->bank=="paynow")
+        {
             $qrcode = $tazapay['data']['qr_code'];
             list($type, $qrcode) = explode(';', $qrcode);
             list(, $qrcode)      = explode(',', $qrcode);
@@ -154,17 +160,26 @@ class TazapayHelper {
             $url = $disk->url('qrcode/'. $path .'/'.$data->transaction->confirmation_code.'.png');
             $qrcode = new QrReader($url);
 
-            $response->payment_type = 'paynow';
+            $response->payment_type = 'qrcode';
             $response->qrcode = $qrcode->text();
 
-            //$response->authorization_id = $data1['data']['id'];
-            $response->bank_name = $payment->bank_name;
-            $response->bank_code = $payment->bank_code;
             $response->redirect = $data->transaction->finish_url;
-            $response->expiration_date = $data->transaction->date_expired;
-            $response->order_id = $txn_no;
+        }
+
+        if($data->transaction->bank=="poli")
+        {
+            $response->payment_type = 'bank_redirect';
+            $response->redirect = $tazapay['data']['bank_redirect'];
+        }
+
+        //$response->authorization_id = $data1['data']['id'];
+        $response->bank_name = $payment->bank_name;
+        $response->bank_code = $payment->bank_code;
+            
+        $response->expiration_date = $data->transaction->date_expired;
+        $response->order_id = $txn_no;
         
-            return $response;
+        return $response;
     }
 
     public static function make_request($method, $path, $body = null, $session_token = null) 

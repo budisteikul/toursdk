@@ -188,7 +188,7 @@ class RapydHelper {
         {
             $body = [
                 'amount' => $data->transaction->amount,
-                'currency' => 'IDR',
+                'currency' => $data->transaction->currency,
                 'payment_method' => [
                     'type' => $payment->bank_payment_type,
                     'fields' => []

@@ -1152,7 +1152,7 @@ class APIController extends Controller
                     BookingHelper::create_payment($sessionId,"doku","qris");
                 break;
                 */
-                
+
                 case 'dana':
                     BookingHelper::set_bookingStatus($sessionId,'PENDING');
                     BookingHelper::set_confirmationCode($sessionId);
@@ -1168,7 +1168,7 @@ class APIController extends Controller
                 case 'poli':
                     BookingHelper::set_bookingStatus($sessionId,'PENDING');
                     BookingHelper::set_confirmationCode($sessionId);
-                    BookingHelper::create_payment($sessionId,"tazapay","poli");
+                    BookingHelper::create_payment($sessionId,"rapyd","poli");
                 break;
 
                 default:

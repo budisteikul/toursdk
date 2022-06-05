@@ -5,6 +5,16 @@ use Storage;
 
 class RapydHelper {
 
+    public static function env_appUrl()
+    {
+        return env("APP_URL");
+    }
+
+    public static function env_appApiUrl()
+    {
+        return env("APP_API_URL");
+    }
+
     public static function env_rapydEnv()
     {
         return env("RAPYD_ENV");
@@ -113,13 +123,13 @@ class RapydHelper {
         $payment = self::bankCode($data->transaction->bank);
         $response = new \stdClass();
 
-        if($payment->bank_payment_type=="sg_paynow_bank")
+        if($data->transaction->bank=="paynow")
         {
             $body = [
                 'amount' => $data->transaction->amount,
                 'currency' => $data->transaction->currency,
                 'payment_method' => [
-                    'type' => 'sg_paynow_bank',
+                    'type' => $payment->bank_payment_type,
                     'fields' => []
                 ]
             ];
@@ -139,14 +149,15 @@ class RapydHelper {
 
             $response->payment_type = 'qrcode';
             $response->qrcode = $qrcode->text();
+            $response->redirect = $data->transaction->finish_url;
         }
-        else if($payment->bank_payment_type=="sg_fast_bank")
+        else if($data->transaction->bank=="fast")
         {
             $body = [
                 'amount' => $data->transaction->amount,
                 'currency' => $data->transaction->currency,
                 'payment_method' => [
-                    'type' => 'sg_fast_bank',
+                    'type' => $payment->bank_payment_type,
                     'fields' => []
                 ]
             ];
@@ -154,6 +165,24 @@ class RapydHelper {
             $data1 = self::make_request('post','/v1/payments',$body);
             $response->payment_type = 'bank_transfer';
             $response->va_number = $data1['data']['textual_codes']['DBS Account No'];
+            $response->redirect = $data->transaction->finish_url;
+        }
+        else if($data->transaction->bank=="poli")
+        {
+            $body = [
+                'amount' => $data->transaction->amount,
+                'currency' => $data->transaction->currency,
+                'complete_payment_url' => self::env_appUrl() . $data->transaction->finish_url,
+                'error_payment_url' => self::env_appUrl() . $data->transaction->finish_url,
+                'payment_method' => [
+                    'type' => $payment->bank_payment_type,
+                    'fields' => []
+                ]
+            ];
+
+            $data1 = self::make_request('post','/v1/payments',$body);
+            $response->payment_type = 'bank_redirect';
+            $response->redirect = $data1['data']['redirect_url'];
         }
         else
         {
@@ -170,12 +199,12 @@ class RapydHelper {
 
             $response->payment_type = 'bank_transfer';
             $response->va_number = $data1['data']['textual_codes']['pairing_code'];
+            $response->redirect = $data->transaction->finish_url;
         }
 
         //$response->authorization_id = $data1['data']['id'];
         $response->bank_name = $payment->bank_name;
         $response->bank_code = $payment->bank_code;
-        $response->redirect = $data->transaction->finish_url;
         $response->expiration_date = $data->transaction->date_expired;
         $response->order_id = $data1['data']['id'];
         

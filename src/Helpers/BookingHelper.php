@@ -2394,7 +2394,7 @@ class BookingHelper {
 						break;	
 					case 4:
 						
-						$button = '<a class="btn btn-theme w-100" href="'. $shoppingcart->shoppingcart_payment->redirect .'"><b class="invoice-hilang"> Click here to pay</b></a>';
+						$button = '<a class="btn btn-theme w-100" href="'. $shoppingcart->shoppingcart_payment->redirect .'"><b class="invoice-hilang"> Click here to pay with '.strtoupper($shoppingcart->shoppingcart_payment->bank_name).'</b></a>';
 						
 						return '
 								<div class="card mb-1">

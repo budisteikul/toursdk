@@ -1115,6 +1115,12 @@ class APIController extends Controller
                     BookingHelper::create_payment($sessionId,"tazapay","paynow");
                 break;
 
+                case 'poli':
+                    BookingHelper::set_bookingStatus($sessionId,'PENDING');
+                    BookingHelper::set_confirmationCode($sessionId);
+                    BookingHelper::create_payment($sessionId,"tazapay","poli");
+                break;
+
                 default:
                     $payment_arr = explode("-",$payment);
 
@@ -1145,7 +1151,7 @@ class APIController extends Controller
 
             if($shoppingcart->shoppingcart_payment->payment_type=="bank_redirect")
             {
-                $redirect_type = 3;
+                $redirect_type = 4;
             }
 
 

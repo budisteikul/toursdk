@@ -2326,7 +2326,7 @@ class BookingHelper {
 					case 2:
 						return '<div class="card mb-4">
 								<span class="badge badge-success invoice-color-success" style="font-size:20px;">
-								<i class="fas fa-university"></i> PAID VIA BANK TRANSFER </span>
+								<i class="fas fa-university"></i> PAID VIA BANK </span>
 								</div>';
 						break;
 					case 3:
@@ -2370,6 +2370,47 @@ class BookingHelper {
 								</div>
 								</div>
 								';
+						break;
+					default:
+						return '';
+				}
+            }
+            if($shoppingcart->shoppingcart_payment->payment_type=="bank_redirect")
+            {
+            	$main_contact = self::get_answer_contact($shoppingcart);
+            	switch($shoppingcart->shoppingcart_payment->payment_status)
+				{
+					case 2:
+						return '<div class="card mb-4">
+								<span class="badge badge-success invoice-color-success" style="font-size:20px;">
+								<i class="fas fa-university"></i> PAID VIA BANK </span>
+								</div>';
+						break;
+					case 3:
+						return '<div class="card mb-4">
+								<span class="badge badge-danger invoice-color-danger" style="font-size:20px;">
+								<i class="fas fa-university"></i> UNPAID </span>
+								</div>';
+						break;	
+					case 4:
+						
+						$button = '<a class="btn btn-theme w-100" href="'. $shoppingcart->shoppingcart_payment->redirect .'"><b class="invoice-hilang"> Click here to pay</b></a>';
+						
+						return '
+								<div class="card mb-1">
+								<span class="badge badge-info invoice-color-info" style="font-size:20px;">
+								<i class="fas fa-wallet"></i> WAITING FOR PAYMENT </span>
+								</div>
+								<div class="card mb-4">
+								
+								<div class="card-body bg-light">
+
+									'.$button.'
+								
+								</div>
+								</div>
+								';
+						break;
 						break;
 					default:
 						return '';

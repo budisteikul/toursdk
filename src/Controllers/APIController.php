@@ -775,17 +775,8 @@ class APIController extends Controller
 
     public function confirmpaymenttazapay(Request $request)
     {
-            $data = json_decode($request->getContent(), true);
-
-            try
-            {
-                Storage::disk('gcs')->put('log/'. date('YmdHis') .'.txt', json_encode($data, JSON_PRETTY_PRINT));
-            }
-            catch(exception $e)
-            {
-                
-            }
             
+
             $data = $request->all();
             $order_id = null;
             $transaction_status = null;
@@ -799,7 +790,7 @@ class APIController extends Controller
                 $shoppingcart = Shoppingcart::where('confirmation_code',$confirmation_code)->first();
                 if($shoppingcart!==null)
                 {
-                    if($transaction_status=="Escrow_Funds_Received")
+                    if($transaction_status=="Escrow_Funds_Received" || $transaction_status=="Payment_Received")
                     {
                         BookingHelper::confirm_payment($shoppingcart,"CONFIRMED");
                     }

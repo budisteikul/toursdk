@@ -50,8 +50,8 @@ class RapydHelper {
                 $data->bank_payment_type = "sg_fast_bank";
             break;
             case "paynow":
-                $data->bank_name = "dbs";
-                $data->bank_code = "7171";
+                $data->bank_name = "paynow";
+                $data->bank_code = "";
                 $data->bank_payment_type = "sg_paynow_bank";
             break;
             case "cimb":
@@ -132,7 +132,7 @@ class RapydHelper {
             $url = $disk->url('qrcode/'. $path .'/'.$data->transaction->confirmation_code.'.png');
             $qrcode = new QrReader($url);
 
-            $response->payment_type = 'paynow';
+            $response->payment_type = 'qrcode';
             $response->qrcode = $qrcode->text();
         }
         else if($payment->bank_payment_type=="sg_fast_bank")

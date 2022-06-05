@@ -63,14 +63,12 @@ class TazapayHelper {
             case "paynow":
                 $data->bank_name = "paynow";
                 $data->bank_code = "";
-                $data->bank_currency = "SGD";
                 $data->bank_country = "SG";
                 $data->bank_payment_type = "sg_paynow_bank";
             break;
             case "poli":
                 $data->bank_name = "poli";
                 $data->bank_code = "";
-                $data->bank_currency = "AUD";
                 $data->bank_country = "AU";
                 $data->bank_payment_type = "au_poli_bank";
             break;
@@ -109,7 +107,7 @@ class TazapayHelper {
             'buyer_id' => $tazapay['data']['account_id'],
             'seller_id' => self::env_tazapaySellerID(),
             'txn_description' => 'Payment for '. $data->transaction->confirmation_code,
-            'invoice_currency' => $payment->bank_currency,
+            'invoice_currency' => $data->transaction->currency,
             'invoice_amount' => (int)$data->transaction->amount,
         ];
 
@@ -139,7 +137,7 @@ class TazapayHelper {
                 'payment_method' => $payment->bank_payment_type,
                 'redirect' => $redirect_url,
                 'provider' => 'rapyd',
-                'currency' => $payment->bank_currency,
+                'currency' => $data->transaction->confirmation_code,
                 'document' => null,
                 'is_first_payment' => null,
         ];

@@ -775,6 +775,17 @@ class APIController extends Controller
 
     public function confirmpaymenttazapay(Request $request)
     {
+            $data = json_decode($request->getContent(), true);
+
+            try
+            {
+                Storage::disk('gcs')->put('log/'. date('YmdHis') .'.txt', json_encode($data, JSON_PRETTY_PRINT));
+            }
+            catch(exception $e)
+            {
+                
+            }
+            
             $data = $request->all();
             $order_id = null;
             $transaction_status = null;

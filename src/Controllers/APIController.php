@@ -1097,16 +1097,66 @@ class APIController extends Controller
                     ]);
                 break;
 
-                case 'dana':
+                /*
+                case 'mandiri':
                     BookingHelper::set_bookingStatus($sessionId,'PENDING');
                     BookingHelper::set_confirmationCode($sessionId);
-                    BookingHelper::create_payment($sessionId,"dana","");
+                    BookingHelper::create_payment($sessionId,"doku","mandiri");
+                break;
+
+                case 'permata':
+                    BookingHelper::set_bookingStatus($sessionId,'PENDING');
+                    BookingHelper::set_confirmationCode($sessionId);
+                    BookingHelper::create_payment($sessionId,"midtrans","permata");
+                break;
+
+                case 'bni':
+                    BookingHelper::set_bookingStatus($sessionId,'PENDING');
+                    BookingHelper::set_confirmationCode($sessionId);
+                    BookingHelper::create_payment($sessionId,"midtrans","bni");
+                break;
+
+                case 'bri':
+                    BookingHelper::set_bookingStatus($sessionId,'PENDING');
+                    BookingHelper::set_confirmationCode($sessionId);
+                    BookingHelper::create_payment($sessionId,"midtrans","bri");
+                break;
+
+                case 'danamon':
+                    BookingHelper::set_bookingStatus($sessionId,'PENDING');
+                    BookingHelper::set_confirmationCode($sessionId);
+                    BookingHelper::create_payment($sessionId,"doku","danamon");
+                break;
+
+                case 'cimb':
+                    BookingHelper::set_bookingStatus($sessionId,'PENDING');
+                    BookingHelper::set_confirmationCode($sessionId);
+                    BookingHelper::create_payment($sessionId,"doku","cimb");
+                break;
+
+                case 'bsi':
+                    BookingHelper::set_bookingStatus($sessionId,'PENDING');
+                    BookingHelper::set_confirmationCode($sessionId);
+                    BookingHelper::create_payment($sessionId,"doku","bsi");
+                break;
+
+                case 'doku':
+                    BookingHelper::set_bookingStatus($sessionId,'PENDING');
+                    BookingHelper::set_confirmationCode($sessionId);
+                    BookingHelper::create_payment($sessionId,"doku","doku");
                 break;
 
                 case 'qris':
                     BookingHelper::set_bookingStatus($sessionId,'PENDING');
                     BookingHelper::set_confirmationCode($sessionId);
                     BookingHelper::create_payment($sessionId,"doku","qris");
+                break;
+                */
+                
+                case 'dana':
+                    BookingHelper::set_bookingStatus($sessionId,'PENDING');
+                    BookingHelper::set_confirmationCode($sessionId);
+                    BookingHelper::create_payment($sessionId,"dana","");
                 break;
 
                 case 'paynow':

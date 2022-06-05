@@ -144,7 +144,6 @@ class TazapayHelper {
 
         $tazapay = self::make_request('POST','/v1/escrow/payment',$body,$tazapay['data']['session_token']);
         
-        
         if($data->transaction->bank=="paynow")
         {
             $qrcode = $tazapay['data']['qr_code'];

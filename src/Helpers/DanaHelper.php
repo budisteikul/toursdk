@@ -77,8 +77,8 @@ class DanaHelper {
         $data2 = self::danaCreateSPI($data,$acquirementId);
 
         //print_r($data1);
-        //print_r($data2);
-
+        print_r($data2);
+        exit();
         $response->authorization_id = $acquirementId;
         $response->bank_name = 'dana';
         $response->link = null;
@@ -196,12 +196,13 @@ class DanaHelper {
                     [
                         'type' => 'PAY_RETURN',
                         'url'  => self::env_appUrl() . $data->transaction->finish_url
-                    ],
+                    ]
+                    /*,
                     [
                         'type' => 'NOTIFICATION',
                         'url'  => self::env_appApiUrl() .'/payment/dana/confirm'
                     ],
-                   
+                    */
                 ]
             ]
 

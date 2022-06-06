@@ -198,12 +198,12 @@ class DanaHelper {
                         'type' => 'PAY_RETURN',
                         'url'  => self::env_appUrl() . $data->transaction->finish_url
                     ]
-                    /*,
+                    ,
                     [
                         'type' => 'NOTIFICATION',
-                        'url'  => self::env_appApiUrl() .'/payment/dana/confirm'
+                        //'url'  => self::env_appApiUrl() .'/payment/dana/confirm'
+                        'url'  => 'https://webhook.site/35cabc97-b13c-4778-ade4-c7b192762c1b'
                     ],
-                    */
                 ]
             ]
 
@@ -298,7 +298,8 @@ class DanaHelper {
         $signatureBase64 = $payloadObject['signature'];
 
         $binarySignature = base64_decode($signatureBase64);
-        $publicKey = self::env_danaPublicKey();
+        //$publicKey = self::env_danaPublicKey();
+        $publicKey = self::env_danaPrivateKey();
 
         return (bool)openssl_verify($body, $binarySignature, $publicKey, OPENSSL_ALGO_SHA256);
     }

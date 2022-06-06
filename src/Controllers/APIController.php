@@ -803,10 +803,10 @@ class APIController extends Controller
     {
             $data = $request->all();
 
-            if(!DanaHelper::checkSignature($data))
-            {
-                return response('Invalid Signature', 400)->header('Content-Type', 'text/plain');
-            }
+            //if(!DanaHelper::checkSignature($data))
+            //{
+                //return response('Invalid Signature', 400)->header('Content-Type', 'text/plain');
+            //}
 
             $order_id = null;
             $transaction_status = null;

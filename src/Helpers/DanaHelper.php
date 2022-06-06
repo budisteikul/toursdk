@@ -197,11 +197,12 @@ class DanaHelper {
                         'type' => 'PAY_RETURN',
                         'url'  => self::env_appUrl() . $data->transaction->finish_url
                     ],
+                    /*
                     [
                         'type' => 'NOTIFICATION',
                         'url'  => self::env_appApiUrl() .'/payment/dana/confirm'
-                        //'url'  => 'https://webhook.site/5658b83b-f308-4e8e-844a-ca3ec53b2d59'
                     ],
+                    */
                 ]
             ]
 

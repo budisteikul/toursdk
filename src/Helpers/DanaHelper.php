@@ -197,12 +197,11 @@ class DanaHelper {
                         'type' => 'PAY_RETURN',
                         'url'  => self::env_appUrl() . $data->transaction->finish_url
                     ],
-                    /*
                     [
                         'type' => 'NOTIFICATION',
                         'url'  => self::env_appApiUrl() .'/payment/dana/confirm'
                     ],
-                    */
+                   
                 ]
             ]
 
@@ -229,6 +228,33 @@ class DanaHelper {
 
         return $data;
         
+    }
+
+    public static function danaResponse()
+    {
+        
+
+        $requestData = [
+            'head' => [
+                'version'      => '2.0',
+                'function'     => 'dana.acquiring.order.finishNotify',
+                'clientId'     => self::env_danaClientId(),
+                'reqTime'      => date('Y-m-d\TH:i:sP'),
+                'reqMsgId'     => Uuid::uuid4()->toString(),
+            ],
+            'body' => [
+                'resultInfo' => [
+                    'resultStatus' => 'S',
+                    'resultCodeId' => '00000000',
+                    'resultCode' => 'SUCCESS',
+                    'resultMsg' => 'success'
+                ]
+            ]
+        ];
+
+        $data_json = self::composeRequest($requestData);
+
+        return $data_json;
     }
 
     public static function generateSignature($data, $privateKey)

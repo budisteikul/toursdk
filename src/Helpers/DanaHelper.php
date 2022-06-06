@@ -201,8 +201,8 @@ class DanaHelper {
                     ,
                     [
                         'type' => 'NOTIFICATION',
-                        //'url'  => self::env_appApiUrl() .'/payment/dana/confirm'
-                        'url'  => 'https://webhook.site/35cabc97-b13c-4778-ade4-c7b192762c1b'
+                        'url'  => self::env_appApiUrl() .'/payment/dana/confirm'
+                        //'url'  => 'https://webhook.site/35cabc97-b13c-4778-ade4-c7b192762c1b'
                     ],
                 ]
             ]

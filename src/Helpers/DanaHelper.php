@@ -11,6 +11,11 @@ class DanaHelper {
         return env("APP_URL");
     }
 
+    public static function env_appName()
+    {
+        return env("APP_NAME");
+    }
+
     public static function env_appApiUrl()
     {
         return env("APP_API_URL");
@@ -76,9 +81,9 @@ class DanaHelper {
        
         $data2 = self::danaCreateSPI($data,$acquirementId);
 
-        //print_r($data1);
-        //print_r($data2);
-        //exit();
+        print_r($data1);
+        print_r($data2);
+        exit();
         
         $response->authorization_id = $acquirementId;
         $response->bank_name = 'dana';
@@ -121,24 +126,9 @@ class DanaHelper {
             ]
         ];
 
-        $data_json = self::composeRequest($requestData);
-        
         $endpoint = self::danaApiEndpoint() ."/dana/acquiring/order/finishNotify.htm";
 
-        $headers = [
-              'Content-Type' => 'application/json',
-              'Cache-control' => 'no-cache',
-              'X-DANA-SDK' => 'PHP',
-              'X-DANA-SDK-VERSION' => '1.0'
-          ];
-
-        $client = new \GuzzleHttp\Client(['headers' => $headers,'http_errors' => false]);
-        $response = $client->request('POST',$endpoint,
-          ['json' => $data_json]
-        );
-
-        $data = $response->getBody()->getContents();
-        $data = json_decode($data,true);
+        $data = self::danaApi($endpoint,$requestData);
 
         return $data;
     }
@@ -186,6 +176,39 @@ class DanaHelper {
                         'currency' => 'IDR'
                     ],
                 ],
+                /*
+                'goods' => [
+                    'merchantGoodsId' => $data->transaction->confirmation_code,
+                    'description' => 'Payment for order ID '. $data->transaction->confirmation_code,
+                    'category' => self::env_appName(),
+                    'price' => [
+                        'currency' => 'IDR',
+                        'value' => $data->transaction->amount * 100
+                    ],
+                    'unit' => 'order',
+                    'quantity' => '1',
+                    'merchantShippingId' => null,
+                    'snapshotUrl' => null,
+                    'extendInfo' => []
+                ]
+                
+                "goods":[
+                    {
+                        "merchantGoodsId":"24525635625623",
+                        "description":"dummy description",
+                        "category":"dummy category",
+                        "price":{
+                            "currency":"IDR",
+                            "value":"100"
+                        },
+                        "unit":"Kg",
+                        "quantity":"3.2",
+                        "merchantShippingId":"564314314574327545",
+                        "snapshotUrl":"[http://snap.url.com]",
+                        "extendInfo":"{\"somekey\":\"somevalue\"}"
+                    }  
+                ],
+                */
                 'productCode'      => '51051000100000000001',
                 'mcc'              => '123',
                 'merchantId'       => self::env_danaMerchantId(),
@@ -195,13 +218,13 @@ class DanaHelper {
                 ],
                 'notificationUrls' => [
                     [
-                        'type' => 'PAY_RETURN',
-                        'url'  => self::env_appUrl() . $data->transaction->finish_url
+                        'url'  => self::env_appUrl() . $data->transaction->finish_url,
+                        'type' => 'PAY_RETURN'
                     ]
                     ,
                     [
-                        'type' => 'NOTIFICATION',
-                        'url'  => self::env_appApiUrl() .'/payment/dana/confirm'
+                        'url'  => self::env_appApiUrl() .'/payment/dana/confirm',
+                        'type' => 'NOTIFICATION'
                         //'url'  => 'https://webhook.site/35cabc97-b13c-4778-ade4-c7b192762c1b'
                     ],
                 ]
@@ -209,24 +232,11 @@ class DanaHelper {
 
         ];
 
-        $data_json = self::composeRequest($requestData);
+        //$data_json = self::composeRequest($requestData);
         
         $endpoint = self::danaApiEndpoint() ."/dana/acquiring/order/createOrder.htm";
 
-        $headers = [
-              'Content-Type' => 'application/json',
-              'Cache-control' => 'no-cache',
-              'X-DANA-SDK' => 'PHP',
-              'X-DANA-SDK-VERSION' => '1.0'
-          ];
-
-        $client = new \GuzzleHttp\Client(['headers' => $headers,'http_errors' => false]);
-        $response = $client->request('POST',$endpoint,
-          ['json' => $data_json]
-        );
-
-        $data = $response->getBody()->getContents();
-        $data = json_decode($data,true);
+        $data = self::danaApi($endpoint,$requestData);
 
         return $data;
         
@@ -270,7 +280,6 @@ class DanaHelper {
 
     public static function composeRequest($requestData)
     {
-      
 
       $requestDataText = json_encode($requestData, JSON_UNESCAPED_SLASHES);
       $requestDataText = preg_replace('/\\\\\\\"/',"\"", $requestDataText); // remove unnecessary double escape
@@ -281,10 +290,10 @@ class DanaHelper {
           'signature' => $signature
       ];
 
-      //$requestPayloadText = json_encode($requestPayload, JSON_UNESCAPED_SLASHES);
-      //$requestPayloadText = preg_replace('/\\\\\\\"/',"\"", $requestPayloadText); // remove unnecessary double escape
+      $requestPayloadText = json_encode($requestPayload, JSON_UNESCAPED_SLASHES);
+      $requestPayloadText = preg_replace('/\\\\\\\"/',"\"", $requestPayloadText); // remove unnecessary double escape
 
-      return $requestPayload;
+      return $requestPayloadText;
     }
 
     public static function checkSignature($data)
@@ -298,10 +307,45 @@ class DanaHelper {
         $signatureBase64 = $payloadObject['signature'];
 
         $binarySignature = base64_decode($signatureBase64);
-        //$publicKey = self::env_danaPublicKey();
-        $publicKey = self::env_danaPrivateKey();
+        $publicKey = self::env_danaPublicKey();
+        //$publicKey = self::env_danaPrivateKey();
 
         return (bool)openssl_verify($body, $binarySignature, $publicKey, OPENSSL_ALGO_SHA256);
+    }
+
+    public static function danaApi($url, $payloadObject)
+    {
+      //$isMockApi = Config::$isMockApi;
+      //$isMockScene = Config::$isMockScene;
+      
+      $jsonPayload = self::composeRequest($payloadObject);
+
+      $curl = curl_init();
+      $opts = [
+          CURLOPT_URL            => $url,
+          CURLOPT_RETURNTRANSFER => true,
+          CURLOPT_ENCODING       => "",
+          CURLOPT_MAXREDIRS      => 10,
+          CURLOPT_TIMEOUT        => 30,
+          CURLOPT_HTTP_VERSION   => CURL_HTTP_VERSION_1_1,
+          CURLOPT_CUSTOMREQUEST  => "POST",
+          CURLOPT_POSTFIELDS     => $jsonPayload,
+          CURLOPT_HTTPHEADER     => [
+              "Content-Type: application/json",
+              "Cache-control: no-cache",
+              "X-DANA-SDK: PHP",
+              "X-DANA-SDK-VERSION: 1.0",
+          ]
+      ];
+
+      curl_setopt_array($curl, $opts);
+
+      $response = curl_exec($curl);
+      //$err      = curl_error($curl);
+      
+      curl_close($curl);
+
+      return $response;
     }
 
 }

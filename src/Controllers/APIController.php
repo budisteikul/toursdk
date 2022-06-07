@@ -812,7 +812,7 @@ class APIController extends Controller
                 
             }
 
-            $data = json_decode($request->getContent(), true);
+            //$data = json_decode($request->getContent(), true);
 
 
             //if(!DanaHelper::checkSignature($data))

@@ -372,7 +372,7 @@ class ContentHelper {
         
         $payment_enable = 'localpayment,stripe,paypal,poli,paynow';
         
-
+        /*
         $bank_transfer_list[] = [
             'value' => 'doku-mandiri', 'label' => 'MANDIRI', 'image' => '/img/bank/mandiri.png',
         ];
@@ -413,37 +413,35 @@ class ContentHelper {
         ];
         
         
-        /*
+        
         $ewallet_list[] = [
             'value' => 'oyindonesia-linkaja', 'label' => '', 'image' => '/img/ewallet/linkaja.png',
         ];
-        
+        */
         $ewallet_list[] = [
             'value' => 'dana', 'label' => '', 'image' => '/img/ewallet/dana.png',
         ];
-        */
         
         
         
+        /*
         $grouped_payment[] = [
             'label' => 'QRIS',
             'options' => $qrcode_list
         ];
-        
+        */
+
         $grouped_payment[] = [
             'label' => 'E-wallet',
             'options' => $ewallet_list
         ];
-        
+        /*
         $grouped_payment[] = [
             'label' => 'Bank transfer',
             'options' => $bank_transfer_list
         ];
+        */
         
-
-        
-
-
         $dataShoppingcart[] = array(
                 'id' => $shoppingcart->session_id,
                 'confirmation_code' => $shoppingcart->confirmation_code,

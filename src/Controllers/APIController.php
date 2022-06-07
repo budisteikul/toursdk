@@ -1178,13 +1178,13 @@ class APIController extends Controller
                 case 'paynow':
                     BookingHelper::set_bookingStatus($sessionId,'PENDING');
                     BookingHelper::set_confirmationCode($sessionId);
-                    BookingHelper::create_payment($sessionId,"tazapay","paynow");
+                    BookingHelper::create_payment($sessionId,"rapyd","paynow");
                 break;
 
                 case 'poli':
                     BookingHelper::set_bookingStatus($sessionId,'PENDING');
                     BookingHelper::set_confirmationCode($sessionId);
-                    BookingHelper::create_payment($sessionId,"tazapay","poli");
+                    BookingHelper::create_payment($sessionId,"rapyd","poli");
                 break;
 
                 default:

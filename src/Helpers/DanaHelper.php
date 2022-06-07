@@ -194,22 +194,7 @@ class DanaHelper {
                     'extendInfo' => []
                 ],
                 /*
-                "goods":[
-                    {
-                        "merchantGoodsId":"24525635625623",
-                        "description":"dummy description",
-                        "category":"dummy category",
-                        "price":{
-                            "currency":"IDR",
-                            "value":"100"
-                        },
-                        "unit":"Kg",
-                        "quantity":"3.2",
-                        "merchantShippingId":"564314314574327545",
-                        "snapshotUrl":"[http://snap.url.com]",
-                        "extendInfo":"{\"somekey\":\"somevalue\"}"
-                    }  
-                ],
+                
                 */
                 'productCode'      => '51051000100000000001',
                 'mcc'              => '123',
@@ -263,32 +248,7 @@ class DanaHelper {
       return json_encode($responsePayload, JSON_UNESCAPED_SLASHES);
     }
 
-    public static function danaResponse()
-    {
-        
-
-        $requestData = [
-            'head' => [
-                'version'      => '2.0',
-                'function'     => 'dana.acquiring.order.finishNotify',
-                'clientId'     => self::env_danaClientId(),
-                'reqTime'      => date('Y-m-d\TH:i:sP'),
-                'reqMsgId'     => Uuid::uuid4()->toString(),
-            ],
-            'body' => [
-                'resultInfo' => [
-                    'resultStatus' => 'S',
-                    'resultCodeId' => '00000000',
-                    'resultCode' => 'SUCCESS',
-                    'resultMsg' => 'success'
-                ]
-            ]
-        ];
-
-        $data_json = self::composeRequest($requestData);
-
-        return $data_json;
-    }
+    
 
     public static function generateSignature($data, $privateKey)
     {

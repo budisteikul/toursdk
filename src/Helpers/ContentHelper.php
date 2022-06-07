@@ -151,7 +151,7 @@ class ContentHelper {
 
             foreach($shoppingcart_product->product_details as $product_detail)
             {
-                
+                //
                 if($product_detail->type=="product")
                 {
                     $product_subtotal += $product_detail->subtotal;
@@ -370,8 +370,8 @@ class ContentHelper {
         $promo_code = $shoppingcart->promo_code;
         if($promo_code=="") $promo_code = null;
         
-        $payment_enable = 'localpayment';
-        /*
+        $payment_enable = 'localpayment,stripe,paypal,poli,paynow';
+        
 
         $bank_transfer_list[] = [
             'value' => 'doku-mandiri', 'label' => 'MANDIRI', 'image' => '/img/bank/mandiri.png',
@@ -413,33 +413,33 @@ class ContentHelper {
         ];
         
         
-
+        /*
         $ewallet_list[] = [
             'value' => 'oyindonesia-linkaja', 'label' => '', 'image' => '/img/ewallet/linkaja.png',
         ];
-        */
+        
         $ewallet_list[] = [
             'value' => 'dana', 'label' => '', 'image' => '/img/ewallet/dana.png',
         ];
+        */
         
         
         
-        /*
         $grouped_payment[] = [
             'label' => 'QRIS',
             'options' => $qrcode_list
         ];
-        */
+        
         $grouped_payment[] = [
             'label' => 'E-wallet',
             'options' => $ewallet_list
         ];
-        /*
+        
         $grouped_payment[] = [
             'label' => 'Bank transfer',
             'options' => $bank_transfer_list
         ];
-        */
+        
 
         
 
@@ -482,13 +482,11 @@ class ContentHelper {
                 'stripe_total' => BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'USD'),
                 'stripe_rate' => BookingHelper::text_rate($shoppingcart,'USD'),
 
+                // Local Payment Currency
                 'localpayment_currency' => 'IDR',
                 'localpayment_total' => GeneralHelper::numberFormat(BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'IDR')),
                 'localpayment_rate' => BookingHelper::text_rate($shoppingcart,'IDR'),
 
-                // Local Payment Currency
-                'idr_currency' => 'IDR',
-                'idr_total' => GeneralHelper::numberFormat(BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'IDR')),
             );
 
         return $dataShoppingcart;

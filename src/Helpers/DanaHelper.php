@@ -176,7 +176,7 @@ class DanaHelper {
                         'currency' => 'IDR'
                     ],
                 ],
-                /*
+                
                 'goods' => [
                     'merchantGoodsId' => $data->transaction->confirmation_code,
                     'description' => 'Payment for order ID '. $data->transaction->confirmation_code,
@@ -191,7 +191,7 @@ class DanaHelper {
                     'snapshotUrl' => null,
                     'extendInfo' => []
                 ]
-                
+                /*
                 "goods":[
                     {
                         "merchantGoodsId":"24525635625623",

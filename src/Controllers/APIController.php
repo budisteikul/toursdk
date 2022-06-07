@@ -812,12 +812,15 @@ class APIController extends Controller
                 
             }
 
-            $data = $request->all();
+            $data = json_decode($request->getContent(), true);
+
 
             //if(!DanaHelper::checkSignature($data))
             //{
                 //return response('Invalid Signature', 400)->header('Content-Type', 'text/plain');
             //}
+
+            //$data = json_decode($data);
 
             $order_id = null;
             $transaction_status = null;

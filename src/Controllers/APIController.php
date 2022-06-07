@@ -828,7 +828,7 @@ class APIController extends Controller
             }
             
             $response = DanaHelper::danaResponse();
-            return response()->json($response);
+            return response()->json([$response]);
     }
 
     public function confirmpaymentdoku(Request $request)

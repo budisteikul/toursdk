@@ -253,7 +253,7 @@ class DanaHelper {
       });
 
       $responseDataText = json_encode($responseData, JSON_UNESCAPED_SLASHES);
-      $signature        = self::generateSignature($responseDataText, Config::$privateKey);
+      $signature        = self::generateSignature($responseDataText, self::env_danaPrivateKey());
 
       $responsePayload = [
           'response'  => $responseData,

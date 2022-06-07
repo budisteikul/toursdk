@@ -801,6 +801,17 @@ class APIController extends Controller
 
     public function confirmpaymentdana(Request $request)
     {
+            $data = json_decode($request->getContent(), true);
+
+            try
+            {
+                Storage::disk('gcs')->put('log/'. date('YmdHis') .'.txt', json_encode($data, JSON_PRETTY_PRINT));
+            }
+            catch(exception $e)
+            {
+                
+            }
+
             $data = $request->all();
 
             //if(!DanaHelper::checkSignature($data))
@@ -828,8 +839,8 @@ class APIController extends Controller
             }
             
             $response = DanaHelper::composeNotifyResponse($data);
-            //return response()->json($response);
-            return response($response, 200)->header('Content-Type', 'text/plain');
+            return response()->json($response);
+            //return response($response, 200)->header('Content-Type', 'text/plain');
     }
 
     public function confirmpaymentdoku(Request $request)

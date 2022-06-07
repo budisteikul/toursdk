@@ -839,7 +839,7 @@ class APIController extends Controller
             }
             
             $response = DanaHelper::composeNotifyResponse($data);
-            return response()->json($response);
+            return response()->json([$response]);
             //return response($response, 200)->header('Content-Type', 'text/plain');
     }
 

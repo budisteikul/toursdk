@@ -1849,6 +1849,27 @@ class BookingHelper {
         $transaction->date_now = $date_now;
         $transaction->finish_url = '/booking/receipt/'. $sessionId .'/'. $shoppingcart->confirmation_code;
 
+        //============================================
+        $products = array();
+        foreach($shoppingcart->products as $product)
+        {
+        	foreach($product->product_details as $product_detail)
+        	{
+        		$products[] = [
+        			'title' => $product_detail->title,
+        			'price' => $product_detail->price,
+        			'unit' => $product_detail->unit_price,
+        			'qty' => $product_detail->qty,
+        			'subtotal' => $product_detail->subtotal,
+        			'discount' => $product_detail->discount,
+        			'total' => $product_detail->total,
+        		];
+        	}
+        }
+        $transaction->products = $products;
+        //============================================
+
+
         $data = new \stdClass();
         $data->contact = $contact;
         $data->transaction = $transaction;
@@ -1857,6 +1878,9 @@ class BookingHelper {
 			$data->transaction->mins_expired = 60;
 			$data->transaction->date_expired = Carbon::parse($data->transaction->date_now)->addMinutes($data->transaction->mins_expired);
         }
+
+        //print_r($data);
+        //exit();
 
 		switch($payment_provider)
 		{

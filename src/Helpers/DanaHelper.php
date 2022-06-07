@@ -84,7 +84,7 @@ class DanaHelper {
         $data2 = self::danaCreateSPI($data,$acquirementId);
 
         print_r($data1);
-        //print_r($data2);
+        print_r(json_decode($data1, true));
         exit();
         
         $response->authorization_id = $acquirementId;

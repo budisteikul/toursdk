@@ -190,7 +190,7 @@ class DanaHelper {
                     'merchantShippingId' => null,
                     'snapshotUrl' => null,
                     'extendInfo' => []
-                ]
+                ],
                 /*
                 "goods":[
                     {
@@ -260,7 +260,7 @@ class DanaHelper {
 
       return json_encode($responsePayload, JSON_UNESCAPED_SLASHES);
     }
-    
+
     public static function danaResponse()
     {
         

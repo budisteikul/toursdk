@@ -76,16 +76,16 @@ class DanaHelper {
 
         $data1 = self::danaCreateOrder($data);
 
-        $data1 = json_decode($data1);
+        //$data1 = json_decode($data1);
 
         $redirect_url = $data1['response']['body']['checkoutUrl'];
         $acquirementId = $data1['response']['body']['acquirementId'];
        
         $data2 = self::danaCreateSPI($data,$acquirementId);
 
-        //print_r($data1);
+        print_r($data1);
         //print_r($data2);
-        //exit();
+        exit();
         
         $response->authorization_id = $acquirementId;
         $response->bank_name = 'dana';

@@ -177,7 +177,7 @@ class DanaHelper {
                         'value'    => $data->transaction->amount * 100,
                         'currency' => 'IDR'
                     ],
-		    'goods' => [
+		            'goods' => [
                     	'merchantGoodsId' => '',
                     	'description' => 'Payment for order ID '. $data->transaction->confirmation_code,
                     	'category' => '',
@@ -190,11 +190,9 @@ class DanaHelper {
                     	'merchantShippingId' => '',
                     	'snapshotUrl' => '',
                     	'extendInfo' => []
-               	   ]
+               	    ]
                 ],
                 
-                
-               
                 'productCode'      => '51051000100000000001',
                 'mcc'              => '123',
                 'merchantId'       => self::env_danaMerchantId(),

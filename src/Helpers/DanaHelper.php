@@ -177,25 +177,24 @@ class DanaHelper {
                         'value'    => $data->transaction->amount * 100,
                         'currency' => 'IDR'
                     ],
+		    'goods' => [
+                    	'merchantGoodsId' => '',
+                    	'description' => 'Payment for order ID '. $data->transaction->confirmation_code,
+                    	'category' => '',
+                    	'price' => [
+                        	'currency' => 'IDR',
+                        	'value' => $data->transaction->amount * 100
+                    	],
+                    	'unit' => '',
+                    	'quantity' => '',
+                    	'merchantShippingId' => '',
+                    	'snapshotUrl' => '',
+                    	'extendInfo' => []
+               	   ]
                 ],
                 
-                'goods' => [
-                    'merchantGoodsId' => $data->transaction->confirmation_code,
-                    'description' => 'Payment for order ID '. $data->transaction->confirmation_code,
-                    'category' => self::env_appName(),
-                    'price' => [
-                        'currency' => 'IDR',
-                        'value' => $data->transaction->amount * 100
-                    ],
-                    'unit' => 'order',
-                    'quantity' => '1',
-                    'merchantShippingId' => null,
-                    'snapshotUrl' => null,
-                    'extendInfo' => []
-                ],
-                /*
                 
-                */
+               
                 'productCode'      => '51051000100000000001',
                 'mcc'              => '123',
                 'merchantId'       => self::env_danaMerchantId(),

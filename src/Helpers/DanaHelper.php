@@ -323,8 +323,8 @@ class DanaHelper {
       $response = curl_exec($curl);
       $err      = curl_error($curl);
       
-      print_r($response);
-      print_r($err);
+      //print_r($response);
+      //print_r($err);
 
       curl_close($curl);
 

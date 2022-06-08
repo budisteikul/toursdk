@@ -26,7 +26,7 @@ class DanaHelper {
         return env("DANA_ENV");
     }
 
-      public static function env_danaMerchantId()
+    public static function env_danaMerchantId()
     {
         return env("DANA_MERCHANT_ID");
     }
@@ -78,14 +78,12 @@ class DanaHelper {
 
         $data1 = json_decode($data1, true);
 
+        
         $redirect_url = $data1['response']['body']['checkoutUrl'];
         $acquirementId = $data1['response']['body']['acquirementId'];
        
         $data2 = self::danaCreateSPI($data,$acquirementId);
-
-        //print_r($data1);
-        //print_r(json_decode($data1, true));
-        //exit();
+        
         
         $response->authorization_id = $acquirementId;
         $response->bank_name = 'dana';
@@ -115,13 +113,13 @@ class DanaHelper {
                 'reqMsgId'     => Uuid::uuid4()->toString(),
             ],
             'body' => [
-                //'merchantId'      => self::env_danaMerchantId(),
+                'merchantId'      => self::env_danaMerchantId(),
                 'merchantTransId' => $merchantTransId,
                 'acquirementId'   => $acquirementId,
                 'acquirementStatus'   => $acquirementStatus,
                 'orderAmount'   => [
-                                'currency' => 'IDR',
-                                'value' => $orderAmount
+                    'currency' => 'IDR',
+                    'value' => $orderAmount
                 ],
                 'createdTime'   => $createdTime,
                 'finishedTime'   => $finishedTime,
@@ -177,22 +175,22 @@ class DanaHelper {
                         'value'    => $data->transaction->amount * 100,
                         'currency' => 'IDR'
                     ],
-		            'goods' => [
-                    	'merchantGoodsId' => '',
-                    	'description' => 'Payment for order ID '. $data->transaction->confirmation_code,
-                    	'category' => '',
-                    	'price' => [
-                        	'currency' => 'IDR',
-                        	'value' => $data->transaction->amount * 100
-                    	],
-                    	'unit' => '',
-                    	'quantity' => '',
-                    	'merchantShippingId' => '',
-                    	'snapshotUrl' => '',
-                    	'extendInfo' => []
-               	    ]
+		            
                 ],
-                
+                'goods' => [
+                    'merchantGoodsId' => '',
+                    'description' => 'Payment for order ID '. $data->transaction->confirmation_code,
+                    'category' => '',
+                    'price' => [
+                        'currency' => 'IDR',
+                        'value' => $data->transaction->amount * 100
+                    ],
+                    'unit' => '',
+                    'quantity' => '',
+                    'merchantShippingId' => '',
+                    'snapshotUrl' => '',
+                    'extendInfo' => []
+                ],
                 'productCode'      => '51051000100000000001',
                 'mcc'              => '123',
                 'merchantId'       => self::env_danaMerchantId(),
@@ -319,8 +317,11 @@ class DanaHelper {
       curl_setopt_array($curl, $opts);
 
       $response = curl_exec($curl);
-      //$err      = curl_error($curl);
+      $err      = curl_error($curl);
       
+      print_r($response);
+      print_r($err);
+
       curl_close($curl);
 
       return $response;

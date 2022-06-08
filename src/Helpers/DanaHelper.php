@@ -78,12 +78,14 @@ class DanaHelper {
 
         $data1 = json_decode($data1, true);
 
+        //print_r($data1);
         
         $redirect_url = $data1['response']['body']['checkoutUrl'];
         $acquirementId = $data1['response']['body']['acquirementId'];
        
         $data2 = self::danaCreateSPI($data,$acquirementId);
-        
+        //print_r($data2);
+        //exit();
         
         $response->authorization_id = $acquirementId;
         $response->bank_name = 'dana';
@@ -175,22 +177,24 @@ class DanaHelper {
                         'value'    => $data->transaction->amount * 100,
                         'currency' => 'IDR'
                     ],
-		            
-                ],
-                'goods' => [
-                    'merchantGoodsId' => '',
-                    'description' => 'Payment for order ID '. $data->transaction->confirmation_code,
-                    'category' => '',
-                    'price' => [
-                        'currency' => 'IDR',
-                        'value' => $data->transaction->amount * 100
+		            'goods' => [
+                        [
+                            'merchantGoodsId' => $data->transaction->confirmation_code,
+                            'description' => 'Payment for order ID '. $data->transaction->confirmation_code,
+                            'category' => 'VERTIKAL TRIP',
+                            'price' => [
+                                'currency' => 'IDR',
+                                'value' => $data->transaction->amount * 100
+                            ],
+                            'unit' => null,
+                            'quantity' => null,
+                            'merchantShippingId' => null,
+                            'snapshotUrl' => null,
+                            'extendInfo' => []
+                        ]
                     ],
-                    'unit' => '',
-                    'quantity' => '',
-                    'merchantShippingId' => '',
-                    'snapshotUrl' => '',
-                    'extendInfo' => []
                 ],
+                
                 'productCode'      => '51051000100000000001',
                 'mcc'              => '123',
                 'merchantId'       => self::env_danaMerchantId(),

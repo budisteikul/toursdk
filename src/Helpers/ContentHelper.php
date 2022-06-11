@@ -398,9 +398,11 @@ class ContentHelper {
         $bank_transfer_list[] = [
             'value' => 'doku-cimb', 'label' => 'CIMB NIAGA VA',  'image' => '/img/bank/cimb.png',
         ];
+        /*
         $bank_transfer_list[] = [
             'value' => 'doku-mandirisyariah', 'label' => 'BSI VA', 'image' => '/img/bank/bsi.png',
         ];
+        */
         $bank_transfer_list[] = [
             'value' => 'doku-doku', 'label' => 'DOKU VA', 'image' => '/img/bank/doku.png',
         ];

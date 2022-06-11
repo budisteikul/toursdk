@@ -64,13 +64,15 @@ class TazapayHelper {
                 $data->bank_name = "paynow";
                 $data->bank_code = "";
                 $data->bank_country = "SG";
-                $data->bank_payment_type = "sg_paynow_bank";
+                $data->bank_payment_method = "sg_paynow_bank";
+                $data->bank_payment_type = "qrcode";
             break;
             case "poli":
                 $data->bank_name = "poli";
                 $data->bank_code = "";
                 $data->bank_country = "AU";
-                $data->bank_payment_type = "au_poli_bank";
+                $data->bank_payment_method = "au_poli_bank";
+                $data->bank_payment_type = "bank_redirect";
             break;
             default:
                 return response()->json([
@@ -135,7 +137,7 @@ class TazapayHelper {
             
         $body = [
                 'escrow_id' => $tazapay['data']['escrow_id'],
-                'payment_method' => $payment->bank_payment_type,
+                'payment_method' => $payment->bank_payment_method,
                 'redirect' => $redirect_url,
                 'provider' => 'rapyd',
                 'currency' => $data->transaction->currency,
@@ -146,7 +148,10 @@ class TazapayHelper {
 
         $tazapay = self::make_request('POST','/v1/escrow/payment',$body,$tazapay['data']['session_token']);
         
-        if($data->transaction->bank=="paynow")
+        //print_r($tazapay);
+        //exit();
+
+        if($payment->bank_payment_type=="qrcode")
         {
             $qrcode = $tazapay['data']['qr_code'];
             list($type, $qrcode) = explode(';', $qrcode);
@@ -165,7 +170,7 @@ class TazapayHelper {
             $response->redirect = $data->transaction->finish_url;
         }
 
-        if($data->transaction->bank=="poli")
+        if($payment->bank_payment_type=="bank_redirect")
         {
             $response->payment_type = 'bank_redirect';
             $response->redirect = $tazapay['data']['bank_redirect'];

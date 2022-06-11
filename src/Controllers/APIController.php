@@ -1161,13 +1161,14 @@ class APIController extends Controller
                     BookingHelper::set_confirmationCode($sessionId);
                     BookingHelper::create_payment($sessionId,"doku","doku");
                 break;
+                */
 
                 case 'qris':
                     BookingHelper::set_bookingStatus($sessionId,'PENDING');
                     BookingHelper::set_confirmationCode($sessionId);
-                    BookingHelper::create_payment($sessionId,"doku","qris");
+                    BookingHelper::create_payment($sessionId,"midtrans","gopay_qris");
                 break;
-                */
+                
 
                 case 'dana':
                     BookingHelper::set_bookingStatus($sessionId,'PENDING');

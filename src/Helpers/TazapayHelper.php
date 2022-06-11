@@ -140,13 +140,12 @@ class TazapayHelper {
                 'provider' => 'rapyd',
                 'currency' => $data->transaction->currency,
                 'document' => null,
-                'is_first_payment' => null,
+                'is_first_payment' => false,
+                'redirect' => self::env_appUrl() . $data->transaction->finish_url
         ];
 
         $tazapay = self::make_request('POST','/v1/escrow/payment',$body,$tazapay['data']['session_token']);
-        //print_r($tazapay);
-        //exit();
-
+        
         if($data->transaction->bank=="paynow")
         {
             $qrcode = $tazapay['data']['qr_code'];

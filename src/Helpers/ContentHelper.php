@@ -370,7 +370,7 @@ class ContentHelper {
         $promo_code = $shoppingcart->promo_code;
         if($promo_code=="") $promo_code = null;
         
-        $payment_enable = 'localpayment,stripe,paypal,poli,paynow';
+        $payment_enable = 'localpayment,stripe,paypal';
         
         
         $bank_transfer_list[] = [

@@ -377,31 +377,32 @@ class ContentHelper {
         
         
         /*
-        $bank_transfer_list[] = [
-            'value' => 'doku-mandiri', 'label' => 'MANDIRI', 'image' => '/img/bank/mandiri.png',
-        ];
-        $bank_transfer_list[] = [
-            'value' => 'midtrans-bni', 'label' => 'BNI', 'image' => '/img/bank/bni.png',
-        ];
-        $bank_transfer_list[] = [
-            'value' => 'midtrans-bri', 'label' => 'BRI', 'image' => '/img/bank/bri.png',
-        ];
-        $bank_transfer_list[] = [
-            'value' => 'doku-danamon', 'label' => 'DANAMON', 'image' => '/img/bank/danamon.png',
-        ];
-        $bank_transfer_list[] = [
-            'value' => 'doku-cimb', 'label' => 'CIMB NIAGA',  'image' => '/img/bank/cimb.png',
-        ];
-        $bank_transfer_list[] = [
-            'value' => 'doku-mandirisyariah', 'label' => 'BSI', 'image' => '/img/bank/bsi.png',
-        ];
-        $bank_transfer_list[] = [
-            'value' => 'doku-doku', 'label' => 'DOKU', 'image' => '/img/bank/doku.png',
-        ];
+        
         */
         
         $bank_transfer_list[] = [
             'value' => 'midtrans-permata', 'label' => 'PERMATA VA', 'image' => '/img/bank/permata.png',
+        ];
+        $bank_transfer_list[] = [
+            'value' => 'doku-mandiri', 'label' => 'MANDIRI VA', 'image' => '/img/bank/mandiri.png',
+        ];
+        $bank_transfer_list[] = [
+            'value' => 'midtrans-bni', 'label' => 'BNI VA', 'image' => '/img/bank/bni.png',
+        ];
+        $bank_transfer_list[] = [
+            'value' => 'midtrans-bri', 'label' => 'BRI VA', 'image' => '/img/bank/bri.png',
+        ];
+        $bank_transfer_list[] = [
+            'value' => 'doku-danamon', 'label' => 'DANAMON VA', 'image' => '/img/bank/danamon.png',
+        ];
+        $bank_transfer_list[] = [
+            'value' => 'doku-cimb', 'label' => 'CIMB NIAGA VA',  'image' => '/img/bank/cimb.png',
+        ];
+        $bank_transfer_list[] = [
+            'value' => 'doku-mandirisyariah', 'label' => 'BSI VA', 'image' => '/img/bank/bsi.png',
+        ];
+        $bank_transfer_list[] = [
+            'value' => 'doku-doku', 'label' => 'DOKU VA', 'image' => '/img/bank/doku.png',
         ];
 
         $qrcode_list[] = [

@@ -123,7 +123,7 @@ class PaydiaHelper {
 		$response->expiration_date = $data->transaction->date_expired;
 		$response->authorization_id = $signature;
 		$response->order_id = $data1->refid;
-		$response->payment_type = 'qris';
+		$response->payment_type = 'qrcode';
 		$response->redirect = $data->transaction->finish_url;
 
 		return $response;

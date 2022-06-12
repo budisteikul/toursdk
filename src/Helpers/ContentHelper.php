@@ -76,7 +76,7 @@ class ContentHelper {
         
         $how_to_pay = array();
         
-        if($shoppingcart->shoppingcart_payment->payment_type=="qris" || $shoppingcart->shoppingcart_payment->payment_type=="paynow")
+        if($shoppingcart->shoppingcart_payment->payment_type=="qrcode")
         {
             if($shoppingcart->shoppingcart_payment->payment_status==4)
             {

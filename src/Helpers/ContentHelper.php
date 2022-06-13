@@ -406,11 +406,11 @@ class ContentHelper {
         $bank_transfer_list[] = [
             'value' => 'doku-doku', 'label' => 'DOKU VA', 'image' => '/img/bank/doku.png',
         ];
-
+	
         $qrcode_list[] = [
             'value' => 'qris', 'label' => '', 'image' => '/img/ewallet/qris.png',
         ];
-
+	/*
         $ewallet_list[] = [
             'value' => 'midtrans-gopay', 'label' => '', 'image' => '/img/ewallet/gopay.png',
         ];
@@ -422,34 +422,35 @@ class ContentHelper {
         ];
         
         
-        /*
+        
         $ewallet_list[] = [
             'value' => 'oyindonesia-linkaja', 'label' => '', 'image' => '/img/ewallet/linkaja.png',
         ];
-        
+        */
         $ewallet_list[] = [
             'value' => 'dana', 'label' => '', 'image' => '/img/ewallet/dana.png',
         ];
-        */
         
         
         
+        /*
         $grouped_payment[] = [
             'label' => 'QRIS',
             'options' => $qrcode_list
         ];
-        
+        */
 
         $grouped_payment[] = [
             'label' => 'E-wallet',
             'options' => $ewallet_list
         ];
         
+	/*
         $grouped_payment[] = [
             'label' => 'Bank transfer',
             'options' => $bank_transfer_list
         ];
-        
+        */
         
         $dataShoppingcart[] = array(
                 'id' => $shoppingcart->session_id,

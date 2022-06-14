@@ -243,7 +243,7 @@ class DanaHelper {
 	$requestData = [
             'head' => [
                 'version'      => '2.0',
-                'function'     => 'dana.acquiring.order.createOrder',
+                'function'     => 'dana.acquiring.order.finishNotify',
                 'clientId'     => self::env_danaClientId(),
                 'clientSecret' => self::env_danaClientSecret(),
                 'reqTime'      => date('Y-m-d\TH:i:sP'),

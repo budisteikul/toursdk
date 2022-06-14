@@ -232,13 +232,15 @@ class DanaHelper {
     public static function composeNotifyResponse($responseData)
     {
       // convert 'null' into ''
+      
+      /*
       array_walk_recursive($responseData, function (&$item) {
           $item = strval($item);
       });
 
       $responseDataText = json_encode($responseData, JSON_UNESCAPED_SLASHES);
       $signature        = self::generateSignature($responseDataText, self::env_danaPrivateKey());
-      
+      */
 	
 	$requestData = [
             'head' => [
@@ -259,12 +261,16 @@ class DanaHelper {
 		    ]
             ]
         ]; 
-	    
+	
+	    //$jsonPayload = self::composeRequest($payloadObject);
+	/*    
       $responsePayload = [
           'response'  => $requestData,
           'signature' => $signature
       ];
-
+	*/
+      $responsePayload = self::composeRequest($requestData);
+	    
       return json_encode($responsePayload, JSON_UNESCAPED_SLASHES);
     }
 

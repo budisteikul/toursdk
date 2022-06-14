@@ -227,7 +227,7 @@ class DanaHelper {
     }
 
 
-    public static function composeResponse($responseData)
+    public static function composeResponse($data)
     {
       
       $responseData = [
@@ -237,7 +237,7 @@ class DanaHelper {
                 'clientId'     => self::env_danaClientId(),
                 'clientSecret' => self::env_danaClientSecret(),
                 'reqTime'      => date('Y-m-d\TH:i:sP'),
-                'reqMsgId'     => Uuid::uuid4()->toString(),
+                'reqMsgId'     => $data['request']['head']['reqMsgId'],
                 'reserve'      => '{}',
             ],
             'body' => [

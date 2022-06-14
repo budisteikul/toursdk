@@ -81,9 +81,10 @@ class DanaHelper {
         //print_r($data1);
         if($data1['response']['body']['resultInfo']['resultStatus']!="S")
 	{
-		return response()->json([
+		response()->json([
                     'message' => 'failed',
-                ]);
+                ])->send(); 
+		die();
 	}
 	    
         $redirect_url = $data1['response']['body']['checkoutUrl'];

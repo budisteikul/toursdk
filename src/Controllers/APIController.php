@@ -1157,7 +1157,7 @@ class APIController extends Controller
             if($response=="error")
             {
                 return response()->json([
-                    'message' => 'failed',
+                    'message' => 'Error create transaction',
                 ]);
             }
 

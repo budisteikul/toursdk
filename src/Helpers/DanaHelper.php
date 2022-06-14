@@ -264,7 +264,7 @@ class DanaHelper {
 	
 	   
       $responsePayload = [
-          'response'  => $requestData,
+          'response'  => $responseData,
           'signature' => $signature
       ];
      

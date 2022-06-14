@@ -1169,6 +1169,7 @@ class BookingHelper {
 		$due_on_arrival = 0;
 		$dataObj = new \stdClass();
 		$product = Product::where('bokun_id',$bokunId)->first();
+
 		if($product->deposit_amount==0)
 		{
 			$dataObj->due_now = $amount;
@@ -1879,9 +1880,6 @@ class BookingHelper {
 			$data->transaction->date_expired = Carbon::parse($data->transaction->date_now)->addMinutes($data->transaction->mins_expired);
         }
 
-        //print_r($data);
-        //exit();
-
 		switch($payment_provider)
 		{
 			case "tazapay":
@@ -2077,6 +2075,11 @@ class BookingHelper {
 				$currency = $shoppingcart->currency;
 				$rate = 1;
 				$payment_status = 0;
+		}
+
+		if($response=="error")
+		{
+			return $response;
 		}
 
 		if(isset($response->payment_type)) $payment_type = $response->payment_type;

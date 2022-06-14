@@ -1037,10 +1037,10 @@ class APIController extends Controller
             BookingHelper::set_bookingStatus($sessionId,'PENDING');
             BookingHelper::set_confirmationCode($sessionId);
 
-            $status = BookingHelper::create_payment($sessionId,"duitku","ovo",$phoneNumber);
+            $response = BookingHelper::create_payment($sessionId,"duitku","ovo",$phoneNumber);
 
             
-            if(!$status)
+            if(!$response)
             {
                 return response()->json([
                     'message' => 'failed',
@@ -1113,79 +1113,31 @@ class APIController extends Controller
                     ]);
                 break;
 
-                /*
-                case 'mandiri':
-                    BookingHelper::set_bookingStatus($sessionId,'PENDING');
-                    BookingHelper::set_confirmationCode($sessionId);
-                    BookingHelper::create_payment($sessionId,"doku","mandiri");
-                break;
-
-                case 'permata':
-                    BookingHelper::set_bookingStatus($sessionId,'PENDING');
-                    BookingHelper::set_confirmationCode($sessionId);
-                    BookingHelper::create_payment($sessionId,"midtrans","permata");
-                break;
-
-                case 'bni':
-                    BookingHelper::set_bookingStatus($sessionId,'PENDING');
-                    BookingHelper::set_confirmationCode($sessionId);
-                    BookingHelper::create_payment($sessionId,"midtrans","bni");
-                break;
-
-                case 'bri':
-                    BookingHelper::set_bookingStatus($sessionId,'PENDING');
-                    BookingHelper::set_confirmationCode($sessionId);
-                    BookingHelper::create_payment($sessionId,"midtrans","bri");
-                break;
-
-                case 'danamon':
-                    BookingHelper::set_bookingStatus($sessionId,'PENDING');
-                    BookingHelper::set_confirmationCode($sessionId);
-                    BookingHelper::create_payment($sessionId,"doku","danamon");
-                break;
-
-                case 'cimb':
-                    BookingHelper::set_bookingStatus($sessionId,'PENDING');
-                    BookingHelper::set_confirmationCode($sessionId);
-                    BookingHelper::create_payment($sessionId,"doku","cimb");
-                break;
-
-                case 'bsi':
-                    BookingHelper::set_bookingStatus($sessionId,'PENDING');
-                    BookingHelper::set_confirmationCode($sessionId);
-                    BookingHelper::create_payment($sessionId,"doku","bsi");
-                break;
-
-                case 'doku':
-                    BookingHelper::set_bookingStatus($sessionId,'PENDING');
-                    BookingHelper::set_confirmationCode($sessionId);
-                    BookingHelper::create_payment($sessionId,"doku","doku");
-                break;
-                */
+                
 
                 case 'qris':
                     BookingHelper::set_bookingStatus($sessionId,'PENDING');
                     BookingHelper::set_confirmationCode($sessionId);
-                    BookingHelper::create_payment($sessionId,"midtrans","gopay_qris");
+                    $response = BookingHelper::create_payment($sessionId,"midtrans","gopay_qris");
                 break;
                 
 
                 case 'dana':
                     BookingHelper::set_bookingStatus($sessionId,'PENDING');
                     BookingHelper::set_confirmationCode($sessionId);
-                    BookingHelper::create_payment($sessionId,"dana","");
+                    $response = BookingHelper::create_payment($sessionId,"dana","");
                 break;
 
                 case 'paynow':
                     BookingHelper::set_bookingStatus($sessionId,'PENDING');
                     BookingHelper::set_confirmationCode($sessionId);
-                    BookingHelper::create_payment($sessionId,"tazapay","paynow");
+                    $response = BookingHelper::create_payment($sessionId,"tazapay","paynow");
                 break;
 
                 case 'poli':
                     BookingHelper::set_bookingStatus($sessionId,'PENDING');
                     BookingHelper::set_confirmationCode($sessionId);
-                    BookingHelper::create_payment($sessionId,"tazapay","poli");
+                    $response = BookingHelper::create_payment($sessionId,"tazapay","poli");
                 break;
 
                 default:
@@ -1199,7 +1151,14 @@ class APIController extends Controller
 
                     BookingHelper::set_bookingStatus($sessionId,'PENDING');
                     BookingHelper::set_confirmationCode($sessionId);
-                    BookingHelper::create_payment($sessionId,$payment_provider,$payment_bank);
+                    $response = BookingHelper::create_payment($sessionId,$payment_provider,$payment_bank);
+            }
+
+            if($response=="error")
+            {
+                return response()->json([
+                    'message' => 'failed',
+                ]);
             }
 
             $shoppingcart = BookingHelper::confirm_booking($sessionId);

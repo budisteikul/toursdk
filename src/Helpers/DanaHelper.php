@@ -238,9 +238,30 @@ class DanaHelper {
 
       $responseDataText = json_encode($responseData, JSON_UNESCAPED_SLASHES);
       $signature        = self::generateSignature($responseDataText, self::env_danaPrivateKey());
-
+      
+	
+	$requestData = [
+            'head' => [
+                'version'      => '2.0',
+                'function'     => 'dana.acquiring.order.createOrder',
+                'clientId'     => self::env_danaClientId(),
+                'clientSecret' => self::env_danaClientSecret(),
+                'reqTime'      => date('Y-m-d\TH:i:sP'),
+                'reqMsgId'     => Uuid::uuid4()->toString(),
+                'reserve'      => '{}',
+            ],
+            'body' => [
+		    'resultInfo' => [
+		    	'resultStatus' => 'S',
+			'resultCodeId' => '00000000',
+			'resultCode' => 'SUCCESS',
+			'resultMsg' => 'success'
+		    ]
+            ]
+        ]; 
+	    
       $responsePayload = [
-          'response'  => $responseData,
+          'response'  => $requestData,
           'signature' => $signature
       ];
 

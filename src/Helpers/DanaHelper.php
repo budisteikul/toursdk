@@ -6,7 +6,7 @@ use Ramsey\Uuid\Exception\UnsatisfiedDependencyException;
 
 class DanaHelper {
 
-	public static function env_appUrl()
+    public static function env_appUrl()
     {
         return env("APP_URL");
     }
@@ -217,8 +217,6 @@ class DanaHelper {
             ]
 
         ];
-
-        //$data_json = self::composeRequest($requestData);
         
         $endpoint = self::danaApiEndpoint() ."/dana/acquiring/order/createOrder.htm";
 
@@ -229,9 +227,9 @@ class DanaHelper {
     }
 
 
-    public static function composeNotifyResponse($responseData)
+    public static function composeResponse($responseData)
     {
-      // convert 'null' into ''
+      
       $responseData = [
             'head' => [
                 'version'      => '2.0',
@@ -258,11 +256,7 @@ class DanaHelper {
 
       $responseDataText = json_encode($responseData, JSON_UNESCAPED_SLASHES);
       $signature        = self::generateSignature($responseDataText, self::env_danaPrivateKey());
-      
-	
-	
-	
-	   
+         
       $responsePayload = [
           'response'  => $responseData,
           'signature' => $signature
@@ -284,7 +278,11 @@ class DanaHelper {
 
     public static function composeRequest($requestData)
     {
-
+      
+      array_walk_recursive($requestData, function (&$item) {
+          $item = strval($item);
+      });
+	    
       $requestDataText = json_encode($requestData, JSON_UNESCAPED_SLASHES);
       $requestDataText = preg_replace('/\\\\\\\"/',"\"", $requestDataText); // remove unnecessary double escape
       $signature       = self::generateSignature($requestDataText, self::env_danaPrivateKey());

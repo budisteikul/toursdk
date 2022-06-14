@@ -181,7 +181,7 @@ class DanaHelper {
                         [
                             'merchantGoodsId' => $data->transaction->confirmation_code,
                             'description' => 'Payment for order ID '. $data->transaction->confirmation_code,
-                            'category' => 'VERTIKAL TRIP',
+                            'category' => self::env_appName(),
                             'price' => [
                                 'currency' => 'IDR',
                                 'value' => $data->transaction->amount * 100

@@ -236,9 +236,8 @@ class DanaHelper {
                 'function'     => 'dana.acquiring.order.finishNotify',
                 'clientId'     => self::env_danaClientId(),
                 'clientSecret' => self::env_danaClientSecret(),
-                'reqTime'      => date('Y-m-d\TH:i:sP'),
-                'reqMsgId'     => $data['request']['head']['reqMsgId'],
-                'reserve'      => '{}',
+                'respTime'      => date('Y-m-d\TH:i:sP'),
+                'reqMsgId'     => $data['request']['head']['reqMsgId']
             ],
             'body' => [
 		    'resultInfo' => [

@@ -433,21 +433,20 @@ class ContentHelper {
         
         
         
-        
-      
-        $grouped_payment[] = [
-            'label' => 'QRIS',
-            'options' => $qrcode_list
-        ];
         $grouped_payment[] = [
             'label' => 'E-wallet',
             'options' => $ewallet_list
         ];
         $grouped_payment[] = [
+            'label' => 'QRIS',
+            'options' => $qrcode_list
+        ];
+        /*
+        $grouped_payment[] = [
             'label' => 'Bank transfer',
             'options' => $bank_transfer_list
         ];
-        
+        */
         
         $dataShoppingcart[] = array(
                 'id' => $shoppingcart->session_id,

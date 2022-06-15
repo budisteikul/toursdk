@@ -408,45 +408,48 @@ class ContentHelper {
         ];
 	
         $qrcode_list[] = [
-            'value' => 'qris', 'label' => '', 'image' => '/img/ewallet/qris.png',
+            'value' => 'qris', 'label' => 'QRIS', 'image' => '/img/ewallet/qris.png',
         ];
 	    
+        /*
         $ewallet_list[] = [
-            'value' => 'dana', 'label' => '', 'image' => '/img/ewallet/dana.png',
+            'value' => 'dana', 'label' => 'DANA', 'image' => '/img/ewallet/dana.png',
+        ];
+        */
+
+        $ewallet_list[] = [
+            'value' => 'midtrans-gopay', 'label' => 'GOPAY', 'image' => '/img/ewallet/gopay.png',
         ];
         $ewallet_list[] = [
-            'value' => 'midtrans-gopay', 'label' => '', 'image' => '/img/ewallet/gopay.png',
+            'value' => 'midtrans-shopeepay', 'label' => 'SHOPEEPAY', 'image' => '/img/ewallet/shopeepay.png',
         ];
         $ewallet_list[] = [
-            'value' => 'midtrans-shopeepay', 'label' => '', 'image' => '/img/ewallet/shopeepay.png',
-        ];
-        $ewallet_list[] = [
-            'value' => 'ovo', 'label' => '', 'image' => '/img/ewallet/ovo.png',
+            'value' => 'ovo', 'label' => 'OVO', 'image' => '/img/ewallet/ovo.png',
         ];
         
         
         /*
         $ewallet_list[] = [
-            'value' => 'oyindonesia-linkaja', 'label' => '', 'image' => '/img/ewallet/linkaja.png',
+            'value' => 'oyindonesia-linkaja', 'label' => 'LINKAJA', 'image' => '/img/ewallet/linkaja.png',
         ];
         */
         
-        
+        $grouped_payment[] = [
+            'label' => 'QRIS',
+            'options' => $qrcode_list
+        ];
         
         $grouped_payment[] = [
             'label' => 'E-wallet',
             'options' => $ewallet_list
         ];
-        $grouped_payment[] = [
-            'label' => 'QRIS',
-            'options' => $qrcode_list
-        ];
-        /*
+        
+        
         $grouped_payment[] = [
             'label' => 'Bank transfer',
             'options' => $bank_transfer_list
         ];
-        */
+        
         
         $dataShoppingcart[] = array(
                 'id' => $shoppingcart->session_id,

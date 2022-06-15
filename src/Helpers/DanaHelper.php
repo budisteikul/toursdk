@@ -80,15 +80,26 @@ class DanaHelper {
 
         $data1 = json_decode($data1, true);
 
-        if($data1['response']['body']['resultInfo']['resultStatus']!="S")
+        
+        if($data1['response']['body']['resultInfo']['resultCode']=="SYSTEM_ERROR")
 	    {
               $status_json->id = '0';
-              $status_json->message = 'Failed to create transaction';
+              $status_json->message = 'Failed to create transaction, please try again';
 
               $response_json->status = $status_json;
 
 		      return $response_json;
 	    }
+
+        if($data1['response']['body']['resultInfo']['resultCode']=="AMOUNT_EXCEEDS_LIMIT")
+        {
+              $status_json->id = '0';
+              $status_json->message = 'Order amount exceeds limit, try another payment method';
+
+              $response_json->status = $status_json;
+
+              return $response_json;
+        }
 	    
         $redirect_url = $data1['response']['body']['checkoutUrl'];
         $acquirementId = $data1['response']['body']['acquirementId'];

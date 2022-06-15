@@ -67,7 +67,9 @@ class DanaHelper {
 
     public static function createPayment($data)
     {
-        $response = new \stdClass();
+        $status_json = new \stdClass();
+        $data_json = new \stdClass();
+        $response_json = new \stdClass();
 
         $data->transaction->mins_expired = 60;
         $data->transaction->date_expired = Carbon::parse($data->transaction->date_now)->addMinutes($data->transaction->mins_expired);
@@ -78,27 +80,37 @@ class DanaHelper {
 
         $data1 = json_decode($data1, true);
 
-        
         if($data1['response']['body']['resultInfo']['resultStatus']!="S")
 	    {
-		      return "error";
+              $status_json->id = '0';
+              $status_json->message = 'Failed to create transaction';
+
+              $response_json->status = $status_json;
+
+		      return $response_json;
 	    }
 	    
         $redirect_url = $data1['response']['body']['checkoutUrl'];
         $acquirementId = $data1['response']['body']['acquirementId'];
        
         $data2 = self::danaCreateSPI($data,$acquirementId);
-        //print_r($data2);
-        //exit();
         
-        $response->authorization_id = $acquirementId;
-        $response->bank_name = 'dana';
-        $response->link = null;
-        $response->expiration_date = $data->transaction->date_expired;
-        $response->order_id = $data->transaction->id;
-        $response->payment_type = 'ewallet';
-        $response->redirect = $redirect_url;
-        return $response;
+        
+        $status_json->id = '1';
+        $status_json->message = 'success';
+        
+        $data_json->authorization_id = $acquirementId;
+        $data_json->bank_name = 'dana';
+        $data_json->link = null;
+        $data_json->expiration_date = $data->transaction->date_expired;
+        $data_json->order_id = $data->transaction->id;
+        $data_json->payment_type = 'ewallet';
+        $data_json->redirect = $redirect_url;
+
+        $response_json->status = $status_json;
+        $response_json->data = $data_json;
+
+        return $response_json;
     }
 
     public static function danaCreateSPI($data,$acquirementId)

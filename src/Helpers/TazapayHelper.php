@@ -86,6 +86,9 @@ class TazapayHelper {
     public static function createPayment($data)
     {
         $payment = self::bankCode($data->transaction->bank);
+
+        $data = new \stdClass();
+        $status = new \stdClass();
         $response = new \stdClass();
         
         $data->transaction->mins_expired = 60;

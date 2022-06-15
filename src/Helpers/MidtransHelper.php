@@ -115,21 +115,24 @@ class MidtransHelper {
 
   public static function createPayment($data)
   {
+        $data_json = new \stdClass();
+        $status_json = new \stdClass();
+        $response_json = new \stdClass();
+
         $payment = self::bankCode($data->transaction->bank);
 
-        $response = new \stdClass();
         if($payment->bank_payment_type=="permata_va")
         {
           $data1 = MidtransHelper::createSnap($data,$payment);
           $data2 = MidtransHelper::chargeSnap($data1->token,$data,$payment);
 
-          $response->payment_type = 'bank_transfer';
-          $response->bank_name = $payment->bank_name;
-          $response->bank_code = $payment->bank_code;
-          $response->va_number = $data2['permata_va_number'];
-          $response->expiration_date = $data->transaction->date_expired;
-          $response->order_id = $data->transaction->id;
-          $response->redirect = $data->transaction->finish_url;
+          $data_json->payment_type = 'bank_transfer';
+          $data_json->bank_name = $payment->bank_name;
+          $data_json->bank_code = $payment->bank_code;
+          $data_json->va_number = $data2['permata_va_number'];
+          $data_json->expiration_date = $data->transaction->date_expired;
+          $data_json->order_id = $data->transaction->id;
+          $data_json->redirect = $data->transaction->finish_url;
         }
         else if($payment->bank_payment_type=="gopay")
         {
@@ -139,13 +142,13 @@ class MidtransHelper {
           $data1 = MidtransHelper::createSnap($data,$payment);
           $data2 = MidtransHelper::chargeSnap($data1->token,$data,$payment);
           
-          $response->bank_name = $payment->bank_name;
-          $response->link = null;
-          $response->expiration_date = $data->transaction->date_expired;
-          $response->order_id = $data->transaction->id;
-          $response->payment_type = 'ewallet';
+          $data_json->bank_name = $payment->bank_name;
+          $data_json->link = null;
+          $data_json->expiration_date = $data->transaction->date_expired;
+          $data_json->order_id = $data->transaction->id;
+          $data_json->payment_type = 'ewallet';
           //$response->redirect = str_ireplace("gojek://","https://gojek.link/",$data2['deeplink_url']);
-          $response->redirect = $data2['deeplink_url'];
+          $data_json->redirect = $data2['deeplink_url'];
         }
         else if($payment->bank_payment_type=="qris")
         {
@@ -155,14 +158,14 @@ class MidtransHelper {
           $data1 = MidtransHelper::createSnap($data,$payment);
           $data2 = MidtransHelper::chargeSnap($data1->token,$data,$payment);
           
-          $response->bank_name = $payment->bank_name;
-          $response->qrcode = $data2['qr_string'];
-          $response->link = null;
-          $response->expiration_date = $data->transaction->date_expired;
-          $response->order_id = $data->transaction->id;
+          $data_json->bank_name = $payment->bank_name;
+          $data_json->qrcode = $data2['qr_string'];
+          $data_json->link = null;
+          $data_json->expiration_date = $data->transaction->date_expired;
+          $data_json->order_id = $data->transaction->id;
 
-          $response->payment_type = 'qrcode';
-          $response->redirect = $data->transaction->finish_url;
+          $data_json->payment_type = 'qrcode';
+          $data_json->redirect = $data->transaction->finish_url;
         }
         else if($payment->bank_payment_type=="shopeepay")
         {
@@ -172,43 +175,50 @@ class MidtransHelper {
           $data1 = MidtransHelper::createSnap($data,$payment);
           $data2 = MidtransHelper::chargeSnap($data1->token,$data,$payment);
           
-          $response->bank_name = $payment->bank_name;
-          $response->link = null;
-          $response->expiration_date = $data->transaction->date_expired;
-          $response->order_id = $data->transaction->id;
+          $data_json->bank_name = $payment->bank_name;
+          $data_json->link = null;
+          $data_json->expiration_date = $data->transaction->date_expired;
+          $data_json->order_id = $data->transaction->id;
 
-          $response->payment_type = 'ewallet';
-          $response->redirect = $data2['deeplink_url'];
+          $data_json->payment_type = 'ewallet';
+          $data_json->redirect = $data2['deeplink_url'];
         }
         else if($payment->bank_payment_type=="echannel")
         {
           $data1 = MidtransHelper::createSnap($data,$payment);
           $data2 = MidtransHelper::chargeSnap($data1->token,$data,$payment);
 
-          $response->payment_type = 'bank_transfer';
-          $response->bank_name = $payment->bank_name;
-          $response->bank_code = $data2['biller_code'];
-          $response->va_number = $data2['bill_key'];
-          $response->redirect = $data->transaction->finish_url;
-          $response->expiration_date = $data->transaction->date_expired;
-          $response->order_id = $data->transaction->id;
+          $data_json->payment_type = 'bank_transfer';
+          $data_json->bank_name = $payment->bank_name;
+          $data_json->bank_code = $data2['biller_code'];
+          $data_json->va_number = $data2['bill_key'];
+          $data_json->redirect = $data->transaction->finish_url;
+          $data_json->expiration_date = $data->transaction->date_expired;
+          $data_json->order_id = $data->transaction->id;
         }
         else
         {
           $data1 = MidtransHelper::createSnap($data,$payment);
           $data2 = MidtransHelper::chargeSnap($data1->token,$data,$payment);
 
-          $response->payment_type = 'bank_transfer';
-          $response->bank_name = $payment->bank_name;
-          $response->bank_code = $payment->bank_code;
-          $response->va_number = $data2['va_numbers'][0]['va_number'];
-          $response->redirect = $data->transaction->finish_url;
-          $response->expiration_date = $data->transaction->date_expired;
-          $response->order_id = $data->transaction->id;
+          $data_json->payment_type = 'bank_transfer';
+          $data_json->bank_name = $payment->bank_name;
+          $data_json->bank_code = $payment->bank_code;
+          $data_json->va_number = $data2['va_numbers'][0]['va_number'];
+          $data_json->redirect = $data->transaction->finish_url;
+          $data_json->expiration_date = $data->transaction->date_expired;
+          $data_json->order_id = $data->transaction->id;
         }
 
-        $response->authorization_id = $data1->token;
-        return $response;
+        $data_json->authorization_id = $data1->token;
+
+        $status_json->id = '1';
+        $status_json->message = 'success';
+        
+        $response_json->status = $status_json;
+        $response_json->data = $data_json;
+        
+        return $response_json;
   }
 
 	public static function createSnap($data,$payment)

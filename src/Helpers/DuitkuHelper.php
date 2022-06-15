@@ -106,9 +106,11 @@ class DuitkuHelper {
 
     public static function createPayment($data)
     {
-    	  
+    	$data_json = new \stdClass();
+        $status_json = new \stdClass();
+        $response_json = new \stdClass();
+
         $payment = self::bankCode($data->transaction->bank);
-        $response = new \stdClass();
 
         $data->transaction->mins_expired = 60;
         $data->transaction->date_expired = Carbon::parse($data->transaction->date_now)->addMinutes($data->transaction->mins_expired);
@@ -140,19 +142,19 @@ class DuitkuHelper {
             print_r($data2);
             exit();
 
-            $response->payment_type = 'ewallet';
-            $response->redirect = $data1->paymentUrl;
+            $data_json->payment_type = 'ewallet';
+            $data_json->redirect = $data1->paymentUrl;
         }
         else if($payment->bank_payment_type=="LQ")
         {
             $data1 = self::createTransaction($data,$payment);
 
-            $response->bank_name = $payment->bank_name;
-            $response->qrcode = $data1->qrString;
-            $response->link = null;
+            $data_json->bank_name = $payment->bank_name;
+            $data_json->qrcode = $data1->qrString;
+            $data_json->link = null;
             
-            $response->payment_type = 'qris';
-            $response->redirect = $data->transaction->finish_url;
+            $data_json->payment_type = 'qris';
+            $data_json->redirect = $data->transaction->finish_url;
             
         }
         else if($payment->bank_payment_type=="DA")
@@ -166,25 +168,31 @@ class DuitkuHelper {
             exit();
 
             
-            $response->payment_type = 'ewallet';
-            $response->redirect = $data1->paymentUrl;
+            $data_json->payment_type = 'ewallet';
+            $data_json->redirect = $data1->paymentUrl;
         }
         else
         {
             $data1 = self::createSnap($data);
             $data2 = self::createCharge($data1->reference,$payment);
-            $response->payment_type = 'bank_transfer';
-            $response->va_number = $data2->vaNumber;
-            $response->redirect = $data->transaction->finish_url;
+            $data_json->payment_type = 'bank_transfer';
+            $data_json->va_number = $data2->vaNumber;
+            $data_json->redirect = $data->transaction->finish_url;
         }
 		
-        $response->authorization_id = $data1->reference;
-        $response->bank_name = $payment->bank_name;
-        $response->bank_code = $payment->bank_code;
-        $response->expiration_date = $data->transaction->date_expired;
-        $response->order_id = $data->transaction->id;
+        $data_json->authorization_id = $data1->reference;
+        $data_json->bank_name = $payment->bank_name;
+        $data_json->bank_code = $payment->bank_code;
+        $data_json->expiration_date = $data->transaction->date_expired;
+        $data_json->order_id = $data->transaction->id;
         
-        return $response;
+        $status_json->id = '1';
+        $status_json->message = 'success';
+        
+        $response_json->status = $status_json;
+        $response_json->data = $data_json;
+        
+        return $response_json;
     }
 
     public static function createCharge($token,$payment,$param1="")

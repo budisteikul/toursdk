@@ -2077,24 +2077,24 @@ class BookingHelper {
 				$payment_status = 0;
 		}
 
-		if($response=="error")
+		if($response->status->id=="0")
 		{
+			unset($response->data);
 			return $response;
 		}
 
-		if(isset($response->payment_type)) $payment_type = $response->payment_type;
-		if(isset($response->bank_name)) $bank_name = $response->bank_name;
-		if(isset($response->bank_code)) $bank_code = $response->bank_code;
-		if(isset($response->va_number)) $va_number = $response->va_number;
-		if(isset($response->qrcode)) $qrcode = $response->qrcode;
-		if(isset($response->link)) $link = $response->link;
-		if(isset($response->redirect)) $redirect = $response->redirect;
-		if(isset($response->expiration_date)) $expiration_date = $response->expiration_date;
-		if(isset($response->order_id)) $order_id = $response->order_id;
-		if(isset($response->authorization_id)) $authorization_id = $response->authorization_id;
-		if(isset($response->amount)) $amount = $response->amount;
-
-		if(isset($response->payment_description)) $bank_holder = $response->payment_description;
+		if(isset($response->data->payment_type)) $payment_type = $response->data->payment_type;
+		if(isset($response->data->bank_name)) $bank_name = $response->data->bank_name;
+		if(isset($response->data->bank_code)) $bank_code = $response->data->bank_code;
+		if(isset($response->data->va_number)) $va_number = $response->data->va_number;
+		if(isset($response->data->qrcode)) $qrcode = $response->data->qrcode;
+		if(isset($response->data->link)) $link = $response->data->link;
+		if(isset($response->data->redirect)) $redirect = $response->data->redirect;
+		if(isset($response->data->expiration_date)) $expiration_date = $response->data->expiration_date;
+		if(isset($response->data->order_id)) $order_id = $response->data->order_id;
+		if(isset($response->data->authorization_id)) $authorization_id = $response->data->authorization_id;
+		if(isset($response->data->amount)) $amount = $response->data->amount;
+		if(isset($response->data->payment_description)) $bank_holder = $response->data->payment_description;
 
 		$ShoppingcartPayment = (object) array(
 			'payment_provider' => $payment_provider,

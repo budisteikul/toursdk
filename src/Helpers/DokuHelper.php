@@ -108,9 +108,11 @@ class DokuHelper {
 
     public static function createPayment($data)
     {
+        $data_json = new \stdClass();
+        $status_json = new \stdClass();
+        $response_json = new \stdClass();
+        
         $payment = self::bankCode($data->transaction->bank);
-
-        $response = new \stdClass();
 
         if($payment->bank_payment_type=="qrcode")
         {
@@ -120,8 +122,8 @@ class DokuHelper {
             $data1 = self::createSnap($data);
             $data2 = self::createCharge($data1->response->payment->token_id,$data,$payment);
 
-            $response->payment_type = 'qrcode';
-            $response->qrcode = $data2->qr_code;
+            $data_json->payment_type = 'qrcode';
+            $data_json->qrcode = $data2->qr_code;
         }
         else if($payment->bank_payment_type=="ovo")
         {
@@ -147,19 +149,25 @@ class DokuHelper {
             $data1 = self::createSnap($data);
             $data2 = self::createCharge($data1->response->payment->token_id,$data,$payment);
 
-            $response->payment_type = 'bank_transfer';
-            $response->va_number = $data2->payment_code;
-            $response->link = $data2->how_to_pay_url;
+            $data_json->payment_type = 'bank_transfer';
+            $data_json->va_number = $data2->payment_code;
+            $data_json->link = $data2->how_to_pay_url;
         }
 
-        $response->authorization_id = $data1->response->payment->token_id;
-        $response->bank_name = $payment->bank_name;
-        $response->bank_code = $payment->bank_code;
-        $response->redirect = $data->transaction->finish_url;
-        $response->expiration_date = $data->transaction->date_expired;
-        $response->order_id = $data->transaction->id;
+        $data_json->authorization_id = $data1->response->payment->token_id;
+        $data_json->bank_name = $payment->bank_name;
+        $data_json->bank_code = $payment->bank_code;
+        $data_json->redirect = $data->transaction->finish_url;
+        $data_json->expiration_date = $data->transaction->date_expired;
+        $data_json->order_id = $data->transaction->id;
         
-        return $response;
+        $status_json->id = '1';
+        $status_json->message = 'success';
+        
+        $response_json->status = $status_json;
+        $response_json->data = $data_json;
+
+        return $response_json;
     }
 
 

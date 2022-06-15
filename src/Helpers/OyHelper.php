@@ -220,9 +220,11 @@ class OyHelper {
 
   public static function createPayment($data)
   {
-        $payment = self::bankCode($data->transaction->bank);
+        $data_json = new \stdClass();
+        $status_json = new \stdClass();
+        $response_json = new \stdClass();
 
-        $response = new \stdClass();
+        $payment = self::bankCode($data->transaction->bank);
 
         if($payment->bank_payment_type=="qris_shopee")
         {
@@ -233,14 +235,14 @@ class OyHelper {
           $data1 = self::createSnap($data);
           $data2 = self::createCharge($data,$data1->authorization_id,$payment);
 
-          $response->payment_type = 'qrcode';
-          $response->bank_name = $payment->bank_name;
-          $response->qrcode = $data2->data->qris_content;
-          $response->authorization_id = $data1->authorization_id;
-          $response->link = self::oyLink($data1->authorization_id);
-          $response->redirect = $data->transaction->finish_url;
-          $response->expiration_date = $data->transaction->date_expired;
-          $response->order_id = $data->transaction->id;
+          $data_json->payment_type = 'qrcode';
+          $data_json->bank_name = $payment->bank_name;
+          $data_json->qrcode = $data2->data->qris_content;
+          $data_json->authorization_id = $data1->authorization_id;
+          $data_json->link = self::oyLink($data1->authorization_id);
+          $data_json->redirect = $data->transaction->finish_url;
+          $data_json->expiration_date = $data->transaction->date_expired;
+          $data_json->order_id = $data->transaction->id;
         }
         else if($payment->bank_payment_type=="shopeepay_ewallet" || $payment->bank_payment_type=="linkaja_ewallet" || $payment->bank_payment_type=="dana_ewallet")
         {
@@ -269,15 +271,15 @@ class OyHelper {
               $ewallet_url = str_replace("https://link.dana.id/pay","https://m.dana.id/m/portal/cashier/checkout",$ewallet_url);
           }
 
-          $response->payment_type = 'ewallet';
-          $response->bank_name = $payment->bank_name;
-          $response->bank_code = null;
-          $response->va_number = null;
-          $response->authorization_id = null;
-          $response->link = null;
-          $response->redirect = $ewallet_url;
-          $response->expiration_date = $data->transaction->date_expired;
-          $response->order_id = $data->transaction->id;
+          $data_json->payment_type = 'ewallet';
+          $data_json->bank_name = $payment->bank_name;
+          $data_json->bank_code = null;
+          $data_json->va_number = null;
+          $data_json->authorization_id = null;
+          $data_json->link = null;
+          $data_json->redirect = $ewallet_url;
+          $data_json->expiration_date = $data->transaction->date_expired;
+          $data_json->order_id = $data->transaction->id;
         }
         else
         {
@@ -299,18 +301,24 @@ class OyHelper {
 
           $data1 = self::createVA($init_data);
 
-          $response->payment_type = 'bank_transfer';
-          $response->bank_name = $payment->bank_name;
-          $response->bank_code = $data1->bank_code;
-          $response->va_number = $data1->va_number;
-          $response->authorization_id = null;
-          $response->link = null;
-          $response->redirect = $data->transaction->finish_url;
-          $response->expiration_date = $data->transaction->date_expired;
-          $response->order_id = $data->transaction->id;
+          $data_json->payment_type = 'bank_transfer';
+          $data_json->bank_name = $payment->bank_name;
+          $data_json->bank_code = $data1->bank_code;
+          $data_json->va_number = $data1->va_number;
+          $data_json->authorization_id = null;
+          $data_json->link = null;
+          $data_json->redirect = $data->transaction->finish_url;
+          $data_json->expiration_date = $data->transaction->date_expired;
+          $data_json->order_id = $data->transaction->id;
         }
        
-        return $response;
+        $status_json->id = '1';
+        $status_json->message = 'success';
+        
+        $response_json->status = $status_json;
+        $response_json->data = $data_json;
+        
+        return $response_json;
   }
 
   public static function status($token)

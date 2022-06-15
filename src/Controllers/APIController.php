@@ -1154,10 +1154,11 @@ class APIController extends Controller
                     $response = BookingHelper::create_payment($sessionId,$payment_provider,$payment_bank);
             }
 
-            if($response=="error")
+            if($response->status->id=="0")
             {
                 return response()->json([
-                    'message' => 'Error create transaction',
+                    'id' => "0",
+                    'message' => $response->status->message,
                 ]);
             }
 

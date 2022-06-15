@@ -29,9 +29,19 @@ class StripeHelper {
   			//'capture_method' => 'manual',
 		]);
 
-  		$response = new \stdClass();
-  		$response->intent = $intent;
-  		$response->authorization_id = $intent->id;
-		return $response;
+      $data_json = new \stdClass();
+      $status_json = new \stdClass();
+      $response_json = new \stdClass();
+      
+  		$data_json->intent = $intent;
+  		$data_json->authorization_id = $intent->id;
+
+      $status_json->id = '1';
+      $status_json->message = 'success';
+        
+      $response_json->status = $status_json;
+      $response_json->data = $data_json;
+
+		return $response_json;
   	}
 }

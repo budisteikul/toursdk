@@ -77,6 +77,11 @@ class PaydiaHelper {
 
   public static function createPayment($data)
   {
+
+        $data_json = new \stdClass();
+        $status_json = new \stdClass();
+        $response_json = new \stdClass();
+
   		  $url = self::paydiaApiEndpoint();
         $endpoint = $url . '/qris/generate/';
 
@@ -94,7 +99,7 @@ class PaydiaHelper {
 
        
         
-        $data_json = [
+        $payload_json = [
         	'merchantid' => self::env_paydiaMid(),
         	'nominal' => (int)$data->transaction->amount,
         	'tip' => 0,
@@ -107,7 +112,7 @@ class PaydiaHelper {
         $client = new \GuzzleHttp\Client(['headers' => $headers,'http_errors' => false]);
         $response = $client->request('POST',$endpoint,
           [
-            'json' => $data_json,
+            'json' => $payload_json,
             'proxy' => self::paydiaUseProxy()
           ]
         );
@@ -115,18 +120,26 @@ class PaydiaHelper {
     $data1 = $response->getBody()->getContents();
     $data1 = json_decode($data1);
 
-   
+    $data = new \stdClass();
+    $status = new \stdClass();
     $response = new \stdClass();
-    $response->bank_name = 'paydia';
-		$response->qrcode = $data1->rawqr;
-		$response->link = null;
-		$response->expiration_date = $data->transaction->date_expired;
-		$response->authorization_id = $signature;
-		$response->order_id = $data1->refid;
-		$response->payment_type = 'qrcode';
-		$response->redirect = $data->transaction->finish_url;
+    
+    $data_json->bank_name = 'paydia';
+		$data_json->qrcode = $data1->rawqr;
+		$data_json->link = null;
+		$data_json->expiration_date = $data->transaction->date_expired;
+		$data_json->authorization_id = $signature;
+		$data_json->order_id = $data1->refid;
+		$data_json->payment_type = 'qrcode';
+		$data_json->redirect = $data->transaction->finish_url;
 
-		return $response;
+    $status_json->id = '1';
+    $status_json->message = 'success';
+        
+    $response_json->status = $status_json;
+    $response_json->data = $data_json;
+
+		return $response_json;
   }
 
   public static function checkSignature($request)

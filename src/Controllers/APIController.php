@@ -1007,7 +1007,7 @@ class APIController extends Controller
             $sessionId = $request->header('sessionId');
             BookingHelper::set_confirmationCode($sessionId);
             $response = BookingHelper::create_payment($sessionId,"stripe");
-            return response()->json($response);
+            return response()->json($response->data);
     }
 
     public function createpaymentovo(Request $request)
@@ -1367,13 +1367,13 @@ class APIController extends Controller
 
                         } else {
                             
-                            if (result.data.paymentIntent.status === \'succeeded\' || result.data.paymentIntent.status === \'requires_capture\') {
+                            if (result.paymentIntent.status === \'succeeded\' || result.paymentIntent.status === \'requires_capture\') {
                                 
                                     
 
                                 $.ajax({
                                 data: {
-                                    "authorizationID": result.data.paymentIntent.id,
+                                    "authorizationID": result.paymentIntent.id,
                                     "sessionId": \''.$sessionId.'\',
                                 },
                                 type: \'POST\',
@@ -1393,6 +1393,9 @@ class APIController extends Controller
                                 }).fail(function(error) {
                                     
                                 });
+
+
+
 
 
                                 

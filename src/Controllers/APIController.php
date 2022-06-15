@@ -1367,13 +1367,13 @@ class APIController extends Controller
 
                         } else {
                             
-                            if (result.paymentIntent.status === \'succeeded\' || result.paymentIntent.status === \'requires_capture\') {
+                            if (result.data.paymentIntent.status === \'succeeded\' || result.data.paymentIntent.status === \'requires_capture\') {
                                 
                                     
 
                                 $.ajax({
                                 data: {
-                                    "authorizationID": result.paymentIntent.id,
+                                    "authorizationID": result.data.paymentIntent.id,
                                     "sessionId": \''.$sessionId.'\',
                                 },
                                 type: \'POST\',
@@ -1393,9 +1393,6 @@ class APIController extends Controller
                                 }).fail(function(error) {
                                     
                                 });
-
-
-
 
 
                                 

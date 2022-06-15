@@ -411,11 +411,11 @@ class ContentHelper {
             'value' => 'qris', 'label' => 'QRIS', 'image' => '/img/ewallet/qris.png',
         ];
 	    
-        /*
+        
         $ewallet_list[] = [
             'value' => 'dana', 'label' => 'DANA', 'image' => '/img/ewallet/dana.png',
         ];
-        */
+        
 
         $ewallet_list[] = [
             'value' => 'midtrans-gopay', 'label' => 'GOPAY', 'image' => '/img/ewallet/gopay.png',
@@ -435,15 +435,14 @@ class ContentHelper {
         */
         
         $grouped_payment[] = [
-            'label' => 'QRIS',
-            'options' => $qrcode_list
-        ];
-        
-        $grouped_payment[] = [
             'label' => 'E-wallet',
             'options' => $ewallet_list
         ];
-        
+
+        $grouped_payment[] = [
+            'label' => 'QRIS',
+            'options' => $qrcode_list
+        ];
         
         $grouped_payment[] = [
             'label' => 'Bank transfer',

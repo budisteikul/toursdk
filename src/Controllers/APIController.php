@@ -201,6 +201,8 @@ class APIController extends Controller
 
             $jscript = ' 
             
+            
+
             window.priceFormatter = new WidgetUtils.PriceFormatter({
                 currency: \''. $this->currency .'\',
                 language: \''. $this->lang .'\',
@@ -272,7 +274,10 @@ class APIController extends Controller
                 upcomingAvailabilities: [],
         
                 firstDayAvailabilities: '.json_encode($availability).'
-            };';   
+            };
+
+           
+            ';   
         }
         else
         {

@@ -437,7 +437,6 @@ class ContentHelper {
             'options' => $bank_transfer_list
         ];
         
-        
         $dataShoppingcart[] = array(
                 'id' => $shoppingcart->session_id,
                 'confirmation_code' => $shoppingcart->confirmation_code,

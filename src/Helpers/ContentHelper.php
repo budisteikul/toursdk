@@ -411,6 +411,7 @@ class ContentHelper {
             'value' => 'dana', 'label' => 'DANA', 'image' => '/img/ewallet/dana.png',
         ];
         */
+        
         $ewallet_list[] = [
             'value' => 'gopay', 'label' => 'GOPAY', 'image' => '/img/ewallet/gopay.png', 'currency' => 'idr',
         ];
@@ -455,15 +456,15 @@ class ContentHelper {
                 'payment_enable' => $payment_enable,
                 'localpayment_list' => $grouped_payment,
 
-                // Paynow Currency
+                /*
                 'paynow_currency' => 'SGD',
                 'paynow_total' => BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'SGD'),
                 'paynow_rate' => BookingHelper::text_rate($shoppingcart,'SGD'),
 
-                // POLI Currency
                 'poli_currency' => 'AUD',
                 'poli_total' => BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'AUD'),
                 'poli_rate' => BookingHelper::text_rate($shoppingcart,'AUD'),
+                */
 
                 // Paypal Currency
                 'paypal_currency' => self::env_paypalCurrency(),

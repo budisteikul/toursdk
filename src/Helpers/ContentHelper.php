@@ -381,69 +381,56 @@ class ContentHelper {
         */
         
         $bank_transfer_list[] = [
-            'value' => 'midtrans-permata', 'label' => 'PERMATA VA', 'image' => '/img/bank/permata.png',
+            'value' => 'permata', 'label' => 'PERMATA VA', 'image' => '/img/bank/permata.png',
         ];
         $bank_transfer_list[] = [
-            'value' => 'doku-mandiri', 'label' => 'MANDIRI VA', 'image' => '/img/bank/mandiri.png',
+            'value' => 'mandiri', 'label' => 'MANDIRI VA', 'image' => '/img/bank/mandiri.png',
         ];
         $bank_transfer_list[] = [
-            'value' => 'midtrans-bni', 'label' => 'BNI VA', 'image' => '/img/bank/bni.png',
+            'value' => 'bni', 'label' => 'BNI VA', 'image' => '/img/bank/bni.png',
         ];
         $bank_transfer_list[] = [
-            'value' => 'midtrans-bri', 'label' => 'BRI VA', 'image' => '/img/bank/bri.png',
+            'value' => 'bri', 'label' => 'BRI VA', 'image' => '/img/bank/bri.png',
         ];
         $bank_transfer_list[] = [
-            'value' => 'doku-danamon', 'label' => 'DANAMON VA', 'image' => '/img/bank/danamon.png',
+            'value' => 'danamon', 'label' => 'DANAMON VA', 'image' => '/img/bank/danamon.png',
         ];
         $bank_transfer_list[] = [
-            'value' => 'doku-cimb', 'label' => 'CIMB NIAGA VA',  'image' => '/img/bank/cimb.png',
+            'value' => 'cimb', 'label' => 'CIMB NIAGA VA',  'image' => '/img/bank/cimb.png',
         ];
-        /*
         $bank_transfer_list[] = [
-            'value' => 'doku-mandirisyariah', 'label' => 'BSI VA', 'image' => '/img/bank/bsi.png',
-        ];
-        */
-        $bank_transfer_list[] = [
-            'value' => 'doku-doku', 'label' => 'DOKU VA', 'image' => '/img/bank/doku.png',
+            'value' => 'doku', 'label' => 'DOKU VA', 'image' => '/img/bank/doku.png',
         ];
 	
         $qrcode_list[] = [
             'value' => 'qris', 'label' => 'QRIS', 'image' => '/img/ewallet/qris.png',
         ];
 	    
-        
+        /*
         $ewallet_list[] = [
             'value' => 'dana', 'label' => 'DANA', 'image' => '/img/ewallet/dana.png',
         ];
-        
-
+        */
         $ewallet_list[] = [
-            'value' => 'midtrans-gopay', 'label' => 'GOPAY', 'image' => '/img/ewallet/gopay.png',
+            'value' => 'gopay', 'label' => 'GOPAY', 'image' => '/img/ewallet/gopay.png',
         ];
         $ewallet_list[] = [
-            'value' => 'midtrans-shopeepay', 'label' => 'SHOPEEPAY', 'image' => '/img/ewallet/shopeepay.png',
+            'value' => 'shopeepay', 'label' => 'SHOPEEPAY', 'image' => '/img/ewallet/shopeepay.png',
         ];
         $ewallet_list[] = [
             'value' => 'ovo', 'label' => 'OVO', 'image' => '/img/ewallet/ovo.png',
         ];
         
-        
-        /*
-        $ewallet_list[] = [
-            'value' => 'oyindonesia-linkaja', 'label' => 'LINKAJA', 'image' => '/img/ewallet/linkaja.png',
+        $grouped_payment[] = [
+            'label' => 'QRIS',
+            'options' => $qrcode_list
         ];
-        */
-        
+
         $grouped_payment[] = [
             'label' => 'E-wallet',
             'options' => $ewallet_list
         ];
 
-        $grouped_payment[] = [
-            'label' => 'QRIS',
-            'options' => $qrcode_list
-        ];
-        
         $grouped_payment[] = [
             'label' => 'Bank transfer',
             'options' => $bank_transfer_list

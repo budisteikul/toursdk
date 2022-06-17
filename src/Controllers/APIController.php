@@ -54,6 +54,187 @@ class APIController extends Controller
         $this->midtransServerKey = env("MIDTRANS_SERVER_KEY");
     }
 
+    public function checkout(Request $request)
+    {
+            $validator = Validator::make(json_decode($request->getContent(), true), [
+                'sessionId' => ['required', 'string', 'max:255'],
+            ]);
+
+            if ($validator->fails()) {
+                $errors = $validator->errors();
+                return response()->json($errors);
+            }
+            
+            $data = json_decode($request->getContent(), true);
+
+            $sessionId = $data['sessionId'];
+            
+            $check_question = BookingHelper::check_question_json($sessionId,$data);
+            if(@count($check_question) > 0)
+            {
+                return response()->json($check_question);
+            }
+            $shoppingcart = BookingHelper::save_question_json($sessionId,$data);
+            
+            $payment = $data['payment'];
+
+            switch($payment)
+            {
+                case 'paypal':
+                    return response()->json([
+                        'message' => 'success',
+                        'payment' => 'paypal',
+                        'id' => 3
+                    ], 200);
+                break;
+
+                case 'stripe':
+                    return response()->json([
+                        'message' => 'success',
+                        'payment' => 'stripe',
+                        'id' => 3
+                    ]);
+                break;
+
+                case 'ovo':
+                    return response()->json([
+                        'message' => 'success',
+                        'payment' => 'ovo',
+                        'id' => 3
+                    ]);
+                break;
+
+                case 'qris':
+                    BookingHelper::set_bookingStatus($sessionId,'PENDING');
+                    BookingHelper::set_confirmationCode($sessionId);
+                    $response = BookingHelper::create_payment($sessionId,"midtrans","gopay_qris");
+                break;
+
+                case 'shopeepay':
+                    BookingHelper::set_bookingStatus($sessionId,'PENDING');
+                    BookingHelper::set_confirmationCode($sessionId);
+                    $response = BookingHelper::create_payment($sessionId,"midtrans","shopeepay");
+                break;
+
+                case 'gopay':
+                    BookingHelper::set_bookingStatus($sessionId,'PENDING');
+                    BookingHelper::set_confirmationCode($sessionId);
+                    $response = BookingHelper::create_payment($sessionId,"midtrans","gopay");
+                break;
+                
+                case 'dana':
+                    BookingHelper::set_bookingStatus($sessionId,'PENDING');
+                    BookingHelper::set_confirmationCode($sessionId);
+                    $response = BookingHelper::create_payment($sessionId,"dana","");
+                break;
+
+                case 'permata':
+                    BookingHelper::set_bookingStatus($sessionId,'PENDING');
+                    BookingHelper::set_confirmationCode($sessionId);
+                    $response = BookingHelper::create_payment($sessionId,"midtrans","permata");
+                break;
+
+                case 'mandiri':
+                    BookingHelper::set_bookingStatus($sessionId,'PENDING');
+                    BookingHelper::set_confirmationCode($sessionId);
+                    $response = BookingHelper::create_payment($sessionId,"doku","mandiri");
+                break;
+
+                case 'bni':
+                    BookingHelper::set_bookingStatus($sessionId,'PENDING');
+                    BookingHelper::set_confirmationCode($sessionId);
+                    $response = BookingHelper::create_payment($sessionId,"midtrans","bni");
+                break;
+
+                case 'bri':
+                    BookingHelper::set_bookingStatus($sessionId,'PENDING');
+                    BookingHelper::set_confirmationCode($sessionId);
+                    $response = BookingHelper::create_payment($sessionId,"midtrans","bri");
+                break;
+
+                case 'danamon':
+                    BookingHelper::set_bookingStatus($sessionId,'PENDING');
+                    BookingHelper::set_confirmationCode($sessionId);
+                    $response = BookingHelper::create_payment($sessionId,"doku","danamon");
+                break;
+
+                case 'cimb':
+                    BookingHelper::set_bookingStatus($sessionId,'PENDING');
+                    BookingHelper::set_confirmationCode($sessionId);
+                    $response = BookingHelper::create_payment($sessionId,"doku","cimb");
+                break;
+
+                case 'doku':
+                    BookingHelper::set_bookingStatus($sessionId,'PENDING');
+                    BookingHelper::set_confirmationCode($sessionId);
+                    $response = BookingHelper::create_payment($sessionId,"doku","doku");
+                break;
+
+                case 'paynow':
+                    BookingHelper::set_bookingStatus($sessionId,'PENDING');
+                    BookingHelper::set_confirmationCode($sessionId);
+                    $response = BookingHelper::create_payment($sessionId,"tazapay","paynow");
+                break;
+
+                case 'poli':
+                    BookingHelper::set_bookingStatus($sessionId,'PENDING');
+                    BookingHelper::set_confirmationCode($sessionId);
+                    $response = BookingHelper::create_payment($sessionId,"tazapay","poli");
+                break;
+
+                default:
+                    $payment_arr = explode("-",$payment);
+
+                    $payment_provider = NULL;
+                    $payment_bank = NULL;
+
+                    if(isset($payment_arr[0])) $payment_provider = $payment_arr[0];
+                    if(isset($payment_arr[1])) $payment_bank = $payment_arr[1];
+
+                    BookingHelper::set_bookingStatus($sessionId,'PENDING');
+                    BookingHelper::set_confirmationCode($sessionId);
+                    $response = BookingHelper::create_payment($sessionId,$payment_provider,$payment_bank);
+            }
+
+            if($response->status->id=="0")
+            {
+                return response()->json([
+                    'id' => "0",
+                    'message' => $response->status->message,
+                ]);
+            }
+
+            $shoppingcart = BookingHelper::confirm_booking($sessionId);
+            
+            $text = null;
+            $session_id = $shoppingcart->session_id;
+            $confirmation_code = $shoppingcart->confirmation_code;
+            $redirect_type = 1;
+            $redirect = $shoppingcart->shoppingcart_payment->redirect;
+
+            if($shoppingcart->shoppingcart_payment->payment_type=="ewallet")
+            {
+                $redirect_type = 2;
+                $text = '<strong>Click to pay with <img class="ml-2 mr-2" src="/img/ewallet/'.$shoppingcart->shoppingcart_payment->bank_name.'-light.png" height="30" /></strong>';
+            }
+
+            if($shoppingcart->shoppingcart_payment->payment_type=="bank_redirect")
+            {
+                $redirect_type = 4;
+            }
+
+
+            return response()->json([
+                "message" => "success",
+                "id" => $redirect_type,
+                "redirect" => $redirect,
+                "text" => $text,
+                "session_id" => $session_id,
+                "confirmation_code" => $confirmation_code
+            ]);
+            
+    }
+    
     public function product_add(Request $request)
     {
         $data = json_decode($request->getContent(), true);
@@ -1068,135 +1249,7 @@ class APIController extends Controller
 
     }
 
-    public function checkout(Request $request)
-    {
-            $validator = Validator::make(json_decode($request->getContent(), true), [
-                'sessionId' => ['required', 'string', 'max:255'],
-            ]);
-
-            if ($validator->fails()) {
-                $errors = $validator->errors();
-                return response()->json($errors);
-            }
-            
-            $data = json_decode($request->getContent(), true);
-
-            $sessionId = $data['sessionId'];
-            
-            $check_question = BookingHelper::check_question_json($sessionId,$data);
-            if(@count($check_question) > 0)
-            {
-                return response()->json($check_question);
-            }
-            $shoppingcart = BookingHelper::save_question_json($sessionId,$data);
-            
-            $payment = $data['payment'];
-
-            switch($payment)
-            {
-                case 'paypal':
-                    return response()->json([
-                        'message' => 'success',
-                        'payment' => 'paypal',
-                        'id' => 3
-                    ], 200);
-                break;
-
-                case 'stripe':
-                    return response()->json([
-                        'message' => 'success',
-                        'payment' => 'stripe',
-                        'id' => 3
-                    ]);
-                break;
-
-                case 'ovo':
-                    return response()->json([
-                        'message' => 'success',
-                        'payment' => 'ovo',
-                        'id' => 3
-                    ]);
-                break;
-
-                
-
-                case 'qris':
-                    BookingHelper::set_bookingStatus($sessionId,'PENDING');
-                    BookingHelper::set_confirmationCode($sessionId);
-                    $response = BookingHelper::create_payment($sessionId,"midtrans","gopay_qris");
-                break;
-                
-
-                case 'dana':
-                    BookingHelper::set_bookingStatus($sessionId,'PENDING');
-                    BookingHelper::set_confirmationCode($sessionId);
-                    $response = BookingHelper::create_payment($sessionId,"dana","");
-                break;
-
-                case 'paynow':
-                    BookingHelper::set_bookingStatus($sessionId,'PENDING');
-                    BookingHelper::set_confirmationCode($sessionId);
-                    $response = BookingHelper::create_payment($sessionId,"tazapay","paynow");
-                break;
-
-                case 'poli':
-                    BookingHelper::set_bookingStatus($sessionId,'PENDING');
-                    BookingHelper::set_confirmationCode($sessionId);
-                    $response = BookingHelper::create_payment($sessionId,"tazapay","poli");
-                break;
-
-                default:
-                    $payment_arr = explode("-",$payment);
-
-                    $payment_provider = NULL;
-                    $payment_bank = NULL;
-
-                    if(isset($payment_arr[0])) $payment_provider = $payment_arr[0];
-                    if(isset($payment_arr[1])) $payment_bank = $payment_arr[1];
-
-                    BookingHelper::set_bookingStatus($sessionId,'PENDING');
-                    BookingHelper::set_confirmationCode($sessionId);
-                    $response = BookingHelper::create_payment($sessionId,$payment_provider,$payment_bank);
-            }
-
-            if($response->status->id=="0")
-            {
-                return response()->json([
-                    'id' => "0",
-                    'message' => $response->status->message,
-                ]);
-            }
-
-            $shoppingcart = BookingHelper::confirm_booking($sessionId);
-            
-            $text = null;
-            $session_id = $shoppingcart->session_id;
-            $confirmation_code = $shoppingcart->confirmation_code;
-            $redirect_type = 1;
-            $redirect = $shoppingcart->shoppingcart_payment->redirect;
-
-            if($shoppingcart->shoppingcart_payment->payment_type=="ewallet")
-            {
-                $redirect_type = 2;
-                $text = '<strong>Click to pay with <img class="ml-2 mr-2" src="/img/ewallet/'.$shoppingcart->shoppingcart_payment->bank_name.'-light.png" height="30" /></strong>';
-            }
-
-            if($shoppingcart->shoppingcart_payment->payment_type=="bank_redirect")
-            {
-                $redirect_type = 4;
-            }
-
-
-            return response()->json([
-                "message" => "success",
-                "id" => $redirect_type,
-                "redirect" => $redirect,
-                "text" => $text,
-                "session_id" => $session_id,
-                "confirmation_code" => $confirmation_code
-            ]);
-            
-    }
+    
 
     public function ovo_jscript($sessionId)
     {

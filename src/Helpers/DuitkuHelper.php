@@ -133,13 +133,13 @@ class DuitkuHelper {
         }
         else if($payment->bank_payment_type=="LA")
         {
-            $data1 = self::createTransaction($data,$payment);
+            //$data1 = self::createTransaction($data,$payment);
 
-            //$data1 = self::createSnap($data);
-            //$data2 = self::createCharge($data1->reference,$payment);
+            $data1 = self::createSnap($data);
+            $data2 = self::createCharge($data1->reference,$payment);
 		
             print_r($data1);
-            //print_r($data2);
+            print_r($data2);
             exit();
 
             $data_json->payment_type = 'ewallet';

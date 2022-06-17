@@ -406,12 +406,12 @@ class ContentHelper {
             'value' => 'qris', 'label' => 'QRIS', 'image' => '/img/ewallet/qris.png', 'currency' => 'idr',
         ];
 	    
-        /*
-        $ewallet_list[] = [
-            'value' => 'dana', 'label' => 'DANA', 'image' => '/img/ewallet/dana.png',
-        ];
-        */
         
+        $ewallet_list[] = [
+            'value' => 'dana', 'label' => 'DANA', 'image' => '/img/ewallet/dana.png', 'currency' => 'idr',
+        ];
+        
+
         $ewallet_list[] = [
             'value' => 'gopay', 'label' => 'GOPAY', 'image' => '/img/ewallet/gopay.png', 'currency' => 'idr',
         ];

@@ -381,29 +381,29 @@ class ContentHelper {
         */
         
         $bank_transfer_list[] = [
-            'value' => 'permata', 'label' => 'PERMATA VA', 'image' => '/img/bank/permata.png',
+            'value' => 'permata', 'label' => 'PERMATA VA', 'image' => '/img/bank/permata.png', 'currency' => 'idr',
         ];
         $bank_transfer_list[] = [
-            'value' => 'mandiri', 'label' => 'MANDIRI VA', 'image' => '/img/bank/mandiri.png',
+            'value' => 'mandiri', 'label' => 'MANDIRI VA', 'image' => '/img/bank/mandiri.png', 'currency' => 'idr',
         ];
         $bank_transfer_list[] = [
-            'value' => 'bni', 'label' => 'BNI VA', 'image' => '/img/bank/bni.png',
+            'value' => 'bni', 'label' => 'BNI VA', 'image' => '/img/bank/bni.png', 'currency' => 'idr',
         ];
         $bank_transfer_list[] = [
-            'value' => 'bri', 'label' => 'BRI VA', 'image' => '/img/bank/bri.png',
+            'value' => 'bri', 'label' => 'BRI VA', 'image' => '/img/bank/bri.png', 'currency' => 'idr',
         ];
         $bank_transfer_list[] = [
-            'value' => 'danamon', 'label' => 'DANAMON VA', 'image' => '/img/bank/danamon.png',
+            'value' => 'danamon', 'label' => 'DANAMON VA', 'image' => '/img/bank/danamon.png', 'currency' => 'idr',
         ];
         $bank_transfer_list[] = [
-            'value' => 'cimb', 'label' => 'CIMB NIAGA VA',  'image' => '/img/bank/cimb.png',
+            'value' => 'cimb', 'label' => 'CIMB NIAGA VA',  'image' => '/img/bank/cimb.png', 'currency' => 'idr',
         ];
         $bank_transfer_list[] = [
-            'value' => 'doku', 'label' => 'DOKU VA', 'image' => '/img/bank/doku.png',
+            'value' => 'doku', 'label' => 'DOKU VA', 'image' => '/img/bank/doku.png', 'currency' => 'idr',
         ];
 	
         $qrcode_list[] = [
-            'value' => 'qris', 'label' => 'QRIS', 'image' => '/img/ewallet/qris.png',
+            'value' => 'qris', 'label' => 'QRIS', 'image' => '/img/ewallet/qris.png', 'currency' => 'idr',
         ];
 	    
         /*
@@ -412,13 +412,13 @@ class ContentHelper {
         ];
         */
         $ewallet_list[] = [
-            'value' => 'gopay', 'label' => 'GOPAY', 'image' => '/img/ewallet/gopay.png',
+            'value' => 'gopay', 'label' => 'GOPAY', 'image' => '/img/ewallet/gopay.png', 'currency' => 'idr',
         ];
         $ewallet_list[] = [
-            'value' => 'shopeepay', 'label' => 'SHOPEEPAY', 'image' => '/img/ewallet/shopeepay.png',
+            'value' => 'shopeepay', 'label' => 'SHOPEEPAY', 'image' => '/img/ewallet/shopeepay.png', 'currency' => 'idr',
         ];
         $ewallet_list[] = [
-            'value' => 'ovo', 'label' => 'OVO', 'image' => '/img/ewallet/ovo.png',
+            'value' => 'ovo', 'label' => 'OVO', 'image' => '/img/ewallet/ovo.png', 'currency' => 'idr',
         ];
         
         $grouped_payment[] = [
@@ -479,6 +479,21 @@ class ContentHelper {
                 'localpayment_currency' => 'IDR',
                 'localpayment_total' => GeneralHelper::numberFormat(BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'IDR')),
                 'localpayment_rate' => BookingHelper::text_rate($shoppingcart,'IDR'),
+
+                // IDR Currency
+                'idr_currency' => 'IDR',
+                'idr_total' => GeneralHelper::numberFormat(BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'IDR')),
+                'idr_rate' => BookingHelper::text_rate($shoppingcart,'IDR'),
+
+                // SGD Currency
+                'sgd_currency' => 'SGD',
+                'sgd_total' => BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'SGD'),
+                'sgd_rate' => BookingHelper::text_rate($shoppingcart,'SGD'),
+
+                // AUD Currency
+                'aud_currency' => 'AUD',
+                'aud_total' => BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'AUD'),
+                'aud_rate' => BookingHelper::text_rate($shoppingcart,'AUD'),
 
             );
 

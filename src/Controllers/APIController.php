@@ -110,6 +110,18 @@ class APIController extends Controller
                     $response = BookingHelper::create_payment($sessionId,"midtrans","gopay_qris");
                 break;
 
+                case 'gopay_qris':
+                    BookingHelper::set_bookingStatus($sessionId,'PENDING');
+                    BookingHelper::set_confirmationCode($sessionId);
+                    $response = BookingHelper::create_payment($sessionId,"midtrans","gopay_qris");
+                break;
+
+                case 'shopeepay_qris':
+                    BookingHelper::set_bookingStatus($sessionId,'PENDING');
+                    BookingHelper::set_confirmationCode($sessionId);
+                    $response = BookingHelper::create_payment($sessionId,"midtrans","shopeepay_qris");
+                break;
+
                 case 'shopeepay':
                     BookingHelper::set_bookingStatus($sessionId,'PENDING');
                     BookingHelper::set_confirmationCode($sessionId);

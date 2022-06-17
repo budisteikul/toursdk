@@ -244,7 +244,7 @@ class BookingHelper {
 	
 	public static function insert_shoppingcart($contents,$id)
 	{
-
+		
 		Cache::forget('_'. $id);
 		
 		$activity = $contents->activityBookings;

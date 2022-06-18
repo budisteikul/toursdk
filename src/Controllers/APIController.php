@@ -47,6 +47,40 @@ class APIController extends Controller
         
     }
 
+
+    public function review_count()
+    {
+        $rating = Review::sum('rating');
+        $count = Review::count();
+
+        $rate_count = $count;
+        if($rate_count==0) $rate_count = 1;
+
+        $rate = $rating/$rate_count;
+        if ( strpos( $rate, "." ) !== false ) {
+            $rate = number_format((float)$rate, 2, '.', '');
+        }
+
+        return response()->json([
+            'message' => 'success',
+            'count' => $count,
+            'rate' => $rate
+        ], 200);
+    }
+
+    public function review_rate()
+    {
+        $rating = Review::sum('rating');
+        $count = Review::count();
+        if($count==0) $count = 1;
+
+        $rate = $rating/$count;
+        if ( strpos( $rate, "." ) !== false ) {
+            $rate = number_format((float)$rate, 2, '.', '');
+        }
+        return $rate;
+    }
+
     public function __construct()
     {
         $this->currency = env("BOKUN_CURRENCY");
@@ -313,14 +347,7 @@ class APIController extends Controller
         ], 200);
     }
 
-    public function review_count()
-    {
-        $count = Review::count();
-        return response()->json([
-            'message' => 'success',
-            'count' => $count
-        ], 200);
-    }
+
  
     public function categories()
     {

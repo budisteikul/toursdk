@@ -64,7 +64,7 @@ class APIController extends Controller
         return response()->json([
             'message' => 'success',
             'count' => $count,
-            'rate' => $rate
+            'rate' => '('. $rate .')'
         ], 200);
     }
 

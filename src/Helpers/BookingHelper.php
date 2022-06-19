@@ -1884,6 +1884,9 @@ class BookingHelper {
 		{
 			case "tazapay":
 				$payment_provider = 'tazapay';
+				
+
+
 				if($data->transaction->bank=="paynow")
 				{
 					$amount = number_format(self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'SGD'), 0, '.','');

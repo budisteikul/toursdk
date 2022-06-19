@@ -87,9 +87,9 @@ class TazapayHelper {
     {
         $payment = self::bankCode($data->transaction->bank);
 
-        $data = new \stdClass();
-        $status = new \stdClass();
-        $response = new \stdClass();
+        $data_json = new \stdClass();
+        $status_json = new \stdClass();
+        $response_json = new \stdClass();
         
         $data->transaction->mins_expired = 60;
         $data->transaction->date_expired = Carbon::parse($data->transaction->date_now)->addMinutes($data->transaction->mins_expired);
@@ -101,6 +101,7 @@ class TazapayHelper {
             'first_name' => $data->contact->first_name,
             'last_name' => $data->contact->last_name,
         ];
+
 
         $tazapay = self::make_request('POST','/v1/user',$body);
         //print_r($tazapay);
@@ -137,7 +138,7 @@ class TazapayHelper {
 
         $tazapay = self::make_request('GET','/v1/session/payment/'.$auth_id);
         //print_r($tazapay);
-            
+        
         $body = [
                 'escrow_id' => $tazapay['data']['escrow_id'],
                 'payment_method' => $payment->bank_payment_method,
@@ -148,6 +149,9 @@ class TazapayHelper {
                 'is_first_payment' => false,
                 'redirect' => self::env_appUrl() . $data->transaction->finish_url
         ];
+
+        //print_r($body);
+        //exit();
 
         $tazapay = self::make_request('POST','/v1/escrow/payment',$body,$tazapay['data']['session_token']);
         
@@ -167,26 +171,32 @@ class TazapayHelper {
             $url = $disk->url('qrcode/'. $path .'/'.$data->transaction->confirmation_code.'.png');
             $qrcode = new QrReader($url);
 
-            $response->payment_type = 'qrcode';
-            $response->qrcode = $qrcode->text();
+            $data_json->payment_type = 'qrcode';
+            $data_json->qrcode = $qrcode->text();
 
-            $response->redirect = $data->transaction->finish_url;
+            $data_json->redirect = $data->transaction->finish_url;
         }
 
         if($payment->bank_payment_type=="bank_redirect")
         {
-            $response->payment_type = 'bank_redirect';
-            $response->redirect = $tazapay['data']['bank_redirect'];
+            $data_json->payment_type = 'bank_redirect';
+            $data_json->redirect = $tazapay['data']['bank_redirect'];
         }
 
         //$response->authorization_id = $data1['data']['id'];
-        $response->bank_name = $payment->bank_name;
-        $response->bank_code = $payment->bank_code;
+        $data_json->bank_name = $payment->bank_name;
+        $data_json->bank_code = $payment->bank_code;
             
-        $response->expiration_date = $data->transaction->date_expired;
-        $response->order_id = $txn_no;
+        $data_json->expiration_date = $data->transaction->date_expired;
+        $data_json->order_id = $txn_no;
+
+        $status_json->id = '1';
+        $status_json->message = 'success';
         
-        return $response;
+        $response_json->status = $status_json;
+        $response_json->data = $data_json;
+        
+        return $response_json;
     }
 
     public static function make_request($method, $path, $body = null, $session_token = null) 

@@ -46,98 +46,10 @@ class ContentHelper {
         return env("MIDTRANS_ENV");
     }
 
-
-
-	public static function view_receipt($shoppingcart)
-	{
-		$invoice = 'Invoiced to '.$shoppingcart->booking_channel;
-        try {
-            if($shoppingcart->booking_channel=="WEBSITE") {
-                if($shoppingcart->shoppingcart_payment->payment_status>0) {
-                    $invoice = '<a target="_blank" class="text-theme" href="'.url('/api').'/pdf/invoice/'. $shoppingcart->session_id .'/Invoice-'. $shoppingcart->confirmation_code .'.pdf"><i class="fas fa-file-invoice"></i> Invoice-'. $shoppingcart->confirmation_code .'.pdf</a><br />';
-                }
-            }
-        } catch (Exception $e) {
-
-        }
-
-        $ticket = '';
-        try {
-            if($shoppingcart->shoppingcart_payment->payment_status==2 || $shoppingcart->shoppingcart_payment->payment_status==1) {
-                foreach($shoppingcart->shoppingcart_products()->get() as $shoppingcart_product) {
-                    $ticket .= '<a target="_blank" class="text-theme" href="'.url('/api').'/pdf/ticket/'.$shoppingcart->session_id.'/Ticket-'.$shoppingcart_product->product_confirmation_code.'.pdf"><i class="fas fa-ticket-alt"></i> Ticket-'. $shoppingcart_product->product_confirmation_code .'.pdf</a>
-                                <br />';
-                }
-            }
-        } catch (Exception $e) {
-        }
+    public static function view_shoppingcart($shoppingcart)
+    {
         
-        if($ticket=="") $ticket = 'No Documents <br /><small class="form-text text-muted">* Available when status is paid</small>';
-        
-        $how_to_pay = array();
-        
-        if($shoppingcart->shoppingcart_payment->payment_type=="qrcode")
-        {
-            if($shoppingcart->shoppingcart_payment->payment_status==4)
-            {
-
-                $how_to_pay = '
-                    <div class="pl-2">
-                    1.  Open your <b>E-wallet</b> or <b>Mobile Banking</b> apps. <br />
-                    2.  <b>Scan</b> the QR code shown on your monitor. <br />
-                    <img width="230" class="mt-2 mb-2" src="'. self::env_appUrl() .'/img/qr-instruction.png">
-                    <br />
-                    3.  Check your payment details in the app, then tap <b>Pay</b>. <br />
-                    4.  Enter your <b>PIN</b>. <br />
-                    5.  Your transaction is complete. 
-                    </div><br />';
-            }
-        }
-
-        if($shoppingcart->shoppingcart_payment->payment_type=="bank_transfer")
-        {
-               
-                if($shoppingcart->shoppingcart_payment->payment_status==4)
-                {
-                    $how_to_pay = '<a target="_blank" class="text-theme" href="'.url('/api').'/pdf/manual/'. $shoppingcart->session_id .'/Manual-'. $shoppingcart->confirmation_code .'.pdf"><i class="fas fa-file-invoice"></i> Manual-'. $shoppingcart->confirmation_code .'.pdf</a><br />';
-                    
-                }
-                
-               
-        }
-
-        $payment_status_asText = BookingHelper::get_paymentStatus($shoppingcart);
-        $booking_status_asText = BookingHelper::get_bookingStatus($shoppingcart);
-        
-        $main_contact = BookingHelper::get_answer_contact($shoppingcart);
-        
-        $dataObj = array(
-            'vendor' => self::env_appName(),
-            'booking_status' => $shoppingcart->booking_status,
-            'booking_status_asText' => $booking_status_asText,
-            'confirmation_code' => $shoppingcart->confirmation_code,
-            'total' => $shoppingcart->currency .' '. GeneralHelper::numberFormat($shoppingcart->due_now),
-            'payment_status' => $shoppingcart->shoppingcart_payment->payment_status,
-            'payment_status_asText' => $payment_status_asText,
-            'firstName' => $main_contact->firstName,
-            'lastName' => $main_contact->lastName,
-            'phoneNumber' => $main_contact->phoneNumber,
-            'email' => $main_contact->email,
-            'invoice' => $invoice,
-            'tickets' => $ticket,
-            'paymentProvider' => $shoppingcart->shoppingcart_payment->payment_provider,
-            'pdf_url' => $how_to_pay,
-            'how_to_pay' => $how_to_pay,
-        );
-
-        return $dataObj;
-	}
-
-
-	public static function view_shoppingcart($shoppingcart)
-	{
-        
-		$dataShoppingcart = array();
+        $dataShoppingcart = array();
         $dataProducts = array();
 
         foreach(collect($shoppingcart->products)->sortBy('booking_id') as $shoppingcart_product)
@@ -401,11 +313,11 @@ class ContentHelper {
         $bank_transfer_list[] = [
             'value' => 'doku', 'label' => 'DOKU VA', 'image' => '/img/bank/doku.png', 'currency' => 'idr',
         ];
-	
+    
         $qrcode_list[] = [
             'value' => 'qris', 'label' => 'QRIS', 'image' => '/img/ewallet/qris.png', 'currency' => 'idr',
         ];
-	    
+        
         
         $ewallet_list[] = [
             'value' => 'dana', 'label' => 'DANA', 'image' => '/img/ewallet/dana.png', 'currency' => 'idr',
@@ -500,7 +412,95 @@ class ContentHelper {
             );
 
         return $dataShoppingcart;
+    }
+
+	public static function view_receipt($shoppingcart)
+	{
+		$invoice = 'Invoiced to '.$shoppingcart->booking_channel;
+        try {
+            if($shoppingcart->booking_channel=="WEBSITE") {
+                if($shoppingcart->shoppingcart_payment->payment_status>0) {
+                    $invoice = '<a target="_blank" class="text-theme" href="'.url('/api').'/pdf/invoice/'. $shoppingcart->session_id .'/Invoice-'. $shoppingcart->confirmation_code .'.pdf"><i class="fas fa-file-invoice"></i> Invoice-'. $shoppingcart->confirmation_code .'.pdf</a><br />';
+                }
+            }
+        } catch (Exception $e) {
+
+        }
+
+        $ticket = '';
+        try {
+            if($shoppingcart->shoppingcart_payment->payment_status==2 || $shoppingcart->shoppingcart_payment->payment_status==1) {
+                foreach($shoppingcart->shoppingcart_products()->get() as $shoppingcart_product) {
+                    $ticket .= '<a target="_blank" class="text-theme" href="'.url('/api').'/pdf/ticket/'.$shoppingcart->session_id.'/Ticket-'.$shoppingcart_product->product_confirmation_code.'.pdf"><i class="fas fa-ticket-alt"></i> Ticket-'. $shoppingcart_product->product_confirmation_code .'.pdf</a>
+                                <br />';
+                }
+            }
+        } catch (Exception $e) {
+        }
+        
+        if($ticket=="") $ticket = 'No Documents <br /><small class="form-text text-muted">* Available when status is paid</small>';
+        
+        $how_to_pay = array();
+        
+        if($shoppingcart->shoppingcart_payment->payment_type=="qrcode")
+        {
+            if($shoppingcart->shoppingcart_payment->payment_status==4)
+            {
+
+                $how_to_pay = '
+                    <div class="pl-2">
+                    1.  Open your <b>E-wallet</b> or <b>Mobile Banking</b> apps. <br />
+                    2.  <b>Scan</b> the QR code shown on your monitor. <br />
+                    <img width="230" class="mt-2 mb-2" src="'. self::env_appUrl() .'/img/qr-instruction.png">
+                    <br />
+                    3.  Check your payment details in the app, then tap <b>Pay</b>. <br />
+                    4.  Enter your <b>PIN</b>. <br />
+                    5.  Your transaction is complete. 
+                    </div><br />';
+            }
+        }
+
+        if($shoppingcart->shoppingcart_payment->payment_type=="bank_transfer")
+        {
+               
+                if($shoppingcart->shoppingcart_payment->payment_status==4)
+                {
+                    $how_to_pay = '<a target="_blank" class="text-theme" href="'.url('/api').'/pdf/manual/'. $shoppingcart->session_id .'/Manual-'. $shoppingcart->confirmation_code .'.pdf"><i class="fas fa-file-invoice"></i> Manual-'. $shoppingcart->confirmation_code .'.pdf</a><br />';
+                    
+                }
+                
+               
+        }
+
+        $payment_status_asText = BookingHelper::get_paymentStatus($shoppingcart);
+        $booking_status_asText = BookingHelper::get_bookingStatus($shoppingcart);
+        
+        $main_contact = BookingHelper::get_answer_contact($shoppingcart);
+        
+        $dataObj = array(
+            'vendor' => self::env_appName(),
+            'booking_status' => $shoppingcart->booking_status,
+            'booking_status_asText' => $booking_status_asText,
+            'confirmation_code' => $shoppingcart->confirmation_code,
+            'total' => $shoppingcart->currency .' '. GeneralHelper::numberFormat($shoppingcart->due_now),
+            'payment_status' => $shoppingcart->shoppingcart_payment->payment_status,
+            'payment_status_asText' => $payment_status_asText,
+            'firstName' => $main_contact->firstName,
+            'lastName' => $main_contact->lastName,
+            'phoneNumber' => $main_contact->phoneNumber,
+            'email' => $main_contact->email,
+            'invoice' => $invoice,
+            'tickets' => $ticket,
+            'paymentProvider' => $shoppingcart->shoppingcart_payment->payment_provider,
+            'pdf_url' => $how_to_pay,
+            'how_to_pay' => $how_to_pay,
+        );
+
+        return $dataObj;
 	}
+
+
+	
 
 	public static function view_last_order($shoppingcarts)
 	{

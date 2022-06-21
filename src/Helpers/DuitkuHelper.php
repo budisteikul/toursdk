@@ -133,17 +133,17 @@ class DuitkuHelper {
         }
         else if($payment->bank_payment_type=="LA")
         {
-            $data1 = self::createTransaction($data,$payment);
+            //$data1 = self::createTransaction($data,$payment);
 
-            //$data1 = self::createSnap($data);
+            $data1 = self::createSnap($data);
             $data2 = self::createCharge($data1->reference,$payment);
 		
-            print_r($data1);
-            print_r($data2);
-            exit();
+            //print_r($data1);
+            //print_r($data2);
+            //exit();
 
             $data_json->payment_type = 'ewallet';
-            $data_json->redirect = $data1->paymentUrl;
+            $data_json->redirect = $data2->qrString;
         }
         else if($payment->bank_payment_type=="LQ")
         {

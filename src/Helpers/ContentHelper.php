@@ -318,11 +318,11 @@ class ContentHelper {
             'value' => 'qris', 'label' => 'QRIS', 'image' => '/img/ewallet/qris.png', 'currency' => 'idr',
         ];
         
-        
+        /*
         $ewallet_list[] = [
             'value' => 'dana', 'label' => 'DANA', 'image' => '/img/ewallet/dana.png', 'currency' => 'idr',
         ];
-        
+        */
 
         $ewallet_list[] = [
             'value' => 'gopay', 'label' => 'GOPAY', 'image' => '/img/ewallet/gopay.png', 'currency' => 'idr',
@@ -334,17 +334,18 @@ class ContentHelper {
             'value' => 'ovo', 'label' => 'OVO', 'image' => '/img/ewallet/ovo.png', 'currency' => 'idr',
         ];
         
-        
+
+        $grouped_payment[] = [
+            'label' => 'QRIS',
+            'options' => $qrcode_list
+        ];
 
         $grouped_payment[] = [
             'label' => 'E-wallet',
             'options' => $ewallet_list
         ];
         
-        $grouped_payment[] = [
-            'label' => 'QRIS',
-            'options' => $qrcode_list
-        ];
+        
         
         $grouped_payment[] = [
             'label' => 'Bank transfer',

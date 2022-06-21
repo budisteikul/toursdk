@@ -123,13 +123,21 @@ class DuitkuHelper {
             $data1 = self::createSnap($data);
             $data2 = self::createCharge($data1->reference,$payment,$data->contact->phone);
             
+           
+            
             if(isset($data2->statusCode)) $statusCode = $data2->statusCode;
             if($statusCode=="00")
             {
                 $status = true;
             }
 
-            return $status;
+            $status_json->id = '1';
+            $status_json->message = 'success';
+        
+            $response_json->status = $status_json;
+            $response_json->data = $status;
+
+            return $response_json;
         }
         else if($payment->bank_payment_type=="LA")
         {

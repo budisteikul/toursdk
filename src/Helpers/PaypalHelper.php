@@ -66,16 +66,26 @@ class PaypalHelper {
 	
 	public static function createPayment($data)
 	{
-      $value = number_format((float)$data->transaction->amount, 2, '.', '');
-      $name = $data->transaction->id;
-      $currency = $data->transaction->currency;
+      	$value = number_format((float)$data->transaction->amount, 2, '.', '');
+      	$name = $data->transaction->id;
+     	$currency = $data->transaction->currency;
     	
-      $request = new OrdersCreateRequest();
-    	$request->prefer('return=representation');
+      	$request = new OrdersCreateRequest();
+		$request->prefer('return=representation');
     	$request->body = self::buildRequestBodyCreateOrder($value,$name,$currency);
     	$client = self::client();
-    	$response = $client->execute($request);
-    	return $response;
+    	$data_json = $client->execute($request);
+
+      	$status_json = new \stdClass();
+      	$response_json = new \stdClass();
+      
+      	$status_json->id = '1';
+      	$status_json->message = 'success';
+        
+      	$response_json->status = $status_json;
+      	$response_json->data = $data_json;
+
+		return $response_json;
 	}
 
 	public static function buildRequestBodyCreateOrder($value,$name,$currency)

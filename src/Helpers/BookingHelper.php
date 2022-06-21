@@ -2056,6 +2056,7 @@ class BookingHelper {
 				$payment_status = 0;
 
 				$response = PaypalHelper::createPayment($data);
+
 			break;
 			case "stripe":
 				$payment_provider = 'stripe';
@@ -2071,6 +2072,7 @@ class BookingHelper {
 				$payment_status = 0;
 
 				$response = StripeHelper::createPayment($data);
+
 			break;
 			default:
 				$payment_provider = 'none';

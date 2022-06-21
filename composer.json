@@ -16,7 +16,8 @@
         "ext-gd": "*",
         "bacon/bacon-qr-code": "1.0.*",
         "illuminate/support": ">=5.0.0",
-        "stripe/stripe-php": "^7.124"
+        "stripe/stripe-php": "^7.124",
+        "intervention/image": "^2.7",
     },
     "autoload": {
         "psr-0": {

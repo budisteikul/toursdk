@@ -38,13 +38,14 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\URL;
 use Stripe;
 
+use Intervention\Image\Facades\Image as ImageIntervention;
 
 class APIController extends Controller
 {
     
     public function test()
     {
-        
+
     }
 
 
@@ -1224,7 +1225,7 @@ class APIController extends Controller
             $sessionId = $request->header('sessionId');
             BookingHelper::set_confirmationCode($sessionId);
             $response = BookingHelper::create_payment($sessionId,"paypal");
-            return response()->json($response);
+            return response()->json($response->data);
     }
 
     public function createpaymentstripe(Request $request)
@@ -1265,7 +1266,7 @@ class APIController extends Controller
             $response = BookingHelper::create_payment($sessionId,"duitku","ovo",$phoneNumber);
 
             
-            if(!$response)
+            if(!$response->data)
             {
                 return response()->json([
                     'message' => 'failed',

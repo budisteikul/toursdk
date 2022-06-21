@@ -2078,6 +2078,15 @@ class BookingHelper {
 				$currency = $shoppingcart->currency;
 				$rate = 1;
 				$payment_status = 0;
+
+				$response = new \stdClass();
+				$status_json = new \stdClass();
+
+        		$status_json->id = 1;
+        		$status_json->message = 'success';
+
+        		$response->status = $status_json;
+        		$response->data = null;
 		}
 
 		if($response->status->id=="0")

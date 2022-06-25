@@ -497,7 +497,24 @@ class APIController extends Controller
                 firstDayAvailabilities: '.json_encode($availability).'
             };
 
-           
+           function widgetStart() {
+        var a = document.getElementById("WidgetContent");
+        if (null === a)
+            return null;
+        new MutationObserver(function() {
+            WidgetUtils && WidgetUtils.ResizeIframe && WidgetUtils.ResizeIframe()
+        }
+        ).observe(a, {
+            attributes: !0,
+            childList: !0,
+            subtree: !0
+        })
+    }
+
+        jQuery(document).ready(function($) {
+        
+        
+        });
             ';   
         }
         else

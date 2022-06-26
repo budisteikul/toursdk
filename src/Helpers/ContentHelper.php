@@ -289,9 +289,6 @@ class ContentHelper {
         
         
         /*
-        
-        */
-        
         $bank_transfer_list[] = [
             'value' => 'permata', 'label' => 'PERMATA VA', 'image' => '/img/bank/permata.png', 'currency' => 'idr',
         ];
@@ -318,7 +315,6 @@ class ContentHelper {
             'value' => 'qris', 'label' => 'QRIS', 'image' => '/img/ewallet/qris.png', 'currency' => 'idr',
         ];
         
-        
         $ewallet_list[] = [
             'value' => 'dana', 'label' => 'DANA', 'image' => '/img/ewallet/dana.png', 'currency' => 'idr',
         ];
@@ -332,7 +328,6 @@ class ContentHelper {
             'value' => 'ovo', 'label' => 'OVO', 'image' => '/img/ewallet/ovo.png', 'currency' => 'idr',
         ];
         
-
         $grouped_payment[] = [
             'label' => 'QRIS',
             'options' => $qrcode_list
@@ -343,13 +338,72 @@ class ContentHelper {
             'options' => $ewallet_list
         ];
         
-        
-        
         $grouped_payment[] = [
             'label' => 'Bank transfer',
             'options' => $bank_transfer_list
         ];
-        
+        */
+
+        $indonesia_list[] = [
+            'value' => 'qris', 'label' => 'QRIS', 'image' => '/img/ewallet/qris.png', 'currency' => 'idr',
+        ];
+        $indonesia_list[] = [
+            'value' => 'gopay', 'label' => 'GOPAY', 'image' => '/img/ewallet/gopay.png', 'currency' => 'idr',
+        ];
+        $indonesia_list[] = [
+            'value' => 'shopeepay', 'label' => 'SHOPEEPAY', 'image' => '/img/ewallet/shopeepay.png', 'currency' => 'idr',
+        ];
+        $indonesia_list[] = [
+            'value' => 'ovo', 'label' => 'OVO', 'image' => '/img/ewallet/ovo.png', 'currency' => 'idr',
+        ];
+        $indonesia_list[] = [
+            'value' => 'dana', 'label' => 'DANA', 'image' => '/img/ewallet/dana.png', 'currency' => 'idr',
+        ];
+        /*
+        $indonesia_list[] = [
+            'value' => 'permata', 'label' => 'PERMATA VA', 'image' => '/img/bank/permata.png', 'currency' => 'idr',
+        ];
+        $indonesia_list[] = [
+            'value' => 'mandiri', 'label' => 'MANDIRI VA', 'image' => '/img/bank/mandiri.png', 'currency' => 'idr',
+        ];
+        $indonesia_list[] = [
+            'value' => 'bni', 'label' => 'BNI VA', 'image' => '/img/bank/bni.png', 'currency' => 'idr',
+        ];
+        $indonesia_list[] = [
+            'value' => 'bri', 'label' => 'BRI VA', 'image' => '/img/bank/bri.png', 'currency' => 'idr',
+        ];
+        $indonesia_list[] = [
+            'value' => 'danamon', 'label' => 'DANAMON VA', 'image' => '/img/bank/danamon.png', 'currency' => 'idr',
+        ];
+        $indonesia_list[] = [
+            'value' => 'cimb', 'label' => 'CIMB NIAGA VA',  'image' => '/img/bank/cimb.png', 'currency' => 'idr',
+        ];
+        $indonesia_list[] = [
+            'value' => 'doku', 'label' => 'DOKU VA', 'image' => '/img/bank/doku.png', 'currency' => 'idr',
+        ];
+        */
+
+        $grouped_payment[] = [
+            'label' => 'INDONESIA',
+            'options' => $indonesia_list
+        ];
+
+        $singapore_list[] = [
+            'value' => 'paynow', 'label' => 'PAYNOW QR', 'image' => '/img/ewallet/paynow.png', 'currency' => 'sgd',
+        ];
+        $grouped_payment[] = [
+            'label' => 'SINGAPORE',
+            'options' => $singapore_list
+        ];
+
+        $australia_list[] = [
+            'value' => 'poli', 'label' => 'POLi', 'image' => '/img/bank/poli.png', 'currency' => 'aud',
+        ];
+        $grouped_payment[] = [
+            'label' => 'AUSTRALIA',
+            'options' => $australia_list
+        ];
+
         $dataShoppingcart[] = array(
                 'id' => $shoppingcart->session_id,
                 'confirmation_code' => $shoppingcart->confirmation_code,

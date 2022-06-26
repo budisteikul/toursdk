@@ -399,6 +399,7 @@ class ContentHelper {
             'options' => $singapore_list
         ];
 
+        /*
         $australia_list[] = [
             'value' => 'poli', 'label' => 'POLi', 'image' => '/img/bank/poli.png', 'currency' => 'aud',
         ];
@@ -406,7 +407,8 @@ class ContentHelper {
             'label' => 'AUSTRALIA',
             'options' => $australia_list
         ];
-
+        */
+        
         $dataShoppingcart[] = array(
                 'id' => $shoppingcart->session_id,
                 'confirmation_code' => $shoppingcart->confirmation_code,

@@ -359,6 +359,9 @@ class ContentHelper {
         $indonesia_list[] = [
             'value' => 'dana', 'label' => 'DANA', 'image' => '/img/ewallet/dana.png', 'currency' => 'idr',
         ];
+        $indonesia_list[] = [
+            'value' => 'doku', 'label' => 'BANK TRANSFER', 'image' => '/img/bank/doku.png', 'currency' => 'idr',
+        ];
         /*
         $indonesia_list[] = [
             'value' => 'permata', 'label' => 'PERMATA VA', 'image' => '/img/bank/permata.png', 'currency' => 'idr',
@@ -378,9 +381,7 @@ class ContentHelper {
         $indonesia_list[] = [
             'value' => 'cimb', 'label' => 'CIMB NIAGA VA',  'image' => '/img/bank/cimb.png', 'currency' => 'idr',
         ];
-        $indonesia_list[] = [
-            'value' => 'doku', 'label' => 'DOKU VA', 'image' => '/img/bank/doku.png', 'currency' => 'idr',
-        ];
+        
         */
 
         $grouped_payment[] = [

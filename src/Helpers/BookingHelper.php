@@ -2108,7 +2108,7 @@ class BookingHelper {
 		if(isset($response->data->order_id)) $order_id = $response->data->order_id;
 		if(isset($response->data->authorization_id)) $authorization_id = $response->data->authorization_id;
 		if(isset($response->data->amount)) $amount = $response->data->amount;
-		if(isset($response->data->payment_description)) $bank_holder = $response->data->payment_description;
+		if(isset($response->data->payment_description)) $payment_description = $response->data->payment_description;
 
 		$ShoppingcartPayment = (object) array(
 			'payment_provider' => $payment_provider,

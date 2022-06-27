@@ -362,7 +362,7 @@ class ContentHelper {
         ];
         */
         $indonesia_list[] = [
-            'value' => 'doku', 'label' => 'BANK TRANSFER', 'image' => '/img/bank/doku.png', 'currency' => 'idr',
+            'value' => 'doku', 'label' => 'BANK TRANSFER', 'image' => '/img/bank/bank_transfer.png', 'currency' => 'idr',
         ];
         /*
         $indonesia_list[] = [
@@ -392,14 +392,17 @@ class ContentHelper {
         ];
 
         $singapore_list[] = [
-            'value' => 'paynow', 'label' => 'PAYNOW QR', 'image' => '/img/ewallet/paynow.png', 'currency' => 'sgd',
+            'value' => 'paynow', 'label' => 'PAYNOW QR', 'image' => '/img/bank/paynow.png', 'currency' => 'sgd',
+        ];
+        $singapore_list[] = [
+            'value' => 'fast', 'label' => 'BANK TRANSFER', 'image' => '/img/bank/fast.png', 'currency' => 'sgd',
         ];
         $grouped_payment[] = [
             'label' => 'SINGAPORE',
             'options' => $singapore_list
         ];
 
-        
+        /*
         $australia_list[] = [
             'value' => 'poli', 'label' => 'POLi', 'image' => '/img/bank/poli.png', 'currency' => 'aud',
         ];
@@ -407,7 +410,7 @@ class ContentHelper {
             'label' => 'AUSTRALIA',
             'options' => $australia_list
         ];
-        
+        */
         
         $dataShoppingcart[] = array(
                 'id' => $shoppingcart->session_id,
@@ -523,7 +526,15 @@ class ContentHelper {
                
                 if($shoppingcart->shoppingcart_payment->payment_status==4)
                 {
-                    $how_to_pay = '<a target="_blank" class="text-theme" href="'.url('/api').'/pdf/manual/'. $shoppingcart->session_id .'/Manual-'. $shoppingcart->confirmation_code .'.pdf"><i class="fas fa-file-invoice"></i> Manual-'. $shoppingcart->confirmation_code .'.pdf</a><br />';
+                    if($shoppingcart->shoppingcart_payment->bank_name=="dbs")
+                    {
+                        $how_to_pay = 'Please Transfer funds to the provided DBS bank account using your Singapore based bank account via FAST (preferred), MEPS or GIRO.';
+                    }
+                    else
+                    {
+                        $how_to_pay = '<a target="_blank" class="text-theme" href="'.url('/api').'/pdf/manual/'. $shoppingcart->session_id .'/Manual-'. $shoppingcart->confirmation_code .'.pdf"><i class="fas fa-file-invoice"></i> Manual-'. $shoppingcart->confirmation_code .'.pdf</a><br />';
+                    }
+                    
                     
                 }
                 

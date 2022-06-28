@@ -2524,6 +2524,7 @@ class BookingHelper {
 						}
 						else
 						{
+							$data_qris = self::get_qris_content($shoppingcart);
 							return '
 								
 								<div class="card mb-1">
@@ -2535,9 +2536,11 @@ class BookingHelper {
 								<div class="card-img-overlay">
 									<div class="row h-100">
    										<div class="col-sm-12 text-center">
-    										<img id="qris-img" class="img-fluid border border-white mb-2 mt-2" alt="QRIS LOGO" style="max-width:250px;" src="'. url('/img/qris-logo.png') .'">
+    										<img id="qris-img" class="img-fluid border border-white mt-2" alt="QRIS LOGO" style="max-width:250px; height:40px;" src="'. url('/img/qris-logo.png') .'">
     										<br />
     										<img id="qris-img" class="img-fluid border border-white" alt="QRIS" style="max-width:250px;" src="data:image/png;base64, '. base64_encode(self::generate_qrcode($shoppingcart)) .' ">
+    										<br />
+    										<span><strong>'. $data_qris->nmid .'</strong></span>
    										</div>
 									</div>
   								</div>
@@ -2549,7 +2552,7 @@ class BookingHelper {
 								';
 							
 						}
-						//$data_qris = self::get_qris_content($shoppingcart);
+						
 						
 						break;
 					default:

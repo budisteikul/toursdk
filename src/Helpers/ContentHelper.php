@@ -356,11 +356,11 @@ class ContentHelper {
         $indonesia_list[] = [
             'value' => 'ovo', 'label' => 'OVO', 'image' => '/img/ewallet/ovo.png', 'currency' => 'idr',
         ];
-        
+        /*
         $indonesia_list[] = [
             'value' => 'dana', 'label' => 'DANA', 'image' => '/img/ewallet/dana.png', 'currency' => 'idr',
         ];
-        
+        */
         $indonesia_list[] = [
             'value' => 'doku', 'label' => 'BANK TRANSFER', 'image' => '/img/bank/bank_transfer.png', 'currency' => 'idr',
         ];

@@ -350,6 +350,8 @@ class DanaHelper {
       
       $jsonPayload = self::composeRequest($payloadObject);
 
+      print_r($jsonPayload);
+
       $curl = curl_init();
       $opts = [
           CURLOPT_URL            => $url,

@@ -80,6 +80,8 @@ class DanaHelper {
 
         $data1 = json_decode($data1, true);
 
+        print_r($data1);
+        exit();
         
         if($data1['response']['body']['resultInfo']['resultCode']=="SYSTEM_ERROR")
 	    {
@@ -223,7 +225,7 @@ class DanaHelper {
                 ],
                 
                 'productCode'      => '51051000100000000001',
-                'mcc'              => '123',
+                'mcc'              => '4722',
                 'merchantId'       => self::env_danaMerchantId(),
                 'extendInfo'       => '',
                 'paymentPreference' => [

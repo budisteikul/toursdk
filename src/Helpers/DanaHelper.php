@@ -80,8 +80,8 @@ class DanaHelper {
 
         $data1 = json_decode($data1, true);
 
-        print_r($data1);
-        exit();
+        //print_r($data1);
+        //exit();
         
         if($data1['response']['body']['resultInfo']['resultCode']=="SYSTEM_ERROR")
 	    {
@@ -350,7 +350,8 @@ class DanaHelper {
       
       $jsonPayload = self::composeRequest($payloadObject);
 
-      print_r($jsonPayload);
+
+      //print_r($jsonPayload);
 
       $curl = curl_init();
       $opts = [

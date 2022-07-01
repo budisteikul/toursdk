@@ -3,6 +3,7 @@ namespace budisteikul\toursdk\Helpers;
 use Carbon\Carbon;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\Exception\UnsatisfiedDependencyException;
+use Illuminate\Support\Facades\Storage;
 
 class DanaHelper {
 
@@ -43,12 +44,26 @@ class DanaHelper {
 
     public static function env_danaPrivateKey()
     {
-        return env("DANA_PRIVATE_KEY");
+        if(self::env_danaEnv()=="production")
+        {
+            return Storage::disk('gcs')->get('dana_digital_signature/pkcs8_rsa_private_key.pem');
+        }
+        else
+        {
+            return Storage::disk('gcs')->get('dana_digital_signature/pkcs8_rsa_private_key_dev.pem');
+        }
     }
 
     public static function env_danaPublicKey()
     {
-        return env("DANA_PUBLIC_KEY");
+        if(self::env_danaEnv()=="production")
+        {
+            return Storage::disk('gcs')->get('dana_digital_signature/rsa_public_key.pem');
+        }
+        else
+        {
+            return Storage::disk('gcs')->get('dana_digital_signature/rsa_public_key_dev.pem');
+        }
     }
 
     public static function danaApiEndpoint()

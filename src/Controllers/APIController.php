@@ -45,7 +45,8 @@ class APIController extends Controller
     
     public function test()
     {
-
+        $private_key = Storage::disk('gcs')->get('dana_digital_signature/pkcs8_rsa_private_key.pem');
+        print($private_key);
     }
 
 

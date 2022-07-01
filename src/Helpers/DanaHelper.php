@@ -94,9 +94,6 @@ class DanaHelper {
         $data1 = self::danaCreateOrder($data);
 
         $data1 = json_decode($data1, true);
-
-        //print_r($data1);
-        //exit();
         
         if($data1['response']['body']['resultInfo']['resultCode']=="SYSTEM_ERROR")
 	    {
@@ -255,7 +252,6 @@ class DanaHelper {
                     [
                         'url'  => self::env_appApiUrl() .'/payment/dana/confirm',
                         'type' => 'NOTIFICATION'
-                        //'url'  => 'https://webhook.site/35cabc97-b13c-4778-ade4-c7b192762c1b'
                     ],
                 ]
             ]
@@ -353,20 +349,14 @@ class DanaHelper {
 
         $binarySignature = base64_decode($signatureBase64);
         $publicKey = self::env_danaPublicKey();
-        //$publicKey = self::env_danaPrivateKey();
 
         return (bool)openssl_verify($body, $binarySignature, $publicKey, OPENSSL_ALGO_SHA256);
     }
 
     public static function danaApi($url, $payloadObject)
     {
-      //$isMockApi = Config::$isMockApi;
-      //$isMockScene = Config::$isMockScene;
       
       $jsonPayload = self::composeRequest($payloadObject);
-
-
-      //print_r($jsonPayload);
 
       $curl = curl_init();
       $opts = [
@@ -391,9 +381,6 @@ class DanaHelper {
       $response = curl_exec($curl);
       $err      = curl_error($curl);
       
-      //print_r($response);
-      //print_r($err);
-
       curl_close($curl);
 
       return $response;

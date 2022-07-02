@@ -2501,12 +2501,12 @@ class BookingHelper {
 								<span class="badge badge-info invoice-color-info" style="font-size:20px;">
 								<i class="fas fa-qrcode"></i> WAITING FOR PAYMENT </span>
 								</div>
-								<div class="card mb-1 img-fluid invoice-hilang"  style="min-height:390px; max-width:505px;">
+								<div class="card mb-1 img-fluid invoice-hilang"  style="min-height:350px; max-width:505px;">
 								
 								<div class="card-img-overlay">
 									<div class="row h-100">
    										<div class="col-sm-12 text-center">
-   											<img id="paynow-img" class="img-fluid border border-white mb-2 mt-2" alt="PAYNOW LOGO" style="max-width:250px;" src="'. url('/img/paynow-logo.png') .'">
+   											
    											<br />
     										<img id="paynow-img" class="img-fluid border border-white" alt="PAYNOW" style="max-width:250px;" src="data:image/png;base64, '. base64_encode(self::generate_qrcode($shoppingcart)) .' ">
     										<br /><br />
@@ -2715,9 +2715,9 @@ class BookingHelper {
 	{
 		if($shoppingcart->shoppingcart_payment->bank_name=="paynow")
 		{
-			//$path = '/public/img/paynow-logo.png';
-			//$qrcode = QrCode::errorCorrection('H')->format('png')->merge($path,.3,false)->margin(0)->size(630)->color(124, 26, 120)->generate($shoppingcart->shoppingcart_payment->qrcode);
-			$qrcode = QrCode::errorCorrection('H')->format('png')->margin(0)->size(630)->color(124, 26, 120)->generate($shoppingcart->shoppingcart_payment->qrcode);
+			$path = '/public/img/paynow-logo.png';
+			$qrcode = QrCode::errorCorrection('H')->format('png')->merge($path,.3,false)->margin(0)->size(630)->color(124, 26, 120)->generate($shoppingcart->shoppingcart_payment->qrcode);
+			//$qrcode = QrCode::errorCorrection('H')->format('png')->margin(0)->size(630)->color(124, 26, 120)->generate($shoppingcart->shoppingcart_payment->qrcode);
 			return $qrcode;
 		}
 		else

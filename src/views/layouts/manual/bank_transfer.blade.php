@@ -148,7 +148,7 @@ html,body {
 <div style="position:absolute;left:46.42px;top:1233.30px" class="cls_007"><span class="cls_007">bank-bank berikut:</span></div>
 <div style="position:absolute;left:205.78px;top:1261.34px" class="cls_009"><span class="cls_009">3</span></div>
 <div style="position:absolute;left:392.78px;top:1261.67px" class="cls_006"><span class="cls_006">4</span></div>
-<div style="position:absolute;left:392.85px;top:1288.95px" class="cls_010"><span class="cls_010">{{$shoppingcart->shoppingcart_payment->bank_code}}&nbsp;{{ $GeneralHelper->splitSpace($shoppingcart->shoppingcart_payment->va_number,4,4) }}</span>
+<div style="position:absolute;left:392.85px;top:1288.95px" class="cls_010"><span class="cls_010" style="font-size:14px;">{{$shoppingcart->shoppingcart_payment->bank_code}}&nbsp;{{ $GeneralHelper->splitSpace($shoppingcart->shoppingcart_payment->va_number,4,4) }}</span>
 </div>
 <div style="position:absolute;left:393.00px;top:1363.49px" class="cls_007"><span class="cls_007">Masukkan nomor</span><span class="cls_008"> {{$shoppingcart->shoppingcart_payment->bank_code}}</span><span class="cls_007"> dan</span></div>
 <div style="position:absolute;left:207.00px;top:1363.50px" class="cls_007"><span class="cls_007">Pilih </span><span class="cls_008">Antar Bank Online</span></div>

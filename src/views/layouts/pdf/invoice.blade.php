@@ -214,15 +214,17 @@ footer {
      <table border="0" cellspacing="0" cellpadding="0" style="margin-bottom:0px;">
        <tbody>
          <tr>
-           <td style="background-color:#FFFFFF; text-align:left; padding-left:0px;">
-           <img width="110" src="data:image/png;base64, {{ $qrcode }} ">
-           				
+          <td style="background-color:#FFFFFF; text-align:left; padding-left:0px; line-height: 18px; font-size:14px; color:#777777">
+           <div style="margin-top:3px;"><strong style="font-size:18px;">VERTIKAL TRIP LLC</strong></div>
+                        <div>530-B HARKLE ROAD, SUITE 100</div>
+                        <div>SANTA FE, NM, 87505</div>
+                        <div>Phone: +1 (505) 585-2112</div>
+                        <div>Fax: +1 (505) 391-4080</div>
+                        <div>Email: corporate@vertikaltrip.com</div>
+                  
            </td>
            <td style="background-color:#FFFFFF; text-align:right; padding-right:0px; line-height: 18px; font-size:14px; color:#777777">
-                        <img src="{{url('/img/logo-blue.jpg')}}" height="30" />
-                        <div style="margin-top:3px;">Jl. Abiyoso VII No.190 Bantul ID</div>
-                        <div>Telp: +62 857 43 112 112</div>
-                        <div>Email: guide@vertikaltrip.com</div>
+                        <img width="110" src="data:image/png;base64, {{ $qrcode }} ">
            </td>
          </tr>
        </tbody>

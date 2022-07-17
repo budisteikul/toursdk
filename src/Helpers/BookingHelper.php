@@ -185,7 +185,8 @@ class BookingHelper {
 						$total_product += $total;
 				}
 				
-				
+				//print_r($data['activityBookings'][$i]['notes'][0]['body']);
+				//exit();
 				ShoppingcartProduct::where('id',$shoppingcart_product->id)->update([
 					'currency'=>$data['activityBookings'][$i]['sellerInvoice']['currency'],
 					'subtotal'=>$subtotal_product,
@@ -210,6 +211,28 @@ class BookingHelper {
 						$shoppingcart_question->answer = $data['activityBookings'][$i]['answers'][$k]['answer'];
 						$shoppingcart_question->save();
 						$order++;
+					}
+				}
+
+				if(isset($data['activityBookings'][$i]['notes']))
+				{
+					$order = 1;
+					for($k=0;$k<count($data['activityBookings'][$i]['notes']);$k++)
+					{
+						if($data['activityBookings'][$i]['notes'][$k]['type']=="GENERAL")
+						{
+							$shoppingcart_question = new ShoppingcartQuestion();
+							$shoppingcart_question->shoppingcart_id = $shoppingcart->id;
+							$shoppingcart_question->type = 'activityBookings';
+							$shoppingcart_question->booking_id = $data['activityBookings'][$i]['bookingId'];
+							$shoppingcart_question->question_id = $data['activityBookings'][$i]['notes'][$k]['type'];
+							$shoppingcart_question->label = "Note from ". $bookingChannel;
+							$shoppingcart_question->order = $order;
+							$shoppingcart_question->answer = '<br />'. $data['activityBookings'][$i]['notes'][$k]['body'];
+							$shoppingcart_question->save();
+							$order++;
+						}
+						
 					}
 				}
 			}
@@ -2687,7 +2710,7 @@ class BookingHelper {
 		
 		if($value!="")
 		{
-			$value = '<div class="card mb-2 mt-4"><div class="card-body"><b>Note</b><br />'.$value .'</div></div>';
+			$value = '<div class="card mb-2 mt-4"><div class="card-body"><b>Note</b><br />'. nl2br($value) .'</div></div>';
 		}
 		
         return $value;

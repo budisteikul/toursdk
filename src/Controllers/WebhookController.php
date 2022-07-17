@@ -49,6 +49,7 @@ class WebhookController extends Controller
             switch($request->input('action'))
             {
             case 'BOOKING_CONFIRMED':
+
                 if(Shoppingcart::where('confirmation_code',$data['confirmationCode'])->count()==0)
                 {
                     $shoppingcart = BookingHelper::webhook_insert_shoppingcart($data);

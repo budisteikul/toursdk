@@ -219,7 +219,6 @@ footer {
                         <div>530-B HARKLE ROAD, SUITE 100</div>
                         <div>SANTA FE, NM, 87505</div>
                         <div>Phone: +1 (505) 585-2112</div>
-                        <div>Fax: +1 (505) 391-4080</div>
                         <div>Email: corporate@vertikaltrip.com</div>
                   
            </td>

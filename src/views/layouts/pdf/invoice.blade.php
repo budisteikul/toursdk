@@ -216,10 +216,11 @@ footer {
          <tr>
           <td style="background-color:#FFFFFF; text-align:left; padding-left:0px; line-height: 18px; font-size:14px; color:#777777">
            <div style="margin-top:3px;"><strong style="font-size:18px;">VERTIKAL TRIP LLC</strong></div>
-                        <div>530-B HARKLE ROAD, SUITE 100</div>
-                        <div>SANTA FE, NM, 87505</div>
-                        <div>Phone: +1 (505) 585-2112</div>
-                        <div>Email: corporate@vertikaltrip.com</div>
+                        <div>PERUM GUWOSARI BLOK XII</div>
+                        <div>JALAN ABIYOSO VII NO.190</div>
+                        <div>BANTUL YOGYAKARTA 55751 ID</div>
+                        <div>Phone: +62 857 4311-2112</div>
+                        <div>Email: guide@vertikaltrip.com</div>
                   
            </td>
            <td style="background-color:#FFFFFF; text-align:right; padding-right:0px; line-height: 18px; font-size:14px; color:#777777">

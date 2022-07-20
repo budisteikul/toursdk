@@ -219,8 +219,8 @@ footer {
                         <div>PERUM GUWOSARI BLOK XII</div>
                         <div>JALAN ABIYOSO VII NO.190</div>
                         <div>BANTUL YOGYAKARTA 55751 ID</div>
-                        <div>Phone: +62 857 4311-2112</div>
-                        <div>Email: guide@vertikaltrip.com</div>
+                        <div>Phone : +62 857 4311-2112</div>
+                        <div>Email : guide@vertikaltrip.com</div>
                   
            </td>
            <td style="background-color:#FFFFFF; text-align:right; padding-right:0px; line-height: 18px; font-size:14px; color:#777777">

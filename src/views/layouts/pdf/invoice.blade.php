@@ -216,9 +216,9 @@ footer {
          <tr>
           <td style="background-color:#FFFFFF; text-align:left; padding-left:0px; line-height: 18px; font-size:14px; color:#777777">
            <div style="margin-top:3px;"><strong style="font-size:18px;">VERTIKAL TRIP LLC</strong></div>
-                        <div>PERUM GUWOSARI BLOK XII</div>
-                        <div>JALAN ABIYOSO VII NO.190</div>
-                        <div>BANTUL YOGYAKARTA 55751 ID</div>
+                        <div>Perum Guwosari Blok XII</div>
+                        <div>Jalan Abiyoso VII No.190</div>
+                        <div>Bantul Yogyakarta 55751 ID</div>
                         <div>Phone : +62 857 4311-2112</div>
                         <div>Email : guide@vertikaltrip.com</div>
                   

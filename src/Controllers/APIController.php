@@ -620,8 +620,15 @@ class APIController extends Controller
                             $star ='<i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i>';    
                     }
                     
+                    if($resource->title!="")
+                    {
+                        $title = '<b>'.$resource->title.'</b><br>';
+                    }
+                    else
+                    {
+                        $title = '';
+                    }
                     
-                    $title = '<b>'.$resource->title.'</b><br>';
                     $date = Carbon::parse($resource->date)->formatLocalized('%b, %Y');
                     $user = '<b>'. $resource->user .'</b> <small><span class="text-muted">'.$date.'</span></small><br>';
                     $rating = '<span class="text-warning">'. $star .'</span>‎<br>';

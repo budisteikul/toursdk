@@ -350,6 +350,8 @@ class ContentHelper {
         $indonesia_list[] = [
             'value' => 'permata', 'label' => 'BANK TRANSFER', 'image' => '/img/bank/bank_transfer.png', 'currency' => 'idr',
         ];
+
+        /*
         $indonesia_list[] = [
             'value' => 'dana', 'label' => 'DANA', 'image' => '/img/ewallet/dana.png', 'currency' => 'idr',
         ];
@@ -362,7 +364,7 @@ class ContentHelper {
         $indonesia_list[] = [
             'value' => 'ovo', 'label' => 'OVO', 'image' => '/img/ewallet/ovo.png', 'currency' => 'idr',
         ];
-        
+        */
         /*
         $indonesia_list[] = [
             'value' => 'permata', 'label' => 'PERMATA VA', 'image' => '/img/bank/permata.png', 'currency' => 'idr',
@@ -389,7 +391,6 @@ class ContentHelper {
             'label' => 'INDONESIA',
             'options' => $indonesia_list
         ];
-
         $singapore_list[] = [
             'value' => 'paynow', 'label' => 'PAYNOW QR', 'image' => '/img/bank/paynow.png', 'currency' => 'sgd',
         ];
@@ -400,8 +401,6 @@ class ContentHelper {
             'label' => 'SINGAPORE',
             'options' => $singapore_list
         ];
-
-        /*
         $australia_list[] = [
             'value' => 'poli', 'label' => 'POLi', 'image' => '/img/bank/poli.png', 'currency' => 'aud',
         ];
@@ -409,7 +408,7 @@ class ContentHelper {
             'label' => 'AUSTRALIA',
             'options' => $australia_list
         ];
-        */
+        
         
         $dataShoppingcart[] = array(
                 'id' => $shoppingcart->session_id,
@@ -428,16 +427,6 @@ class ContentHelper {
                 
                 'payment_enable' => $payment_enable,
                 'localpayment_list' => $grouped_payment,
-
-                /*
-                'paynow_currency' => 'SGD',
-                'paynow_total' => BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'SGD'),
-                'paynow_rate' => BookingHelper::text_rate($shoppingcart,'SGD'),
-
-                'poli_currency' => 'AUD',
-                'poli_total' => BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'AUD'),
-                'poli_rate' => BookingHelper::text_rate($shoppingcart,'AUD'),
-                */
 
                 // Paypal Currency
                 'paypal_currency' => self::env_paypalCurrency(),

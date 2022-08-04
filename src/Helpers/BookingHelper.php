@@ -2102,7 +2102,13 @@ class BookingHelper {
 				$amount = $shoppingcart->due_now;
 				$currency = $shoppingcart->currency;
 				$rate = 1;
+
 				$payment_status = 0;
+				if($shoppingcart->booking_status=="CONFIRMED")
+				{
+					$payment_status = 2;
+				}
+				
 
 				$response = new \stdClass();
 				$status_json = new \stdClass();

@@ -312,6 +312,9 @@ class APIController extends Controller
     {
         $shoppingcart = Shoppingcart::where('confirmation_code',$id)->where('session_id',$sessionId)->firstOrFail();
         $qrcode = BookingHelper::generate_qrcode($shoppingcart);
+        list($type, $qrcode) = explode(';', $qrcode);
+        list(, $qrcode)      = explode(',', $qrcode);
+        $qrcode = base64_decode($qrcode);
         $path = Storage::disk('local')->put($shoppingcart->confirmation_code .'.png', $qrcode);
         return response()->download(storage_path('app').'/'.$shoppingcart->confirmation_code .'.png')->deleteFileAfterSend(true);
     }

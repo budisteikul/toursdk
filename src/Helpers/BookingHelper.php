@@ -2537,7 +2537,7 @@ class BookingHelper {
    										<div class="col-sm-12 text-center">
    											
    											<br />
-    										<img id="paynow-img" class="img-fluid border border-white" alt="PAYNOW" style="max-width:250px;" src="data:image/png;base64, '. base64_encode(self::generate_qrcode($shoppingcart)) .' ">
+    										<img id="paynow-img" class="img-fluid border border-white" alt="PAYNOW" style="max-width:250px;" src="'. self::generate_qrcode($shoppingcart) .' ">
     										<br /><br />
     										<span><strong>Amount :</strong> '. $shoppingcart->shoppingcart_payment->currency .' '. $shoppingcart->shoppingcart_payment->amount .'</span>
    										</div>
@@ -2567,7 +2567,7 @@ class BookingHelper {
    										<div class="col-sm-12 text-center">
     										<img id="qris-img" class="img-fluid border border-white mt-2" alt="QRIS LOGO" style="max-width:250px; height:40px;" src="'. url('/img/qris-logo.png') .'">
     										<br />
-    										<img id="qris-img" class="img-fluid border border-white" alt="QRIS" style="max-width:250px;" src="data:image/png;base64, '. base64_encode(self::generate_qrcode($shoppingcart)) .' ">
+    										<img id="qris-img" class="img-fluid border border-white" alt="QRIS" style="max-width:250px;" src="'. self::generate_qrcode($shoppingcart) .' ">
     										<br />
     										<span><strong>'. $data_qris->nmid .'</strong></span>
    										</div>
@@ -2744,17 +2744,17 @@ class BookingHelper {
 	{
 		if($shoppingcart->shoppingcart_payment->bank_name=="paynow")
 		{
-			$path = '/public/img/paynow-logo.png';
-			$qrcode = QrCode::errorCorrection('H')->format('png')->merge($path,.3,false)->margin(0)->size(630)->color(124, 26, 120)->generate($shoppingcart->shoppingcart_payment->qrcode);
+			//$path = '/public/img/paynow-logo.png';
+			//$qrcode = QrCode::errorCorrection('H')->format('png')->merge($path,.3,false)->margin(0)->size(630)->color(124, 26, 120)->generate($shoppingcart->shoppingcart_payment->qrcode);
 			//$qrcode = QrCode::errorCorrection('H')->format('png')->margin(0)->size(630)->color(124, 26, 120)->generate($shoppingcart->shoppingcart_payment->qrcode);
-			return $qrcode;
+			return $shoppingcart->shoppingcart_payment->qrcode;
 		}
 		else
 		{
 			//$path = '/public/img/qrcode-logo.png';
 			//$qrcode = QrCode::errorCorrection('H')->format('png')->merge($path,.3,false)->margin(0)->size(630)->generate($shoppingcart->shoppingcart_payment->qrcode);
 			$qrcode = QrCode::errorCorrection('H')->format('png')->margin(0)->size(630)->generate($shoppingcart->shoppingcart_payment->qrcode);
-			return $qrcode;
+			return 'data:image/png;base64, '. base64_encode($qrcode);
 		}
 		
 	}

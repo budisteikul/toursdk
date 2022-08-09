@@ -172,6 +172,7 @@ class RapydHelper {
 
             $data1 = self::make_request('post','/v1/payments',$body);
             
+
             $data_json->payment_type = 'bank_redirect';
             $data_json->redirect = $data1['data']['redirect_url'];
         }

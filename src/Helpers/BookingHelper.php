@@ -2178,6 +2178,7 @@ class BookingHelper {
 
 	public static function delete_shoppingcart($shoppingcart)
 	{
+		self::confirm_payment($shoppingcart,"CANCELED",true);
 		$shoppingcart->delete();
 		FirebaseHelper::delete($shoppingcart,'receipt');
 	}

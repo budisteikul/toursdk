@@ -40,12 +40,17 @@ use Stripe;
 
 use Intervention\Image\Facades\Image as ImageIntervention;
 
-
 use budisteikul\toursdk\Helpers\CalendarHelper;
 
 class APIController extends Controller
 {
     
+    public function test()
+    {
+        //$shoppingcart = Shoppingcart::where('confirmation_code','VER-20220812500023')->firstOrFail();
+        //CalendarHelper::update_calendar($shoppingcart,"delete");
+    }
+
     public function google_calendar(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -58,6 +63,7 @@ class APIController extends Controller
                     'message' => 'required',
                 ]);
             }
+
 
         $confirmation_code = $request->input('confirmation_code');
         $action = $request->input('action');

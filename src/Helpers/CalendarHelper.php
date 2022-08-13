@@ -7,6 +7,23 @@ use Spatie\GoogleCalendar\Event;
 
 class CalendarHelper {
 
+
+    public static function update_calendar($shoppingcart,$action)
+    {
+        $endpoint = env("GOOGLE_CALENDAR_URL");
+        $headers = [
+              'X-Foo' => 'Bar',
+          ];
+
+        $client = new \GuzzleHttp\Client(['headers' => $headers,'http_errors' => false]);
+        $response = $client->request('POST',$endpoint,
+          ['form_params' => [
+            'confirmation_code' => $shoppingcart->confirmation_code,
+            'action' => $action
+          ]]
+        );
+    }
+
 	public static function create_event($shoppingcart)
     {
 

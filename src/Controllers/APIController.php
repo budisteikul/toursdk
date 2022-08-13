@@ -40,13 +40,33 @@ use Stripe;
 
 use Intervention\Image\Facades\Image as ImageIntervention;
 
+use Spatie\GoogleCalendar\Event;
+
 class APIController extends Controller
 {
     
     public function test()
     {
-        $private_key = Storage::disk('gcs')->get('dana_digital_signature/pkcs8_rsa_private_key.pem');
-        print($private_key);
+        //print(\Carbon\Carbon::now());
+        //exit();
+        $event = new Event;
+        $event->name = 'Yogyakarta Night Walking and Food Tour';
+        $event->startDateTime = \Carbon\Carbon::parse('2022-08-15 18:30:00');
+        $event->endDateTime = \Carbon\Carbon::parse('2022-08-15 18:30:00')->addHour(3);
+        $event->addAttendee([
+            'name' => 'john',
+            'email' => 'john@example.com',
+            'comment' => '5 Person',
+        ]);
+
+        $newEvent = $event->save();
+        print_r($newEvent->id);
+        
+
+        //$event = Event::find('mlh11vbbmimjcl7lek9kjdoui0');
+        //$event->delete();
+
+        
     }
 
 

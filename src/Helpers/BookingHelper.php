@@ -17,7 +17,7 @@ use budisteikul\toursdk\Helpers\DanaHelper;
 use budisteikul\toursdk\Helpers\FirebaseHelper;
 use budisteikul\toursdk\Helpers\GeneralHelper;
 use budisteikul\toursdk\Helpers\VoucherHelper;
-
+use budisteikul\toursdk\Helpers\CalendarHelper;
 use budisteikul\toursdk\Models\Product;
 use budisteikul\toursdk\Models\Shoppingcart;
 use budisteikul\toursdk\Models\ShoppingcartProduct;
@@ -1696,6 +1696,7 @@ class BookingHelper {
 	{
 		if($status=="CONFIRMED")
 		{
+
 			if($force)
 			{
 				$shoppingcart->booking_status = "PENDING";
@@ -1709,6 +1710,9 @@ class BookingHelper {
 				$shoppingcart->shoppingcart_payment->payment_status = 2;
 				$shoppingcart->shoppingcart_payment->save();
 			}
+
+			//CalendarHelper::create_event($shoppingcart);
+
 		}
 
 		if($status=="PENDING")
@@ -1730,6 +1734,7 @@ class BookingHelper {
 
 		if($status=="CANCELED")
 		{
+
 			if($force)
 			{
 				$shoppingcart->booking_status = "PENDING";
@@ -1744,6 +1749,9 @@ class BookingHelper {
 				$shoppingcart->shoppingcart_payment->payment_status = 3;
 				$shoppingcart->shoppingcart_payment->save();
 			}
+
+			//CalendarHelper::delete_event($shoppingcart);
+
 		}
 
 		return $shoppingcart;

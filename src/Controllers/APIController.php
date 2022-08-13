@@ -48,8 +48,7 @@ class APIController extends Controller
     
     public function test()
     {
-        $shoppingcart = Shoppingcart::where('confirmation_code','VIA-18051949')->firstOrFail();
-        CalendarHelper::create_event($shoppingcart);
+        
     }
 
 

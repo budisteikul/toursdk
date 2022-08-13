@@ -41,14 +41,15 @@ use Stripe;
 use Intervention\Image\Facades\Image as ImageIntervention;
 
 
-
+use budisteikul\toursdk\Helpers\CalendarHelper;
 
 class APIController extends Controller
 {
     
     public function test()
     {
-        
+        $shoppingcart = Shoppingcart::where('confirmation_code','VER-20220810150020')->first();
+        CalendarHelper::create_event($shoppingcart);
     }
 
 

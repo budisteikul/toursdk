@@ -25,5 +25,10 @@ class Shoppingcart extends Model
         return $this->hasOne(ShoppingcartPayment::class,'shoppingcart_id','id');
     }
 
+    public function calendar()
+    {
+        return $this->hasOne(Calendar::class,'shoppingcart_id','id');
+    }
+
     
 }

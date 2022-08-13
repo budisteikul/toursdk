@@ -31,6 +31,7 @@ class CalendarHelper {
     	}
     	else
     	{
+            /*
     		foreach($shoppingcart->shoppingcart_products as $shoppingcart_product)
     		{
     			if($shoppingcart_product->date!=null)
@@ -57,6 +58,7 @@ class CalendarHelper {
     			}
     		
     		}
+            */
     	}
 
     }

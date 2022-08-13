@@ -10,8 +10,8 @@ class CalendarHelper {
 	public static function create_event($shoppingcart)
     {
 
-    	//if(Calendar::where('shoppingcart_id',$shoppingcart->id)->exists())
-    	//{
+    	if(Calendar::where('shoppingcart_id',$shoppingcart->id)->exists())
+    	{
     		foreach($shoppingcart->shoppingcart_products as $shoppingcart_product)
     		{
     			if($shoppingcart_product->date!=null)
@@ -28,10 +28,9 @@ class CalendarHelper {
     			}
     		
     		}
-    	//}
-    	//else
-    	//{
-            /*
+    	}
+    	else
+    	{
     		foreach($shoppingcart->shoppingcart_products as $shoppingcart_product)
     		{
     			if($shoppingcart_product->date!=null)
@@ -58,8 +57,7 @@ class CalendarHelper {
     			}
     		
     		}
-            */
-    	//}
+    	}
 
     }
 

@@ -1711,7 +1711,7 @@ class BookingHelper {
 				$shoppingcart->shoppingcart_payment->save();
 			}
 
-			//CalendarHelper::create_event($shoppingcart);
+			CalendarHelper::update_calendar($shoppingcart,"create");
 
 		}
 
@@ -1750,7 +1750,7 @@ class BookingHelper {
 				$shoppingcart->shoppingcart_payment->save();
 			}
 
-			//CalendarHelper::delete_event($shoppingcart);
+			CalendarHelper::update_calendar($shoppingcart,"delete");
 
 		}
 

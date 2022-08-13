@@ -47,8 +47,8 @@ class APIController extends Controller
     
     public function test()
     {
-        //$shoppingcart = Shoppingcart::where('confirmation_code','VER-20220812500023')->firstOrFail();
-        //CalendarHelper::update_calendar($shoppingcart,"delete");
+        $shoppingcart = Shoppingcart::where('confirmation_code','VER-20220812500023')->firstOrFail();
+        CalendarHelper::update_calendar($shoppingcart,"delete");
     }
 
     public function google_calendar(Request $request)

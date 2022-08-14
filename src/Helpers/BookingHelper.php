@@ -1694,6 +1694,7 @@ class BookingHelper {
 
 	public static function confirm_payment($shoppingcart,$status,$force=false)
 	{
+		
 		if($status=="CONFIRMED")
 		{
 

@@ -17,7 +17,6 @@ use budisteikul\toursdk\Helpers\DanaHelper;
 use budisteikul\toursdk\Helpers\FirebaseHelper;
 use budisteikul\toursdk\Helpers\GeneralHelper;
 use budisteikul\toursdk\Helpers\VoucherHelper;
-use budisteikul\toursdk\Helpers\CalendarHelper;
 use budisteikul\toursdk\Models\Product;
 use budisteikul\toursdk\Models\Shoppingcart;
 use budisteikul\toursdk\Models\ShoppingcartProduct;
@@ -1712,7 +1711,7 @@ class BookingHelper {
 				$shoppingcart->shoppingcart_payment->save();
 			}
 
-			CalendarHelper::update_calendar($shoppingcart,"create");
+			
 
 		}
 
@@ -1751,7 +1750,7 @@ class BookingHelper {
 				$shoppingcart->shoppingcart_payment->save();
 			}
 
-			CalendarHelper::update_calendar($shoppingcart,"delete");
+			
 
 		}
 
@@ -2179,7 +2178,7 @@ class BookingHelper {
 
 	public static function delete_shoppingcart($shoppingcart)
 	{
-		self::confirm_payment($shoppingcart,"CANCELED",true);
+		
 		$shoppingcart->delete();
 		FirebaseHelper::delete($shoppingcart,'receipt');
 	}

@@ -4,6 +4,7 @@ namespace budisteikul\toursdk\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+
 class Calendar extends Model
 {
     protected $table = 'calendars';
@@ -21,11 +22,11 @@ class Calendar extends Model
         parent::boot();
 
         self::created(function($model){
-                //FirebaseHelper::upload($model->shoppingcart()->first(),'receipt');
+               
         });
 
-        self::updated(function($model){
-                //FirebaseHelper::upload($model->shoppingcart()->first(),'receipt');
+        self::deleting(function($model){
+               
         });
 
         

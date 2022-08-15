@@ -216,7 +216,7 @@ footer {
          <tr>
           <td style="background-color:#FFFFFF; text-align:left; padding-left:0px; line-height: 18px; font-size:14px; color:#777777">
                         <div style="margin-top:3px;">
-                          <strong style="font-size:18px;">PVERTIKAL TRIP INDONESIA</strong>
+                          <strong style="font-size:18px;">{{env('APP_NAME')}}</strong>
                         </div>
                         <div>Perumnas Guwosari Blok XII</div>
                         <div>Jalan Abiyoso VII No.190</div>

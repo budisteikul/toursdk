@@ -9,36 +9,9 @@ use File;
 
 class ImageHelper {
 
-    public static function env_cloudinaryName()
-    {
-        return env("CLOUDINARY_NAME");
-    }
-
-    public static function env_cloudinaryKey()
-    {
-        return env("CLOUDINARY_KEY");
-    }
-
-    public static function env_cloudinarySecret()
-    {
-        return env("CLOUDINARY_SECRET");
-    }
-
     public static function env_googleCloudStorageBucket()
     {
         return env('GOOGLE_CLOUD_STORAGE_BUCKET');
-    }
-
-    public static function uploadQrcodeCloudinary($url)
-    {
-        \Cloudinary::config(array( 
-            "cloud_name" => self::env_cloudinaryName(), 
-            "api_key" => self::env_cloudinaryKey(), 
-            "api_secret" => self::env_cloudinarySecret() 
-        ));
-        $path = date('Y-m-d');
-        $response = \Cloudinary\Uploader::upload($url, Array('unique_filename'=>true,'use_filename'=>false,'folder' => env('APP_NAME') .'/qr-code/'. $path .'/'));
-        return $response;
     }
 
     public static function urlImageGoogle($public_id,$width=0,$height=0)
@@ -52,8 +25,6 @@ class ImageHelper {
     public static function uploadImageGoogle($file)
     {
         $image_id = Uuid::uuid4()->toString() .'.jpg';
-        
-        
 
         $img = ImageIntervention::make(storage_path('app').'/'. $file);
         Storage::disk('gcs')->put( 'images/original/'. $image_id, $img->encode('jpg', 75)); 
@@ -94,7 +65,6 @@ class ImageHelper {
         return $response;
     }
 
-
     public static function deleteImageGoogle($public_id)
     {
         Storage::disk('gcs')->delete('images/original/'. $public_id);
@@ -104,50 +74,6 @@ class ImageHelper {
         Storage::disk('gcs')->delete('images/w_250-h_250/'. $public_id);
         Storage::disk('gcs')->delete('images/w_80-h_80/'. $public_id);
     }
-
-    public static function uploadImageCloudinary($file)
-    {
-        
-        \Cloudinary::config(array( 
-            "cloud_name" => self::env_cloudinaryName(), 
-            "api_key" => self::env_cloudinaryKey(), 
-            "api_secret" => self::env_cloudinarySecret() 
-        ));
-        $response = \Cloudinary\Uploader::upload(storage_path('app').'/'. $file, Array('unique_filename'=>false,'use_filename'=>true,'folder' => env('APP_NAME') .'/images'));
-        Storage::disk('local')->delete($file);
-        
-        return $response;
-    }
-
-    public static function deleteImageCloudinary($public_id)
-    {
-        \Cloudinary::config(array( 
-            "cloud_name" => self::env_cloudinaryName(), 
-            "api_key" => self::env_cloudinaryKey(), 
-            "api_secret" => self::env_cloudinarySecret() 
-        ));
-        \Cloudinary\Uploader::destroy($public_id);
-    }
-	
-	public static function urlImageCloudinary($public_id,$width=0,$height=0)
-	{
-		\Cloudinary::config(array( 
-			"cloud_name" => self::env_cloudinaryName(), 
-			"api_key" => self::env_cloudinaryKey(), 
-			"api_secret" => self::env_cloudinarySecret() 
-		));
-
-		if($width>0 && $height>0)
-		{
-			$url = cloudinary_url($public_id, array("width" => $width, "height" => $height, "crop" => "fill","secure"=>true));
-		}
-		else
-		{
-			$url = cloudinary_url($public_id, array("secure"=>true));
-		}
-		return $url;
-		
-	}
 
     public static function cover(Product $product)
     {

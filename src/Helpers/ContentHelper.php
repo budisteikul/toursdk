@@ -282,7 +282,7 @@ class ContentHelper {
         $promo_code = $shoppingcart->promo_code;
         if($promo_code=="") $promo_code = null;
         
-        $payment_enable = 'localpayment,stripe,paypal';
+        $payment_enable = 'localpayment,paypal';
         
         
         

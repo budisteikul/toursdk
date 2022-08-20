@@ -43,7 +43,15 @@ use Intervention\Image\Facades\Image as ImageIntervention;
 class APIController extends Controller
 {
     
-    public function test()
+    public function __construct()
+    {
+        $this->currency = env("BOKUN_CURRENCY");
+        $this->lang = env("BOKUN_LANG");
+        $this->midtransServerKey = env("MIDTRANS_SERVER_KEY");
+
+    }
+
+    public function test(Request $request)
     {
         
     }
@@ -83,12 +91,7 @@ class APIController extends Controller
         return $rate;
     }
 
-    public function __construct()
-    {
-        $this->currency = env("BOKUN_CURRENCY");
-        $this->lang = env("BOKUN_LANG");
-        $this->midtransServerKey = env("MIDTRANS_SERVER_KEY");
-    }
+    
 
     public function checkout(Request $request)
     {
@@ -1381,6 +1384,15 @@ class APIController extends Controller
 
     public function stripe_jscript($sessionId)
     {
+        /*
+        if(request()->ip()=="217.21.90.164")
+        {
+            return response()->json([
+                'message' => 'donothonor'
+            ], 200);
+        }
+        */
+        
         $shoppingcart = Cache::get('_'. $sessionId);
         $amount = BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'USD');
         $amount = $amount * 100;

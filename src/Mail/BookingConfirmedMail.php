@@ -34,7 +34,7 @@ class BookingConfirmedMail extends Mailable
     {
         $shoppingcart = $this->shoppingcart;
         
-        $invoice = BookingHelper::create_invoice_pdf($shoppingcart);
+        //$invoice = BookingHelper::create_invoice_pdf($shoppingcart);
 
         /*
         $mail = $this->view('toursdk::layouts.mail.booking-confirmed')

@@ -74,7 +74,8 @@ class BookingHelper {
 	{
 			$shoppingcart = new Shoppingcart();
 			$shoppingcart->booking_status = 'CONFIRMED';
-			$shoppingcart->confirmation_code = $data['confirmationCode'];
+			//$shoppingcart->confirmation_code = $data['confirmationCode'];
+			$shoppingcart->confirmation_code = 'BR-'. $data['externalBookingReference'];
 			if(isset($data['promoCode'])) $shoppingcart->promo_code = $data['promoCode']['code'];
 			$bookingChannel = '';
 			if(isset($data['affiliate']['title']))
@@ -133,9 +134,10 @@ class BookingHelper {
 				$shoppingcart_product->shoppingcart_id = $shoppingcart->id;
 				$shoppingcart_product->booking_id = $data['activityBookings'][$i]['bookingId'];
 				$shoppingcart_product->product_confirmation_code = $data['activityBookings'][$i]['productConfirmationCode'];
-				$shoppingcart_product->product_id = $data['activityBookings'][$i]['productId'];
+
+				//$shoppingcart_product->product_id = $data['activityBookings'][$i]['productId'];
+				$shoppingcart_product->product_id = $data['activityBookings'][$i]['product']['externalId'];
 				
-				//$shoppingcart_product->image = ImageHelper::thumbnail($product);
 				if(isset($data['activityBookings'][$i]['activity']['photos'][0]['derived'][0]['url']))
 				{
 					$shoppingcart_product->image = $data['activityBookings'][$i]['activity']['photos'][0]['derived'][0]['url'];

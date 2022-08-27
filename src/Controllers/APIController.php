@@ -53,7 +53,7 @@ class APIController extends Controller
 
     public function test(Request $request)
     {
-        
+        print(date('ymd'));
     }
 
     

@@ -1645,7 +1645,7 @@ class BookingHelper {
 
 	public static function set_maskingPhone($shoppingcart)
 	{
-		$phoneNumber = str_replace("VER-","",$shoppingcart->confirmation_code);
+		$phoneNumber = str_replace("VT-","",$shoppingcart->confirmation_code);
 		$phoneNumber = '+'. $phoneNumber;
 		return $phoneNumber;
 	}
@@ -2291,7 +2291,7 @@ class BookingHelper {
 			$count = Shoppingcart::whereYear('created_at',date('Y'))->whereMonth('created_at',date('m'))->count();
 		}
 		$count++;
-		return GeneralHelper::digitFormat($count,4);
+		return GeneralHelper::digitFormat($count,3);
 	}
 
     public static function get_payment_transaction_id()
@@ -2304,11 +2304,12 @@ class BookingHelper {
         return $uuid;
     }
 
+
 	public static function get_ticket(){
 		$count = self::get_count('shoppingcart');
-		$uuid = "VER-". date('Ymd') . GeneralHelper::digitFormat(rand(00,99),2) . $count;
+		$uuid = "VT-". date('ym') . GeneralHelper::digitFormat(rand(00,99),2) . $count;
         while( Shoppingcart::where('confirmation_code','=',$uuid)->first() ){
-            $uuid = "VER-". date('Ymd') . GeneralHelper::digitFormat(rand(00,99),2) . $count;
+            $uuid = "VT-". date('ym') . GeneralHelper::digitFormat(rand(00,99),2) . $count;
         }
         return $uuid;
 	}

@@ -40,7 +40,7 @@ use Stripe;
 
 use Intervention\Image\Facades\Image as ImageIntervention;
 
-use budisteikul\fin\Models\fin_transactions;
+
 
 class APIController extends Controller
 {
@@ -55,17 +55,7 @@ class APIController extends Controller
 
     public function test(Request $request)
     {
-        $transactions = fin_transactions::get();
-        foreach($transactions as $transaction)
-        {
-            print_r($transaction->amount);
-            if($transaction->amount < 0)
-            {
-                $update = fin_transactions::where('id',$transaction->id)->first();
-                $update->amount = $update->amount * -1;
-                $update->save();
-            }
-        }
+        
     }
 
     

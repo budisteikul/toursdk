@@ -15,7 +15,11 @@ class CreateCalendarsTable extends Migration
     {
         Schema::create('calendars', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
+            $table->string('google_calendar_id')->nullable();
+            $table->string('product_id')->nullable();
+            $table->dateTime('date')->nullable();
+            $table->string('people')->nullable();
+            $table->timestamps(6);
         });
     }
 

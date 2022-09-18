@@ -4,6 +4,7 @@ namespace budisteikul\toursdk\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+
 class Shoppingcart extends Model
 {
     protected $table = 'shoppingcarts';

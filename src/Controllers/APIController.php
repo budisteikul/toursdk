@@ -39,7 +39,7 @@ use Illuminate\Support\Facades\URL;
 use Stripe;
 
 use Intervention\Image\Facades\Image as ImageIntervention;
-//use budisteikul\toursdk\Helpers\EventHelper; 
+use budisteikul\toursdk\Helpers\CalendarHelper; 
 
 
 class APIController extends Controller
@@ -53,6 +53,11 @@ class APIController extends Controller
 
     }
 
+    public function test()
+    {
+       
+        CalendarHelper::create_calendar('VT-22040040');
+    }
 
     public function schedule_jscript()
     {

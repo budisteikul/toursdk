@@ -37,7 +37,6 @@ use Carbon\Carbon;
 use Barryvdh\DomPDF\Facade as PDF;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Illuminate\Support\Facades\Storage;
-
 class BookingHelper {
 	
 	public static function env_paypalCurrency()

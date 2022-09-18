@@ -10,6 +10,10 @@
 	Route::get('/api/review/count', 'budisteikul\toursdk\Controllers\APIController@review_count');
 	Route::get('/api/review/jscript', 'budisteikul\toursdk\Controllers\APIController@review_jscript');
 
+	//Schedule
+	Route::post('/api/schedule', 'budisteikul\toursdk\Controllers\APIController@schedule');
+	Route::get('/api/schedule/jscript', 'budisteikul\toursdk\Controllers\APIController@schedule_jscript');
+
 	//Page
 	Route::get('/api/page/{slug}', 'budisteikul\toursdk\Controllers\APIController@page');
 

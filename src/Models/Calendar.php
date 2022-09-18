@@ -10,13 +10,8 @@ class Calendar extends Model
     protected $table = 'calendars';
     protected $keyType = 'string';
     protected $dateFormat = 'Y-m-d H:i:s.u';
-    protected $fillable = ['shoppingcart_id','google_calendar_id'];
+    protected $fillable = ['google_calendar_id','product_id','date','people'];
 
-    public function shoppingcart()
-    {
-        return $this->belongsTo(Shoppingcart::class);
-    }
-    
     public static function boot()
     {
         parent::boot();

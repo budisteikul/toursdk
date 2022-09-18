@@ -39,7 +39,7 @@ use Illuminate\Support\Facades\URL;
 use Stripe;
 
 use Intervention\Image\Facades\Image as ImageIntervention;
-
+//use budisteikul\toursdk\Helpers\EventHelper; 
 
 
 class APIController extends Controller
@@ -53,9 +53,82 @@ class APIController extends Controller
 
     }
 
-    public function test(Request $request)
+
+    public function schedule_jscript()
     {
-        
+        $jscript = '
+        jQuery(document).ready(function($) {  
+            var table = $("#dataTables-example").DataTable(
+            {
+                "processing": true,
+                "serverSide": true,
+                "ajax": 
+                {
+                    "url": "'.url('/api').'/schedule",
+                    "type": "POST",
+                },
+                "scrollX": true,
+                "language": 
+                {
+                    "paginate": 
+                    {
+                        "previous": "<i class=\"fa fa-step-backward\"></i>",
+                        "next": "<i class=\"fa fa-step-forward\"></i>",
+                        "first": "<i class=\"fa fa-fast-backward\"></i>",
+                        "last": "<i class=\"fa fa-fast-forward\"></i>"
+                    },
+                    "aria": 
+                    {
+                        "paginate": 
+                        {
+                            "first":    "First",
+                            "previous": "Previous",
+                            "next":     "Next",
+                            "last":     "Last"
+                        }
+                    }
+                },
+                "pageLength": 5,
+                "order": [[ 0, "desc" ]],
+                "columns": [
+                    {data: "date", name: "date", orderable: true, searchable: false, visible: false},
+                    {data: "name", name: "name", className: "auto", orderable: false},
+                    {data: "date_text", name: "date_text", className: "auto", orderable: false},
+                    {data: "people", name: "people", className: "auto", orderable: false},
+                ],
+                "dom": "tp",
+                "pagingType": "full_numbers"
+            });
+            
+      });';
+      return response($jscript)->header('Content-Type', 'application/javascript');
+    }
+
+    public function schedule(Request $request)
+    {
+        $resources = ShoppingcartProduct::whereHas('shoppingcart', function ($query) {
+                return $query->where('booking_status','CONFIRMED');
+        })->where('date', '>=', date('Y-m-d'))->whereNotNull('date');
+        return Datatables::eloquent($resources)
+        ->addColumn('name', function($resources){
+                    $shoppingcart_id = $resources->shoppingcart->id;
+                    $question = BookingHelper::get_answer_contact($resources->shoppingcart);
+                    $name = $question->firstName;
+                    return $name;
+                })
+        ->addColumn('date_text', function($id){
+                    $date_text = GeneralHelper::dateFormat($resources->date,10);
+                    return $date_text;
+                })
+        ->addColumn('people', function($id){
+                    $people = 0;
+                    foreach($resources->shoppingcart_product_details as $shoppingcart_product_detail)
+                    {
+                        $people += $shoppingcart_product_detail->people;
+                    }
+                    return $people;
+                })
+        ->toJson();
     }
 
     

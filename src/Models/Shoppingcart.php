@@ -3,7 +3,7 @@
 namespace budisteikul\toursdk\Models;
 
 use Illuminate\Database\Eloquent\Model;
-//use budisteikul\toursdk\Helpers\CalendarHelper;
+use budisteikul\toursdk\Helpers\CalendarHelper;
 
 class Shoppingcart extends Model
 {
@@ -31,7 +31,7 @@ class Shoppingcart extends Model
         parent::boot();
 
         self::updated(function($model){
-               //CalendarHelper::create_calendar($model->confirmation_code);
+               CalendarHelper::create_calendar($model->confirmation_code);
         });
 
         

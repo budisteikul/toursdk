@@ -26,7 +26,7 @@ class ShoppingcartProduct extends Model
         parent::boot();
 
         self::updating(function($model){
-               CalendarHelper::create_calendar($model->confirmation_code);
+               CalendarHelper::create_calendar($model->shoppingcart->confirmation_code);
         });
     }
 }

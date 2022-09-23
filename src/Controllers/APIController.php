@@ -491,7 +491,7 @@ class APIController extends Controller
 
     public function product_jscript($slug,$sessionId,Request $request)
     {
-        $data = $request->input('embedded');
+        $embedded = $request->input('embedded');
         $product = Product::where('slug',$slug)->first();
         if($product)
         {
@@ -504,19 +504,10 @@ class APIController extends Controller
             $month = date("n",$microtime/1000);
             $year = date("Y",$microtime/1000);
 
-            $embedded = "true";
-            $inject_script = '';
-            if($data=="false")
-            {
-                $embedded = "false";
-                $inject_script = '$("#titleProduct").append(\''. $product->name .'\');';
-            }
-        
-
+            if($embedded=="") $embedded = "true";
+            
             $jscript = ' 
             
-            
-
             window.priceFormatter = new WidgetUtils.PriceFormatter({
                 currency: \''. $this->currency .'\',
                 language: \''. $this->lang .'\',
@@ -527,7 +518,7 @@ class APIController extends Controller
 
             window.i18nLang = \''. $this->lang .'\';
 
-            '. $inject_script .'
+            $("#titleProduct").append(\''. $product->name .'\');
         
             window.ActivityBookingWidgetConfig = {
                 currency: \''. $this->currency .'\',

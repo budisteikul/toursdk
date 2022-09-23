@@ -3,7 +3,7 @@
 namespace budisteikul\toursdk\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use budisteikul\toursdk\Helpers\CalendarHelper;
+
 
 class Shoppingcart extends Model
 {
@@ -26,14 +26,4 @@ class Shoppingcart extends Model
         return $this->hasOne(ShoppingcartPayment::class,'shoppingcart_id','id');
     }
 
-    public static function boot()
-    {
-        parent::boot();
-
-        self::updated(function($model){
-               CalendarHelper::create_calendar($model->confirmation_code);
-        });
-
-        
-    }
 }

@@ -14,14 +14,7 @@ class CalendarHelper {
 			$shoppingcart = Shoppingcart::where('confirmation_code',$confirmation_code)->first();
 			if($shoppingcart)
 			{
-				self::post($shoppingcart);
-			}
-		}
-
-		public static function post($shoppingcart)
-    	{
-    		
-    		foreach($shoppingcart->shoppingcart_products as $shoppingcart_product)
+			foreach($shoppingcart->shoppingcart_products as $shoppingcart_product)
     		{
     			$content = BokunHelper::get_product($shoppingcart_product->product_id);
     			$people = self::count_person($shoppingcart_product->product_id,$shoppingcart_product->date);
@@ -30,15 +23,7 @@ class CalendarHelper {
     			$calendar = Calendar::where('product_id',$shoppingcart_product->product_id)->where('date',$shoppingcart_product->date)->first();
     			if($calendar)
     			{
-    				$event_id = $calendar->google_calendar_id;
-    				if($people==0)
-    				{
-    					Event::find($event_id)->delete();
-    					Calendar::where('google_calendar_id',$event_id)->delete();
-    					//print('people 0');
-    				}
-    				else if($calendar->people!=$people)
-    				{
+    					$event_id = $calendar->google_calendar_id;
     					$event = Event::find($event_id);
     					$event->description = "A total of ". $people ." persons";
     					$event->save();
@@ -48,20 +33,19 @@ class CalendarHelper {
 						$calendar->date = $shoppingcart_product->date;
 						$calendar->people = $people;
 						$calendar->save();
-
-						//print('people not same');
-    				}
-    				else
-    				{
-    					//print($calendar->people);
-    				}
     			}
     			else
     			{
     				if($people>0)
     				{
-    					$event_id = self::post_to_calendar($shoppingcart_product->date,$content->title,"A total of ". $people ." persons",$content->durationHours);
-    					//print('new');
+    					$carbon = Carbon::createFromFormat('Y-m-d H:i:s', $shoppingcart_product->date);
+   						$event = new Event;
+						$event->name = $content->title;
+						$event->description = "A total of ". $people ." persons";
+						$event->startDateTime = $carbon;
+						$event->endDateTime = $carbon->addHours($content->durationHours);
+						$newEvent = $event->save();
+						$event_id = $newEvent->id;
 
     					$calendar = New Calendar();
 						$calendar->google_calendar_id = $event_id;
@@ -71,14 +55,46 @@ class CalendarHelper {
 						$calendar->save();
     				}
     			}
+    		}
+			}
+		}
 
+		public static function update_calendar($confirmation_code)
+    	{
+    		$shoppingcart = Shoppingcart::where('confirmation_code',$confirmation_code)->first();
+			if($shoppingcart)
+			{
+				foreach($shoppingcart->shoppingcart_products as $shoppingcart_product)
+    			{
+    				$calendar = Calendar::where('product_id',$shoppingcart_product->product_id)->where('date',$shoppingcart_product->date)->first();
+    				if($calendar)
+    				{
+    					foreach($shoppingcart_product->shoppingcart_product_details as $shoppingcart_product_detail)
+    					{
+    						$people = $calendar->people - $shoppingcart_product_detail->people;
+    						if($people>0)
+    						{
+    							$event = Event::find($calendar->google_calendar_id);
+    							$event->description = "A total of ". $people ." persons";
+								$event->save();
 
+								$calendar->people = $people;
+								$calendar->save();
+    						}
+    						else
+    						{
+    							$event = Event::find($calendar->google_calendar_id);
+    							$event->delete();
+
+    							$calendar->delete();
+    						}
+    					}
     			
-    			
+    				}
+    			}
+    				
     		}
     	}
-
-    	
 
     	public static function count_person($product_id,$date)
     	{
@@ -98,17 +114,5 @@ class CalendarHelper {
     		return $persons;
     	}
 
-    	public static function post_to_calendar($string_date,$title,$description,$duration=1)
-    	{
-    		
-    		$carbon = Carbon::createFromFormat('Y-m-d H:i:s', $string_date);
-   			$event = new Event;
-			$event->name = $title;
-			$event->description = $description;
-			$event->startDateTime = $carbon;
-			$event->endDateTime = $carbon->addHours($duration);
-			$newEvent = $event->save();
-			return $newEvent->id;
-    	}
 	}
 ?>

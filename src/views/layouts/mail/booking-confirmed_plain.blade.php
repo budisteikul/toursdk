@@ -6,9 +6,9 @@ Hi {{$main_contact->firstName}},
 
 Have a good day,
 Thank you for your booking with {{env('APP_NAME')}}.
-Follow link below to view status of your booking.
+Follow link below to know way to the meeting point.
 
-{{ env('APP_URL') .'/booking/receipt/'.$shoppingcart->session_id.'/'.$shoppingcart->confirmation_code  }}
+https://linktr.ee/foodtour
 
 If you have any question, feel free to contact us.
 Thanks again, and enjoy your time in Indonesia :) 

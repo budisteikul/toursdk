@@ -204,7 +204,7 @@
                       Thank you for your booking with {{env('APP_NAME')}}.
                     <br />
                     <br />
-                    <a href="{{ env('APP_URL') .'/booking/receipt/'.$shoppingcart->session_id.'/'.$shoppingcart->confirmation_code  }}">Click here to view status of your booking.</a>
+                    <a href="https://linktr.ee/foodtour">Way to the meeting point.</a>
                     <br />
                     <br />
                     If you have any question, feel free to contact us.<br />

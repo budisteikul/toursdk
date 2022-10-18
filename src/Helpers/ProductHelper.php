@@ -113,8 +113,8 @@ class ProductHelper {
         if(isset($arr_date[1]))
         {
             $date = Carbon::createFromFormat('D, F d Y', trim($arr_date[0]));
-
-            $time = Carbon::createFromFormat('H:i', trim($arr_date[1]));
+            $time = date("H:i", strtotime(trim($arr_date[1])));
+            $time = Carbon::createFromFormat('H:i', $time);
             $hasil = $date->format('Y-m-d') .' '. $time->format('H:i:00');
         }
         else
@@ -129,7 +129,8 @@ class ProductHelper {
     
     public static function datetotext($str){
         if($str==null) return null;
-        $date = Carbon::createFromFormat('Y-m-d H:i:s', $str);
+        $date = date("Y-m-d H:i:s", strtotime(trim($str)));
+        $date = Carbon::createFromFormat('Y-m-d H:i:s', $date);
         if($date->format('H:i')=="00:00")
         {
             return $date->format('D d.M Y');

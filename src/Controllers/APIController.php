@@ -55,8 +55,10 @@ class APIController extends Controller
 
     public function test()
     {
-       
-        CalendarHelper::create_calendar('VT-22040040');
+        $text = '6:30 PM';
+        //$time = Carbon::createFromFormat('H:i', trim($text));
+        $time = date("H:i", strtotime($text));
+        print_r($time);
     }
 
     public function schedule_jscript()
@@ -763,6 +765,7 @@ class APIController extends Controller
             abort(404);
         }
 
+        
         $dataShoppingcart = ContentHelper::view_shoppingcart($shoppingcart);
 
         return response()->json([

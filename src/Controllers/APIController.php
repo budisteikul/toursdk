@@ -39,7 +39,7 @@ use Illuminate\Support\Facades\URL;
 use Stripe;
 
 use Intervention\Image\Facades\Image as ImageIntervention;
-use budisteikul\toursdk\Helpers\CalendarHelper; 
+ 
 
 
 class APIController extends Controller

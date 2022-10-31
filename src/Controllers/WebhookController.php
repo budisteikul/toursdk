@@ -5,7 +5,7 @@ use Illuminate\Http\Request;
 use budisteikul\toursdk\Helpers\BookingHelper;
 use budisteikul\toursdk\Models\Shoppingcart;
 use Illuminate\Support\Facades\Storage;
-use budisteikul\toursdk\Helpers\CalendarHelper;
+
 
 class WebhookController extends Controller
 {
@@ -63,7 +63,7 @@ class WebhookController extends Controller
                 $shoppingcart = Shoppingcart::where('confirmation_code','BR-'.$data['externalBookingReference'])->firstOrFail();
                 
                 BookingHelper::confirm_payment($shoppingcart,"CANCELED",true);
-                CalendarHelper::update_calendar($shoppingcart->confirmation_code);
+                
 
                 return response('OK', 200)->header('Content-Type', 'text/plain');
             break;

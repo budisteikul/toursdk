@@ -46,9 +46,6 @@ class TourSDKServiceProvider extends ServiceProvider
         $this->loadMigrationsFrom(__DIR__.'/migrations/2022_04_12_195049_create_vouchers_table.php');
         $this->loadMigrationsFrom(__DIR__.'/migrations/2022_04_13_194552_create_vouchers_products_table.php');
         
-        $this->loadMigrationsFrom(__DIR__.'/migrations/2022_09_18_103225_create_calendars_table.php');
-        //
-        
         $this->loadRoutesFrom(__DIR__.'/routes/web.php');
     }
 }

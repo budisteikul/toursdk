@@ -75,10 +75,6 @@
 	Route::get('/api/pdf/ticket/{sessionId}/Ticket-{id}.pdf', 'budisteikul\toursdk\Controllers\APIController@ticket');
 	Route::get('/api/pdf/instruction/{sessionId}/Instruction-{id}.pdf', 'budisteikul\toursdk\Controllers\APIController@instruction');
 
-
-	//Calendar
-	Route::post('/api/calendar/google', 'budisteikul\toursdk\Controllers\APIController@google_calendar');
-
 	//Download
 	Route::get('/api/qrcode/{sessionId}/{id}', 'budisteikul\toursdk\Controllers\APIController@downloadQrcode');
 

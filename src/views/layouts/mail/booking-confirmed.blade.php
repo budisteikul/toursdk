@@ -1,4 +1,5 @@
 @inject('BookingHelper', 'budisteikul\toursdk\Helpers\BookingHelper')
+@inject('Content', 'budisteikul\toursdk\Helpers\ContentHelper')
 @php
   $main_contact = $BookingHelper->get_answer_contact($shoppingcart);
 @endphp
@@ -204,7 +205,11 @@
                       Thank you for your booking with {{env('APP_NAME')}}.
                     <br />
                     <br />
-                    <a href="https://linktr.ee/foodtour">Way to the meeting point.</a>
+                    Your order is :
+                    {!! $Content->view_product_detail($shoppingcart) !!}
+                    <br />
+                    <br />
+                    <a href="https://linktr.ee/foodtour">Follow link to know way to the meeting point.</a>
                     <br />
                     <br />
                     If you have any question, feel free to contact us.<br />

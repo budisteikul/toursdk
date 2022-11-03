@@ -8,6 +8,7 @@ use budisteikul\toursdk\Helpers\ImageHelper;
 use budisteikul\toursdk\Helpers\ProductHelper;
 use budisteikul\toursdk\Helpers\BookingHelper;
 use budisteikul\toursdk\Models\Category;
+use Html2Text\Html2Text;
 
 class ContentHelper {
 
@@ -829,7 +830,7 @@ class ContentHelper {
 		return $invoice;
 	}
 
-	public static function view_product_detail($shoppingcart)
+	public static function view_product_detail($shoppingcart,$html2text=false)
 	{
 		$product = '';
 		//$access_ticket = BookingHelper::access_ticket($shoppingcart);
@@ -838,7 +839,7 @@ class ContentHelper {
 		{
 			$product .= '<div class="card mb-2"><div class="card-body bg-light">';
 
-			$product .= '<h5>'.$shoppingcart_product->title.'</h5>';
+			$product .= '<strong>'.$shoppingcart_product->title.'</strong><br />';
 			
             $thedate = ProductHelper::datetotext($shoppingcart_product->date);
             if($thedate!=null) $product .= $thedate .' <br />';
@@ -867,14 +868,19 @@ class ContentHelper {
 			}
 
 			
-			$product .= BookingHelper::get_answer_product($shoppingcart,$shoppingcart_product->booking_id);
+			$product .= '<br />'. BookingHelper::get_answer_product($shoppingcart,$shoppingcart_product->booking_id) .'<br />';
 			
 
 			
 			$product .= '</div></div>';
 		}
 
-		
+		if($html2text)
+        {
+            $text = New Html2Text($product);
+            $product = $text->getText();
+        }
+
 		return $product;
 	}
 

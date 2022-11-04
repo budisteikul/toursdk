@@ -284,6 +284,7 @@ class MidtransHelper {
 
         $data = $response->getBody()->getContents();
         $data = json_decode($data);
+        print_r($data_post);
         print_r($data);
         exit();
         return $data;

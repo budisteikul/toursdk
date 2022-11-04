@@ -38,9 +38,6 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\URL;
 use Stripe;
 
-use Intervention\Image\Facades\Image as ImageIntervention;
- 
-
 
 class APIController extends Controller
 {

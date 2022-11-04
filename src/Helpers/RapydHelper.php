@@ -205,9 +205,7 @@ class RapydHelper {
             ];
 
             $data1 = self::make_request('post','/v1/payments',$body);
-            print_r($body);
-            print_r($data1);
-            exit();
+            
             $data_json->payment_type = 'bank_transfer';
             $data_json->va_number = $data1['data']['textual_codes']['pay_code'];
             $data_json->redirect = $data->transaction->finish_url;

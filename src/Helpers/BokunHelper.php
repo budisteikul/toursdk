@@ -194,7 +194,7 @@ class BokunHelper {
     		return self::bokunWidget_connect('/widgets/'.$bookingChannel.'/config/conversionRate?lang='.$lang.'&currency='.$currency);
 		});
 		$value = json_decode($value);
-		return number_format($value->displayCurrencyRateToDollar->conversionRate,5,'.',',');
+		return number_format($value->displayCurrencyRateToDollar->conversionRate,6,'.',',');
 	}
 
 	public static function get_removepromocode($sessionId)

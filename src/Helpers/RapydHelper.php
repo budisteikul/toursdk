@@ -205,6 +205,7 @@ class RapydHelper {
             ];
 
             $data1 = self::make_request('post','/v1/payments',$body);
+            print_r($body);
             print_r($data1);
             exit();
             $data_json->payment_type = 'bank_transfer';

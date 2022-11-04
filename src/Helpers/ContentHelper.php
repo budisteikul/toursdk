@@ -349,7 +349,7 @@ class ContentHelper {
             'value' => 'qris', 'label' => 'QRIS', 'image' => '/img/ewallet/qris.png', 'currency' => 'idr',
         ];
         $indonesia_list[] = [
-            'value' => 'mandiri', 'label' => 'BANK TRANSFER', 'image' => '/img/bank/bank_transfer.png', 'currency' => 'idr',
+            'value' => 'permata', 'label' => 'BANK TRANSFER', 'image' => '/img/bank/bank_transfer.png', 'currency' => 'idr',
         ];
 
         /*

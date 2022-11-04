@@ -261,7 +261,7 @@ class APIController extends Controller
                 case 'permata':
                     BookingHelper::set_bookingStatus($sessionId,'PENDING');
                     BookingHelper::set_confirmationCode($sessionId);
-                    $response = BookingHelper::create_payment($sessionId,"midtrans","permata");
+                    $response = BookingHelper::create_payment($sessionId,"rapyd","permata");
                 break;
 
                 case 'mandiri':

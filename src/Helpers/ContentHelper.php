@@ -349,7 +349,7 @@ class ContentHelper {
             'value' => 'qris', 'label' => 'QRIS', 'image' => '/img/ewallet/qris.png', 'currency' => 'idr',
         ];
         $indonesia_list[] = [
-            'value' => 'permata', 'label' => 'BANK TRANSFER', 'image' => '/img/bank/bank_transfer.png', 'currency' => 'idr',
+            'value' => 'permata', 'label' => 'Bank Transfer', 'image' => '/img/bank/bank_transfer.png', 'currency' => 'idr',
         ];
 
         /*
@@ -393,10 +393,10 @@ class ContentHelper {
             'options' => $indonesia_list
         ];
         $singapore_list[] = [
-            'value' => 'paynow', 'label' => 'PAYNOW QR', 'image' => '/img/bank/paynow.png', 'currency' => 'sgd',
+            'value' => 'paynow', 'label' => 'Paynow QR', 'image' => '/img/bank/paynow.png', 'currency' => 'sgd',
         ];
         $singapore_list[] = [
-            'value' => 'fast', 'label' => 'BANK TRANSFER', 'image' => '/img/bank/fast.png', 'currency' => 'sgd',
+            'value' => 'fast', 'label' => 'Bank Transfer', 'image' => '/img/bank/fast.png', 'currency' => 'sgd',
         ];
         $grouped_payment[] = [
             'label' => 'SINGAPORE',

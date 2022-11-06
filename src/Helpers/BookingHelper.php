@@ -2577,7 +2577,7 @@ class BookingHelper {
 								<span class="badge badge-info invoice-color-info" style="font-size:20px;">
 								<i class="fas fa-qrcode"></i> WAITING FOR PAYMENT </span>
 								</div>
-								<div class="card mb-1 img-fluid invoice-hilang"  style="min-height:360px; max-width:505px;">
+								<div class="card mb-1 img-fluid invoice-hilang"  style="min-height:360px; ">
 								
 								<div class="card-img-overlay">
 									<div class="row h-100">

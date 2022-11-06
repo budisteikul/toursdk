@@ -2551,7 +2551,7 @@ class BookingHelper {
 								
 								<div class="card-img-overlay">
 									<div class="row h-100">
-   										<div class="col-sm-12 text-center">
+   										<div class="col-12 text-center">
    											
    											<br />
     										<img id="paynow-img" class="img-fluid border border-white" alt="PAYNOW" style="max-width:250px;" src="'. self::generate_qrcode($shoppingcart) .' ">
@@ -2581,7 +2581,7 @@ class BookingHelper {
 								
 								<div class="card-img-overlay">
 									<div class="row h-100">
-   										<div class="col-sm-12 text-center">
+   										<div class="col-12 text-center">
     										<img id="qris-img" class="img-fluid border border-white mt-2" alt="QRIS LOGO" style="max-width:250px; height:40px;" src="'. url('/img/qris-logo.png') .'">
     										<br />
     										<img id="qris-img" class="img-fluid border border-white" alt="QRIS" style="max-width:250px;" src="'. self::generate_qrcode($shoppingcart) .' ">

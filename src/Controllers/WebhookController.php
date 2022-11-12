@@ -18,16 +18,16 @@ class WebhookController extends Controller
 
     public function test()
     {
-        print_r(base_path());
-        $tw = new WiseHelper();
-        $quote=$tw->postCreateQuote(10);
-        $transfer = $tw->postCreateTransfer($quote->id);
-        $fund = $tw->postFundTransfer($transfer->id);
-        print_r($fund);
-
+        //print_r(base_path());
         //$tw = new WiseHelper();
-        //$recepient = $tw->getRecipientAccounts();
-        //print_r($recepient);
+        //$quote=$tw->postCreateQuote(10);
+        //$transfer = $tw->postCreateTransfer($quote->id);
+        //$fund = $tw->postFundTransfer($transfer->id);
+        //print_r($fund);
+
+        $tw = new WiseHelper();
+        $recepient = $tw->getRecipientAccounts();
+        print_r($recepient);
     }
 
 	public function webhook($webhook_app,Request $request)

@@ -22,14 +22,8 @@ class WiseHelper {
         }
     }
 
-    public function getRecipientAccounts(
-            $profileId=null,        //[optional] Personal or business profile id  
-            $currency=null          //[optional] a 3-char currency code. e.g. 'EUR'.
-            ){
-        $profileId && $data[] = array('profileId' => $this->tw->profileId);
-        $currency  && $data[] = array('currency' => 'IDR');
-        $data && ($args='?'.http_build_query($data));
-        return json_decode($this->GET('/v1/accounts'.$args));
+    public function getRecipientAccounts(){
+        return json_decode($this->GET('/v1/accounts?profile='. $this->tw->profileId .'&currency=IDR'));
     }
 
     //https://api.sandbox.transferwise.tech/v3/profiles/{profileId}/quotes

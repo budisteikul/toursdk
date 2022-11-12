@@ -19,11 +19,11 @@ class WebhookController extends Controller
     public function test()
     {
         print_r(base_path());
-        //$tw = new WiseHelper();
-        //$quote=$tw->postCreateQuote(10);
-        //$transfer = $tw->postCreateTransfer($quote->id);
-        //$fund = $tw->postFundTransfer($transfer->id);
-        //print_r($fund);
+        $tw = new WiseHelper();
+        $quote=$tw->postCreateQuote(10);
+        $transfer = $tw->postCreateTransfer($quote->id);
+        $fund = $tw->postFundTransfer($transfer->id);
+        print_r($fund);
 
         //$tw = new WiseHelper();
         //$recepient = $tw->getRecipientAccounts();

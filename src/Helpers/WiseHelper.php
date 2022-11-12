@@ -27,10 +27,10 @@ class WiseHelper {
     }
 
     //https://api.sandbox.transferwise.tech/v3/profiles/{profileId}/quotes
-    public function postCreateQuote($sourceAmount){
+    public function postCreateQuote($sourceAmount,$sourceCurrency){
         $data = new \stdClass();
         $data->profileId		= $this->tw->profileId;
-        $data->sourceCurrency	= 'USD';
+        $data->sourceCurrency	= $sourceCurrency;
         $data->targetCurrency	= 'IDR';
         $data->sourceAmount		= $sourceAmount;
         $data->payOut			= 'BALANCE';

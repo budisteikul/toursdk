@@ -42,7 +42,7 @@ class WebhookController extends Controller
             }
             
        
-
+            /*
             try
             {
                 Storage::disk('gcs')->put('log/'. date('YmdHis') .'.txt', json_encode($data, JSON_PRETTY_PRINT));
@@ -51,6 +51,7 @@ class WebhookController extends Controller
             {
                 
             }
+            */
             
 
             

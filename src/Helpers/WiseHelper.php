@@ -173,7 +173,7 @@ class WiseHelper {
             $SCA=json_decode($response);
             if($SCA->status==403 && !empty($SCA->path)){
                 if(version_compare(PHP_VERSION, '5.4.8') >= 0){
-                  //Requires PHP Version 5.4.8 or higher
+                  
                   $pkeyid = openssl_pkey_get_private('file://'.$this->tw->priv_pem);
                   openssl_sign($this->OTT, $Xsignature, $pkeyid,OPENSSL_ALGO_SHA256);
                   openssl_free_key($pkeyid);

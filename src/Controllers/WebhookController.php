@@ -29,6 +29,15 @@ class WebhookController extends Controller
         {
             $data = json_decode($request->getContent(), true);
             
+            try
+            {
+                Storage::disk('gcs')->put('log/'. date('YmdHis') .'.txt', json_encode($data, JSON_PRETTY_PRINT));
+            }
+            catch(exception $e)
+            {
+                
+            }
+            
             $profileId = $data['data']['resource']['profile_id'];
             $amount = $data['data']['amount'];
             $currency = $data['data']['currency'];
@@ -40,20 +49,6 @@ class WebhookController extends Controller
                 $transfer = $tw->postCreateTransfer($quote->id);
                 $fund = $tw->postFundTransfer($transfer->id);
             }
-            
-       
-            /*
-            try
-            {
-                Storage::disk('gcs')->put('log/'. date('YmdHis') .'.txt', json_encode($data, JSON_PRETTY_PRINT));
-            }
-            catch(exception $e)
-            {
-                
-            }
-            */
-            
-
             
             return response('OK', 200)->header('Content-Type', 'text/plain');
         }

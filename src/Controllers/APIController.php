@@ -50,13 +50,7 @@ class APIController extends Controller
 
     }
 
-    public function test()
-    {
-        $text = '6:30 PM';
-        //$time = Carbon::createFromFormat('H:i', trim($text));
-        $time = date("H:i", strtotime($text));
-        print_r($time);
-    }
+    
 
     public function schedule_jscript()
     {

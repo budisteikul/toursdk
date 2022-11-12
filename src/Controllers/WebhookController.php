@@ -6,6 +6,7 @@ use budisteikul\toursdk\Helpers\BookingHelper;
 use budisteikul\toursdk\Models\Shoppingcart;
 use Illuminate\Support\Facades\Storage;
 
+use budisteikul\toursdk\Helpers\WiseHelper;
 
 class WebhookController extends Controller
 {
@@ -13,6 +14,19 @@ class WebhookController extends Controller
     public function __construct()
     {
         
+    }
+
+    public function test()
+    {
+        //$tw = new WiseHelper();
+        //$quote=$tw->postCreateQuote(10);
+        //$transfer = $tw->postCreateTransfer($quote->id);
+        //$fund = $tw->postFundTransfer($transfer->id);
+        //print_r($fund);
+
+        $tw = new WiseHelper();
+        $recepient = $tw->getRecipientAccounts();
+        print_r($recepient);
     }
 
 	public function webhook($webhook_app,Request $request)

@@ -26,7 +26,7 @@ class WiseHelper {
         return json_decode($this->GET('/v1/accounts?profile='. $this->tw->profileId .'&currency=IDR'));
     }
 
-    //https://api.sandbox.transferwise.tech/v3/profiles/{profileId}/quotes
+    
     public function postCreateQuote($sourceAmount,$sourceCurrency){
         $data = new \stdClass();
         $data->profileId		= $this->tw->profileId;
@@ -35,25 +35,6 @@ class WiseHelper {
         $data->sourceAmount		= $sourceAmount;
         $data->payOut			= 'BALANCE';
         return json_decode($this->POST('/v3/profiles/'.$data->profileId.'/quotes',$data));
-    }
-
-    public function postCreateQuoteV1(
-            $type,               	//'BALANCE_PAYOUT' for payments or 'BALANCE_CONVERSION' for conversion between balances
-            $sourceCurrency,        //a 3-char currency code. e.g. 'EUR'.
-            $targetCurrency,        //a 3-char currency code. e.g. 'EUR'.
-            $sourceAmount=null,     //Amount in source currency. If specified, $targetAmount must be null.
-            $targetAmount=null      //Amount in target currency. If specified, $sourceAmount must be null. 
-            ){
-        $data = new \stdClass();
-        $data->profile           = $this->tw->profileId;
-        $data->target            = $targetCurrency;
-        $data->source            = $sourceCurrency;
-        $data->rateType          = 'FIXED';
-        if($targetAmount) $data->targetAmount = $targetAmount;
-        else              $data->sourceAmount = $sourceAmount;
-        $data->type              = $type;
-       
-        return json_decode($this->POST('/v1/quotes',$data));
     }
 
     public function postCreateTransfer($quoteId){
@@ -69,26 +50,6 @@ class WiseHelper {
         return json_decode($this->POST('/v1/transfers',$data));
     }
 
-    public function postCreateTransferV1(
-            //$targetAccount,         //recipient account id 
-            $quoteId,               //quote id
-            $reference,             //Recipient will see this reference text in their bank statement
-            $transferPurpose =null, //[Conditional] see: https://api-docs.transferwise.com/#transfers-requirements
-            $sourceOfFunds =null    //[Conditional]see: https://api-docs.transferwise.com/#transfers-requirements
-            ){
-        $data = new \stdClass();
-        $data->targetAccount            = env("WISE_BANK_ID");
-        $data->quote                    = $quoteId;
-        $data->customerTransactionId    = $this->createUUID();
-        $data->details =  new \stdClass();
-        $data->details->reference       = $reference;
-        $transferPurpose && $data->details->transferPurpose = 'verification.transfers.purpose.other';
-        $sourceOfFunds && $data->details->sourceOfFunds = 'verification.source.of.funds.other';
-        return json_decode($this->POST('/v1/transfers',$data));
-    }
-
-    
-    
     public function postFundTransfer(
             $transferId             //transferID from postCreateTransfer()
             ){
@@ -97,9 +58,6 @@ class WiseHelper {
         
         return json_decode($this->POST("/v3/profiles/".$this->tw->profileId."/transfers/$transferId/payments",$data));
     }
-
-
-
 
     private function POST($url,$data){
         return $this->curl('POST',$url,$data);

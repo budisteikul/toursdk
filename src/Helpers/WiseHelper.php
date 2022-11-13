@@ -1,6 +1,8 @@
 <?php
 namespace budisteikul\toursdk\Helpers;
-use Illuminate\Http\Request;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\Exception\UnsatisfiedDependencyException;
+use Illuminate\Support\Facades\Storage;
 
 class WiseHelper {
 
@@ -11,14 +13,16 @@ class WiseHelper {
     	$this->tw = new \stdClass();
     	$this->tw->profileId = env("WISE_ID");
     	$this->tw->api_key = env("WISE_TOKEN");
-    	$this->tw->priv_pem = env("WISE_PRIVATE_KEY");
+    	//$this->tw->priv_pem = env("WISE_PRIVATE_KEY");
     	if(env("WISE_ENV")=="production")
         {
             $this->tw->url = "https://api.transferwise.com";
+            $this->tw->priv_pem = Storage::disk('gcs')->get('credentials/wise/private.pem');
         }
         else
         {
             $this->tw->url = "https://api.sandbox.transferwise.tech";
+            $this->tw->priv_pem = Storage::disk('gcs')->get('credentials/wise/sandbox_private.pem');
         }
     }
 
@@ -41,7 +45,7 @@ class WiseHelper {
         $data = new \stdClass();
         $data->targetAccount	= env("WISE_BANK_ID");
         $data->quoteUuid	    = $quoteId;
-        $data->customerTransactionId    = $this->createUUID();
+        $data->customerTransactionId    = Uuid::uuid4()->toString();
 
         $data->details = new \stdClass();
         //$data->details->reference       = $reference;
@@ -124,16 +128,14 @@ class WiseHelper {
             //We have received a One Time Token
             $SCA=json_decode($response);
             if($SCA->status==403 && !empty($SCA->path)){
-                if(version_compare(PHP_VERSION, '5.4.8') >= 0){
-                  
-                  $pkeyid = openssl_pkey_get_private('file://'.$this->tw->priv_pem);
-                  openssl_sign($this->OTT, $Xsignature, $pkeyid,OPENSSL_ALGO_SHA256);
-                  openssl_free_key($pkeyid);
-                  $Xsignature= base64_encode( $Xsignature);
-                } else {
-                  //Requires access to shell commands
-                  $Xsignature= shell_exec("printf '$this->OTT' | openssl sha256 -sign ".$this->tw->priv_pem." | base64 -w 0") ;
-                }
+                
+                //$pkeyid = openssl_pkey_get_private('file://'.$this->tw->priv_pem);
+                //openssl_sign($this->OTT, $Xsignature, $pkeyid, OPENSSL_ALGO_SHA256);
+                //openssl_free_key($pkeyid);
+                openssl_sign($this->OTT, $Xsignature, $this->tw->priv_pem, OPENSSL_ALGO_SHA256);
+                openssl_free_key($this->tw->priv_pem);
+                $Xsignature= base64_encode( $Xsignature);
+                
                 $headers[] = "x-2fa-approval: $this->OTT";
                 $headers[] = "X-Signature: $Xsignature";
                 $response = $this->curl($mode, $SCA->path,$data,$headers);
@@ -143,15 +145,6 @@ class WiseHelper {
         return  $response;
     }
 
-    private function createUUID() {
-      return sprintf( '%04x%04x-%04x-%04x-%04x-%04x%04x%04x',
-        mt_rand( 0, 0xffff ), mt_rand( 0, 0xffff ),
-        mt_rand( 0, 0xffff ),
-        mt_rand( 0, 0x0fff ) | 0x4000,
-        mt_rand( 0, 0x3fff ) | 0x8000,
-        mt_rand( 0, 0xffff ), mt_rand( 0, 0xffff ), mt_rand( 0, 0xffff )
-      );
-    }
     
 }
 ?>

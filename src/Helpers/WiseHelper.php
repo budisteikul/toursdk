@@ -13,7 +13,7 @@ class WiseHelper {
     	$this->tw = new \stdClass();
     	$this->tw->profileId = env("WISE_ID");
     	$this->tw->api_key = env("WISE_TOKEN");
-    	//$this->tw->priv_pem = env("WISE_PRIVATE_KEY");
+    	
     	if(env("WISE_ENV")=="production")
         {
             $this->tw->url = "https://api.transferwise.com";
@@ -134,15 +134,12 @@ class WiseHelper {
         }
         curl_close ($ch);
         
-        //See if need to resend because of SCA
+        
         if(!empty($this->OTT)){
-            //We have received a One Time Token
+            
             $SCA=json_decode($response);
             if($SCA->status==403 && !empty($SCA->path)){
                 
-                //$pkeyid = openssl_pkey_get_private('file://'.$this->tw->priv_pem);
-                //openssl_sign($this->OTT, $Xsignature, $pkeyid, OPENSSL_ALGO_SHA256);
-                //openssl_free_key($pkeyid);
                 openssl_sign($this->OTT, $Xsignature, $this->tw->priv_pem, OPENSSL_ALGO_SHA256);
                 openssl_free_key($this->tw->priv_pem);
                 $Xsignature= base64_encode( $Xsignature);

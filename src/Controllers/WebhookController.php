@@ -47,13 +47,9 @@ class WebhookController extends Controller
                 $amount = $data->data->amount;
                 $currency = $data->data->currency;
 
-                //$amount = number_format((float)$amount, 2, '.', '');
-                //$amount = $amount * 1000;
-
                 $quote=$tw->postCreateQuote($amount,$currency);
                 $transfer = $tw->postCreateTransfer($quote->id);
                 $fund = $tw->postFundTransfer($transfer->id);
-
             }
             
 

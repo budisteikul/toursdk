@@ -18,11 +18,13 @@ class WiseHelper {
         {
             $this->tw->url = "https://api.transferwise.com";
             $this->tw->priv_pem = Storage::disk('gcs')->get('credentials/wise/private.pem');
+            $this->tw->webhook_pem = Storage::disk('gcs')->get('credentials/wise/webhook.pem');
         }
         else
         {
             $this->tw->url = "https://api.sandbox.transferwise.tech";
             $this->tw->priv_pem = Storage::disk('gcs')->get('credentials/wise/sandbox_private.pem');
+            $this->tw->webhook_pem = Storage::disk('gcs')->get('credentials/wise/sandbox_webhook.pem');
         }
     }
 
@@ -61,6 +63,15 @@ class WiseHelper {
         $data->type     = 'BALANCE';
         
         return json_decode($this->POST("/v3/profiles/".$this->tw->profileId."/transfers/$transferId/payments",$data));
+    }
+
+    public function checkSignature($json,$signature)
+    {
+        $status = false;
+        $pub_key = $this->tw->webhook_pem;
+        $verify = openssl_verify ($json , base64_decode($signature) ,$pub_key, OPENSSL_ALGO_SHA256);
+        if($verify) $status = true;
+        return $status;
     }
 
     private function POST($url,$data){

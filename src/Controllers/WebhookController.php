@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Storage;
 
 use budisteikul\toursdk\Helpers\WiseHelper;
 
+
 class WebhookController extends Controller
 {
 
@@ -18,40 +19,36 @@ class WebhookController extends Controller
 
     
 
-    public function test()
+    public function test(Request $request)
     {
-        $tw = new WiseHelper();
-        $account = $tw->getRecipientAccounts();
-        print_r($account);
+        
+     
+
     }
 
 	public function webhook($webhook_app,Request $request)
     {
         if($webhook_app=="wise")
         {
-            $data = json_decode($request->getContent(), true);
             
-            try
+            $signature = $request->header('X-Signature-SHA256');
+            $json      = $request->getContent();
+            $tw = new WiseHelper();
+            $verify = $tw->checkSignature($json,$signature);
+
+            if($verify)
             {
-                Storage::disk('gcs')->put('log/'. date('YmdHis') .'.txt', json_encode($data, JSON_PRETTY_PRINT));
-            }
-            catch(exception $e)
-            {
-                
-            }
-            
-            $profileId = $data['data']['resource']['profile_id'];
-            $amount = $data['data']['amount'];
-            $currency = $data['data']['currency'];
-            
-            if($profileId==env("WISE_ID"))
-            {
-                $tw = new WiseHelper();
+                $data = json_decode($json);
+                $amount = $data->data->amount;
+                $currency = $data->data->currency;
+
+
                 $quote=$tw->postCreateQuote($amount,$currency);
                 $transfer = $tw->postCreateTransfer($quote->id);
                 $fund = $tw->postFundTransfer($transfer->id);
             }
             
+
             return response('OK', 200)->header('Content-Type', 'text/plain');
         }
 

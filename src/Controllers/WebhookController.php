@@ -21,9 +21,8 @@ class WebhookController extends Controller
     public function test()
     {
         $tw = new WiseHelper();
-        $quote=$tw->postCreateQuote(30,'USD');
-        $transfer = $tw->postCreateTransfer($quote->id);
-        $fund = $tw->postFundTransfer($transfer->id);
+        $account = $tw->getRecipientAccounts();
+        print_r($account);
     }
 
 	public function webhook($webhook_app,Request $request)

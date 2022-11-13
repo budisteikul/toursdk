@@ -29,7 +29,13 @@ class WebhookController extends Controller
     {
         if($webhook_app=="wise")
         {
-            
+            $is_test = $request->header('X-Test-Notification');
+            if($is_test)
+            {
+                return response('OK', 200)->header('Content-Type', 'text/plain');
+            }
+
+
             $signature = $request->header('X-Signature-SHA256');
             $json      = $request->getContent();
             $tw = new WiseHelper();

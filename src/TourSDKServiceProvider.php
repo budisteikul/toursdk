@@ -23,7 +23,7 @@ class TourSDKServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->publishes([ __DIR__.'/publish/img' => public_path('img'),], 'budisteikul');
+        
         
         $this->loadViewsFrom(__DIR__.'/views', 'toursdk');
         

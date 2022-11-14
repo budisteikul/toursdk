@@ -47,6 +47,7 @@ class APIController extends Controller
         $this->currency = env("BOKUN_CURRENCY");
         $this->lang = env("BOKUN_LANG");
         $this->midtransServerKey = env("MIDTRANS_SERVER_KEY");
+        $this->appAssetUrl = env("APP_ASSET_URL");
 
     }
 
@@ -345,7 +346,7 @@ class APIController extends Controller
             if($shoppingcart->shoppingcart_payment->payment_type=="ewallet")
             {
                 $redirect_type = 2;
-                $text = '<strong>Click to pay with <img class="ml-2 mr-2" src="/img/ewallet/'.$shoppingcart->shoppingcart_payment->bank_name.'-light.png" height="30" /></strong>';
+                $text = '<strong>Click to pay with <img class="ml-2 mr-2" src="'. $this->appAssetUrl .'/img/payment/'.$shoppingcart->shoppingcart_payment->bank_name.'-light.png" height="30" /></strong>';
             }
 
             if($shoppingcart->shoppingcart_payment->payment_type=="bank_redirect")
@@ -1380,7 +1381,7 @@ class APIController extends Controller
         $shoppingcart = Cache::get('_'. $sessionId);
         $jscript = '
             $("#submitCheckout").slideUp("slow");
-            $("#paymentContainer").html(\'<div class="form mb-2 mt-2"><strong>Please input your OVO number :</strong></div><div class="form-row mb-4 mt-2"><div class="col-xs-2"><input type="text" style="height:47px; width:50px;" class="form-control  disabled" value="+62" disabled></div><div class="col"><input id="ovoPhoneNumber" type="text" style="height:47px" class="form-control" placeholder="85743112112"></div></div><div id=\"text-alert\" class=\"text-center mb-4 mt-2\"></div><button id="submit" onClick="createpaymentovo()" class="btn btn-lg btn-block btn-theme" style="height:47px"><strong>Click to pay with <img class="ml-2 mr-2" src="/img/ewallet/ovo-light.png" height="30" /></strong></button>\');
+            $("#paymentContainer").html(\'<div class="form mb-2 mt-2"><strong>Please input your OVO number :</strong></div><div class="form-row mb-4 mt-2"><div class="col-xs-2"><input type="text" style="height:47px; width:50px;" class="form-control  disabled" value="+62" disabled></div><div class="col"><input id="ovoPhoneNumber" type="text" style="height:47px" class="form-control" placeholder="85743112112"></div></div><div id=\"text-alert\" class=\"text-center mb-4 mt-2\"></div><button id="submit" onClick="createpaymentovo()" class="btn btn-lg btn-block btn-theme" style="height:47px"><strong>Click to pay with <img class="ml-2 mr-2" src="'.$this->appAssetUrl.'/img/payment/ovo-light.png" height="30" /></strong></button>\');
 
             function createpaymentovo()
             {
@@ -1410,7 +1411,7 @@ class APIController extends Controller
                                     {
                                         $("#ovoPhoneNumber").attr("disabled", false);
                                         $("#submit").attr("disabled", false);
-                                        $("#submit").html(\' <strong>Click to pay with <img class="ml-2 mr-2" src="/img/ewallet/ovo-light.png" height="30" /></strong> \');
+                                        $("#submit").html(\' <strong>Click to pay with <img class="ml-2 mr-2" src="'.$this->appAssetUrl.'/img/payment/ovo-light.png" height="30" /></strong> \');
                                     }
 
                                     if(data.message=="failed")
@@ -1420,7 +1421,7 @@ class APIController extends Controller
                                         $(\'#alert-payment\').fadeIn("slow");
                                         $("#ovoPhoneNumber").attr("disabled", false);
                                         $("#submit").attr("disabled", false);
-                                        $("#submit").html(\' <strong>Click to pay with <img class="ml-2 mr-2" src="/img/ewallet/ovo-light.png" height="30" /></strong> \');
+                                        $("#submit").html(\' <strong>Click to pay with <img class="ml-2 mr-2" src="'.$this->appAssetUrl.'/img/payment/ovo-light.png" height="30" /></strong> \');
                                     }
 
                                     if(data.message=="success")
@@ -1438,7 +1439,7 @@ class APIController extends Controller
                                         $(\'#alert-payment\').fadeIn("slow");
                                         $("#ovoPhoneNumber").attr("disabled", false);
                                         $("#submit").attr("disabled", false);
-                                        $("#submit").html(\' <strong>Click to pay with <img class="ml-2 mr-2" src="/img/ewallet/ovo-light.png" height="30" /></strong> \');
+                                        $("#submit").html(\' <strong>Click to pay with <img class="ml-2 mr-2" src="'.$this->appAssetUrl.'/img/payment/ovo-light.png" height="30" /></strong> \');
                             });
 
                             return false;

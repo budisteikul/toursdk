@@ -4,9 +4,9 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use budisteikul\toursdk\Helpers\BookingHelper;
 use budisteikul\toursdk\Models\Shoppingcart;
-use Illuminate\Support\Facades\Storage;
 
 use budisteikul\toursdk\Helpers\WiseHelper;
+use budisteikul\toursdk\Helpers\LogHelper;
 
 
 class WebhookController extends Controller
@@ -29,6 +29,8 @@ class WebhookController extends Controller
     {
         if($webhook_app=="wise")
         {
+            LogHelper::log_webhook($request->getContent());
+
             $is_test = $request->header('X-Test-Notification');
             if($is_test)
             {
@@ -59,17 +61,10 @@ class WebhookController extends Controller
 
         if($webhook_app=="bokun")
         {
+            LogHelper::log_webhook($request->getContent());
+
             $data = json_decode($request->getContent(), true);
             
-            try
-            {
-                Storage::disk('gcs')->put('log/'. date('YmdHis') .'.txt', json_encode($data, JSON_PRETTY_PRINT));
-            }
-            catch(exception $e)
-            {
-                
-            }
-
             switch($request->input('action'))
             {
             case 'BOOKING_CONFIRMED':

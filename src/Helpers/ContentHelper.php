@@ -296,42 +296,42 @@ class ContentHelper {
         
         /*
         $bank_transfer_list[] = [
-            'value' => 'permata', 'label' => 'PERMATA VA', 'image' => self::env_appAssetUrl() .'/img/bank/permata.png', 'currency' => 'idr',
+            'value' => 'permata', 'label' => 'PERMATA VA', 'image' => self::env_appAssetUrl() .'/img/payment/permata.png', 'currency' => 'idr',
         ];
         $bank_transfer_list[] = [
-            'value' => 'mandiri', 'label' => 'MANDIRI VA', 'image' => self::env_appAssetUrl() .'/img/bank/mandiri.png', 'currency' => 'idr',
+            'value' => 'mandiri', 'label' => 'MANDIRI VA', 'image' => self::env_appAssetUrl() .'/img/payment/mandiri.png', 'currency' => 'idr',
         ];
         $bank_transfer_list[] = [
-            'value' => 'bni', 'label' => 'BNI VA', 'image' => self::env_appAssetUrl() .'/img/bank/bni.png', 'currency' => 'idr',
+            'value' => 'bni', 'label' => 'BNI VA', 'image' => self::env_appAssetUrl() .'/img/payment/bni.png', 'currency' => 'idr',
         ];
         $bank_transfer_list[] = [
-            'value' => 'bri', 'label' => 'BRI VA', 'image' => self::env_appAssetUrl() .'/img/bank/bri.png', 'currency' => 'idr',
+            'value' => 'bri', 'label' => 'BRI VA', 'image' => self::env_appAssetUrl() .'/img/payment/bri.png', 'currency' => 'idr',
         ];
         $bank_transfer_list[] = [
-            'value' => 'danamon', 'label' => 'DANAMON VA', 'image' => self::env_appAssetUrl() .'/img/bank/danamon.png', 'currency' => 'idr',
+            'value' => 'danamon', 'label' => 'DANAMON VA', 'image' => self::env_appAssetUrl() .'/img/payment/danamon.png', 'currency' => 'idr',
         ];
         $bank_transfer_list[] = [
-            'value' => 'cimb', 'label' => 'CIMB NIAGA VA',  'image' => self::env_appAssetUrl() .'/img/bank/cimb.png', 'currency' => 'idr',
+            'value' => 'cimb', 'label' => 'CIMB NIAGA VA',  'image' => self::env_appAssetUrl() .'/img/payment/cimb.png', 'currency' => 'idr',
         ];
         $bank_transfer_list[] = [
-            'value' => 'doku', 'label' => 'DOKU VA', 'image' => self::env_appAssetUrl() .'/img/bank/doku.png', 'currency' => 'idr',
+            'value' => 'doku', 'label' => 'DOKU VA', 'image' => self::env_appAssetUrl() .'/img/payment/doku.png', 'currency' => 'idr',
         ];
     
         $qrcode_list[] = [
-            'value' => 'qris', 'label' => 'QRIS', 'image' => self::env_appAssetUrl() .'/img/ewallet/qris.png', 'currency' => 'idr',
+            'value' => 'qris', 'label' => 'QRIS', 'image' => self::env_appAssetUrl() .'/img/payment/qris.png', 'currency' => 'idr',
         ];
         
         $ewallet_list[] = [
-            'value' => 'dana', 'label' => 'DANA', 'image' => self::env_appAssetUrl() .'/img/ewallet/dana.png', 'currency' => 'idr',
+            'value' => 'dana', 'label' => 'DANA', 'image' => self::env_appAssetUrl() .'/img/payment/dana.png', 'currency' => 'idr',
         ];
         $ewallet_list[] = [
-            'value' => 'gopay', 'label' => 'GOPAY', 'image' => self::env_appAssetUrl() .'/img/ewallet/gopay.png', 'currency' => 'idr',
+            'value' => 'gopay', 'label' => 'GOPAY', 'image' => self::env_appAssetUrl() .'/img/payment/gopay.png', 'currency' => 'idr',
         ];
         $ewallet_list[] = [
-            'value' => 'shopeepay', 'label' => 'SHOPEEPAY', 'image' => self::env_appAssetUrl() .'/img/ewallet/shopeepay.png', 'currency' => 'idr',
+            'value' => 'shopeepay', 'label' => 'SHOPEEPAY', 'image' => self::env_appAssetUrl() .'/img/payment/shopeepay.png', 'currency' => 'idr',
         ];
         $ewallet_list[] = [
-            'value' => 'ovo', 'label' => 'OVO', 'image' => self::env_appAssetUrl() .'/img/ewallet/ovo.png', 'currency' => 'idr',
+            'value' => 'ovo', 'label' => 'OVO', 'image' => self::env_appAssetUrl() .'/img/payment/ovo.png', 'currency' => 'idr',
         ];
         
         $grouped_payment[] = [
@@ -351,44 +351,44 @@ class ContentHelper {
         */
 
         $indonesia_list[] = [
-            'value' => 'qris', 'label' => 'QRIS', 'image' => self::env_appAssetUrl() .'/img/ewallet/qris.png', 'currency' => 'idr',
+            'value' => 'qris', 'label' => 'QRIS', 'image' => self::env_appAssetUrl() .'/img/payment/qris.png', 'currency' => 'idr',
         ];
         $indonesia_list[] = [
-            'value' => 'permata', 'label' => 'Bank Transfer', 'image' => self::env_appAssetUrl() .'/img/bank/bank_transfer.png', 'currency' => 'idr',
+            'value' => 'permata', 'label' => 'Bank Transfer', 'image' => self::env_appAssetUrl() .'/img/payment/bank_transfer.png', 'currency' => 'idr',
         ];
 
         /*
         $indonesia_list[] = [
-            'value' => 'dana', 'label' => 'DANA', 'image' => self::env_appAssetUrl() .'/img/ewallet/dana.png', 'currency' => 'idr',
+            'value' => 'dana', 'label' => 'DANA', 'image' => self::env_appAssetUrl() .'/img/payment/dana.png', 'currency' => 'idr',
         ];
         $indonesia_list[] = [
-            'value' => 'gopay', 'label' => 'GOPAY', 'image' => self::env_appAssetUrl() .'/img/ewallet/gopay.png', 'currency' => 'idr',
+            'value' => 'gopay', 'label' => 'GOPAY', 'image' => self::env_appAssetUrl() .'/img/payment/gopay.png', 'currency' => 'idr',
         ];
         $indonesia_list[] = [
-            'value' => 'shopeepay', 'label' => 'SHOPEEPAY', 'image' => self::env_appAssetUrl() .'/img/ewallet/shopeepay.png', 'currency' => 'idr',
+            'value' => 'shopeepay', 'label' => 'SHOPEEPAY', 'image' => self::env_appAssetUrl() .'/img/payment/shopeepay.png', 'currency' => 'idr',
         ];
         $indonesia_list[] = [
-            'value' => 'ovo', 'label' => 'OVO', 'image' => self::env_appAssetUrl() .'/img/ewallet/ovo.png', 'currency' => 'idr',
+            'value' => 'ovo', 'label' => 'OVO', 'image' => self::env_appAssetUrl() .'/img/payment/ovo.png', 'currency' => 'idr',
         ];
         */
         /*
         $indonesia_list[] = [
-            'value' => 'permata', 'label' => 'PERMATA VA', 'image' => self::env_appAssetUrl() .'/img/bank/permata.png', 'currency' => 'idr',
+            'value' => 'permata', 'label' => 'PERMATA VA', 'image' => self::env_appAssetUrl() .'/img/payment/permata.png', 'currency' => 'idr',
         ];
         $indonesia_list[] = [
-            'value' => 'mandiri', 'label' => 'MANDIRI VA', 'image' => self::env_appAssetUrl() .'/img/bank/mandiri.png', 'currency' => 'idr',
+            'value' => 'mandiri', 'label' => 'MANDIRI VA', 'image' => self::env_appAssetUrl() .'/img/payment/mandiri.png', 'currency' => 'idr',
         ];
         $indonesia_list[] = [
-            'value' => 'bni', 'label' => 'BNI VA', 'image' => self::env_appAssetUrl() .'/img/bank/bni.png', 'currency' => 'idr',
+            'value' => 'bni', 'label' => 'BNI VA', 'image' => self::env_appAssetUrl() .'/img/payment/bni.png', 'currency' => 'idr',
         ];
         $indonesia_list[] = [
-            'value' => 'bri', 'label' => 'BRI VA', 'image' => self::env_appAssetUrl() .'/img/bank/bri.png', 'currency' => 'idr',
+            'value' => 'bri', 'label' => 'BRI VA', 'image' => self::env_appAssetUrl() .'/img/payment/bri.png', 'currency' => 'idr',
         ];
         $indonesia_list[] = [
-            'value' => 'danamon', 'label' => 'DANAMON VA', 'image' => self::env_appAssetUrl() .'/img/bank/danamon.png', 'currency' => 'idr',
+            'value' => 'danamon', 'label' => 'DANAMON VA', 'image' => self::env_appAssetUrl() .'/img/payment/danamon.png', 'currency' => 'idr',
         ];
         $indonesia_list[] = [
-            'value' => 'cimb', 'label' => 'CIMB NIAGA VA',  'image' => self::env_appAssetUrl() .'/img/bank/cimb.png', 'currency' => 'idr',
+            'value' => 'cimb', 'label' => 'CIMB NIAGA VA',  'image' => self::env_appAssetUrl() .'/img/payment/cimb.png', 'currency' => 'idr',
         ];
         
         */
@@ -398,17 +398,17 @@ class ContentHelper {
             'options' => $indonesia_list
         ];
         $singapore_list[] = [
-            'value' => 'paynow', 'label' => 'Paynow QR', 'image' => self::env_appAssetUrl() .'/img/bank/paynow.png', 'currency' => 'sgd',
+            'value' => 'paynow', 'label' => 'Paynow QR', 'image' => self::env_appAssetUrl() .'/img/payment/paynow.png', 'currency' => 'sgd',
         ];
         $singapore_list[] = [
-            'value' => 'fast', 'label' => 'Bank Transfer', 'image' => self::env_appAssetUrl() .'/img/bank/fast.png', 'currency' => 'sgd',
+            'value' => 'fast', 'label' => 'Bank Transfer', 'image' => self::env_appAssetUrl() .'/img/payment/fast.png', 'currency' => 'sgd',
         ];
         $grouped_payment[] = [
             'label' => 'SINGAPORE',
             'options' => $singapore_list
         ];
         $australia_list[] = [
-            'value' => 'poli', 'label' => 'POLi', 'image' => self::env_appAssetUrl() .'/img/bank/poli.png', 'currency' => 'aud',
+            'value' => 'poli', 'label' => 'POLi', 'image' => self::env_appAssetUrl() .'/img/payment/poli.png', 'currency' => 'aud',
         ];
         $grouped_payment[] = [
             'label' => 'AUSTRALIA',

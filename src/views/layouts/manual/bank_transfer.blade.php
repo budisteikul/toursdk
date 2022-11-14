@@ -39,9 +39,9 @@ html,body {
 <body>
 <div style="position:absolute;left:50%;margin-left:-290px;top:0px;width:580px;height:2732px;border-style:outset;overflow:hidden">
 <div style="position:absolute;left:0px;top:0px">
-<img src="{{url('/img/background1.jpg')}}" width=580 height=2732></div>
+<img src="{{ env('APP_ASSET_URL') }}/img/pdf/background1.jpg" width=580 height=2732></div>
 <div style="position:absolute;left:68.03px;top:25.83px" class="cls_003">
-	<img src="{{url('/img/logo-blue.jpg')}}" height="30" />
+	<img src="{{ env('APP_ASSET_URL') }}/img/pdf/logo-blue.jpg" height="30" />
 </div>
 <div style="position:absolute;left:200.59px;top:66.52px" class="cls_004">
 	<span class="cls_004">{{ Carbon\Carbon::parse($shoppingcart->shoppingcart_payment->updated_at)->formatLocalized('%d %b %Y %H:%M') }}</span>

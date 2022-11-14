@@ -79,6 +79,27 @@ class WiseHelper {
         return $status;
     }
 
+    /*curl -L -X POST 'https://api.sandbox.transferwise.tech/v1/simulation/balance/topup' \
+  -H 'Authorization: Bearer <your api token>' \
+  -H 'Content-Type: application/json' \
+  -d '{
+      "profileId": 2,
+      "balanceId": 5,
+      "currency": "EUR",
+      "amount": 100
+  }'
+  */
+
+    public function simulateAddFund()
+    {
+        $data = new \stdClass();
+        $data->profileId = $this->tw->profileId;
+        $data->balanceId = '126108';
+        $data->currency = 'USD';
+        $data->amount = '25';
+        return json_decode($this->POST("/v1/simulation/balance/topup",$data));
+    }
+
     private function POST($url,$data){
         return $this->curl('POST',$url,$data);
     }

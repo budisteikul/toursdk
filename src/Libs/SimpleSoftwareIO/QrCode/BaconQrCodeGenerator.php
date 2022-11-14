@@ -96,11 +96,13 @@ class BaconQrCodeGenerator implements QrCodeInterface
      */
     public function merge($filepath, $percentage = .2, $absolute = false)
     {
+        /*
         if (function_exists('base_path') && !$absolute) {
             $filepath = base_path().$filepath;
         }
-
-        $this->imageMerge = file_get_contents($filepath);
+        */
+        //$this->imageMerge = file_get_contents($filepath);
+        $this->imageMerge = $filepath;
         $this->imagePercentage = $percentage;
 
         return $this;

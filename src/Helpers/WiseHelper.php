@@ -32,6 +32,11 @@ class WiseHelper {
         return json_decode($this->GET('/v1/accounts?profile='. $this->tw->profileId .'&currency=IDR'));
     }
 
+    public function getBalanceAccounts(){
+        //https://api.sandbox.transferwise.tech/v4/profiles/{{profileId}}/balances?types=STANDARD
+        return json_decode($this->GET('/v4/profiles/'. $this->tw->profileId .'/balances?types=STANDARD'));
+    }
+
     
     public function postCreateQuote($sourceAmount,$sourceCurrency){
         $data = new \stdClass();

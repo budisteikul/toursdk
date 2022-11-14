@@ -2587,7 +2587,7 @@ class BookingHelper {
 								<div class="card-img-overlay">
 									<div class="row h-100">
    										<div class="col-12 text-center">
-    										<img id="qris-img" class="img-fluid border border-white mt-2" alt="QRIS LOGO" style="max-width:250px; height:40px;" src="'. url('/img/qris-logo.png') .'">
+    										<img id="qris-img" class="img-fluid border border-white mt-2" alt="QRIS LOGO" style="max-width:250px; height:40px;" src="'.self::env_appAssetUrl().'/img/payment/qris-logo.png">
     										<br />
     										<img id="qris-img" class="img-fluid border border-white" alt="QRIS" style="max-width:250px;" src="'. self::generate_qrcode($shoppingcart) .' ">
     										<br />
@@ -2766,15 +2766,10 @@ class BookingHelper {
 	{
 		if($shoppingcart->shoppingcart_payment->bank_name=="paynow")
 		{
-			//$path = '/public/img/paynow-logo.png';
-			//$qrcode = QrCode::errorCorrection('H')->format('png')->merge($path,.3,false)->margin(0)->size(630)->color(124, 26, 120)->generate($shoppingcart->shoppingcart_payment->qrcode);
-			//$qrcode = QrCode::errorCorrection('H')->format('png')->margin(0)->size(630)->color(124, 26, 120)->generate($shoppingcart->shoppingcart_payment->qrcode);
 			return $shoppingcart->shoppingcart_payment->qrcode;
 		}
 		else
 		{
-			//$path = '/public/img/qrcode-logo.png';
-			//$qrcode = QrCode::errorCorrection('H')->format('png')->merge($path,.3,false)->margin(0)->size(630)->generate($shoppingcart->shoppingcart_payment->qrcode);
 			$qrcode = QrCode::errorCorrection('H')->format('png')->margin(0)->size(630)->generate($shoppingcart->shoppingcart_payment->qrcode);
 			return 'data:image/png;base64, '. base64_encode($qrcode);
 		}
@@ -2845,7 +2840,7 @@ class BookingHelper {
 
 	public static function create_invoice_pdf($shoppingcart)
 	{
-		$path = '/public/img/qrcode-logo.png';
+		$path = self::env_appAssetUrl() .'/img/pdf/qrcode-logo.png';
 		$qrcode = base64_encode(QrCode::errorCorrection('H')->format('png')->merge($path,.5,false)->size(1024)->margin(0)->generate( self::env_appUrl() .'/booking/receipt/'.$shoppingcart->session_id.'/'.$shoppingcart->confirmation_code  ));
         $pdf = PDF::setOptions(['tempDir' =>  storage_path(),'fontDir' => storage_path(),'fontCache' => storage_path(),'isRemoteEnabled' => true])->loadView('toursdk::layouts.pdf.invoice', compact('shoppingcart','qrcode'))->setPaper('a4', 'portrait');
         return $pdf;
@@ -2861,7 +2856,7 @@ class BookingHelper {
 	public static function create_ticket_pdf($shoppingcart_product)
 	{
 		$customPaper = array(0,0,300,540);
-		$path = '/public/img/qrcode-logo.png';
+		$path = self::env_appAssetUrl() .'/img/pdf/qrcode-logo.png';
         $qrcode = base64_encode(QrCode::errorCorrection('H')->format('png')->merge($path,.5,false)->size(1024)->margin(0)->generate( self::env_appUrl() .'/booking/receipt/'.$shoppingcart_product->shoppingcart->session_id.'/'.$shoppingcart_product->shoppingcart->confirmation_code  ));
         $pdf = PDF::setOptions(['tempDir' => storage_path(),'fontDir' => storage_path(),'fontCache' => storage_path(),'isRemoteEnabled' => true])->loadView('toursdk::layouts.pdf.ticket', compact('shoppingcart_product','qrcode'))->setPaper($customPaper);
         return $pdf;

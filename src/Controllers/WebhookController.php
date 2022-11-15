@@ -8,9 +8,9 @@ use budisteikul\toursdk\Models\Shoppingcart;
 use budisteikul\toursdk\Helpers\WiseHelper;
 use budisteikul\toursdk\Helpers\LogHelper;
 
-use Google\Cloud\Tasks\V2\AppEngineHttpRequest;
 use Google\Cloud\Tasks\V2\CloudTasksClient;
 use Google\Cloud\Tasks\V2\HttpMethod;
+use Google\Cloud\Tasks\V2\HttpRequest;
 use Google\Cloud\Tasks\V2\Task;
 
 class WebhookController extends Controller
@@ -21,15 +21,14 @@ class WebhookController extends Controller
  $locationId = 'us-central1';
  $queueId = 'vertikaltrip';
  $payload = null;
-
-// Instantiate the client and queue name.
+ $url = env('APP_TASK_URL') .'/test';
 $client = new CloudTasksClient();
 $queueName = $client->queueName($projectId, $locationId, $queueId);
 
-// Create an App Engine Http Request Object.
-$httpRequest = new AppEngineHttpRequest();
-// The path of the HTTP request to the App Engine service.
-$httpRequest->setRelativeUri('/test');
+// Create an Http Request Object.
+$httpRequest = new HttpRequest();
+// The full url path that the task request will be sent to.
+$httpRequest->setUrl($url);
 // POST is the default HTTP method, but any HTTP method can be used.
 $httpRequest->setHttpMethod(HttpMethod::POST);
 // Setting a body value is only compatible with HTTP POST and PUT requests.
@@ -39,7 +38,7 @@ if (isset($payload)) {
 
 // Create a Cloud Task object.
 $task = new Task();
-$task->setAppEngineHttpRequest($httpRequest);
+$task->setHttpRequest($httpRequest);
 
 // Send request and print the task name.
 $response = $client->createTask($queueName, $task);

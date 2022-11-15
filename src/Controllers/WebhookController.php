@@ -60,8 +60,8 @@ class WebhookController extends Controller
 		
 		//sleep(5);
 		//$tw = new WiseHelper();
-                $quote=$tw->postCreateQuote($amount,$currency);
-                $transfer = $tw->postCreateTransfer($quote->id);
+                //$quote=$tw->postCreateQuote($amount,$currency);
+                //$transfer = $tw->postCreateTransfer($quote->id);
                 //$fund = $tw->postFundTransfer($transfer->id);
             }
             

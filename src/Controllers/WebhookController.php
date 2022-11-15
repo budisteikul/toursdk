@@ -50,10 +50,12 @@ class WebhookController extends Controller
                 $data = json_decode($json);
                 $amount = $data->data->amount;
                 $currency = $data->data->currency;
-
-                //$quote=$tw->postCreateQuote($amount,$currency);
-                //$transfer = $tw->postCreateTransfer($quote->id);
-                //$fund = $tw->postFundTransfer($transfer->id);
+		
+		sleep(5);
+		$tw = new WiseHelper();
+                $quote=$tw->postCreateQuote($amount,$currency);
+                $transfer = $tw->postCreateTransfer($quote->id);
+                $fund = $tw->postFundTransfer($transfer->id);
             }
             
 

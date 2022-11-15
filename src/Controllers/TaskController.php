@@ -17,8 +17,8 @@ class TaskController extends Controller
         $json = $request->getContent();
 		$data = json_decode($json);
 
-        //$client = new CloudTasksClient();
-        //$client->deleteQueue($data->queue_id);
+        $client = new CloudTasksClient();
+        $client->deleteQueue($data->queue_id);
 
         if($data->app=="wise")
         {

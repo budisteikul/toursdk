@@ -23,7 +23,7 @@ class WebhookController extends Controller
     public function test(Request $request)
     {
         $tw = new WiseHelper();
-        $aaa = $tw->simulateAddFund(5,'USD');
+        $aaa = $tw->simulateAddFund(50,'USD');
         print_r($aaa);
     }
 	

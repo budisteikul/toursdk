@@ -13,7 +13,8 @@ class WiseHelper {
     	$this->tw = new \stdClass();
     	$this->tw->profileId = env("WISE_ID");
     	$this->tw->api_key = env("WISE_TOKEN");
-    	
+    	$this->tw->bank_id = env("WISE_BANK_ID");
+        
     	if(env("WISE_ENV")=="production")
         {
             $this->tw->url = "https://api.transferwise.com";
@@ -33,7 +34,6 @@ class WiseHelper {
     }
 
     public function getBalanceAccounts(){
-        //https://api.sandbox.transferwise.tech/v4/profiles/{{profileId}}/balances?types=STANDARD
         return json_decode($this->GET('/v4/profiles/'. $this->tw->profileId .'/balances?types=STANDARD'));
     }
 
@@ -48,25 +48,26 @@ class WiseHelper {
         return json_decode($this->POST('/v3/profiles/'.$data->profileId.'/quotes',$data));
     }
 
-    public function postCreateTransfer($quoteId){
+    public function postCreateTransfer($quoteId,$targetAccount=null,$reference=null){
         $data = new \stdClass();
-        $data->targetAccount	= env("WISE_BANK_ID");
+        if($targetAccount==null) $targetAccount = $this->tw->bank_id;
+        $data->targetAccount = $targetAccount;
         $data->quoteUuid	    = $quoteId;
         $data->customerTransactionId    = Uuid::uuid4()->toString();
 
         $data->details = new \stdClass();
-        //$data->details->reference       = $reference;
+        if($reference!=null) $data->details->reference = $reference;
+        
         $data->details->transferPurpose = 'verification.transfers.purpose.other';
         $data->details->sourceOfFunds = 'verification.source.of.funds.other';
         return json_decode($this->POST('/v1/transfers',$data));
     }
 
-    public function postFundTransfer(
-            $transferId             //transferID from postCreateTransfer()
-            ){
+    public function postFundTransfer($transferId,$type=null)
+    {
         $data = new \stdClass();
-        $data->type     = 'BALANCE';
-        
+        if($type==null) $type = "BALANCE";
+        $data->type     = $type;
         return json_decode($this->POST("/v3/profiles/".$this->tw->profileId."/transfers/$transferId/payments",$data));
     }
 
@@ -78,17 +79,6 @@ class WiseHelper {
         if($verify) $status = true;
         return $status;
     }
-
-    /*curl -L -X POST 'https://api.sandbox.transferwise.tech/v1/simulation/balance/topup' \
-  -H 'Authorization: Bearer <your api token>' \
-  -H 'Content-Type: application/json' \
-  -d '{
-      "profileId": 2,
-      "balanceId": 5,
-      "currency": "EUR",
-      "amount": 100
-  }'
-  */
 
     public function simulateAddFund()
     {

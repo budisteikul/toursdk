@@ -34,7 +34,7 @@ class WebhookController extends Controller
     		//print_r($fund);
     }
 
-	public function webhook($webhook_app,Request $request)
+    public function webhook($webhook_app,Request $request)
     {
         if($webhook_app=="wise")
         {
@@ -45,7 +45,6 @@ class WebhookController extends Controller
             {
                 return response('OK', 200)->header('Content-Type', 'text/plain');
             }
-
 
             $signature = $request->header('X-Signature-SHA256');
             $json      = $request->getContent();
@@ -60,13 +59,14 @@ class WebhookController extends Controller
 		
 		//sleep(5);
 		//$tw = new WiseHelper();
-                //$quote=$tw->postCreateQuote($amount,$currency);
+                //$quote = $tw->postCreateQuote($amount,$currency);
                 //$transfer = $tw->postCreateTransfer($quote->id);
                 //$fund = $tw->postFundTransfer($transfer->id);
+		return response('OK', 200)->header('Content-Type', 'text/plain');
             }
             
 
-            return response('OK', 200)->header('Content-Type', 'text/plain');
+            return response('ERROR', 200)->header('Content-Type', 'text/plain');
         }
 
 

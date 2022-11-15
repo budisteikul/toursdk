@@ -15,7 +15,7 @@ class TaskHelper {
     	$this->tw->url = env("TASK_URL");
 	}
 
-	public function createTask($payload)
+	public function create($payload)
 	{
 		$client = new CloudTasksClient();
 		$queueName = $client->queueName($this->tw->projectId, $this->tw->locationId, $this->tw->queueId);

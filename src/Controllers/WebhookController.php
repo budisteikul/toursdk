@@ -58,7 +58,7 @@ class WebhookController extends Controller
                 $payload->app = 'wise';
                 $payload->token = 'wise_token';
 
-		        
+		        TaskHelper::create($payload);
 		        //$tw = new WiseHelper();
                 //$quote = $tw->postCreateQuote($amount,$currency);
                 //$transfer = $tw->postCreateTransfer($quote->id);

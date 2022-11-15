@@ -13,17 +13,11 @@ class TaskController extends Controller
 	public function task(Request $request)
     {
     	LogHelper::log_webhook($request->getContent());
-
+        
         $json = $request->getContent();
+        TaskHelper::delete($json);
+
 		$data = json_decode($json);
-
-        $queue_id = $data->queue_id;
-        $project = env("TASK_PROJECT_ID");
-        $location = env("TASK_LOCATION_ID");
-
-        $client = new CloudTasksClient();
-        $queueName = $client->queueName($project, $location, $queue_id);
-        $client->deleteQueue($queueName);
 
         if($data->app=="wise")
         {
@@ -37,9 +31,6 @@ class TaskController extends Controller
             }
             return response('ERROR', 200)->header('Content-Type', 'text/plain');
         }
-
-
-
 
         return response('ERROR', 200)->header('Content-Type', 'text/plain');
     }

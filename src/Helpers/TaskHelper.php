@@ -11,7 +11,18 @@ use Ramsey\Uuid\Exception\UnsatisfiedDependencyException;
 
 class TaskHelper {
 
-	
+	public static function delete($json)
+	{
+		$data = json_decode($json);
+		$queue_id = $data->queue_id;
+        $project = env("TASK_PROJECT_ID");
+        $location = env("TASK_LOCATION_ID");
+
+        $client = new CloudTasksClient();
+        $queueName = $client->queueName($project, $location, $queue_id);
+        $client->deleteQueue($queueName);
+	}
+
 	public static function create($payload)
 	{
 		

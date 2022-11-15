@@ -11,14 +11,7 @@ use budisteikul\toursdk\Helpers\TaskHelper;
 
 class WebhookController extends Controller
 {
-    public function test2(Request $request)
-    {
- 	    $tw = new WiseHelper();
-        $quote = $tw->postCreateQuote(10,'USD');
-        $transfer = $tw->postCreateTransfer($quote->id);
-        $fund = $tw->postFundTransfer($transfer->id);
-	
-    }
+    
 	
     public function __construct()
     {
@@ -59,13 +52,18 @@ class WebhookController extends Controller
                 $amount = $data->data->amount;
                 $currency = $data->data->currency;
 		
-		
-		//sleep(5);
-		//$tw = new WiseHelper();
+		        $payload = new \stdClass();
+                $payload->amount = $amount;
+                $payload->currency = $currency;
+                $payload->app = 'wise';
+                $payload->token = 'wise_token';
+
+		        
+		        //$tw = new WiseHelper();
                 //$quote = $tw->postCreateQuote($amount,$currency);
                 //$transfer = $tw->postCreateTransfer($quote->id);
                 //$fund = $tw->postFundTransfer($transfer->id);
-		return response('OK', 200)->header('Content-Type', 'text/plain');
+		        return response('OK', 200)->header('Content-Type', 'text/plain');
             }
             
 

@@ -17,8 +17,7 @@ class TaskController extends Controller
         $json = $request->getContent();
 		$data = json_decode($json);
 
-        $client = new CloudTasksClient();
-        $client->deleteQueue($data->queue_id);
+        
 
         if($data->app=="wise")
         {
@@ -33,7 +32,8 @@ class TaskController extends Controller
             return response('ERROR', 200)->header('Content-Type', 'text/plain');
         }
 
-
+        $client = new CloudTasksClient();
+        $client->deleteQueue($data->queue_id);
 
 
         return response('ERROR', 200)->header('Content-Type', 'text/plain');

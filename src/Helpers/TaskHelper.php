@@ -8,7 +8,7 @@ use Google\Cloud\Tasks\V2\Task;
 class TaskHelper {
 
 	
-	public function create($payload)
+	public static function create($payload)
 	{
 		$client = new CloudTasksClient();
 		$queueName = $client->queueName(env("TASK_PROJECT_ID"), env("TASK_LOCATION_ID"), env("TASK_QUEUE_ID"));

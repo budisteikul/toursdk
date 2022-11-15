@@ -46,8 +46,8 @@ class WebhookController extends Controller
             $tw = new WiseHelper();
             $verify = $tw->checkSignature($json,$signature);
 
-            //if($verify)
-            //{
+            if($verify)
+            {
                 $data = json_decode($json);
                 $amount = $data->data->amount;
                 $currency = $data->data->currency;
@@ -61,7 +61,7 @@ class WebhookController extends Controller
 		        TaskHelper::create($payload);
 		        
 		        return response('OK', 200)->header('Content-Type', 'text/plain');
-            //}
+            }
             
 
             return response('ERROR', 200)->header('Content-Type', 'text/plain');

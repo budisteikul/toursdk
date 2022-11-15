@@ -8,10 +8,45 @@ use budisteikul\toursdk\Models\Shoppingcart;
 use budisteikul\toursdk\Helpers\WiseHelper;
 use budisteikul\toursdk\Helpers\LogHelper;
 
+use Google\Cloud\Tasks\V2\AppEngineHttpRequest;
+use Google\Cloud\Tasks\V2\CloudTasksClient;
+use Google\Cloud\Tasks\V2\HttpMethod;
+use Google\Cloud\Tasks\V2\Task;
 
 class WebhookController extends Controller
 {
+    public function test2(Request $request)
+    {
+ $projectId = 'igneous-thunder-361818';
+ $locationId = 'us-central1';
+ $queueId = 'vertikaltrip';
+ $payload = null;
 
+// Instantiate the client and queue name.
+$client = new CloudTasksClient();
+$queueName = $client->queueName($projectId, $locationId, $queueId);
+
+// Create an App Engine Http Request Object.
+$httpRequest = new AppEngineHttpRequest();
+// The path of the HTTP request to the App Engine service.
+$httpRequest->setRelativeUri('/test');
+// POST is the default HTTP method, but any HTTP method can be used.
+$httpRequest->setHttpMethod(HttpMethod::POST);
+// Setting a body value is only compatible with HTTP POST and PUT requests.
+if (isset($payload)) {
+    $httpRequest->setBody($payload);
+}
+
+// Create a Cloud Task object.
+$task = new Task();
+$task->setAppEngineHttpRequest($httpRequest);
+
+// Send request and print the task name.
+$response = $client->createTask($queueName, $task);
+printf('Created task %s' . PHP_EOL, $response->getName());
+	
+    }
+	
     public function __construct()
     {
         
@@ -25,14 +60,9 @@ class WebhookController extends Controller
         $aaa = $tw->simulateAddFund();
         print_r($aaa);
 	
-		//$tw = new WiseHelper();
-                //$quote=$tw->postCreateQuote(5,'USD');
-	        //print_r($quote);
-                //$transfer = $tw->postCreateTransfer($quote->id);
-                //print_r($transfer);
-	        //$fund = $tw->postFundTransfer($transfer->id);
-    		//print_r($fund);
     }
+	
+    
 
     public function webhook($webhook_app,Request $request)
     {

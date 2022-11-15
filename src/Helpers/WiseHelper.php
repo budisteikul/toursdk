@@ -80,13 +80,13 @@ class WiseHelper {
         return $status;
     }
 
-    public function simulateAddFund()
+    public function simulateAddFund($amount,$currency)
     {
         $data = new \stdClass();
         $data->profileId = $this->tw->profileId;
         $data->balanceId = '126108';
-        $data->currency = 'USD';
-        $data->amount = '25';
+        $data->currency = $currency;
+        $data->amount = $amount;
         return json_decode($this->POST("/v1/simulation/balance/topup",$data));
     }
 

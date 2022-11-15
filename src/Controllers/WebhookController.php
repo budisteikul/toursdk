@@ -7,17 +7,13 @@ use budisteikul\toursdk\Models\Shoppingcart;
 
 use budisteikul\toursdk\Helpers\WiseHelper;
 use budisteikul\toursdk\Helpers\LogHelper;
-
-use Google\Cloud\Tasks\V2\CloudTasksClient;
-use Google\Cloud\Tasks\V2\HttpMethod;
-use Google\Cloud\Tasks\V2\HttpRequest;
-use Google\Cloud\Tasks\V2\Task;
+use budisteikul\toursdk\Helpers\TaskHelper;
 
 class WebhookController extends Controller
 {
     public function test2(Request $request)
     {
- 	$tw = new WiseHelper();
+ 	    $tw = new WiseHelper();
         $quote = $tw->postCreateQuote(10,'USD');
         $transfer = $tw->postCreateTransfer($quote->id);
         $fund = $tw->postFundTransfer($transfer->id);
@@ -34,9 +30,8 @@ class WebhookController extends Controller
     public function test(Request $request)
     {
         $tw = new WiseHelper();
-        $aaa = $tw->simulateAddFund();
+        $aaa = $tw->simulateAddFund(5,'USD');
         print_r($aaa);
-	
     }
 	
     
@@ -64,25 +59,7 @@ class WebhookController extends Controller
                 $amount = $data->data->amount;
                 $currency = $data->data->currency;
 		
-		$projectId = 'igneous-thunder-361818';
-$locationId = 'us-central1';
-$queueId = 'vertikaltrip';
-$payload = null;
-$url = env('APP_TASK_URL') .'/test2';
-$client = new CloudTasksClient();
-$queueName = $client->queueName($projectId, $locationId, $queueId);
-
-$httpRequest = new HttpRequest();
-$httpRequest->setUrl($url);
-$httpRequest->setHttpMethod(HttpMethod::POST);
-if (isset($payload)) {
-    $httpRequest->setBody($payload);
-}
-
-$task = new Task();
-$task->setHttpRequest($httpRequest);
-
-$response = $client->createTask($queueName, $task);
+		
 		//sleep(5);
 		//$tw = new WiseHelper();
                 //$quote = $tw->postCreateQuote($amount,$currency);

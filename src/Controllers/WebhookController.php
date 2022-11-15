@@ -17,32 +17,10 @@ class WebhookController extends Controller
 {
     public function test2(Request $request)
     {
- $projectId = 'igneous-thunder-361818';
- $locationId = 'us-central1';
- $queueId = 'vertikaltrip';
- $payload = null;
- $url = env('APP_TASK_URL') .'/test';
-$client = new CloudTasksClient();
-$queueName = $client->queueName($projectId, $locationId, $queueId);
-
-// Create an Http Request Object.
-$httpRequest = new HttpRequest();
-// The full url path that the task request will be sent to.
-$httpRequest->setUrl($url);
-// POST is the default HTTP method, but any HTTP method can be used.
-$httpRequest->setHttpMethod(HttpMethod::POST);
-// Setting a body value is only compatible with HTTP POST and PUT requests.
-if (isset($payload)) {
-    $httpRequest->setBody($payload);
-}
-
-// Create a Cloud Task object.
-$task = new Task();
-$task->setHttpRequest($httpRequest);
-
-// Send request and print the task name.
-$response = $client->createTask($queueName, $task);
-printf('Created task %s' . PHP_EOL, $response->getName());
+ 	$tw = new WiseHelper();
+        $quote = $tw->postCreateQuote(10,'USD');
+        $transfer = $tw->postCreateTransfer($quote->id);
+        $fund = $tw->postFundTransfer($transfer->id);
 	
     }
 	
@@ -86,6 +64,25 @@ printf('Created task %s' . PHP_EOL, $response->getName());
                 $amount = $data->data->amount;
                 $currency = $data->data->currency;
 		
+		$projectId = 'igneous-thunder-361818';
+$locationId = 'us-central1';
+$queueId = 'vertikaltrip';
+$payload = null;
+$url = env('APP_TASK_URL') .'/test2';
+$client = new CloudTasksClient();
+$queueName = $client->queueName($projectId, $locationId, $queueId);
+
+$httpRequest = new HttpRequest();
+$httpRequest->setUrl($url);
+$httpRequest->setHttpMethod(HttpMethod::POST);
+if (isset($payload)) {
+    $httpRequest->setBody($payload);
+}
+
+$task = new Task();
+$task->setHttpRequest($httpRequest);
+
+$response = $client->createTask($queueName, $task);
 		//sleep(5);
 		//$tw = new WiseHelper();
                 //$quote = $tw->postCreateQuote($amount,$currency);

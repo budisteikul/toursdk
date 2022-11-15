@@ -23,6 +23,8 @@ class TaskHelper {
 		$task = new Task();
 		$task->setHttpRequest($httpRequest);
 		$response = $client->createTask($queueName, $task);
+
+		return $response;
 	}
 
 }

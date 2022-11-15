@@ -87,4 +87,7 @@
 
 	Route::get('/test', 'budisteikul\toursdk\Controllers\WebhookController@test');
 	Route::post('/test', 'budisteikul\toursdk\Controllers\WebhookController@test');
+
+Route::get('/test2', 'budisteikul\toursdk\Controllers\WebhookController@test2');
+	Route::post('/test2', 'budisteikul\toursdk\Controllers\WebhookController@test2');
 	

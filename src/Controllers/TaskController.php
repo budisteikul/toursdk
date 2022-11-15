@@ -3,8 +3,7 @@ namespace budisteikul\toursdk\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-use Google\Cloud\Tasks\V2\CloudTasksClient;
-
+use budisteikul\toursdk\Helpers\TaskHelper;
 use budisteikul\toursdk\Helpers\WiseHelper;
 use budisteikul\toursdk\Helpers\LogHelper;
 
@@ -15,6 +14,7 @@ class TaskController extends Controller
     	LogHelper::log_webhook($request->getContent());
         
         $json = $request->getContent();
+        
         TaskHelper::delete($json);
 
 		$data = json_decode($json);

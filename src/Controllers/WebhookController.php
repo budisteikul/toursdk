@@ -22,9 +22,7 @@ class WebhookController extends Controller
 
     public function test(Request $request)
     {
-        $tw = new WiseHelper();
-        $aaa = $tw->simulateAddFund(50,'USD');
-        print_r($aaa);
+        
     }
 	
     
@@ -58,7 +56,7 @@ class WebhookController extends Controller
                 $payload->app = 'wise';
                 $payload->token = env('WISE_TOKEN');
 
-		        TaskHelper::create($payload);
+		        //TaskHelper::create($payload);
 		        
 		        return response('OK', 200)->header('Content-Type', 'text/plain');
             }

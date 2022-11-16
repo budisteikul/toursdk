@@ -10,6 +10,8 @@ use budisteikul\toursdk\Helpers\LogHelper;
 use budisteikul\toursdk\Helpers\BookingHelper;
 use budisteikul\toursdk\Models\Shoppingcart;
 
+use Illuminate\Support\Facades\Mail;
+
 class TaskController extends Controller
 {
 	public function task(Request $request)
@@ -41,7 +43,7 @@ class TaskController extends Controller
             $email = $shoppingcart->shoppingcart_questions()->select('answer')->where('type','mainContactDetails')->where('question_id','email')->first()->answer;
             if($email!="")
             {
-                Mail::to($email)->cc([self::env_mailFromAddress()])->send(new BookingConfirmedMail($shoppingcart));
+                Mail::to($email)->cc([env("MAIL_FROM_ADDRESS")])->send(new BookingConfirmedMail($shoppingcart));
             }
             return response('OK', 200)->header('Content-Type', 'text/plain');
         }

@@ -52,11 +52,6 @@ class BookingHelper {
         return env("MAILGUN_DOMAIN");
     }
 
-    public static function env_mailFromAddress()
-    {
-        return env("MAIL_FROM_ADDRESS");
-    }
-
     public static function env_bokunCurrency()
     {
         return env("BOKUN_CURRENCY");
@@ -1255,13 +1250,7 @@ class BookingHelper {
 		$payload->confirmation_code = $shoppingcart->confirmation_code;
 
 		TaskHelper::create($payload);
-		/*
-		$email = $shoppingcart->shoppingcart_questions()->select('answer')->where('type','mainContactDetails')->where('question_id','email')->first()->answer;
-		if($email!="")
-		{
-			Mail::to($email)->cc([self::env_mailFromAddress()])->send(new BookingConfirmedMail($shoppingcart));
-		}
-		*/
+		
 	}
 
 	public static function shoppingcart_clear($sessionId)

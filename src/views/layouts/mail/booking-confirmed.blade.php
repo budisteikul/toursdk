@@ -135,7 +135,7 @@ table.body .article {
                                 
                                         <hr style="height:1px;border:none;color:#EEE;background-color:#EEE;" />
                                         Your booking is :
-                                        <br>
+                                        <br><br>
                                         {!! $Content->view_product_detail($shoppingcart) !!}
                                         <br>
                                 <table role="presentation" border="0" cellpadding="0" cellspacing="0" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: auto;">

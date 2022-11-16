@@ -17,6 +17,9 @@ use budisteikul\toursdk\Helpers\DanaHelper;
 use budisteikul\toursdk\Helpers\FirebaseHelper;
 use budisteikul\toursdk\Helpers\GeneralHelper;
 use budisteikul\toursdk\Helpers\VoucherHelper;
+
+use budisteikul\toursdk\Helpers\TaskHelper;
+
 use budisteikul\toursdk\Models\Product;
 use budisteikul\toursdk\Models\Shoppingcart;
 use budisteikul\toursdk\Models\ShoppingcartProduct;
@@ -1246,11 +1249,19 @@ class BookingHelper {
 	
 	public static function shoppingcart_mail($shoppingcart)
 	{
+		$payload = new \stdClass();
+		$payload->app = 'mail';
+		$payload->session_id = $shoppingcart->session_id;
+		$payload->confirmation_code = $shoppingcart->confirmation_code;
+
+		TaskHelper::create($payload);
+		/*
 		$email = $shoppingcart->shoppingcart_questions()->select('answer')->where('type','mainContactDetails')->where('question_id','email')->first()->answer;
 		if($email!="")
 		{
 			Mail::to($email)->cc([self::env_mailFromAddress()])->send(new BookingConfirmedMail($shoppingcart));
 		}
+		*/
 	}
 
 	public static function shoppingcart_clear($sessionId)

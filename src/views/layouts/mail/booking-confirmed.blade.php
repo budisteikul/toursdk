@@ -3,255 +3,196 @@
 @php
   $main_contact = $BookingHelper->get_answer_contact($shoppingcart);
 @endphp
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-  <title>{{env('APP_NAME')}}</title>
-  <style type="text/css" rel="stylesheet" media="all">
-    /* Base ------------------------------ */
-    *:not(br):not(tr):not(html) {
-      font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;
-      -webkit-box-sizing: border-box;
-      box-sizing: border-box;
-    }
-    body {
-      width: 100% !important;
-      height: 100%;
-      margin: 0;
-      line-height: 1.4;
-      background-color: #F5F7F9;
-      color: #000000;
-      -webkit-text-size-adjust: none;
-    }
-    a {
-      color: #414EF9;
-    }
+<!doctype html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>{{env('APP_NAME')}}</title>
+    <style>
+@media only screen and (max-width: 620px) {
+  table.body h1 {
+    font-size: 28px !important;
+    margin-bottom: 10px !important;
+  }
 
-    /* Layout ------------------------------ */
-    .email-wrapper {
-      width: 100%;
-      margin: 0;
-      padding: 0;
-      background-color: #0087C3;
-    }
-    .email-content {
-      width: 100%;
-      margin: 0;
-      padding: 0;
-    }
+  table.body p,
+table.body ul,
+table.body ol,
+table.body td,
+table.body span,
+table.body a {
+    font-size: 16px !important;
+  }
 
-    /* Masthead ----------------------- */
-    .email-masthead {
-      padding: 25px 0;
-      text-align: center;
-    }
-    .email-masthead_logo {
-      max-width: 400px;
-      border: 0;
-    }
-    .email-masthead_name {
-      font-size: 16px;
-      font-weight: bold;
-      color: #FFFFFF;
-      text-decoration: none;
-      text-shadow: 0 1px 0 white;
-    }
+  table.body .wrapper,
+table.body .article {
+    padding: 10px !important;
+  }
 
-    /* Body ------------------------------ */
-    .email-body {
-      width: 100%;
-      margin: 0;
-      padding: 0;
-      border-top: 1px solid #000000;
-      border-bottom: 1px solid #000000;
-      background-color: #FFFFFF;
-    }
-    .email-body_inner {
-      width: 570px;
-      margin: 0 auto;
-      padding: 0;
-    }
-    .email-footer {
-      width: 570px;
-      margin: 0 auto;
-      padding: 0;
-      text-align: center;
-    }
-    .email-footer p {
-      color: #ffffff;
-    }
-    .body-action {
-      width: 100%;
-      margin: 30px auto;
-      padding: 0;
-      text-align: center;
-    }
-    .body-sub {
-      margin-top: 25px;
-      padding-top: 25px;
-      border-top: 1px solid #000000;
-    }
-    .content-cell {
-      padding: 35px;
-    }
-    .align-right {
-      text-align: right;
-    }
+  table.body .content {
+    padding: 0 !important;
+  }
 
-    /* Type ------------------------------ */
-    h1 {
-      margin-top: 0;
-      color: #292E31;
-      font-size: 19px;
-      font-weight: bold;
-      text-align: left;
-    }
-    h2 {
-      margin-top: 0;
-      color: #292E31;
-      font-size: 16px;
-      font-weight: bold;
-      text-align: left;
-    }
-    h3 {
-      margin-top: 0;
-      color: #292E31;
-      font-size: 14px;
-      font-weight: bold;
-      text-align: left;
-    }
-    p {
-      margin-top: 0;
-      color: #000000;
-      font-size: 16px;
-      line-height: 1.5em;
-      text-align: left;
-    }
-    p.sub {
-      font-size: 12px;
-    }
-    p.center {
-      text-align: center;
-    }
+  table.body .container {
+    padding: 0 !important;
+    width: 100% !important;
+  }
 
-    /* Buttons ------------------------------ */
-    .button {
-      border-radius: 3px;
-    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.16);
-    color: #FFF;
-    display: inline-block;
+  table.body .main {
+    border-left-width: 0 !important;
+    border-radius: 0 !important;
+    border-right-width: 0 !important;
+  }
+
+  table.body .btn table {
+    width: 100% !important;
+  }
+
+  table.body .btn a {
+    width: 100% !important;
+  }
+
+  table.body .img-responsive {
+    height: auto !important;
+    max-width: 100% !important;
+    width: auto !important;
+  }
+}
+@media all {
+  .ExternalClass {
+    width: 100%;
+  }
+
+  .ExternalClass,
+.ExternalClass p,
+.ExternalClass span,
+.ExternalClass font,
+.ExternalClass td,
+.ExternalClass div {
+    line-height: 100%;
+  }
+
+  .apple-link a {
+    color: inherit !important;
+    font-family: inherit !important;
+    font-size: inherit !important;
+    font-weight: inherit !important;
+    line-height: inherit !important;
+    text-decoration: none !important;
+  }
+
+  #MessageViewBody a {
+    color: inherit;
     text-decoration: none;
-    -webkit-text-size-adjust: none;
-    }
-    .button--green {
-      background-color: #2ab27b;
-    border-top: 10px solid #2ab27b;
-    border-right: 18px solid #2ab27b;
-    border-bottom: 10px solid #2ab27b;
-    border-left: 18px solid #2ab27b;
-    }
-    .button--red {
-      background-color: #bf5329;
-    border-top: 10px solid #bf5329;
-    border-right: 18px solid #bf5329;
-    border-bottom: 10px solid #bf5329;
-    border-left: 18px solid #bf5329;
-    }
-    .button--blue {
-      background-color: #3097D1;
-    border-top: 10px solid #3097D1;
-    border-right: 18px solid #3097D1;
-    border-bottom: 10px solid #3097D1;
-    border-left: 18px solid #3097D1;
-    }
+    font-size: inherit;
+    font-family: inherit;
+    font-weight: inherit;
+    line-height: inherit;
+  }
 
-    /*Media Queries ------------------------------ */
-    @media only screen and (max-width: 600px) {
-      .email-body_inner,
-      .email-footer {
-        width: 100% !important;
-      }
-    }
-    @media only screen and (max-width: 500px) {
-      .button {
-        width: 100% !important;
-      }
-    }
-  </style>
-</head>
-<body>
-  <table class="email-wrapper" width="100%" cellpadding="0" cellspacing="0">
-    <tr>
-      <td align="center">
-        <table class="email-content" width="100%" cellpadding="0" cellspacing="0">
-          <!-- Logo -->
-          <tr>
-            <td class="email-masthead">
-              <a class="email-masthead_name">{{env('APP_NAME')}}</a>
-            </td>
-          </tr>
-          <!-- Email Body -->
-          <tr>
-            <td class="email-body" width="100%">
-              <table class="email-body_inner" width="570" cellpadding="0" cellspacing="0">
-                <!-- Body content -->
+  .btn-primary table td:hover {
+    background-color: #34495e !important;
+  }
+
+  .btn-primary a:hover {
+    background-color: #34495e !important;
+    border-color: #34495e !important;
+  }
+}
+</style>
+  </head>
+  <body style="background-color: #f6f6f6; font-family: sans-serif; -webkit-font-smoothing: antialiased; font-size: 14px; line-height: 1.4; margin: 0; padding: 0; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%;">
+    <span class="preheader" style="color: transparent; display: none; height: 0; max-height: 0; max-width: 0; opacity: 0; overflow: hidden; mso-hide: all; visibility: hidden; width: 0;">This is preheader text. Some clients will show this text as a preview.</span>
+    <table role="presentation" border="0" cellpadding="0" cellspacing="0" class="body" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #f6f6f6; width: 100%;" width="100%" bgcolor="#f6f6f6">
+      <tr>
+        <td style="font-family: sans-serif; font-size: 14px; vertical-align: top;" valign="top">&nbsp;</td>
+        <td class="container" style="font-family: sans-serif; font-size: 14px; vertical-align: top; display: block; max-width: 580px; padding: 10px; width: 580px; margin: 0 auto;" width="580" valign="top">
+          <div class="content" style="box-sizing: border-box; display: block; margin: 0 auto; max-width: 580px; padding: 10px;">
+
+            <!-- START CENTERED WHITE CONTAINER -->
+            <table role="presentation" class="main" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; background: #ffffff; border-radius: 3px; width: 100%;" width="100%">
+
+              <!-- START MAIN CONTENT AREA -->
+              <tr>
+                <td class="wrapper" style="font-family: sans-serif; font-size: 14px; vertical-align: top; box-sizing: border-box; padding: 20px;" valign="top">
+
+                  <img src="https://storage.googleapis.com/storage.vertikaltrip.com/assets/img/mail/logo-email.png" alt="VERTIKAL TRIP" width="148" height="40" border="0" style="border:0; outline:none; text-decoration:none; display:block;">
+                  <hr style="height:1px;border:none;color:#EEE;background-color:#EEE;" />
+                  
+
+                  <table role="presentation" border="0" cellpadding="0" cellspacing="0" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%;" width="100%">
+                    <tr>
+                      <td style="font-family: sans-serif; font-size: 14px; vertical-align: top;" valign="top">
+                        <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; margin-bottom: 15px;">Hi {{$main_contact->firstName}},</p>
+                        <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; margin-bottom: 15px;">
+                        Have a good day, thank you for your booking with {{env('APP_NAME')}}
+                        </p>
+                        <table role="presentation" border="0" cellpadding="0" cellspacing="0" class="btn btn-primary" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; box-sizing: border-box; width: 100%;" width="100%">
+                          <tbody>
+                            <tr>
+                              <td align="left" style="font-family: sans-serif; font-size: 14px; vertical-align: top; padding-bottom: 15px;" valign="top">
+                                
+                                        <hr style="height:1px;border:none;color:#EEE;background-color:#EEE;" />
+                                        Your booking is :
+                                        {!! $Content->view_product_detail($shoppingcart) !!}
+                                        <br><br>
+                                <table role="presentation" border="0" cellpadding="0" cellspacing="0" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: auto;">
+                                  <tbody>
+                                    <tr>
+                                      <td style="font-family: sans-serif; font-size: 14px; vertical-align: top; border-radius: 5px; text-align: center; background-color: #3498db;" valign="top" align="center" bgcolor="#3498db"> <a href="http://htmlemail.io" target="_blank" style="border: solid 1px #3498db; border-radius: 5px; box-sizing: border-box; cursor: pointer; display: inline-block; font-size: 14px; font-weight: bold; margin: 0; padding: 12px 25px; text-decoration: none; text-transform: capitalize; background-color: #3498db; border-color: #3498db; color: #ffffff;">Map to the meeting point</a> </td>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                                        
+                                        <hr style="height:1px;border:none;color:#EEE;background-color:#EEE;" />
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                        <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; margin-bottom: 15px;">If you have any question, feel free to contact us. Thanks again, and enjoy your time in Indonesia :)</p>
+                        <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; margin-bottom: 15px;">&nbsp;</p>
+                        <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; margin-bottom: 15px;">Regards,<br>The {{env('APP_NAME')}} team</p>
+                        <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; margin-bottom: 15px;"></p>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+
+            <!-- END MAIN CONTENT AREA -->
+            </table>
+            <!-- END CENTERED WHITE CONTAINER -->
+
+            <!-- START FOOTER -->
+            <div class="footer" style="clear: both; margin-top: 10px; text-align: center; width: 100%;">
+              <table role="presentation" border="0" cellpadding="0" cellspacing="0" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%;" width="100%">
                 <tr>
-                  <td class="content-cell">
+                  <td class="content-block" style="font-family: sans-serif; vertical-align: top; padding-bottom: 10px; padding-top: 10px; color: #999999; font-size: 12px; text-align: center;" valign="top" align="center">
+                    <span class="apple-link" style="color: #999999; font-size: 12px; text-align: center;">
+                      {{env('APP_NAME')}}<br>
+                      Jl. Abiyoso VII No.190 Bantul D.I Yogyakarta ID<br>
+                      Website : www.vertikaltrip.com<br>
+                      Whatsapp : +6285743112112<br>
+                      Email : guide@vertikaltrip.com<br>
+                    </span>
                     
-                    <h1>Hi {{$main_contact->firstName}},</h1>
-                    <p>Have a good day,<br />
-                      Thank you for your booking with {{env('APP_NAME')}}.
-                    <br />
-                    <br />
-                    Your order is :
-                    {!! $Content->view_product_detail($shoppingcart) !!}
-                    <br />
-                    <br />
-                    <a href="https://linktr.ee/foodtour">Follow link to know way to the meeting point.</a>
-                    <br />
-                    <br />
-                    If you have any question, feel free to contact us.<br />
-                    Thanks again, and enjoy your time in Indonesia :)
-                    <br />
-                    </p>
-                    <p>Regards,<br />
-                    {{env('APP_NAME')}} team.</p>
-                    <!-- Action -->
-                    
-                    <!-- Sub copy -->
-                    <!-- table class="body-sub" width="100%">
-                      <tr>
-                        <td>&nbsp;</td>
-                      </tr>
-                    </table -->
+                  </td>
+                </tr>
+                <tr>
+                  <td class="content-block powered-by" style="font-family: sans-serif; vertical-align: top; padding-bottom: 10px; padding-top: 10px; color: #999999; font-size: 12px; text-align: center;" valign="top" align="center">
                     
                   </td>
                 </tr>
               </table>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <table class="email-footer" align="center" width="570" cellpadding="0" cellspacing="0">
-                <tr>
-                  <td class="content-cell">
-                    <p class="sub center">{{env('APP_NAME')}}<br />
-                    Jl. Abiyoso VII No.190 Bantul ID<br />
-                    Website : www.vertikaltrip.com
-                    <br />
-					Whatsapp : +6285743112112<br />
-                    Email : guide@vertikaltrip.com<br />
-                    </p>
-                  </td>
-                </tr>
-              </table>
-            </td>
-          </tr>
-        </table>
-      </td>
-    </tr>
-  </table>
-</body>
+            </div>
+            <!-- END FOOTER -->
+
+          </div>
+        </td>
+        <td style="font-family: sans-serif; font-size: 14px; vertical-align: top;" valign="top">&nbsp;</td>
+      </tr>
+    </table>
+  </body>
 </html>
+

@@ -8,7 +8,7 @@ Hi {{$main_contact->firstName}},
 Have a good day,
 Thank you for your booking with {{env('APP_NAME')}}.
 
-Your order is:
+Your booking is:
 
 {!! $Content->view_product_detail($shoppingcart,true) !!}
 
@@ -19,11 +19,11 @@ If you have any question, feel free to contact us.
 Thanks again, and enjoy your time in Indonesia :) 
 
 Regards,
-{{env('APP_NAME')}} team
+The {{env('APP_NAME')}} team
 
 
 {{env('APP_NAME')}}
-Jl. Abiyoso VII No.190 Bantul ID
+Jl. Abiyoso VII No.190 Bantul D.I Yogyakarta ID
 Website : www.vertikaltrip.com
 Whatsapp : +6285743112112
 Email : guide@vertikaltrip.com

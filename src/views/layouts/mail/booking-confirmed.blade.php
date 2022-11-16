@@ -170,13 +170,13 @@ table.body .article {
               <table role="presentation" border="0" cellpadding="0" cellspacing="0" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%;" width="100%">
                 <tr>
                   <td class="content-block" style="font-family: sans-serif; vertical-align: top; padding-bottom: 10px; padding-top: 10px; color: #999999; font-size: 12px; text-align: center;" valign="top" align="center">
-                    <div class="apple-link" style="color: #999999; font-size: 12px; text-align: center;">
+                    <span class="apple-link" style="color: #999999; font-size: 12px; text-align: center;">
                       {{env('APP_NAME')}}<br>
                       Jl. Abiyoso VII No.190 Bantul D.I Yogyakarta ID<br>
                       Website : www.vertikaltrip.com<br>
                       Whatsapp : +6285743112112<br>
                       Email : guide@vertikaltrip.com<br>
-                    </div>
+                    </span>
                     
                   </td>
                 </tr>

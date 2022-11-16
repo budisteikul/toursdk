@@ -25,7 +25,7 @@ class WebhookController extends Controller
         if(env('WISE_ENV')!="production")
         {
             $tw = new WiseHelper();
-            $aaa = $tw->simulateAddFund(50,'USD');
+            $aaa = $tw->simulateAddFund(4.14,'USD');
             print_r($aaa);
         }
         

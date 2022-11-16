@@ -7,10 +7,10 @@ use budisteikul\toursdk\Helpers\TaskHelper;
 use budisteikul\toursdk\Helpers\WiseHelper;
 use budisteikul\toursdk\Helpers\LogHelper;
 
-use budisteikul\toursdk\Helpers\BookingHelper;
 use budisteikul\toursdk\Models\Shoppingcart;
 
 use Illuminate\Support\Facades\Mail;
+use budisteikul\toursdk\Mail\BookingConfirmedMail;
 
 class TaskController extends Controller
 {

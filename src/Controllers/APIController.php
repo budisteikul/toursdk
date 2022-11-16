@@ -991,6 +991,9 @@ class APIController extends Controller
 
         $shoppingcart = BookingHelper::confirm_booking($sessionId);
 
+        PaypalHelper::captureAuth($authorizationID);
+        BookingHelper::confirm_payment($shoppingcart,"CONFIRMED",true);
+
         return response()->json([
                     "id" => "1",
                     "message" => "/booking/receipt/".$shoppingcart->session_id."/".$shoppingcart->confirmation_code

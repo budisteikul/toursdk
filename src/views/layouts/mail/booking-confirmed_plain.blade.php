@@ -8,7 +8,7 @@ Hi {{$main_contact->firstName}},
 Have a good day,
 Thank you for your booking with {{env('APP_NAME')}}.
 
-Your booking is:
+Your booking number is : {{$shoppingcart->confirmation_code}}
 
 {!! $Content->view_product_detail($shoppingcart,true) !!}
 

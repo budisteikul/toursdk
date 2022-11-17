@@ -2736,7 +2736,7 @@ class BookingHelper {
 		
 		if($value!="")
 		{
-			$value = '<div class="card mb-2 mt-4"><div class="card-body"><b>Note</b><br />'. nl2br($value) .'</div></div>';
+			$value = '<div class="card mb-2 mt-4"><div class="card-body"><i>Note</i><br />'. nl2br($value) .'</div></div>';
 		}
 		
         return $value;

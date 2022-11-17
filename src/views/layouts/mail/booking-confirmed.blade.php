@@ -172,7 +172,7 @@ table.body .article {
                   <td class="content-block" style="font-family: sans-serif; vertical-align: top; padding-bottom: 10px; padding-top: 10px; color: #999999; font-size: 12px; text-align: center;" valign="top" align="center">
                     <span class="apple-link" style="color: #999999; font-size: 12px; text-align: center;">
                       {{env('APP_NAME')}}<br>
-                      Jl. Abiyoso VII No.190 Bantul D.I Yogyakarta ID<br>
+                      
                       Website : www.vertikaltrip.com<br>
                       Whatsapp : +6285743112112<br>
                       Email : guide@vertikaltrip.com<br>

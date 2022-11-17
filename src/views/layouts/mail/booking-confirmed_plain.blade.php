@@ -23,7 +23,6 @@ The {{env('APP_NAME')}} team
 
 
 {{env('APP_NAME')}}
-Jl. Abiyoso VII No.190 Bantul D.I Yogyakarta ID
 Website : www.vertikaltrip.com
 Whatsapp : +6285743112112
 Email : guide@vertikaltrip.com

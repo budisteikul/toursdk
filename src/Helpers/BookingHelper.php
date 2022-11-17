@@ -2720,7 +2720,7 @@ class BookingHelper {
 		$value = '';
 		foreach($shoppingcart->shoppingcart_questions()->where('when_to_ask','booking')->where('booking_id',$booking_id)->whereNotNull('label')->get() as $shoppingcart_question)
 		{
-			$value .= $shoppingcart_question->label .' : '. $shoppingcart_question->answer .'<br>';
+			$value .= $shoppingcart_question->label .' : '. $shoppingcart_question->answer .'<br />';
 		}
 
 		$participants = $shoppingcart->shoppingcart_questions()->where('when_to_ask','participant')->where('booking_id',$booking_id)->select('participant_number')->groupBy('participant_number')->get();
@@ -2730,7 +2730,7 @@ class BookingHelper {
 			$value .= '<b>Participant '. $participant->participant_number .'</b><br />';
 			foreach($shoppingcart->shoppingcart_questions()->where('when_to_ask','participant')->where('booking_id',$booking_id)->where('participant_number',$participant->participant_number)->get() as $participant_detail)
 			{
-				$value .= ''.$participant_detail->label .' : <span class="text-muted">'. $participant_detail->answer .'</span><br>';
+				$value .= ''.$participant_detail->label .' : <span class="text-muted">'. $participant_detail->answer .'</span><br />';
 			}
 		}
 		

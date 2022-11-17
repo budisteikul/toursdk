@@ -134,7 +134,7 @@ table.body .article {
                               <td align="left" style="font-family: sans-serif; font-size: 14px; vertical-align: top; padding-bottom: 15px;" valign="top">
                                 
                                         <hr style="height:1px;border:none;color:#EEE;background-color:#EEE;" />
-                                        Your booking is :
+                                        Your booking number is : <b>{{$shoppingcart->confirmation_code}}</b>
                                         <br><br>
                                         {!! $Content->view_product_detail($shoppingcart) !!}
                                         <br>
@@ -151,7 +151,7 @@ table.body .article {
                             </tr>
                           </tbody>
                         </table>
-                        <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; margin-bottom: 15px;">If you have any question, feel free to contact us. Thanks again, and enjoy your time in Indonesia :)</p>
+                        <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; margin-bottom: 15px;">If you have any question, feel free to contact us.<br>Thanks again, and enjoy your time in Indonesia :)</p>
                         <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; margin-bottom: 15px;">&nbsp;</p>
                         <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; margin-bottom: 15px;">Regards,<br>The {{env('APP_NAME')}} team</p>
                         <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; margin-bottom: 15px;"></p>

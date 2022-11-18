@@ -506,7 +506,7 @@ class ContentHelper {
                     <div class="pl-2">
                     1.  Open your <b>E-wallet</b> or <b>Mobile Banking</b> apps. <br />
                     2.  <b>Scan</b> the QR code shown on your monitor. <br />
-                    <img width="230" class="mt-2 mb-2" src="'. self::env_appUrl() .'/img/qr-instruction.png">
+                    <img width="230" class="mt-2 mb-2" src="'. self::env_appAssetUrl() .'/img/payment/qr-instruction.png">
                     <br />
                     3.  Check your payment details in the app, then tap <b>Pay</b>. <br />
                     4.  Enter your <b>PIN</b>. <br />

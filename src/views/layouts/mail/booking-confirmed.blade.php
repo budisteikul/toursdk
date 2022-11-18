@@ -117,7 +117,7 @@ table.body .article {
               <tr>
                 <td class="wrapper" style="font-family: sans-serif; font-size: 14px; vertical-align: top; box-sizing: border-box; padding: 20px;" valign="top">
 
-                  <img src="https://storage.googleapis.com/storage.vertikaltrip.com/assets/img/mail/logo-email.png" alt="VERTIKAL TRIP" width="148" height="40" border="0" style="border:0; outline:none; text-decoration:none; display:block;">
+                  <img src="{{ env('APP_ASSET_URL') }}/img/mail/logo-email.png" alt="VERTIKAL TRIP" width="148" height="40" border="0" style="border:0; outline:none; text-decoration:none; display:block;">
                   <hr style="height:1px;border:none;color:#EEE;background-color:#EEE;" />
                   
 

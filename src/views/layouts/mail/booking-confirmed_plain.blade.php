@@ -16,7 +16,7 @@ Follow link below to know way to the meeting point.
 https://linktr.ee/foodtour
 
 If you have any question, feel free to contact us.
-Thanks again, and enjoy your time in Indonesia :) 
+See you on meeting point :) 
 
 Regards,
 The {{env('APP_NAME')}} team

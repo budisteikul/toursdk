@@ -2298,7 +2298,7 @@ class BookingHelper {
 			$count = Shoppingcart::whereYear('created_at',date('Y'))->whereMonth('created_at',date('m'))->count();
 		}
 		$count++;
-		return GeneralHelper::digitFormat($count,3);
+		return $count;
 	}
 
     public static function get_payment_transaction_id()
@@ -2313,11 +2313,12 @@ class BookingHelper {
 
 
 	public static function get_ticket(){
-		$count = self::get_count('shoppingcart');
-		$uuid = "VT-". date('ym') . GeneralHelper::digitFormat(rand(00,99),2) . $count;
-        while( Shoppingcart::where('confirmation_code','=',$uuid)->first() ){
-            $uuid = "VT-". date('ym') . GeneralHelper::digitFormat(rand(00,99),2) . $count;
-        }
+		$count = GeneralHelper::digitFormat(self::get_count('shoppingcart'),5);
+		$uuid = "VT-". date('ym') . $count;
+		//$uuid = "VT-". date('ym') . GeneralHelper::digitFormat(rand(00,99),2) . $count;
+        //while( Shoppingcart::where('confirmation_code','=',$uuid)->first() ){
+            //$uuid = "VT-". date('ym') . GeneralHelper::digitFormat(rand(00,99),2) . $count;
+        //}
         return $uuid;
 	}
 	

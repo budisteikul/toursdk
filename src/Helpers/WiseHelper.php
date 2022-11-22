@@ -37,6 +37,15 @@ class WiseHelper {
         return json_decode($this->GET('/v4/profiles/'. $this->tw->profileId .'/balances?types=STANDARD'));
     }
 
+    public function getTempQuote($targetAmount)
+    {
+        $data = new \stdClass();
+        $data->sourceCurrency = 'USD';
+        $data->targetCurrency = 'IDR';
+        //$data->sourceAmount = '';
+        $data->targetAmount = $targetAmount;
+        return json_decode($this->POST('/v3/quotes/',$data));
+    }
     
     public function postCreateQuote($sourceAmount,$sourceCurrency){
         $data = new \stdClass();

@@ -22,11 +22,25 @@ class WebhookController extends Controller
 
     public function test(Request $request)
     {
-        if(env('WISE_ENV')!="production")
+        $tw = new WiseHelper();
+        $data = $tw->getTempQuote(800000);
+        //print_r($data);
+        foreach($data->paymentOptions as $paymentOption)
         {
-            $tw = new WiseHelper();
-            $aaa = $tw->simulateAddFund(4.14,'USD');
-            print_r($aaa);
+            if($paymentOption->payIn=="BALANCE")
+            {
+                print_r($paymentOption->payIn ." ". $paymentOption->sourceAmount ."<br />");
+            }
+            if($paymentOption->payIn=="MC_DEBIT_OR_PREPAID")
+            {
+                print_r($paymentOption->payIn ." ". $paymentOption->sourceAmount ."<br />");
+            }
+            if($paymentOption->payIn=="MC_BUSINESS_DEBIT")
+            {
+                print_r($paymentOption->payIn ." ". $paymentOption->sourceAmount ."<br />");
+            }
+            
+            //print_r($paymentOption);
         }
         
     }

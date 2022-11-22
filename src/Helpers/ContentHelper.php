@@ -354,17 +354,21 @@ class ContentHelper {
             'value' => 'qris', 'label' => 'QRIS', 'image' => self::env_appAssetUrl() .'/img/payment/qris.png', 'currency' => 'idr',
         ];
         $indonesia_list[] = [
-            'value' => 'permata', 'label' => 'Bank Transfer', 'image' => self::env_appAssetUrl() .'/img/payment/bank_transfer.png', 'currency' => 'idr',
+            'value' => 'permata', 'label' => 'Bank Transfer', 'image' => self::env_appAssetUrl() .'/img/payment/permata.png', 'currency' => 'idr',
         ];
 
         /*
         $indonesia_list[] = [
             'value' => 'dana', 'label' => 'DANA', 'image' => self::env_appAssetUrl() .'/img/payment/dana.png', 'currency' => 'idr',
-        ];*/
+        ];
+        */
+        /*
         $indonesia_list[] = [
             'value' => 'gopay', 'label' => 'GOPAY', 'image' => self::env_appAssetUrl() .'/img/payment/gopay.png', 'currency' => 'idr',
         ];
-        /*$indonesia_list[] = [
+        */
+        /*
+        $indonesia_list[] = [
             'value' => 'shopeepay', 'label' => 'SHOPEEPAY', 'image' => self::env_appAssetUrl() .'/img/payment/shopeepay.png', 'currency' => 'idr',
         ];
         $indonesia_list[] = [

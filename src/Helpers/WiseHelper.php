@@ -65,6 +65,7 @@ class WiseHelper {
         $data->customerTransactionId    = Uuid::uuid4()->toString();
 
         $data->details = new \stdClass();
+        $data->details->reference = env('APP_NAME');
         if($reference!=null) $data->details->reference = $reference;
         
         $data->details->transferPurpose = 'verification.transfers.purpose.other';

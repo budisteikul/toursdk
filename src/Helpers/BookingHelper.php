@@ -2313,8 +2313,8 @@ class BookingHelper {
 
 
 	public static function get_ticket(){
-		$count = GeneralHelper::digitFormat(self::get_count('shoppingcart'),5);
-		$uuid = "VT-". date('ym') . $count;
+		$count = GeneralHelper::digitFormat(self::get_count('shoppingcart'),3);
+		$uuid = "VT-". date('ymd') . $count;
 		//$uuid = "VT-". date('ym') . GeneralHelper::digitFormat(rand(00,99),2) . $count;
         //while( Shoppingcart::where('confirmation_code','=',$uuid)->first() ){
             //$uuid = "VT-". date('ym') . GeneralHelper::digitFormat(rand(00,99),2) . $count;

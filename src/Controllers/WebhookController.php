@@ -23,8 +23,12 @@ class WebhookController extends Controller
 
     public function test(Request $request)
     {
-        print(Uuid::uuid5(Uuid::NAMESPACE_URL, 'https://www.php.nt'));
-        
+        if(env('WISE_ENV')!="production")
+        {
+            $tw = new WiseHelper();
+            $tw->simulateAddFund(50,'USD');
+        }
+        //simulateAddFund
     }
 	
     

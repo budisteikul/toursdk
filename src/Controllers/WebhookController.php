@@ -8,6 +8,7 @@ use budisteikul\toursdk\Models\Shoppingcart;
 use budisteikul\toursdk\Helpers\WiseHelper;
 use budisteikul\toursdk\Helpers\LogHelper;
 use budisteikul\toursdk\Helpers\TaskHelper;
+use Ramsey\Uuid\Uuid;
 
 class WebhookController extends Controller
 {
@@ -22,7 +23,7 @@ class WebhookController extends Controller
 
     public function test(Request $request)
     {
-        
+        print(Uuid::uuid5(Uuid::NAMESPACE_URL, 'https://www.php.nt'));
         
     }
 	
@@ -50,11 +51,15 @@ class WebhookController extends Controller
                 $data = json_decode($json);
                 $amount = $data->data->amount;
                 $currency = $data->data->currency;
-		
+		        $sent_at = $data->sent_at;
+                $customerTransactionId = Uuid::uuid5(Uuid::NAMESPACE_URL, $sent_at);
+
+
 		        $payload = new \stdClass();
                 $payload->amount = $amount;
                 $payload->currency = $currency;
                 $payload->app = 'wise';
+                $payload->customerTransactionId = $customerTransactionId;
                 $payload->token = env('WISE_TOKEN');
 
 		        TaskHelper::create($payload);

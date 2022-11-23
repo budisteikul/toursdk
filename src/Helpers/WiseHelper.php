@@ -57,12 +57,14 @@ class WiseHelper {
         return json_decode($this->POST('/v3/profiles/'.$data->profileId.'/quotes',$data));
     }
 
-    public function postCreateTransfer($quoteId,$targetAccount=null,$reference=null){
+    public function postCreateTransfer($quoteId,$customerTransactionId=null,$targetAccount=null,$reference=null){
         $data = new \stdClass();
         if($targetAccount==null) $targetAccount = $this->tw->bank_id;
         $data->targetAccount = $targetAccount;
         $data->quoteUuid	    = $quoteId;
+
         $data->customerTransactionId    = Uuid::uuid4()->toString();
+        if($customerTransactionId!=null) $data->customerTransactionId = $customerTransactionId;
 
         $data->details = new \stdClass();
         $data->details->reference = env('APP_NAME');

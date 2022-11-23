@@ -30,7 +30,7 @@ class TaskController extends Controller
             {
                 $tw = new WiseHelper();
                 $quote = $tw->postCreateQuote($data->amount,$data->currency);
-                $transfer = $tw->postCreateTransfer($quote->id);
+                $transfer = $tw->postCreateTransfer($quote->id,$data->customerTransactionId);
                 $fund = $tw->postFundTransfer($transfer->id);
                 return response('OK', 200)->header('Content-Type', 'text/plain');
             }

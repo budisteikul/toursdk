@@ -2383,7 +2383,7 @@ class BookingHelper {
 					case 1:
 						return '
 								<div class="card mb-4">
-								<span class="badge badge-success invoice-color-success" style="font-size:20px;"><i class="fab fa-paypal"></i> PAYPAL AUTHORIZED</span>
+								<span class="badge badge-success invoice-color-success" style="font-size:20px;"><i class="fab fa-paypal"></i> PAYPAL AUTHORIZED </span>
 								<div class="card-body bg-light">
 								'. $text .'
 								</div>
@@ -2392,7 +2392,7 @@ class BookingHelper {
 					case 2:
 						return '
 								<div class="card mb-4">
-								<span class="badge badge-success invoice-color-success" style="font-size:20px;"><i class="fab fa-paypal"></i> PAID VIA PAYPAL</span>
+								<span class="badge badge-success invoice-color-success" style="font-size:20px;"><i class="fab fa-paypal"></i> PAID </span>
 								<div class="card-body bg-light">
 								'. $text .'
 								</div>
@@ -2401,7 +2401,7 @@ class BookingHelper {
 					case 3:
 						return '
 								<div class="card mb-4">
-								<span class="badge badge-danger invoice-color-danger" style="font-size:20px;"><i class="fab fa-paypal"></i> PAYPAL VOIDED</span>
+								<span class="badge badge-danger invoice-color-danger" style="font-size:20px;"><i class="fab fa-paypal"></i> UNPAID </span>
 								<div class="card-body bg-light">
 								'. $text .'
 								</div>
@@ -2424,7 +2424,7 @@ class BookingHelper {
 					case 2:
 						return '
 								<div class="card mb-4">
-								<span class="badge badge-success invoice-color-success" style="font-size:20px;"><i class="fas fa-credit-card"></i> PAID VIA CARD</span>
+								<span class="badge badge-success invoice-color-success" style="font-size:20px;"><i class="fas fa-credit-card"></i> PAID </span>
 								<div class="card-body bg-light">
 								'. $text .'
 								</div>
@@ -2433,7 +2433,7 @@ class BookingHelper {
 					case 3:
 						return '
 								<div class="card mb-4">
-								<span class="badge badge-danger invoice-color-danger" style="font-size:20px;"><i class="fas fa-credit-card"></i> UNPAID</span>
+								<span class="badge badge-danger invoice-color-danger" style="font-size:20px;"><i class="fas fa-credit-card"></i> UNPAID </span>
 								<div class="card-body bg-light">
 								'. $text .'
 								</div>
@@ -2451,7 +2451,7 @@ class BookingHelper {
 					case 2:
 						return '<div class="card mb-4">
 								<span class="badge badge-success invoice-color-success" style="font-size:20px;">
-								<i class="fas fa-university"></i> PAID VIA BANK </span>
+								<i class="fas fa-university"></i> PAID </span>
 								</div>';
 						break;
 					case 3:
@@ -2508,13 +2508,13 @@ class BookingHelper {
 					case 2:
 						return '<div class="card mb-4">
 								<span class="badge badge-success invoice-color-success" style="font-size:20px;">
-								<i class="fas fa-university"></i> PAID VIA BANK </span>
+								 PAID </span>
 								</div>';
 						break;
 					case 3:
 						return '<div class="card mb-4">
 								<span class="badge badge-danger invoice-color-danger" style="font-size:20px;">
-								<i class="fas fa-university"></i> UNPAID </span>
+								 UNPAID </span>
 								</div>';
 						break;	
 					case 4:
@@ -2524,7 +2524,7 @@ class BookingHelper {
 						return '
 								<div class="card mb-1">
 								<span class="badge badge-info invoice-color-info" style="font-size:20px;">
-								<i class="fas fa-wallet"></i> WAITING FOR PAYMENT </span>
+								 WAITING FOR PAYMENT </span>
 								</div>
 								<div class="card mb-4">
 								
@@ -2549,7 +2549,7 @@ class BookingHelper {
 					case 2:
 						return '<div class="card mb-4">
 								<span class="badge badge-success invoice-color-success" style="font-size:20px;">
-								<i class="fas fa-qrcode"></i> PAID VIA QRCODE </span>
+								<i class="fas fa-qrcode"></i> PAID </span>
 								</div>';
 						break;
 					case 3:
@@ -2633,7 +2633,7 @@ class BookingHelper {
 					case 2:
 						return '<div class="card mb-4">
 								<span class="badge badge-success invoice-color-success" style="font-size:20px;">
-								<i class="fas fa-wallet"></i> PAID VIA E-WALLET </span>
+								<i class="fas fa-wallet"></i> PAID </span>
 								</div>';
 						break;
 					case 3:

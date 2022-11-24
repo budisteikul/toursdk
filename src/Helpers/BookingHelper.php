@@ -2370,9 +2370,7 @@ class BookingHelper {
 	{
 		if(self::have_payment($shoppingcart))
 		{
-			if($shoppingcart->shoppingcart_payment->payment_provider=="paypal")
-            {
-            	$text = '';
+			$text = '';
 
             	if($shoppingcart->shoppingcart_payment->currency!="IDR")
             	{
@@ -2382,8 +2380,9 @@ class BookingHelper {
 								'. $text .'
 								</div>';
             	}
-            	
-            	
+
+			if($shoppingcart->shoppingcart_payment->payment_provider=="paypal")
+            {
 
             	switch($shoppingcart->shoppingcart_payment->payment_status)
 				{
@@ -2414,10 +2413,6 @@ class BookingHelper {
             }
             if($shoppingcart->shoppingcart_payment->payment_provider=="stripe")
             {
-            	$text = '';
-
-            	$text .= 'Total : '.$shoppingcart->shoppingcart_payment->currency.' '. $shoppingcart->shoppingcart_payment->amount .'<br />';
-				$text .= 'Rate : '. BookingHelper::get_rate($shoppingcart) .'<br />';
             	
 
             	switch($shoppingcart->shoppingcart_payment->payment_status)

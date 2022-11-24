@@ -399,6 +399,8 @@ class ContentHelper {
         
         */
 
+        
+
         $grouped_payment[] = [
             'label' => 'INDONESIA',
             'options' => $indonesia_list
@@ -420,7 +422,13 @@ class ContentHelper {
             'label' => 'AUSTRALIA',
             'options' => $australia_list
         ];
-        
+        $southkorea_list[] = [
+            'value' => 'tmoney', 'label' => 'T-Money', 'image' => self::env_appAssetUrl() .'/img/payment/tmoney.png', 'currency' => 'krw',
+        ];
+        $grouped_payment[] = [
+            'label' => 'SOUTH KOREA',
+            'options' => $southkorea_list
+        ];
         
         $dataShoppingcart[] = array(
                 'id' => $shoppingcart->session_id,
@@ -469,6 +477,13 @@ class ContentHelper {
                 'aud_currency' => 'AUD',
                 'aud_total' => BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'AUD'),
                 'aud_rate' => BookingHelper::text_rate($shoppingcart,'AUD'),
+
+                // KRW Currency
+                'krw_currency' => 'KRW',
+                'krw_total' => BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'KRW'),
+                'krw_rate' => BookingHelper::text_rate($shoppingcart,'KRW'),
+
+
 
             );
 

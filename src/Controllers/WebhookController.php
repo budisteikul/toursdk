@@ -10,6 +10,8 @@ use budisteikul\toursdk\Helpers\LogHelper;
 use budisteikul\toursdk\Helpers\TaskHelper;
 use Ramsey\Uuid\Uuid;
 
+use budisteikul\toursdk\Helpers\RapydHelper;
+
 class WebhookController extends Controller
 {
     
@@ -23,12 +25,36 @@ class WebhookController extends Controller
 
     public function test(Request $request)
     {
-        if(env('WISE_ENV')!="production")
-        {
-            $tw = new WiseHelper();
-            $tw->simulateAddFund(50,'USD');
-        }
-        //simulateAddFund
+        
+        $body = [
+                'amount' => '15000',
+                'currency' => 'KRW',
+                'description' => 'VERTIKAL TRIP',
+                'complete_payment_url' => 'https://4c97-125-160-109-212.ap.ngrok.io/',
+                'error_payment_url' => 'https://4c97-125-160-109-212.ap.ngrok.io/',
+                'payment_method' => [
+                    'type' => 'kr_tmoney_ewallet',
+                    'fields' => []
+                ],
+                
+            ];
+
+        $data1 = RapydHelper::make_request('post','/v1/payments',$body);
+        print_r($data1);
+
+        //$object = RapydHelper::make_request('get', '/v1/payment_methods/country?country=KR&currency=KRW');
+        //print_r($object);
+
+        $body = [
+            'currency' => 'SGD',
+            'country' => 'SG',
+            'description' => 'Issuing bank account number to wallet',
+            'ewallet' => 'ewallet_59e4416234ce43408e9816f41a10f744'
+        ];
+
+        //$object = RapydHelper::make_request('post', '/v1/issuing/bankaccounts', $body);
+        //var_dump($object);
+
     }
 	
     

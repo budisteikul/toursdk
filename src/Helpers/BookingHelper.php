@@ -1981,6 +1981,22 @@ class BookingHelper {
 					$rate_from = $shoppingcart->currency;
 					$rate_to = 'AUD';
 				}
+				else if($data->transaction->bank=="grabpay")
+				{
+					$amount = number_format(self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'PHP'), 0, '.','');
+					$currency = 'PHP';
+					$rate = self::convert_currency(1,'PHP',$shoppingcart->currency);
+					$rate_from = $shoppingcart->currency;
+					$rate_to = 'PHP';
+				}
+				else if($data->transaction->bank=="tmoney")
+				{
+					$amount = number_format(self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'KRW'), 0, '.','');
+					$currency = 'KRW';
+					$rate = self::convert_currency(1,'KRW',$shoppingcart->currency);
+					$rate_from = $shoppingcart->currency;
+					$rate_to = 'KRW';
+				}
 				else
 				{
 					$amount = number_format(self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'IDR'), 0, '.','');

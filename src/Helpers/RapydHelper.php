@@ -15,6 +15,11 @@ class RapydHelper {
         return env("APP_API_URL");
     }
 
+    public static function env_appName()
+    {
+        return env("APP_NAME");
+    }
+
     public static function env_rapydEnv()
     {
         return env("RAPYD_ENV");
@@ -64,50 +69,20 @@ class RapydHelper {
                 $data->bank_code = "";
                 $data->bank_payment_type = "sg_paynow_bank";
             break;
-            case "cimb":
-                $data->bank_name = "cimb niaga";
-                $data->bank_code = "022";
-                $data->bank_payment_type = "id_cimb_bank";
-            break;
-            case "permata":
-                $data->bank_name = "permata";
-                $data->bank_code = "013";
-                $data->bank_payment_type = "id_permata_bank";
-            break;
-            case "mandiri":
-                $data->bank_name = "mandiri";
-                $data->bank_code = "008";
-                $data->bank_payment_type = "id_mandiri_bank";
-            break;
-            case "bri":
-                $data->bank_name = "bri";
-                $data->bank_code = "002";
-                $data->bank_payment_type = "id_bri_bank";
-            break;
-            case "bni":
-                $data->bank_name = "bni";
-                $data->bank_code = "009";
-                $data->bank_payment_type = "id_bni_bank";
-            break;
-            case "danamon":
-                $data->bank_name = "danamon";
-                $data->bank_code = "011";
-                $data->bank_payment_type = "id_danamon_bank";
-            break;
-            case "maybank":
-                $data->bank_name = "maybank";
-                $data->bank_code = "016";
-                $data->bank_payment_type = "id_maybank_bank";
-            break;
-            case "sinarmas":
-                $data->bank_name = "sinarmas";
-                $data->bank_code = "153";
-                $data->bank_payment_type = "id_sinarmas_bank";
-            break;
             case "poli":
                 $data->bank_name = "poli";
                 $data->bank_code = "";
                 $data->bank_payment_type = "au_poli_bank";
+            break;
+            case "grabpay":
+                $data->bank_name = "GrabPay";
+                $data->bank_code = "";
+                $data->bank_payment_type = "ph_grabpay_ewallet";
+            break;
+            case "tmoney":
+                $data->bank_name = "T-Money";
+                $data->bank_code = "";
+                $data->bank_payment_type = "kr_tmoney_ewallet";
             break;
             default:
                 return response()->json([
@@ -164,6 +139,47 @@ class RapydHelper {
                 'currency' => $data->transaction->currency,
                 'complete_payment_url' => self::env_appUrl() . $data->transaction->finish_url,
                 'error_payment_url' => self::env_appUrl() . $data->transaction->finish_url,
+                'description' => self::env_appName(),
+                'payment_method' => [
+                    'type' => $payment->bank_payment_type,
+                    'fields' => []
+                ]
+            ];
+
+            $data1 = self::make_request('post','/v1/payments',$body);
+            
+
+            $data_json->payment_type = 'bank_redirect';
+            $data_json->redirect = $data1['data']['redirect_url'];
+        }
+        else if($data->transaction->bank=="grabpay")
+        {
+            $body = [
+                'amount' => $data->transaction->amount,
+                'currency' => $data->transaction->currency,
+                'complete_payment_url' => self::env_appUrl() . $data->transaction->finish_url,
+                'error_payment_url' => self::env_appUrl() . $data->transaction->finish_url,
+                'description' => self::env_appName(),
+                'payment_method' => [
+                    'type' => $payment->bank_payment_type,
+                    'fields' => []
+                ]
+            ];
+
+            $data1 = self::make_request('post','/v1/payments',$body);
+            
+
+            $data_json->payment_type = 'bank_redirect';
+            $data_json->redirect = $data1['data']['redirect_url'];
+        }
+        else if($data->transaction->bank=="tmoney")
+        {
+            $body = [
+                'amount' => $data->transaction->amount,
+                'currency' => $data->transaction->currency,
+                'complete_payment_url' => self::env_appUrl() . $data->transaction->finish_url,
+                'error_payment_url' => self::env_appUrl() . $data->transaction->finish_url,
+                'description' => self::env_appName(),
                 'payment_method' => [
                     'type' => $payment->bank_payment_type,
                     'fields' => []

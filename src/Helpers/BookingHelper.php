@@ -2668,6 +2668,7 @@ class BookingHelper {
             {
             	switch($shoppingcart->shoppingcart_payment->payment_status)
 				{
+					
 					case 3:
 						return '<div class="card mb-4">
             				<span class="badge badge-danger invoice-color-danger" style="font-size:20px;">INVOICE CANCELED</span>
@@ -2676,6 +2677,7 @@ class BookingHelper {
 						return '<div class="card mb-4">
             				<span class="badge badge-success invoice-color-success" style="font-size:20px;">INVOICED</span>
 							</div>';
+
 				}
             	
             }

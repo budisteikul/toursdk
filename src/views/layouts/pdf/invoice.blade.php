@@ -1,8 +1,6 @@
 @inject('GeneralHelper', 'budisteikul\toursdk\Helpers\GeneralHelper')
 @inject('BookingHelper', 'budisteikul\toursdk\Helpers\BookingHelper')
-@php
-  $main_contact = $BookingHelper->get_answer_contact($shoppingcart);
-@endphp
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -220,7 +218,7 @@ footer {
                         </div>
                         <div>Perumnas Guwosari Blok XII</div>
                         <div>Jalan Abiyoso VII No.190</div>
-                        <div>Bantul D.I Yogyakarta 55751 Indonesia</div>
+                        <div>Bantul D.I Yogyakarta 55751 ID</div>
                         <div>Phone : +62 857 4311-2112</div>
                         <div>Email : guide@vertikaltrip.com</div>
                   
@@ -241,10 +239,22 @@ footer {
            
          <div id="client">
           <div class="to" style="font-size: 14px; color: #0087C3; line-height: 18px; ">INVOICE TO</div>
+
+          @if($shoppingcart->booking_channel=="WEBSITE")
+          @php
+            $main_contact = $BookingHelper->get_answer_contact($shoppingcart);
+          @endphp
           <h2 class="name" style=" line-height: 18px; font-size:14px;">Name : {{ $main_contact->firstName }}
                         {{ $main_contact->lastName }} </h2>
           <div class="address" style=" line-height: 18px; font-size:14px;">Phone : {{ $main_contact->phoneNumber }}</div>
           <div class="email" style=" line-height: 18px; font-size:14px;">Email : <a href="mailto:{{ $main_contact->email }} ">{{ $main_contact->email }} </a></div>
+          @else
+          
+          <h2 class="name" style=" line-height: 18px; font-size:16px;">{{ $shoppingcart->booking_channel }}</h2>
+          
+          @endif
+
+
         </div>
            				
            </td>

@@ -80,7 +80,7 @@ class RapydHelper {
                 $data->bank_payment_type = "ph_grabpay_ewallet";
             break;
             case "tmoney":
-                $data->bank_name = "T-Money";
+                $data->bank_name = "Tmoney";
                 $data->bank_code = "";
                 $data->bank_payment_type = "kr_tmoney_ewallet";
             break;

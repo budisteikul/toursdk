@@ -423,7 +423,7 @@ class ContentHelper {
             'options' => $australia_list
         ];
         $southkorea_list[] = [
-            'value' => 'tmoney', 'label' => 'T-Money', 'image' => self::env_appAssetUrl() .'/img/payment/tmoney.png', 'currency' => 'krw',
+            'value' => 'tmoney', 'label' => 'Tmoney', 'image' => self::env_appAssetUrl() .'/img/payment/tmoney.png', 'currency' => 'krw',
         ];
         $grouped_payment[] = [
             'label' => 'SOUTH KOREA',

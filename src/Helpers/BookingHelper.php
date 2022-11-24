@@ -2374,8 +2374,15 @@ class BookingHelper {
             {
             	$text = '';
 
-            	$text .= 'Total : '.$shoppingcart->shoppingcart_payment->currency.' '. $shoppingcart->shoppingcart_payment->amount .'<br />';
-				$text .= 'Rate : '. BookingHelper::get_rate($shoppingcart) .'<br />';
+            	if($shoppingcart->shoppingcart_payment->currency!="IDR")
+            	{
+            		$text .= 'Total : '.$shoppingcart->shoppingcart_payment->currency.' '. $shoppingcart->shoppingcart_payment->amount .'<br />';
+					$text .= 'Rate : '. BookingHelper::get_rate($shoppingcart) .'<br />';
+					$text = '<div class="card-body bg-light">
+								'. $text .'
+								</div>';
+            	}
+            	
             	
 
             	switch($shoppingcart->shoppingcart_payment->payment_status)
@@ -2384,27 +2391,21 @@ class BookingHelper {
 						return '
 								<div class="card mb-4">
 								<span class="badge badge-success invoice-color-success" style="font-size:20px;"><i class="fab fa-paypal"></i> PAYPAL AUTHORIZED </span>
-								<div class="card-body bg-light">
 								'. $text .'
-								</div>
 								</div>';
 					break;
 					case 2:
 						return '
 								<div class="card mb-4">
 								<span class="badge badge-success invoice-color-success" style="font-size:20px;"><i class="fab fa-paypal"></i> PAID </span>
-								<div class="card-body bg-light">
 								'. $text .'
-								</div>
 								</div>';
 					break;
 					case 3:
 						return '
 								<div class="card mb-4">
 								<span class="badge badge-danger invoice-color-danger" style="font-size:20px;"><i class="fab fa-paypal"></i> UNPAID </span>
-								<div class="card-body bg-light">
 								'. $text .'
-								</div>
 								</div>';
 					break;
 					default:
@@ -2425,18 +2426,14 @@ class BookingHelper {
 						return '
 								<div class="card mb-4">
 								<span class="badge badge-success invoice-color-success" style="font-size:20px;"><i class="fas fa-credit-card"></i> PAID </span>
-								<div class="card-body bg-light">
 								'. $text .'
-								</div>
 								</div>';
 					break;
 					case 3:
 						return '
 								<div class="card mb-4">
 								<span class="badge badge-danger invoice-color-danger" style="font-size:20px;"><i class="fas fa-credit-card"></i> UNPAID </span>
-								<div class="card-body bg-light">
 								'. $text .'
-								</div>
 								</div>';
 					break;
 					default:
@@ -2452,12 +2449,14 @@ class BookingHelper {
 						return '<div class="card mb-4">
 								<span class="badge badge-success invoice-color-success" style="font-size:20px;">
 								<i class="fas fa-university"></i> PAID </span>
+								'. $text .'
 								</div>';
 						break;
 					case 3:
 						return '<div class="card mb-4">
 								<span class="badge badge-danger invoice-color-danger" style="font-size:20px;">
 								<i class="fas fa-university"></i> UNPAID </span>
+								'. $text .'
 								</div>';
 						break;	
 					case 4:
@@ -2509,12 +2508,14 @@ class BookingHelper {
 						return '<div class="card mb-4">
 								<span class="badge badge-success invoice-color-success" style="font-size:20px;">
 								 PAID </span>
+								 '. $text .'
 								</div>';
 						break;
 					case 3:
 						return '<div class="card mb-4">
 								<span class="badge badge-danger invoice-color-danger" style="font-size:20px;">
 								 UNPAID </span>
+								 '. $text .'
 								</div>';
 						break;	
 					case 4:
@@ -2550,12 +2551,14 @@ class BookingHelper {
 						return '<div class="card mb-4">
 								<span class="badge badge-success invoice-color-success" style="font-size:20px;">
 								<i class="fas fa-qrcode"></i> PAID </span>
+								'. $text .'
 								</div>';
 						break;
 					case 3:
 						return '<div class="card mb-4">
 								<span class="badge badge-danger invoice-color-danger" style="font-size:20px;">
 								<i class="fas fa-qrcode"></i> UNPAID </span>
+								'. $text .'
 								</div>';
 						break;
 					case 4:
@@ -2634,12 +2637,14 @@ class BookingHelper {
 						return '<div class="card mb-4">
 								<span class="badge badge-success invoice-color-success" style="font-size:20px;">
 								<i class="fas fa-wallet"></i> PAID </span>
+								'. $text .'
 								</div>';
 						break;
 					case 3:
 						return '<div class="card mb-4">
 								<span class="badge badge-danger invoice-color-danger" style="font-size:20px;">
 								<i class="fas fa-wallet"></i> UNPAID </span>
+								'. $text .'
 								</div>';
 						break;
 					case 4:

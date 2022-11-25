@@ -536,25 +536,14 @@ class ContentHelper {
             }
         }
 
+        
         if($shoppingcart->shoppingcart_payment->payment_type=="bank_transfer")
         {
                
-                if($shoppingcart->shoppingcart_payment->payment_status==4)
-                {
-                    if($shoppingcart->shoppingcart_payment->bank_name=="dbs")
-                    {
-                        $how_to_pay = 'Please Transfer funds to the provided DBS bank account using your Singapore based bank account via FAST (preferred), MEPS or GIRO.';
-                    }
-                    else
-                    {
-                        $how_to_pay = '<a target="_blank" class="text-theme" href="'.url('/api').'/pdf/instruction/'. $shoppingcart->session_id .'/Instruction-'. $shoppingcart->confirmation_code .'.pdf"><i class="fas fa-file-invoice"></i> Instruction-'. $shoppingcart->confirmation_code .'.pdf</a><br />';
-                    }
-                    
-                    
-                }
+            $how_to_pay = 'Log in to bank and transfer funds to this bank account to complete the transaction';
                 
-               
         }
+        
 
         $payment_status_asText = BookingHelper::get_paymentStatus($shoppingcart);
         $booking_status_asText = BookingHelper::get_bookingStatus($shoppingcart);

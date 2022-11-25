@@ -1334,7 +1334,7 @@ class BookingHelper {
 
 					if($question->question_id=="phoneNumber")
 						{
-							$rules = array('phoneNumber' => 'regex:/^\+?[1-9]\d{1,14}$');
+							$rules = array('phoneNumber' => 'phone:AUTO');
 							$inputs = array(
     							'phoneNumber' => $data['questions'][$question->question_id]
 							);

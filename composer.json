@@ -19,7 +19,8 @@
         "intervention/image": "^2.7",
         "predis/predis": "^1.1",
         "html2text/html2text": "^4.3",
-        "google/cloud-tasks": "^1.11"
+        "google/cloud-tasks": "^1.11",
+        "propaganistas/laravel-phone": "^4.4"
     },
     "autoload": {
         "psr-0": {

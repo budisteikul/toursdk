@@ -138,14 +138,11 @@ table.body .article {
                                         <br><br>
                                         {!! $Content->view_product_detail($shoppingcart) !!}
                                         <br>
-                                <table role="presentation" border="0" cellpadding="0" cellspacing="0" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: auto;">
-                                  <tbody>
-                                    <tr>
-                                      <td style="font-family: sans-serif; font-size: 14px; vertical-align: top; border-radius: 5px; text-align: center; background-color: #3498db;" valign="top" align="center" bgcolor="#3498db"> <a href="https://linktr.ee/foodtour" target="_blank" style="border: solid 1px #3498db; border-radius: 5px; box-sizing: border-box; cursor: pointer; display: inline-block; font-size: 14px; font-weight: bold; margin: 0; padding: 12px 25px; text-decoration: none; text-transform: capitalize; background-color: #3498db; border-color: #3498db; color: #ffffff;">Map to the meeting point</a> </td>
-                                    </tr>
-                                  </tbody>
-                                </table>
+                                
                                         
+                                        <hr style="height:1px;border:none;color:#EEE;background-color:#EEE;" />
+                                        Follow link below to know way to the meeting point.<br>
+                                        https://linktr.ee/foodtour
                                         <hr style="height:1px;border:none;color:#EEE;background-color:#EEE;" />
                               </td>
                             </tr>

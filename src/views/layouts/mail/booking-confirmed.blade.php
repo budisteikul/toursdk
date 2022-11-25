@@ -142,7 +142,8 @@ table.body .article {
                                         
                                         <hr style="height:1px;border:none;color:#EEE;background-color:#EEE;" />
                                         Follow link below to know way to the meeting point.<br>
-                                        https://linktr.ee/foodtour
+                                        <a href="https://linktr.ee/foodtour" target="_blank" style="text-decoration: none;">https://linktr.ee/foodtour
+                                        </a>
                                         <hr style="height:1px;border:none;color:#EEE;background-color:#EEE;" />
                               </td>
                             </tr>

@@ -74,6 +74,16 @@ class RapydHelper {
                 $data->bank_code = "";
                 $data->bank_payment_type = "au_poli_bank";
             break;
+            case "bri":
+                $data->bank_name = "Bank BRI";
+                $data->bank_code = "002";
+                $data->bank_payment_type = "id_bri_bank";
+            break;
+            case "permata":
+                $data->bank_name = "Permata Bank";
+                $data->bank_code = "013";
+                $data->bank_payment_type = "id_permata_bank";
+            break;
             case "grabpay":
                 $data->bank_name = "GrabPay";
                 $data->bank_code = "";
@@ -214,6 +224,11 @@ class RapydHelper {
             $body = [
                 'amount' => $data->transaction->amount,
                 'currency' => $data->transaction->currency,
+                'customer' => [
+                    'name' => $data->contact->name,
+                    'phone_number' => $data->contact->phone,
+                    'email' => $data->contact->email
+                ],
                 'payment_method' => [
                     'type' => $payment->bank_payment_type,
                     'fields' => []

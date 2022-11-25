@@ -25,7 +25,32 @@ class WebhookController extends Controller
 
     public function test(Request $request)
     {
-        
+        /*
+        $body = [
+                'amount' => '175000',
+                'currency' => 'IDR',
+                'description' => 'VERTIKAL TRIP',
+                'complete_payment_url' => 'https://4c97-125-160-109-212.ap.ngrok.io/',
+                'error_payment_url' => 'https://4c97-125-160-109-212.ap.ngrok.io/',
+                'customer' => [
+                    'name' => 'aaaa',
+                    'phone_number' => '+62221125026',
+                    'email' => 'vt.221125026@vertikaltrip.com'
+                ],
+                'payment_method' => [
+                    'type' => 'id_permata_bank',
+                    'fields' => []
+                ],
+                
+            ];
+        */
+            
+        //$data1 = RapydHelper::make_request('post','/v1/payments',$body);
+        //print_r($data1);
+
+        //$object = RapydHelper::make_request('get', '/v1/payment_methods/country?country=KR&currency=KRW');
+        //print_r($object);
+
         
 
     }

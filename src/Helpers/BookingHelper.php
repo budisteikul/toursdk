@@ -1666,7 +1666,7 @@ class BookingHelper {
 	public static function set_maskingPhone($shoppingcart)
 	{
 		$phoneNumber = str_replace("VT-","",$shoppingcart->confirmation_code);
-		$phoneNumber = '+'. $phoneNumber;
+		$phoneNumber = '+62'. $phoneNumber;
 		return $phoneNumber;
 	}
 

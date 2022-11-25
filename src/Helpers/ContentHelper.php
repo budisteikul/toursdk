@@ -522,7 +522,6 @@ class ContentHelper {
         {
             if($shoppingcart->shoppingcart_payment->payment_status==4)
             {
-
                 $how_to_pay = '
                     <div class="pl-2">
                     1.  Open your <b>E-wallet</b> or <b>Mobile Banking</b> apps. <br />
@@ -539,9 +538,10 @@ class ContentHelper {
         
         if($shoppingcart->shoppingcart_payment->payment_type=="bank_transfer")
         {
-               
-            $how_to_pay = 'Log in to bank and transfer funds to this bank account to complete the transaction';
-                
+            if($shoppingcart->shoppingcart_payment->payment_status==4)
+            {   
+                $how_to_pay = 'Log in to bank and transfer funds to this bank account to complete the transaction';
+            } 
         }
         
 

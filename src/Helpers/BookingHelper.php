@@ -2316,7 +2316,8 @@ class BookingHelper {
 		//{
 			//$value = number_format($value, 0, ',', ',');
 		//}
-		return round($value);
+		//return round($value);
+		return $value;
 	}
 	
 	public static function get_count($table="shoppingcart")

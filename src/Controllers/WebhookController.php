@@ -22,11 +22,6 @@ class WebhookController extends Controller
 
     public function test(Request $request)
     {
-        if(env('WISE_ENV')!="production")
-        {
-            $tw = new WiseHelper();
-            $tw->simulateAddFund(12,'USD');
-        }
         
     }
 	

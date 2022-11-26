@@ -185,7 +185,7 @@ class APIController extends Controller
             $check_question = BookingHelper::check_question_json($sessionId,$data);
             if(@count($check_question) > 0)
             {
-                $check_question['message'] = "Error, please check your input";
+                $check_question['message'] = "Oops there was a problem, please check your input and try again.";
                 return response()->json($check_question);
             }
             $shoppingcart = BookingHelper::save_question_json($sessionId,$data);

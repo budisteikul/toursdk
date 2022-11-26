@@ -8,9 +8,6 @@ use budisteikul\toursdk\Models\Shoppingcart;
 use budisteikul\toursdk\Helpers\WiseHelper;
 use budisteikul\toursdk\Helpers\LogHelper;
 use budisteikul\toursdk\Helpers\TaskHelper;
-use Ramsey\Uuid\Uuid;
-
-use budisteikul\toursdk\Helpers\RapydHelper;
 
 class WebhookController extends Controller
 {
@@ -25,34 +22,7 @@ class WebhookController extends Controller
 
     public function test(Request $request)
     {
-        /*
-        $body = [
-                'amount' => '175000',
-                'currency' => 'IDR',
-                'description' => 'VERTIKAL TRIP',
-                'complete_payment_url' => 'https://4c97-125-160-109-212.ap.ngrok.io/',
-                'error_payment_url' => 'https://4c97-125-160-109-212.ap.ngrok.io/',
-                'customer' => [
-                    'name' => 'aaaa',
-                    'phone_number' => '+62221125026',
-                    'email' => 'vt.221125026@vertikaltrip.com'
-                ],
-                'payment_method' => [
-                    'type' => 'id_permata_bank',
-                    'fields' => []
-                ],
-                
-            ];
-        */
-            
-        //$data1 = RapydHelper::make_request('post','/v1/payments',$body);
-        //print_r($data1);
-
-        //$object = RapydHelper::make_request('get', '/v1/payment_methods/country?country=KR&currency=KRW');
-        //print_r($object);
-
         
-
     }
 	
     
@@ -70,6 +40,7 @@ class WebhookController extends Controller
             }
 
             $signature = $request->header('X-Signature-SHA256');
+            $delivery_id = $request->header('X-Delivery-Id');
             $json      = $request->getContent();
             $tw = new WiseHelper();
             $verify = $tw->checkSignature($json,$signature);
@@ -79,8 +50,7 @@ class WebhookController extends Controller
                 $data = json_decode($json);
                 $amount = $data->data->amount;
                 $currency = $data->data->currency;
-		        $sent_at = $data->sent_at;
-                $customerTransactionId = Uuid::uuid5(Uuid::NAMESPACE_URL, $sent_at);
+                $customerTransactionId = $delivery_id;
 
 
 		        $payload = new \stdClass();

@@ -1941,7 +1941,7 @@ class BookingHelper {
 				
 				if($data->transaction->bank=="paynow")
 				{
-					$amount = number_format(self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'SGD'), 2);
+					$amount = self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'SGD');
 					$currency = 'SGD';
 					$rate = self::convert_currency(1,'SGD',$shoppingcart->currency);
 					$rate_from = $shoppingcart->currency;
@@ -1950,7 +1950,7 @@ class BookingHelper {
 
 				else if($data->transaction->bank=="poli")
 				{
-					$amount = number_format(self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'AUD'), 2);
+					$amount = self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'AUD');
 					$currency = 'AUD';
 					$rate = self::convert_currency(1,'AUD',$shoppingcart->currency);
 					$rate_from = $shoppingcart->currency;
@@ -1959,7 +1959,7 @@ class BookingHelper {
 
 				else
 				{
-					$amount = number_format(self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'USD'), 2);
+					$amount = self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'USD');
 					$currency = 'USD';
 					$rate = self::convert_currency(1,'USD',$shoppingcart->currency);
 					$rate_from = $shoppingcart->currency;
@@ -1978,7 +1978,7 @@ class BookingHelper {
 				$payment_provider = 'rapyd';
 				if($data->transaction->bank=="paynow" || $data->transaction->bank=="fast")
 				{
-					$amount = number_format(self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'SGD'), 2);
+					$amount = self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'SGD');
 					$currency = 'SGD';
 					$rate = self::convert_currency(1,'SGD',$shoppingcart->currency);
 					$rate_from = $shoppingcart->currency;
@@ -1986,7 +1986,7 @@ class BookingHelper {
 				}
 				else if($data->transaction->bank=="poli")
 				{
-					$amount = number_format(self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'AUD'), 2);
+					$amount = self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'AUD');
 					$currency = 'AUD';
 					$rate = self::convert_currency(1,'AUD',$shoppingcart->currency);
 					$rate_from = $shoppingcart->currency;
@@ -1994,7 +1994,7 @@ class BookingHelper {
 				}
 				else if($data->transaction->bank=="grabpay")
 				{
-					$amount = number_format(self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'PHP'), 2);
+					$amount = self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'PHP');
 					$currency = 'PHP';
 					$rate = self::convert_currency(1,'PHP',$shoppingcart->currency);
 					$rate_from = $shoppingcart->currency;
@@ -2002,7 +2002,7 @@ class BookingHelper {
 				}
 				else if($data->transaction->bank=="tmoney")
 				{
-					$amount = number_format(self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'KRW'), 2);
+					$amount = self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'KRW');
 					$currency = 'KRW';
 					$rate = self::convert_currency(1,'KRW',$shoppingcart->currency);
 					$rate_from = $shoppingcart->currency;
@@ -2010,7 +2010,7 @@ class BookingHelper {
 				}
 				else
 				{
-					$amount = number_format(self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'IDR'), 0, '.','');
+					$amount = self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'IDR');
 					$currency = 'IDR';
 					$rate = 1;
 				}
@@ -2024,7 +2024,7 @@ class BookingHelper {
 
 			break;
 			case "dana":
-				$amount = number_format(self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'IDR'), 0, '.','');
+				$amount = self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'IDR');
 
 				$currency = 'IDR';
 				$rate = 1;
@@ -2036,7 +2036,7 @@ class BookingHelper {
 				$response = DanaHelper::createPayment($data);
 			break;
 			case "oyindonesia":
-				$amount = number_format(self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'IDR'), 0, '.','');
+				$amount = self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'IDR');
 
 				$currency = 'IDR';
 				$rate = 1;
@@ -2048,7 +2048,7 @@ class BookingHelper {
 				$response = OyHelper::createPayment($data);
 			break;
 			case "duitku":
-				$amount = number_format(self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'IDR'), 0, '.','');
+				$amount = self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'IDR');
 
 				$currency = 'IDR';
 				$rate = 1;
@@ -2069,7 +2069,7 @@ class BookingHelper {
 				$response = DuitkuHelper::createPayment($data);
 			break;
 			case "doku":
-				$amount = number_format(self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'IDR'), 0, '.','');
+				$amount = self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'IDR');
 				$currency = 'IDR';
 				$rate = 1;
 				$payment_status = 4;
@@ -2089,7 +2089,7 @@ class BookingHelper {
 				$response = DokuHelper::createPayment($data);
 			break;
 			case "midtrans":
-				$amount = number_format(self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'IDR'), 0, '.','');
+				$amount = self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'IDR');
 				$currency = 'IDR';
 				$rate = 1;
 				$payment_status = 4;
@@ -2100,7 +2100,7 @@ class BookingHelper {
 				$response = MidtransHelper::createPayment($data);
 			break;
 			case "paydia":
-				$amount = number_format(self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'IDR'), 0, '.','');
+				$amount = self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'IDR');
 				$currency = 'IDR';
 				$rate = 1;
 				$payment_status = 4;

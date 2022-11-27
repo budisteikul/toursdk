@@ -1939,11 +1939,9 @@ class BookingHelper {
 			case "tazapay":
 				$payment_provider = 'tazapay';
 				
-
-
 				if($data->transaction->bank=="paynow")
 				{
-					$amount = number_format(self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'SGD'), 0, '.','');
+					$amount = number_format(self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'SGD'), 2);
 					$currency = 'SGD';
 					$rate = self::convert_currency(1,'SGD',$shoppingcart->currency);
 					$rate_from = $shoppingcart->currency;
@@ -1952,7 +1950,7 @@ class BookingHelper {
 
 				else if($data->transaction->bank=="poli")
 				{
-					$amount = number_format(self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'AUD'), 0, '.','');
+					$amount = number_format(self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'AUD'), 2);
 					$currency = 'AUD';
 					$rate = self::convert_currency(1,'AUD',$shoppingcart->currency);
 					$rate_from = $shoppingcart->currency;
@@ -1961,7 +1959,7 @@ class BookingHelper {
 
 				else
 				{
-					$amount = number_format(self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'USD'), 0, '.','');
+					$amount = number_format(self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'USD'), 2);
 					$currency = 'USD';
 					$rate = self::convert_currency(1,'USD',$shoppingcart->currency);
 					$rate_from = $shoppingcart->currency;
@@ -1980,7 +1978,7 @@ class BookingHelper {
 				$payment_provider = 'rapyd';
 				if($data->transaction->bank=="paynow" || $data->transaction->bank=="fast")
 				{
-					$amount = number_format(self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'SGD'), 0, '.','');
+					$amount = number_format(self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'SGD'), 2);
 					$currency = 'SGD';
 					$rate = self::convert_currency(1,'SGD',$shoppingcart->currency);
 					$rate_from = $shoppingcart->currency;
@@ -1988,7 +1986,7 @@ class BookingHelper {
 				}
 				else if($data->transaction->bank=="poli")
 				{
-					$amount = number_format(self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'AUD'), 0, '.','');
+					$amount = number_format(self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'AUD'), 2);
 					$currency = 'AUD';
 					$rate = self::convert_currency(1,'AUD',$shoppingcart->currency);
 					$rate_from = $shoppingcart->currency;
@@ -1996,7 +1994,7 @@ class BookingHelper {
 				}
 				else if($data->transaction->bank=="grabpay")
 				{
-					$amount = number_format(self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'PHP'), 0, '.','');
+					$amount = number_format(self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'PHP'), 2);
 					$currency = 'PHP';
 					$rate = self::convert_currency(1,'PHP',$shoppingcart->currency);
 					$rate_from = $shoppingcart->currency;
@@ -2004,7 +2002,7 @@ class BookingHelper {
 				}
 				else if($data->transaction->bank=="tmoney")
 				{
-					$amount = number_format(self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'KRW'), 0, '.','');
+					$amount = number_format(self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'KRW'), 2);
 					$currency = 'KRW';
 					$rate = self::convert_currency(1,'KRW',$shoppingcart->currency);
 					$rate_from = $shoppingcart->currency;
@@ -2396,14 +2394,12 @@ class BookingHelper {
 		{
 			$text = '';
 
-            	if($shoppingcart->shoppingcart_payment->currency!="IDR")
-            	{
-            		$text .= 'Total : '.$shoppingcart->shoppingcart_payment->currency.' '. $shoppingcart->shoppingcart_payment->amount .'<br />';
-					$text .= 'Rate : '. BookingHelper::get_rate($shoppingcart) .'<br />';
-					$text = '<div class="card-body bg-light">
-								'. $text .'
-								</div>';
-            	}
+			if($shoppingcart->shoppingcart_payment->currency!="IDR")
+			{
+				$text .= 'Total : '.$shoppingcart->shoppingcart_payment->currency.' '. $shoppingcart->shoppingcart_payment->amount .'<br />';
+				$text .= 'Rate : '. BookingHelper::get_rate($shoppingcart) .'<br />';
+				$text = '<div class="card-body bg-light">'. $text .'</div>';
+			}
 
 			if($shoppingcart->shoppingcart_payment->payment_provider=="paypal")
             {

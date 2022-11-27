@@ -2301,7 +2301,6 @@ class BookingHelper {
 		
 
 		$value = ($amount * $rate_oneusd);
-
 		if($to!="USD")
 		{
 			$rate = BokunHelper::get_currency($to);
@@ -2316,8 +2315,19 @@ class BookingHelper {
 		//{
 			//$value = number_format($value, 0, ',', ',');
 		//}
-		return round($value);
-		//return $value;
+		//return round($value);
+
+		/*
+		if($to=="USD")
+		{
+			return $value;
+		}
+		else
+		{
+			return round($value);
+		}
+		*/
+		return $value;
 	}
 	
 	public static function get_count($table="shoppingcart")

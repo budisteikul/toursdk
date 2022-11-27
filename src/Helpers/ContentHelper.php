@@ -452,6 +452,7 @@ class ContentHelper {
                 'paypal_currency' => self::env_paypalCurrency(),
                 'paypal_total' => BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,self::env_paypalCurrency(),"PAYPAL"),
                 'paypal_rate' => BookingHelper::text_rate($shoppingcart,self::env_paypalCurrency(),"PAYPAL"),
+                'paypal_sdk' => 'https://www.paypal.com/sdk/js?client-id='.self::env_paypalClientId().'&intent=authorize&currency='. self::env_paypalCurrency(),
 
                 // Stripe Currency
                 'stripe_currency' => 'USD',

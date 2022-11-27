@@ -2297,7 +2297,6 @@ class BookingHelper {
 		// Markup PAYPAL =========================
 		}
 		
-
 		$value = ($amount * $rate_oneusd);
 		if($to!="USD")
 		{
@@ -2305,26 +2304,15 @@ class BookingHelper {
 			$value = ($amount * $rate_oneusd / $rate);
 		}
 		
-		//if($to!="IDR")
-		//{
-			$value = number_format((float)$value, 2, '.', '');
-		//}
-		//else
-		//{
-			//$value = number_format($value, 0, ',', ',');
-		//}
-		//return round($value);
+		$value = number_format((float)$value, 2, '.', '');
 
-		/*
-		if($to=="USD")
+		$arr_val = explode('.',$value);
+		if($arr_val[0]>=4)
 		{
-			return $value;
+			$value = round($value);
+			$value = number_format((float)$value, 2, '.', '');
 		}
-		else
-		{
-			return round($value);
-		}
-		*/
+
 		return $value;
 	}
 	

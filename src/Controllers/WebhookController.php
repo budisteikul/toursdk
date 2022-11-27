@@ -22,7 +22,10 @@ class WebhookController extends Controller
 
     public function test(Request $request)
     {
-        
+        $amount = 14713.85;
+        $bbb = explode('.',$amount);
+        $aaa = strlen((string)$bbb[0]);
+        print_r($aaa);
     }
 	
     

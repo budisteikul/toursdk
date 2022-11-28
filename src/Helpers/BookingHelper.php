@@ -2307,7 +2307,7 @@ class BookingHelper {
 		$value = number_format((float)$value, 2, '.', '');
 
 		$arr_val = explode('.',$value);
-		if($arr_val[0]>=4)
+		if(strlen((string)$arr_val[0])>=4)
 		{
 			$value = round($value);
 			$value = number_format((float)$value, 2, '.', '');

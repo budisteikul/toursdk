@@ -450,38 +450,38 @@ class ContentHelper {
 
                 // Paypal Currency
                 'paypal_currency' => self::env_paypalCurrency(),
-                'paypal_total' => GeneralHelper::numberFormat(BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,self::env_paypalCurrency(),"PAYPAL")),
+                'paypal_total' => GeneralHelper::numberFormat(BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,self::env_paypalCurrency(),"PAYPAL"),'USD'),
                 'paypal_rate' => BookingHelper::text_rate($shoppingcart,self::env_paypalCurrency(),"PAYPAL"),
                 'paypal_sdk' => 'https://www.paypal.com/sdk/js?client-id='.self::env_paypalClientId().'&intent=authorize&currency='. self::env_paypalCurrency(),
 
                 // Stripe Currency
                 'stripe_currency' => 'USD',
-                'stripe_total' => GeneralHelper::numberFormat(BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'USD')),
+                'stripe_total' => GeneralHelper::numberFormat(BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'USD'),'USD'),
                 'stripe_rate' => BookingHelper::text_rate($shoppingcart,'USD'),
 
                 // Local Payment Currency
                 'localpayment_currency' => 'IDR',
-                'localpayment_total' => GeneralHelper::numberFormat(BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'IDR')),
+                'localpayment_total' => GeneralHelper::numberFormat(BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'IDR'),'IDR'),
                 'localpayment_rate' => BookingHelper::text_rate($shoppingcart,'IDR'),
 
                 // IDR Currency
                 'idr_currency' => 'IDR',
-                'idr_total' => GeneralHelper::numberFormat(BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'IDR')),
+                'idr_total' => GeneralHelper::numberFormat(BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'IDR'),'IDR'),
                 'idr_rate' => BookingHelper::text_rate($shoppingcart,'IDR'),
 
                 // SGD Currency
                 'sgd_currency' => 'SGD',
-                'sgd_total' => GeneralHelper::numberFormat(BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'SGD')),
+                'sgd_total' => GeneralHelper::numberFormat(BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'SGD'),'SGD'),
                 'sgd_rate' => BookingHelper::text_rate($shoppingcart,'SGD'),
 
                 // AUD Currency
                 'aud_currency' => 'AUD',
-                'aud_total' => GeneralHelper::numberFormat(BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'AUD')),
+                'aud_total' => GeneralHelper::numberFormat(BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'AUD'),'AUD'),
                 'aud_rate' => BookingHelper::text_rate($shoppingcart,'AUD'),
 
                 // KRW Currency
                 'krw_currency' => 'KRW',
-                'krw_total' => GeneralHelper::numberFormat(BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'KRW')),
+                'krw_total' => GeneralHelper::numberFormat(BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'KRW'),'KRW'),
                 'krw_rate' => BookingHelper::text_rate($shoppingcart,'KRW'),
 
 

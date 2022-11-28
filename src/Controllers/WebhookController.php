@@ -23,7 +23,7 @@ class WebhookController extends Controller
 
     public function test(Request $request)
     {
-        print_r(GeneralHelper::numberFormat(5000.12,'USD'));
+        print_r(GeneralHelper::numberFormat(500.12,'IDR'));
     }
 	
     

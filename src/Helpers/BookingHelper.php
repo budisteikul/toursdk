@@ -2306,12 +2306,7 @@ class BookingHelper {
 		
 		$value = number_format((float)$value, 2, '.', '');
 
-		$arr_val = explode('.',$value);
-		if(strlen((string)$arr_val[0])>=4)
-		{
-			$value = ceil($value);
-			$value = number_format((float)$value, 2, '.', '');
-		}
+		
 
 		return $value;
 	}

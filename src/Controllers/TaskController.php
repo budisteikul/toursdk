@@ -55,7 +55,7 @@ class TaskController extends Controller
             $email = $shoppingcart->shoppingcart_questions()->select('answer')->where('type','mainContactDetails')->where('question_id','email')->first()->answer;
             if($email!="")
             {
-                Mail::to($email)->cc([env("MAIL_FROM_ADDRESS")])->send(new BookingConfirmedMail($shoppingcart));
+                Mail::to($email)->cc([env("MAIL_PUSHOVER")])->send(new BookingConfirmedMail($shoppingcart));
             }
             return response('OK', 200)->header('Content-Type', 'text/plain');
         }

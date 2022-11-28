@@ -1462,14 +1462,7 @@ class APIController extends Controller
 
     public function stripe_jscript($sessionId)
     {
-        /*
-        if(request()->ip()=="217.21.90.164")
-        {
-            return response()->json([
-                'message' => 'donothonor'
-            ], 200);
-        }
-        */
+        
         
         $shoppingcart = Cache::get('_'. $sessionId);
         $amount = BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'USD');

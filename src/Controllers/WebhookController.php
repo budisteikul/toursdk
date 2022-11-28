@@ -8,6 +8,7 @@ use budisteikul\toursdk\Models\Shoppingcart;
 use budisteikul\toursdk\Helpers\WiseHelper;
 use budisteikul\toursdk\Helpers\LogHelper;
 use budisteikul\toursdk\Helpers\TaskHelper;
+use budisteikul\toursdk\Helpers\GeneralHelper;
 
 class WebhookController extends Controller
 {
@@ -22,10 +23,7 @@ class WebhookController extends Controller
 
     public function test(Request $request)
     {
-        $amount = 14713.85;
-        $bbb = explode('.',$amount);
-        $aaa = strlen((string)$bbb[0]);
-        print_r($aaa);
+        print_r(GeneralHelper::numberFormat(5000,'USD'));
     }
 	
     

@@ -64,7 +64,16 @@ class GeneralHelper {
         }
         else
         {
-            return number_format($exp, 2, '.','');
+            $exp = number_format($exp, 2, '.','');
+            $arr_val = explode('.',$exp);
+            if(strlen((string)$arr_val[0])>=4)
+            {
+                $exp = ceil($exp);
+                $exp = number_format((float)$exp, 2, '.', '');
+                $exp = number_format($exp, 0, ',',',');
+            }
+            
+            return $exp;
         }
         
     }

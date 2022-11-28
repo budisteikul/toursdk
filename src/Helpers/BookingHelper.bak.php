@@ -1943,7 +1943,7 @@ class BookingHelper {
 				{
 					$amount = self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'SGD');
 					$currency = 'SGD';
-					$rate = number_format((float)$shoppingcart->due_now / $amount, 2, '.', '');
+					$rate = self::convert_currency(1,'SGD',$shoppingcart->currency);
 					$rate_from = $shoppingcart->currency;
 					$rate_to = 'SGD';
 				}
@@ -1952,7 +1952,7 @@ class BookingHelper {
 				{
 					$amount = self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'AUD');
 					$currency = 'AUD';
-					$rate = number_format((float)$shoppingcart->due_now / $amount, 2, '.', '');
+					$rate = self::convert_currency(1,'AUD',$shoppingcart->currency);
 					$rate_from = $shoppingcart->currency;
 					$rate_to = 'AUD';
 				}
@@ -1961,7 +1961,7 @@ class BookingHelper {
 				{
 					$amount = self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'USD');
 					$currency = 'USD';
-					$rate = number_format((float)$shoppingcart->due_now / $amount, 2, '.', '');
+					$rate = self::convert_currency(1,'USD',$shoppingcart->currency);
 					$rate_from = $shoppingcart->currency;
 					$rate_to = 'USD';
 				}
@@ -1980,7 +1980,7 @@ class BookingHelper {
 				{
 					$amount = self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'SGD');
 					$currency = 'SGD';
-					$rate = number_format((float)$shoppingcart->due_now / $amount, 2, '.', '');
+					$rate = self::convert_currency(1,'SGD',$shoppingcart->currency);
 					$rate_from = $shoppingcart->currency;
 					$rate_to = 'SGD';
 				}
@@ -1988,7 +1988,7 @@ class BookingHelper {
 				{
 					$amount = self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'AUD');
 					$currency = 'AUD';
-					$rate = number_format((float)$shoppingcart->due_now / $amount, 2, '.', '');
+					$rate = self::convert_currency(1,'AUD',$shoppingcart->currency);
 					$rate_from = $shoppingcart->currency;
 					$rate_to = 'AUD';
 				}
@@ -1996,7 +1996,7 @@ class BookingHelper {
 				{
 					$amount = self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'PHP');
 					$currency = 'PHP';
-					$rate = number_format((float)$shoppingcart->due_now / $amount, 2, '.', '');
+					$rate = self::convert_currency(1,'PHP',$shoppingcart->currency);
 					$rate_from = $shoppingcart->currency;
 					$rate_to = 'PHP';
 				}
@@ -2004,7 +2004,7 @@ class BookingHelper {
 				{
 					$amount = self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'KRW');
 					$currency = 'KRW';
-					$rate = number_format((float)$shoppingcart->due_now / $amount, 2, '.', '');
+					$rate = self::convert_currency(1,'KRW',$shoppingcart->currency);
 					$rate_from = $shoppingcart->currency;
 					$rate_to = 'KRW';
 				}
@@ -2012,9 +2012,7 @@ class BookingHelper {
 				{
 					$amount = self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'IDR');
 					$currency = 'IDR';
-					$rate = number_format((float)$shoppingcart->due_now / $amount, 2, '.', '');
-					$rate_from = $shoppingcart->currency;
-					$rate_to = 'IDR';
+					$rate = 1;
 				}
 
 				$data->transaction->amount = $amount;
@@ -2029,7 +2027,7 @@ class BookingHelper {
 				$amount = self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'IDR');
 
 				$currency = 'IDR';
-				$rate = number_format((float)$shoppingcart->due_now / $amount, 2, '.', '');
+				$rate = 1;
 				$payment_status = 4;
 
 				$data->transaction->amount = $amount;
@@ -2041,7 +2039,7 @@ class BookingHelper {
 				$amount = self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'IDR');
 
 				$currency = 'IDR';
-				$rate = number_format((float)$shoppingcart->due_now / $amount, 2, '.', '');
+				$rate = 1;
 				$payment_status = 4;
 
 				$data->transaction->amount = $amount;
@@ -2053,7 +2051,7 @@ class BookingHelper {
 				$amount = self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'IDR');
 
 				$currency = 'IDR';
-				$rate = number_format((float)$shoppingcart->due_now / $amount, 2, '.', '');
+				$rate = 1;
 				$payment_status = 4;
 
 				$data->transaction->amount = $amount;
@@ -2073,7 +2071,7 @@ class BookingHelper {
 			case "doku":
 				$amount = self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'IDR');
 				$currency = 'IDR';
-				$rate = number_format((float)$shoppingcart->due_now / $amount, 2, '.', '');
+				$rate = 1;
 				$payment_status = 4;
 
 				$data->transaction->amount = $amount;
@@ -2093,7 +2091,7 @@ class BookingHelper {
 			case "midtrans":
 				$amount = self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'IDR');
 				$currency = 'IDR';
-				$rate = number_format((float)$shoppingcart->due_now / $amount, 2, '.', '');
+				$rate = 1;
 				$payment_status = 4;
 
 				$data->transaction->amount = $amount;
@@ -2104,7 +2102,7 @@ class BookingHelper {
 			case "paydia":
 				$amount = self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'IDR');
 				$currency = 'IDR';
-				$rate = number_format((float)$shoppingcart->due_now / $amount, 2, '.', '');
+				$rate = 1;
 				$payment_status = 4;
 
 				$data->transaction->amount = $amount;
@@ -2114,10 +2112,9 @@ class BookingHelper {
 			break;
 			case "paypal":
 				$payment_provider = 'paypal';
-
 				$amount = self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,self::env_paypalCurrency(),"PAYPAL");
 				$currency = self::env_paypalCurrency();
-				$rate = number_format((float)$shoppingcart->due_now / $amount, 2, '.', '');
+				$rate = $value = number_format((float)$shoppingcart->due_now / $amount, 2, '.', '');
 				$rate_from = $shoppingcart->currency;
 				$rate_to = self::env_paypalCurrency();
 
@@ -2131,10 +2128,9 @@ class BookingHelper {
 			break;
 			case "stripe":
 				$payment_provider = 'stripe';
-
 				$amount = self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'USD');
 				$currency = 'USD';
-				$rate = number_format((float)$shoppingcart->due_now / $amount, 2, '.', '');
+				$rate = self::convert_currency(1,'USD',$shoppingcart->currency);
 				$rate_from = $shoppingcart->currency;
 				$rate_to = 'USD';
 
@@ -2150,7 +2146,7 @@ class BookingHelper {
 				$payment_provider = 'none';
 				$amount = $shoppingcart->due_now;
 				$currency = $shoppingcart->currency;
-				$rate = number_format((float)$shoppingcart->due_now / $amount, 2, '.', '');;
+				$rate = 1;
 
 				$payment_status = 0;
 				if($shoppingcart->booking_status=="CONFIRMED")

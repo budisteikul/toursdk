@@ -8,7 +8,6 @@ use budisteikul\toursdk\Models\Shoppingcart;
 use budisteikul\toursdk\Helpers\WiseHelper;
 use budisteikul\toursdk\Helpers\LogHelper;
 use budisteikul\toursdk\Helpers\TaskHelper;
-use budisteikul\toursdk\Helpers\GeneralHelper;
 
 class WebhookController extends Controller
 {
@@ -23,7 +22,12 @@ class WebhookController extends Controller
 
     public function test(Request $request)
     {
-        print_r(GeneralHelper::numberFormat(500.12));
+        $aaa = BookingHelper::convert_currency(500000,'IDR','USD','PAYPAL');
+        $bbb = BookingHelper::convert_currency(34.45,'USD','IDR','PAYPAL');
+
+        
+        //print_r($aaa .'<br />');
+        //print_r($bbb);
     }
 	
     

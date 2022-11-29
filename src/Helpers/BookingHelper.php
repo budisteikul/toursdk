@@ -2263,13 +2263,18 @@ class BookingHelper {
 	{
 		if($markup=="")
 		{
-			$value = '1 '. $currency .' = '. self::convert_currency(1,$currency,$shoppingcart->currency) .' '. $shoppingcart->currency;
+			//$value = '1 '. $currency .' = '. self::convert_currency(1,$currency,$shoppingcart->currency) .' '. $shoppingcart->currency;
+			$value = self::convert_currency(1,$currency,$shoppingcart->currency);
+			$value = number_format((float)$value, 2);
+			$value = '1 '. $currency .' = '. $value .' '. $shoppingcart->currency;
 		}
 		else
 		{
 			$check = self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'USD',$markup);
 			$value = $shoppingcart->due_now / $check;
-			$value = number_format((float)$value, 2, '.', '');
+			$value = number_format((float)$value, 2);
+			//number_format($exp, 0, ',',',')
+			//$value = '1 '. $currency .' = '. $value .' '. $shoppingcart->currency;
 			$value = '1 '. $currency .' = '. $value .' '. $shoppingcart->currency;
 		}
 
@@ -2281,7 +2286,7 @@ class BookingHelper {
 
 	public static function get_rate($shoppingcart)
 	{
-		$amount = $shoppingcart->shoppingcart_payment->rate;
+		$amount = number_format((float)$shoppingcart->shoppingcart_payment->rate, 2);
 		$value = '1 '. $shoppingcart->shoppingcart_payment->rate_to .' = '. $amount .' '. $shoppingcart->shoppingcart_payment->rate_from;
 		return $value;
 	}
@@ -2295,15 +2300,7 @@ class BookingHelper {
 		if($markup!="")
 		{
 			$markup = $rate * 4.4 / 100;
-
-			//if($to=="USD")
-			//{
-				$rate = $rate + $markup;
-			//}
-			//else
-			//{
-				//$rate = $rate - $markup;
-			//}
+			$rate = $rate + $markup;
 		}
 
 		$value = ($amount * $rate);
@@ -2311,68 +2308,6 @@ class BookingHelper {
 		$value = number_format((float)$value, 2, '.', '');
 
 		return $value;
-	}
-
-	
-	
-	public static function get_count($table="shoppingcart")
-	{
-		$count = 0;
-		if($table=="shoppingcart")
-		{
-			$count = Shoppingcart::whereYear('created_at',date('Y'))->whereMonth('created_at',date('m'))->count();
-		}
-		$count++;
-		return $count;
-	}
-
-    public static function get_payment_transaction_id()
-    {
-    	$count = self::get_count('shoppingcart');
-        $uuid = "PAY-". date('Ymd') . GeneralHelper::digitFormat(rand(00,99),2) . $count;
-        while( ShoppingcartPayment::where('order_id','=',$uuid)->first() ){
-            $uuid = "PAY-". date('Ymd') . GeneralHelper::digitFormat(rand(00,99),2) . $count;
-        }
-        return $uuid;
-    }
-
-
-	public static function get_ticket(){
-		$count = GeneralHelper::digitFormat(self::get_count('shoppingcart'),3);
-		$uuid = "VT-". date('ymd') . $count;
-		//$uuid = "VT-". date('ym') . GeneralHelper::digitFormat(rand(00,99),2) . $count;
-        //while( Shoppingcart::where('confirmation_code','=',$uuid)->first() ){
-            //$uuid = "VT-". date('ym') . GeneralHelper::digitFormat(rand(00,99),2) . $count;
-        //}
-        return $uuid;
-	}
-	
-	public static function get_bookingStatus($shoppingcart)
-	{
-		$value = '';
-		if($shoppingcart->booking_status=="CONFIRMED")
-		{
-			$value = '<span class="badge badge-success" style="font-size: 20px;">CONFIRMED</span>';
-		}
-		else if($shoppingcart->booking_status=="PENDING")
-		{
-			$value = '<span class="badge badge-info" style="font-size: 20px;">PENDING</span>';
-		}
-		else
-		{
-			$value = '<span class="badge badge-danger" style="font-size: 20px;">CANCELED</span>';
-		}
-		return $value;
-	}
-
-	public static function have_payment($shoppingcart)
-	{
-		$status = false;
-		if(isset($shoppingcart->shoppingcart_payment))
-		{
-			$status = true;
-		}
-		return $status;
 	}
 
 	public static function get_paymentStatus($shoppingcart)
@@ -2383,8 +2318,8 @@ class BookingHelper {
 
 			if($shoppingcart->shoppingcart_payment->currency!="IDR")
 			{
-				$text .= 'Total : '.$shoppingcart->shoppingcart_payment->currency.' '. $shoppingcart->shoppingcart_payment->amount .'<br />';
-				$text .= 'Rate : '. BookingHelper::get_rate($shoppingcart) .'<br />';
+				$text .= '<b>Total :</b> '.$shoppingcart->shoppingcart_payment->currency.' '. $shoppingcart->shoppingcart_payment->amount .'<br />';
+				$text .= '<b>Rate :</b> '. self::get_rate($shoppingcart) .'<br />';
 				$text = '<div class="card-body bg-light">'. $text .'</div>';
 			}
 
@@ -2707,6 +2642,68 @@ class BookingHelper {
 		}
 		return '';
 	}
+	
+	public static function get_count($table="shoppingcart")
+	{
+		$count = 0;
+		if($table=="shoppingcart")
+		{
+			$count = Shoppingcart::whereYear('created_at',date('Y'))->whereMonth('created_at',date('m'))->count();
+		}
+		$count++;
+		return $count;
+	}
+
+    public static function get_payment_transaction_id()
+    {
+    	$count = self::get_count('shoppingcart');
+        $uuid = "PAY-". date('Ymd') . GeneralHelper::digitFormat(rand(00,99),2) . $count;
+        while( ShoppingcartPayment::where('order_id','=',$uuid)->first() ){
+            $uuid = "PAY-". date('Ymd') . GeneralHelper::digitFormat(rand(00,99),2) . $count;
+        }
+        return $uuid;
+    }
+
+
+	public static function get_ticket(){
+		$count = GeneralHelper::digitFormat(self::get_count('shoppingcart'),3);
+		$uuid = "VT-". date('ymd') . $count;
+		//$uuid = "VT-". date('ym') . GeneralHelper::digitFormat(rand(00,99),2) . $count;
+        //while( Shoppingcart::where('confirmation_code','=',$uuid)->first() ){
+            //$uuid = "VT-". date('ym') . GeneralHelper::digitFormat(rand(00,99),2) . $count;
+        //}
+        return $uuid;
+	}
+	
+	public static function get_bookingStatus($shoppingcart)
+	{
+		$value = '';
+		if($shoppingcart->booking_status=="CONFIRMED")
+		{
+			$value = '<span class="badge badge-success" style="font-size: 20px;">CONFIRMED</span>';
+		}
+		else if($shoppingcart->booking_status=="PENDING")
+		{
+			$value = '<span class="badge badge-info" style="font-size: 20px;">PENDING</span>';
+		}
+		else
+		{
+			$value = '<span class="badge badge-danger" style="font-size: 20px;">CANCELED</span>';
+		}
+		return $value;
+	}
+
+	public static function have_payment($shoppingcart)
+	{
+		$status = false;
+		if(isset($shoppingcart->shoppingcart_payment))
+		{
+			$status = true;
+		}
+		return $status;
+	}
+
+	
 
 	public static function get_answer($shoppingcart,$question_id)
 	{

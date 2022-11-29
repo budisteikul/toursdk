@@ -1715,14 +1715,16 @@ class BookingHelper {
 
 	public static function confirm_payment($shoppingcart,$status,$force=false)
 	{
-		if($force)
-		{
-			$shoppingcart->booking_status = "PENDING";
-			$shoppingcart->save();
-		}
-
+		
 		if($status=="CONFIRMED")
 		{
+
+			if($force)
+			{
+				$shoppingcart->booking_status = "PENDING";
+				$shoppingcart->save();
+			}
+
 			if($shoppingcart->booking_status=="PENDING")
 			{
 				$shoppingcart->booking_status = 'CONFIRMED';
@@ -1730,10 +1732,19 @@ class BookingHelper {
 				$shoppingcart->shoppingcart_payment->payment_status = 2;
 				$shoppingcart->shoppingcart_payment->save();
 			}
+
+			
+
 		}
 
 		if($status=="PENDING")
 		{
+			if($force)
+			{
+				$shoppingcart->booking_status = "PENDING";
+				$shoppingcart->save();
+			}
+
 			if($shoppingcart->booking_status!="PENDING")
 			{
 				$shoppingcart->booking_status = 'PENDING';
@@ -1745,13 +1756,24 @@ class BookingHelper {
 
 		if($status=="CANCELED")
 		{
+
+			if($force)
+			{
+				$shoppingcart->booking_status = "PENDING";
+				$shoppingcart->save();
+			}
+
 			if($shoppingcart->booking_status=="PENDING")
 			{
+
 				$shoppingcart->booking_status = 'CANCELED';
 				$shoppingcart->save();
 				$shoppingcart->shoppingcart_payment->payment_status = 3;
 				$shoppingcart->shoppingcart_payment->save();
 			}
+
+			
+
 		}
 
 		return $shoppingcart;
@@ -2323,7 +2345,7 @@ class BookingHelper {
 					case 3:
 						return '
 								<div class="card mb-4">
-								<span class="badge badge-danger invoice-color-danger" style="font-size:20px;"><i class="fab fa-paypal"></i> REFUNDED </span>
+								<span class="badge badge-danger invoice-color-danger" style="font-size:20px;"><i class="fab fa-paypal"></i> UNPAID </span>
 								'. $text .'
 								</div>';
 					break;
@@ -2333,6 +2355,8 @@ class BookingHelper {
             }
             if($shoppingcart->shoppingcart_payment->payment_provider=="stripe")
             {
+            	
+
             	switch($shoppingcart->shoppingcart_payment->payment_status)
 				{
 					case 2:
@@ -2345,7 +2369,7 @@ class BookingHelper {
 					case 3:
 						return '
 								<div class="card mb-4">
-								<span class="badge badge-danger invoice-color-danger" style="font-size:20px;"><i class="fas fa-credit-card"></i> REFUNDED </span>
+								<span class="badge badge-danger invoice-color-danger" style="font-size:20px;"><i class="fas fa-credit-card"></i> UNPAID </span>
 								'. $text .'
 								</div>';
 					break;
@@ -2353,7 +2377,6 @@ class BookingHelper {
 						return '';
 				}
             }
-
             if($shoppingcart->shoppingcart_payment->payment_type=="bank_transfer")
             {
             	$main_contact = self::get_answer_contact($shoppingcart);
@@ -2413,8 +2436,6 @@ class BookingHelper {
 						return '';
 				}
             }
-
-
             if($shoppingcart->shoppingcart_payment->payment_type=="bank_redirect")
             {
             	$main_contact = self::get_answer_contact($shoppingcart);
@@ -2458,8 +2479,6 @@ class BookingHelper {
 						return '';
 				}
             }
-
-
             if($shoppingcart->shoppingcart_payment->payment_type=="qrcode")
             {
 
@@ -2546,8 +2565,6 @@ class BookingHelper {
 						return '';
 				}
             }
-
-
             if($shoppingcart->shoppingcart_payment->payment_type=="ewallet")
             {
 
@@ -2605,11 +2622,11 @@ class BookingHelper {
 						return '';
 				}
             }
-
             if($shoppingcart->shoppingcart_payment->payment_provider=="none")
             {
             	switch($shoppingcart->shoppingcart_payment->payment_status)
 				{
+					
 					case 3:
 						return '<div class="card mb-4">
             				<span class="badge badge-danger invoice-color-danger" style="font-size:20px;">INVOICE CANCELED</span>
@@ -2618,6 +2635,7 @@ class BookingHelper {
 						return '<div class="card mb-4">
             				<span class="badge badge-success invoice-color-success" style="font-size:20px;">INVOICED</span>
 							</div>';
+
 				}
             	
             }

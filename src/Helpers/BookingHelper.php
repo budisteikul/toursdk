@@ -1715,16 +1715,14 @@ class BookingHelper {
 
 	public static function confirm_payment($shoppingcart,$status,$force=false)
 	{
-		
-		if($status=="CONFIRMED")
+		if($force)
 		{
-
-			if($force)
-			{
 				$shoppingcart->booking_status = "PENDING";
 				$shoppingcart->save();
-			}
+		}
 
+		if($status=="CONFIRMED")
+		{
 			if($shoppingcart->booking_status=="PENDING")
 			{
 				$shoppingcart->booking_status = 'CONFIRMED';
@@ -1732,19 +1730,10 @@ class BookingHelper {
 				$shoppingcart->shoppingcart_payment->payment_status = 2;
 				$shoppingcart->shoppingcart_payment->save();
 			}
-
-			
-
 		}
 
 		if($status=="PENDING")
 		{
-			if($force)
-			{
-				$shoppingcart->booking_status = "PENDING";
-				$shoppingcart->save();
-			}
-
 			if($shoppingcart->booking_status!="PENDING")
 			{
 				$shoppingcart->booking_status = 'PENDING';
@@ -1756,13 +1745,6 @@ class BookingHelper {
 
 		if($status=="CANCELED")
 		{
-
-			if($force)
-			{
-				$shoppingcart->booking_status = "PENDING";
-				$shoppingcart->save();
-			}
-
 			if($shoppingcart->booking_status=="PENDING")
 			{
 
@@ -1771,9 +1753,6 @@ class BookingHelper {
 				$shoppingcart->shoppingcart_payment->payment_status = 3;
 				$shoppingcart->shoppingcart_payment->save();
 			}
-
-			
-
 		}
 
 		return $shoppingcart;
@@ -2345,7 +2324,7 @@ class BookingHelper {
 					case 3:
 						return '
 								<div class="card mb-4">
-								<span class="badge badge-danger invoice-color-danger" style="font-size:20px;"><i class="fab fa-paypal"></i> UNPAID </span>
+								<span class="badge badge-danger invoice-color-danger" style="font-size:20px;"><i class="fab fa-paypal"></i> REFUNDED </span>
 								'. $text .'
 								</div>';
 					break;
@@ -2369,7 +2348,7 @@ class BookingHelper {
 					case 3:
 						return '
 								<div class="card mb-4">
-								<span class="badge badge-danger invoice-color-danger" style="font-size:20px;"><i class="fas fa-credit-card"></i> UNPAID </span>
+								<span class="badge badge-danger invoice-color-danger" style="font-size:20px;"><i class="fas fa-credit-card"></i> REFUNDED </span>
 								'. $text .'
 								</div>';
 					break;
@@ -2474,7 +2453,6 @@ class BookingHelper {
 								</div>
 								';
 						break;
-						break;
 					default:
 						return '';
 				}
@@ -2502,7 +2480,6 @@ class BookingHelper {
 						if($shoppingcart->shoppingcart_payment->bank_name=="paynow")
 						{
 							return '
-								
 								<div class="card mb-1">
 								<span class="badge badge-info invoice-color-info" style="font-size:20px;">
 								<i class="fas fa-qrcode"></i> WAITING FOR PAYMENT </span>
@@ -2532,7 +2509,6 @@ class BookingHelper {
 						{
 							$data_qris = self::get_qris_content($shoppingcart);
 							return '
-								
 								<div class="card mb-1">
 								<span class="badge badge-info invoice-color-info" style="font-size:20px;">
 								<i class="fas fa-qrcode"></i> WAITING FOR PAYMENT </span>
@@ -2544,7 +2520,7 @@ class BookingHelper {
    										<div class="col-12 text-center">
     										<img id="qris-img" class="img-fluid border border-white mt-2" alt="QRIS LOGO" style="max-width:250px; height:40px;" src="'.self::env_appAssetUrl().'/img/payment/qris-logo.png">
     										<br />
-    										<img id="qris-img" class="img-fluid border border-white" alt="QRIS" style="max-width:250px;" src="'. self::generate_qrcode($shoppingcart) .' ">
+    										<img id="qris-img" class="img-fluid border border-white mt-2" alt="QRIS" style="max-width:250px;" src="'. self::generate_qrcode($shoppingcart) .' ">
     										<br />
     										<span><strong>'. $data_qris->nmid .'</strong></span>
    										</div>

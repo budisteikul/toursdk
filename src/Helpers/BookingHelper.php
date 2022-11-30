@@ -2304,7 +2304,6 @@ class BookingHelper {
 
 			if($shoppingcart->shoppingcart_payment->payment_provider=="paypal")
             {
-
             	switch($shoppingcart->shoppingcart_payment->payment_status)
 				{
 					case 1:
@@ -2356,6 +2355,7 @@ class BookingHelper {
 						return '';
 				}
             }
+
             if($shoppingcart->shoppingcart_payment->payment_type=="bank_transfer")
             {
             	$main_contact = self::get_answer_contact($shoppingcart);
@@ -2415,9 +2415,9 @@ class BookingHelper {
 						return '';
 				}
             }
+
             if($shoppingcart->shoppingcart_payment->payment_type=="bank_redirect")
             {
-            	$main_contact = self::get_answer_contact($shoppingcart);
             	switch($shoppingcart->shoppingcart_payment->payment_status)
 				{
 					case 2:
@@ -2444,11 +2444,8 @@ class BookingHelper {
 								 WAITING FOR PAYMENT </span>
 								</div>
 								<div class="card mb-4">
-								
 								<div class="card-body bg-light">
-
 									'.$button.'
-								
 								</div>
 								</div>
 								';
@@ -2457,6 +2454,7 @@ class BookingHelper {
 						return '';
 				}
             }
+
             if($shoppingcart->shoppingcart_payment->payment_type=="qrcode")
             {
 
@@ -2541,6 +2539,7 @@ class BookingHelper {
 						return '';
 				}
             }
+
             if($shoppingcart->shoppingcart_payment->payment_type=="ewallet")
             {
 
@@ -2598,6 +2597,7 @@ class BookingHelper {
 						return '';
 				}
             }
+
             if($shoppingcart->shoppingcart_payment->payment_provider=="none")
             {
             	switch($shoppingcart->shoppingcart_payment->payment_status)

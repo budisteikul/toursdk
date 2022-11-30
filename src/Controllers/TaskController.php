@@ -55,23 +55,8 @@ class TaskController extends Controller
             $email = $shoppingcart->shoppingcart_questions()->select('answer')->where('type','mainContactDetails')->where('question_id','email')->first()->answer;
             if($email!="")
             {
-                Mail::to($email)->send(new BookingConfirmedMail($shoppingcart));
-                //Mail::to(env("MAIL_PUSHOVER"))->send(new BookingConfirmedMail($shoppingcart));
+                Mail::to($email)->cc([env("MAIL_FROM_ADDRESS")])->send(new BookingConfirmedMail($shoppingcart));
             }
-
-            
-            curl_setopt_array($ch = curl_init(), array(
-                CURLOPT_URL => "https://api.pushover.net/1/messages.json",
-                CURLOPT_POSTFIELDS => array(
-                "token" => env("PUSHOVER_KEY"),
-                "user" => env("PUSHOVER_USER"),
-                "title" => 'Booking Confirmed '. $shoppingcart->confirmation_code,
-                "message" => '',
-                ),
-            ));
-            curl_exec($ch);
-            curl_close($ch);
-
             return response('OK', 200)->header('Content-Type', 'text/plain');
         }
 

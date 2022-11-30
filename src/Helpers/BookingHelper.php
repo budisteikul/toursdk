@@ -1717,8 +1717,8 @@ class BookingHelper {
 	{
 		if($force)
 		{
-				$shoppingcart->booking_status = "PENDING";
-				$shoppingcart->save();
+			$shoppingcart->booking_status = "PENDING";
+			$shoppingcart->save();
 		}
 
 		if($status=="CONFIRMED")
@@ -1747,11 +1747,29 @@ class BookingHelper {
 		{
 			if($shoppingcart->booking_status=="PENDING")
 			{
-
 				$shoppingcart->booking_status = 'CANCELED';
 				$shoppingcart->save();
 				$shoppingcart->shoppingcart_payment->payment_status = 3;
 				$shoppingcart->shoppingcart_payment->save();
+			}
+
+			if($shoppingcart->booking_status=="CONFIRMED")
+			{
+				if($shoppingcart->shoppingcart_payment->payment_status==2)
+				{
+					$shoppingcart->booking_status = 'CANCELED';
+					$shoppingcart->save();
+					$shoppingcart->shoppingcart_payment->payment_status = 5;
+					$shoppingcart->shoppingcart_payment->save();
+				}
+
+				if($shoppingcart->shoppingcart_payment->payment_status==4)
+				{
+					$shoppingcart->booking_status = 'CANCELED';
+					$shoppingcart->save();
+					$shoppingcart->shoppingcart_payment->payment_status = 3;
+					$shoppingcart->shoppingcart_payment->save();
+				}
 			}
 		}
 
@@ -2323,6 +2341,13 @@ class BookingHelper {
 					case 3:
 						return '
 								<div class="card mb-4">
+								<span class="badge badge-danger invoice-color-danger" style="font-size:20px;"><i class="fab fa-paypal"></i> UNPAID </span>
+								'. $text .'
+								</div>';
+					break;
+					case 5:
+						return '
+								<div class="card mb-4">
 								<span class="badge badge-danger invoice-color-danger" style="font-size:20px;"><i class="fab fa-paypal"></i> REFUNDED </span>
 								'. $text .'
 								</div>';
@@ -2345,6 +2370,13 @@ class BookingHelper {
 								</div>';
 					break;
 					case 3:
+						return '
+								<div class="card mb-4">
+								<span class="badge badge-danger invoice-color-danger" style="font-size:20px;"><i class="fas fa-credit-card"></i> UNPAID </span>
+								'. $text .'
+								</div>';
+					break;
+					case 5:
 						return '
 								<div class="card mb-4">
 								<span class="badge badge-danger invoice-color-danger" style="font-size:20px;"><i class="fas fa-credit-card"></i> REFUNDED </span>
@@ -2372,6 +2404,13 @@ class BookingHelper {
 						return '<div class="card mb-4">
 								<span class="badge badge-danger invoice-color-danger" style="font-size:20px;">
 								<i class="fas fa-university"></i> UNPAID </span>
+								'. $text .'
+								</div>';
+						break;
+					case 5:
+						return '<div class="card mb-4">
+								<span class="badge badge-danger invoice-color-danger" style="font-size:20px;">
+								<i class="fas fa-university"></i> REFUNDED </span>
 								'. $text .'
 								</div>';
 						break;	
@@ -2433,6 +2472,13 @@ class BookingHelper {
 								 UNPAID </span>
 								 '. $text .'
 								</div>';
+						break;
+					case 5:
+						return '<div class="card mb-4">
+								<span class="badge badge-danger invoice-color-danger" style="font-size:20px;">
+								 REFUNDED </span>
+								 '. $text .'
+								</div>';
 						break;	
 					case 4:
 						
@@ -2471,6 +2517,13 @@ class BookingHelper {
 						return '<div class="card mb-4">
 								<span class="badge badge-danger invoice-color-danger" style="font-size:20px;">
 								<i class="fas fa-qrcode"></i> UNPAID </span>
+								'. $text .'
+								</div>';
+						break;
+					case 5:
+						return '<div class="card mb-4">
+								<span class="badge badge-danger invoice-color-danger" style="font-size:20px;">
+								<i class="fas fa-qrcode"></i> REFUNDED </span>
 								'. $text .'
 								</div>';
 						break;
@@ -2556,6 +2609,13 @@ class BookingHelper {
 						return '<div class="card mb-4">
 								<span class="badge badge-danger invoice-color-danger" style="font-size:20px;">
 								<i class="fas fa-wallet"></i> UNPAID </span>
+								'. $text .'
+								</div>';
+						break;
+					case 5:
+						return '<div class="card mb-4">
+								<span class="badge badge-danger invoice-color-danger" style="font-size:20px;">
+								<i class="fas fa-wallet"></i> REFUNDED </span>
 								'. $text .'
 								</div>';
 						break;

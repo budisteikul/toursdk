@@ -2402,7 +2402,7 @@ class BookingHelper {
 
             if($shoppingcart->shoppingcart_payment->payment_type=="bank_transfer")
             {
-            	$main_contact = self::get_answer_contact($shoppingcart);
+            	
             	switch($shoppingcart->shoppingcart_payment->payment_status)
 				{
 					case 2:

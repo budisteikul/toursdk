@@ -14,6 +14,7 @@ use budisteikul\toursdk\Mail\BookingConfirmedMail;
 
 use budisteikul\toursdk\Helpers\ProductHelper;
 use budisteikul\toursdk\Helpers\ContentHelper;
+use budisteikul\toursdk\Helpers\BookingHelper;
 
 class TaskController extends Controller
 {
@@ -71,11 +72,12 @@ class TaskController extends Controller
             $shoppingcart = Shoppingcart::where('session_id',$session_id)->where('confirmation_code',$confirmation_code)->first();
             if($shoppingcart)
             {
-                $message = '
-';
+                
                 foreach($shoppingcart->shoppingcart_products as $product)
                 {
                     $title = "New Booking: ". ProductHelper::datetotext($product->date) .' ('.$confirmation_code.')';
+                    
+
                     $message .= $product->title .'
 ';
                     $message .= ProductHelper::datetotext($product->date) .'
@@ -105,7 +107,18 @@ class TaskController extends Controller
 
                         $message .= '
 ';
+                        //Contact
+                        $main_contact = BookingHelper::get_answer_contact($shoppingcart);
 
+                        $message .= 'Name: '. $main_contact->firstName .' '. $main_contact->lastName .'
+';
+                        $message .= 'Phone: '. $main_contact->phoneNumber  .'
+';
+                        $message .= 'Email: '. $main_contact->email  .'
+';
+
+                        $message .= '
+';
                         //Question
                         foreach($shoppingcart->shoppingcart_questions()->where('when_to_ask','booking')->where('booking_id',$product->booking_id)->whereNotNull('label')->get() as $shoppingcart_question)
                         {

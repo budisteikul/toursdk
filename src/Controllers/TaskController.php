@@ -78,7 +78,7 @@ class TaskController extends Controller
                     $title = "New Booking: ". ProductHelper::datetotext($product->date) .' ('.$confirmation_code.')';
                     
 
-                    $message .= $product->title .'
+                    $message = $product->title .'
 ';
                     $message .= ProductHelper::datetotext($product->date) .'
 ';

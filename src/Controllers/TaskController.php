@@ -12,6 +12,9 @@ use budisteikul\toursdk\Models\Shoppingcart;
 use Illuminate\Support\Facades\Mail;
 use budisteikul\toursdk\Mail\BookingConfirmedMail;
 
+use budisteikul\toursdk\Helpers\ProductHelper;
+use budisteikul\toursdk\Helpers\ContentHelper;
+
 class TaskController extends Controller
 {
 	public function task(Request $request)

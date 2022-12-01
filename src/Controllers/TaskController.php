@@ -107,17 +107,17 @@ class TaskController extends Controller
 ';
 
                         //Question
-                        foreach($shoppingcart->shoppingcart_questions()->where('when_to_ask','booking')->where('booking_id',$booking_id)->whereNotNull('label')->get() as $shoppingcart_question)
+                        foreach($shoppingcart->shoppingcart_questions()->where('when_to_ask','booking')->where('booking_id',$product->booking_id)->whereNotNull('label')->get() as $shoppingcart_question)
                         {
                                 $message .= $shoppingcart_question->label .' : '. $shoppingcart_question->answer .'
 ';
                         }
-                        $participants = $shoppingcart->shoppingcart_questions()->where('when_to_ask','participant')->where('booking_id',$booking_id)->select('participant_number')->groupBy('participant_number')->get();
+                        $participants = $shoppingcart->shoppingcart_questions()->where('when_to_ask','participant')->where('booking_id',$product->booking_id)->select('participant_number')->groupBy('participant_number')->get();
                         foreach($participants as $participant)
                         {
                             $message .= 'Participant '. $participant->participant_number .'
 ';
-                            foreach($shoppingcart->shoppingcart_questions()->where('when_to_ask','participant')->where('booking_id',$booking_id)->where('participant_number',$participant->participant_number)->get() as $participant_detail)
+                            foreach($shoppingcart->shoppingcart_questions()->where('when_to_ask','participant')->where('booking_id',$product->booking_id)->where('participant_number',$participant->participant_number)->get() as $participant_detail)
                             {
                                 $message .= ''.$participant_detail->label .' : '. $participant_detail->answer .'
 ';

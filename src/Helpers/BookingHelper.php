@@ -1251,6 +1251,17 @@ class BookingHelper {
 		
 	}
 
+	public static function shoppingcart_notif($shoppingcart)
+	{
+		$payload = new \stdClass();
+		$payload->app = 'pushover';
+		$payload->session_id = $shoppingcart->session_id;
+		$payload->confirmation_code = $shoppingcart->confirmation_code;
+
+		TaskHelper::create($payload);
+		
+	}
+
 	public static function shoppingcart_clear($sessionId)
 	{
 		BokunHelper::get_removepromocode($sessionId);
@@ -1710,6 +1721,7 @@ class BookingHelper {
         {
         	self::shoppingcart_mail($shoppingcart);
         }
+        self::shoppingcart_notif($shoppingcart);
         return $shoppingcart;
 	}
 

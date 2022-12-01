@@ -9,6 +9,9 @@ use budisteikul\toursdk\Helpers\WiseHelper;
 use budisteikul\toursdk\Helpers\LogHelper;
 use budisteikul\toursdk\Helpers\TaskHelper;
 
+use budisteikul\toursdk\Helpers\ProductHelper;
+use budisteikul\toursdk\Helpers\ContentHelper;
+
 class WebhookController extends Controller
 {
     
@@ -22,12 +25,7 @@ class WebhookController extends Controller
 
     public function test(Request $request)
     {
-        $aaa = BookingHelper::convert_currency(500000,'IDR','USD','PAYPAL');
-        $bbb = BookingHelper::convert_currency(34.45,'USD','IDR','PAYPAL');
-
         
-        //print_r($aaa .'<br />');
-        //print_r($bbb);
     }
 	
     
@@ -90,6 +88,7 @@ class WebhookController extends Controller
                     $shoppingcart = BookingHelper::webhook_insert_shoppingcart($data);
                     BookingHelper::confirm_payment($shoppingcart,"CONFIRMED",true);
                     BookingHelper::shoppingcart_mail($shoppingcart);
+                    BookingHelper::shoppingcart_notif($shoppingcart);
                 }
                 return response('OK', 200)->header('Content-Type', 'text/plain');
             break;

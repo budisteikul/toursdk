@@ -27,6 +27,7 @@ use budisteikul\toursdk\Models\ShoppingcartProductDetail;
 use budisteikul\toursdk\Models\ShoppingcartQuestion;
 use budisteikul\toursdk\Models\ShoppingcartQuestionOption;
 use budisteikul\toursdk\Models\ShoppingcartPayment;
+use budisteikul\toursdk\Models\CloseOut;
 
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
@@ -1476,18 +1477,22 @@ class BookingHelper {
 
         $value[] = $contents->firstAvailableDay;
         
-        $libur = "2022-12-04";
+        $closeouts = CloseOut::where('date','>=',date('Y-m-d'))->orderBy('date', 'ASC')->get();
 
         foreach($value as $firstDay)
         	{
-				if($libur == $firstDay->fullDate)
-				{
-					foreach($firstDay->availabilities as $availability)
-                    {
-                    	$firstDay->soldOut = true;
-                    	$firstDay->availabilities = [];
+        		foreach($closeouts as $closeout)
+        		{
+        			if($closeout->date == $firstDay->fullDate)
+					{
+						foreach($firstDay->availabilities as $availability)
+                    	{
+                    		$firstDay->soldOut = true;
+                    		$firstDay->availabilities = [];
+						}
 					}
-				}
+        		}
+				
         	}
 
         
@@ -1495,12 +1500,15 @@ class BookingHelper {
         {
             foreach($week->days as $day)
             {
-                                    if($libur == $day->fullDate)
+            	foreach($closeouts as $closeout)
+        		{
+                                    if($closeout->date == $day->fullDate)
                                     {
                                             $day->soldOut = true;
                                             $day->available = false;
                                             $day->availabilities = [];
                                     }
+                }
             }
         }
 

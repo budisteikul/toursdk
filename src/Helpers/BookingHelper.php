@@ -1463,7 +1463,6 @@ class BookingHelper {
             $people = ShoppingcartProductDetail::with('shoppingcart_product')
             ->WhereHas('shoppingcart_product', function($query) use ($date,$activityId) {
                 $query->whereDate('date','=',$date)->where(['product_id'=>$activityId]);
-            	//$query->whereDate('date','=',$date);
             })->get()->sum('people');
 
             $bookings[] = (object)[
@@ -1472,11 +1471,42 @@ class BookingHelper {
         	];
         }
 
-		
+
         $contents = BokunHelper::get_calendar($activityId,$year,$month);
 
         $value[] = $contents->firstAvailableDay;
         
+        $libur = "2022-12-04";
+
+        foreach($value as $firstDay)
+        	{
+				if($libur == $firstDay->fullDate)
+				{
+					foreach($firstDay->availabilities as $availability)
+                    {
+                    	$firstDay->soldOut = true;
+                    	$firstDay->availabilities = [];
+					}
+				}
+        	}
+
+        
+        foreach($contents->weeks as $week)
+        {
+            foreach($week->days as $day)
+            {
+                                    if($libur == $day->fullDate)
+                                    {
+                                            $day->soldOut = true;
+                                            $day->available = false;
+                                            $day->availabilities = [];
+                                    }
+            }
+        }
+
+        //exit();
+        // Check booking full or not
+
         if(count($bookings)>0)
         {
         	foreach($value as $firstDay)
@@ -1496,6 +1526,7 @@ class BookingHelper {
 							$availability->availabilityCount -= $booking->people;
 
 							if($availability->availabilityCount<=0) $firstDay->soldOut = true;
+
                         }
 					}
 				}

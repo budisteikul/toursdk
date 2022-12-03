@@ -234,7 +234,7 @@ class BookingHelper {
 							$shoppingcart_question->question_id = $data['activityBookings'][$i]['notes'][$k]['type'];
 							$shoppingcart_question->label = "Note from ". $bookingChannel;
 							$shoppingcart_question->order = $order;
-							$shoppingcart_question->answer = '<br />'. $data['activityBookings'][$i]['notes'][$k]['body'];
+							$shoppingcart_question->answer = $data['activityBookings'][$i]['notes'][$k]['body'];
 							$shoppingcart_question->save();
 							$order++;
 						}

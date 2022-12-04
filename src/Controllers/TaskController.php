@@ -122,7 +122,8 @@ class TaskController extends Controller
                         //Question
                         foreach($shoppingcart->shoppingcart_questions()->where('when_to_ask','booking')->where('booking_id',$product->booking_id)->whereNotNull('label')->get() as $shoppingcart_question)
                         {
-                                $message .= $shoppingcart_question->label .' : '. $shoppingcart_question->answer .'
+                                $message .= $shoppingcart_question->label .'
+'. $shoppingcart_question->answer .'
 ';
                         }
                         $participants = $shoppingcart->shoppingcart_questions()->where('when_to_ask','participant')->where('booking_id',$product->booking_id)->select('participant_number')->groupBy('participant_number')->get();

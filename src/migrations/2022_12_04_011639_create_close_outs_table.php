@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('close_outs', function (Blueprint $table) {
             $table->id();
+            $table->bigInteger('bokun_id')->default(0);
             $table->date('date')->nullable();
             $table->timestamps(6);
         });

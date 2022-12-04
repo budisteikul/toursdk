@@ -1477,7 +1477,7 @@ class BookingHelper {
 
         $value[] = $contents->firstAvailableDay;
         
-        $closeouts = CloseOut::where('date','>=',date('Y-m-d'))->orderBy('date', 'ASC')->get();
+        $closeouts = CloseOut::where('bokun_id', $activityId)->where('date','>=',date('Y-m-d'))->get();
 
         foreach($value as $firstDay)
         	{

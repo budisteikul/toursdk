@@ -422,6 +422,13 @@ class ContentHelper {
             'label' => 'AUSTRALIA',
             'options' => $australia_list
         ];
+        $philippines_list[] = [
+            'value' => 'grabpay', 'label' => 'GrabPay', 'image' => self::env_appAssetUrl() .'/img/payment/grabpay.png', 'currency' => 'php',
+        ];
+        $grouped_payment[] = [
+            'label' => 'PHILIPPINES',
+            'options' => $philippines_list
+        ];
         $southkorea_list[] = [
             'value' => 'tmoney', 'label' => 'T money', 'image' => self::env_appAssetUrl() .'/img/payment/tmoney.png', 'currency' => 'krw',
         ];
@@ -429,6 +436,7 @@ class ContentHelper {
             'label' => 'SOUTH KOREA',
             'options' => $southkorea_list
         ];
+
         
         $dataShoppingcart[] = array(
                 'id' => $shoppingcart->session_id,
@@ -483,6 +491,11 @@ class ContentHelper {
                 'krw_currency' => 'KRW',
                 'krw_total' => GeneralHelper::numberFormat(BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'KRW'),'KRW'),
                 'krw_rate' => BookingHelper::text_rate($shoppingcart,'KRW'),
+
+                // PHP Currency
+                'php_currency' => 'PHP',
+                'php_total' => GeneralHelper::numberFormat(BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'PHP'),'PHP'),
+                'php_rate' => BookingHelper::text_rate($shoppingcart,'PHP'),
 
 
 

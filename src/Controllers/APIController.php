@@ -320,6 +320,12 @@ class APIController extends Controller
                     $response = BookingHelper::create_payment($sessionId,"rapyd","tmoney");
                 break;
 
+                case 'grabpay':
+                    BookingHelper::set_bookingStatus($sessionId,'PENDING');
+                    BookingHelper::set_confirmationCode($sessionId);
+                    $response = BookingHelper::create_payment($sessionId,"rapyd","grabpay");
+                break;
+
                 default:
                     $payment_arr = explode("-",$payment);
 

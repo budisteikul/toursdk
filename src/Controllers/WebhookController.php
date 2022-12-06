@@ -12,6 +12,8 @@ use budisteikul\toursdk\Helpers\TaskHelper;
 use budisteikul\toursdk\Helpers\ProductHelper;
 use budisteikul\toursdk\Helpers\ContentHelper;
 
+use budisteikul\toursdk\Helpers\BokunHelper;
+
 class WebhookController extends Controller
 {
     
@@ -25,7 +27,10 @@ class WebhookController extends Controller
 
     public function test(Request $request)
     {
-        
+        $test = BokunHelper::get_cookie();
+        print_r($test);
+
+        //PLAY_SESSION=eyJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7InZlbmRvcklkIjoiMTk2MjYifSwiZXhwIjoxNjc4MDkwODIwLCJuYmYiOjE2NzAzMTQ4MjAsImlhdCI6MTY3MDMxNDgyMH0.rO-rS-5T-WjN9vyt8hEzXIikhk7JVPlPiVcZM0oeJl0; Max-Age=7776000; Expires=Mon, 06 Mar 2023 08:20:20 GMT; SameSite=Lax; Path=/; HTTPOnly, BokunSocketToken=; Max-Age=3600; Expires=Tue, 06 Dec 2022 09:20:20 GMT; Path=/; Domain=.bokun.io; HTTPOnly
     }
 	
     

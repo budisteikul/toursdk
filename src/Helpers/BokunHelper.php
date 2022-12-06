@@ -62,12 +62,11 @@ class BokunHelper {
 
             
         	$cookieJar = $client->getConfig('cookies');
-        	//$cookieJar = $response->getHeaderLine('Set-Cookie');
         	return $cookieJar;
 		});
 
     	$sessionid = $cookieJar->getCookieByName('PLAY_SESSION')->getValue();
-    	//return $cookieJar;
+    	
     	$headers = [
                 'content-type' => 'application/json',
                 'X-Bokun-Currency' => 'IDR',
@@ -76,7 +75,7 @@ class BokunHelper {
             ];
 
 		$client = new \GuzzleHttp\Client(['headers' => $headers]);
-    	$response = $client->request('GET', 'https://vertikaltrip.bokuntest.com/bookings/activity-json?id=7424&lang=en');
+    	$response = $client->request('GET', 'https://'.$subdomain.'.bokuntest.com/bookings/activity-json?id=7424&lang=en');
 		$contents = $response->getBody()->getContents();
 		return $contents;
 		

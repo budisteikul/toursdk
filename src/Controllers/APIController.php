@@ -48,10 +48,7 @@ class APIController extends Controller
         $this->lang = env("BOKUN_LANG");
         $this->midtransServerKey = env("MIDTRANS_SERVER_KEY");
         $this->appAssetUrl = env("APP_ASSET_URL");
-
     }
-
-    
 
     public function schedule_jscript()
     {

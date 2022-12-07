@@ -324,6 +324,13 @@ footer {
             <td>{{ $GeneralHelper->numberFormat($discount) }}</td>
           </tr>
           @endif
+          @if($shoppingcart->fee > 0)
+          <tr>
+            <td colspan="2"></td>
+            <td colspan="2">FEE</td>
+            <td>{{ $GeneralHelper->numberFormat($shoppingcart->fee) }}</td>
+          </tr>
+          @endif
           <tr>
             <td colspan="2"></td>
             <td colspan="2">TOTAL</td>

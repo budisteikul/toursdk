@@ -409,7 +409,7 @@ class ContentHelper {
             'value' => 'paynow', 'label' => 'Paynow QR', 'image' => self::env_appAssetUrl() .'/img/payment/paynow.png', 'currency' => 'sgd',
         ];
         $singapore_list[] = [
-            'value' => 'fast', 'label' => 'Bank Transfer', 'image' => self::env_appAssetUrl() .'/img/payment/fast.png', 'currency' => 'sgd',
+            'value' => 'fast', 'label' => 'Bank Transfer', 'image' => self::env_appAssetUrl() .'/img/payment/dbs.png', 'currency' => 'sgd',
         ];
         $grouped_payment[] = [
             'label' => 'SINGAPORE',

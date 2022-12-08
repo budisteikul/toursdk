@@ -6,7 +6,6 @@ use budisteikul\toursdk\Helpers\BookingHelper;
 use budisteikul\toursdk\Models\Shoppingcart;
 
 use budisteikul\toursdk\Helpers\WiseHelper;
-use budisteikul\toursdk\Helpers\LogHelper;
 use budisteikul\toursdk\Helpers\TaskHelper;
 
 use budisteikul\toursdk\Helpers\ProductHelper;
@@ -36,7 +35,7 @@ class WebhookController extends Controller
     {
         if($webhook_app=="wise")
         {
-            LogHelper::log_webhook($request->getContent());
+            //LogHelper::log_webhook($request->getContent());
 
             $is_test = $request->header('X-Test-Notification');
             if($is_test)
@@ -77,7 +76,7 @@ class WebhookController extends Controller
 
         if($webhook_app=="bokun")
         {
-            LogHelper::log_webhook($request->getContent());
+            //LogHelper::log_webhook($request->getContent());
 
             $data = json_decode($request->getContent(), true);
             
@@ -96,10 +95,7 @@ class WebhookController extends Controller
             break;
             case 'BOOKING_ITEM_CANCELLED':
                 $shoppingcart = Shoppingcart::where('confirmation_code','BR-'.$data['externalBookingReference'])->firstOrFail();
-                
                 BookingHelper::confirm_payment($shoppingcart,"CANCELED",true);
-                
-
                 return response('OK', 200)->header('Content-Type', 'text/plain');
             break;
             }

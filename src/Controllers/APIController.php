@@ -963,55 +963,92 @@ class APIController extends Controller
 
     public function confirmpaymentpaypal(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'orderID' => ['required', 'string', 'max:255'],
-            'authorizationID' => ['required', 'string', 'max:255'],
-            'sessionId' => ['required', 'string', 'max:255'],
-        ]);
-        
-        if ($validator->fails()) {
-            $errors = $validator->errors();
-            return response()->json($errors);
-        }
-        
-        $orderID = $request->input('orderID');
-        $authorizationID = $request->input('authorizationID');
-        $sessionId = $request->input('sessionId');
-        
-        $shoppingcart = Cache::get('_'. $sessionId);
-
-        $grand_total = $shoppingcart->payment->amount;
-        $payment_total = PaypalHelper::getOrder($orderID);
-        
-        if($payment_total!=$grand_total)
+        if(env('PAYPAL_INTENT')=="CAPTURE")
         {
-            PaypalHelper::voidPaypal($authorizationID);
+            $validator = Validator::make($request->all(), [
+                'orderID' => ['required', 'string', 'max:255'],
+                'sessionId' => ['required', 'string', 'max:255'],
+            ]);
+        
+            if ($validator->fails()) {
+                $errors = $validator->errors();
+                return response()->json($errors);
+            }
+        
+            $orderID = $request->input('orderID');
+            $sessionId = $request->input('sessionId');
+        
+            $shoppingcart = Cache::get('_'. $sessionId);
+
+        
+
+            $shoppingcart->payment->order_id = $orderID;
+            $shoppingcart->payment->authorization_id = $orderID;
+            $shoppingcart->payment->payment_status = 2;
+        
+            Cache::forget('_'. $sessionId);
+            Cache::add('_'. $sessionId, $shoppingcart, 172800);
+        
+            BookingHelper::set_bookingStatus($sessionId,'CONFIRMED');
+
+            $shoppingcart = BookingHelper::confirm_booking($sessionId);
+
+
             return response()->json([
-                    "id" => "2",
-                    "message" => 'Payment Not Valid'
-                ]);
-        }
-        
-        $shoppingcart->payment->order_id = $orderID;
-        $shoppingcart->payment->authorization_id = $authorizationID;
-        $shoppingcart->payment->payment_status = 1;
-        
-        Cache::forget('_'. $sessionId);
-        Cache::add('_'. $sessionId, $shoppingcart, 172800);
-        
-        BookingHelper::set_bookingStatus($sessionId,'CONFIRMED');
-
-        $shoppingcart = BookingHelper::confirm_booking($sessionId);
-
-        PaypalHelper::captureAuth($authorizationID);
-        BookingHelper::confirm_payment($shoppingcart,"CONFIRMED",true);
-
-        return response()->json([
                     "id" => "1",
                     "message" => "/booking/receipt/".$shoppingcart->session_id."/".$shoppingcart->confirmation_code
                 ]);
+        }
+        else
+        {
+            $validator = Validator::make($request->all(), [
+                'orderID' => ['required', 'string', 'max:255'],
+                'authorizationID' => ['required', 'string', 'max:255'],
+                'sessionId' => ['required', 'string', 'max:255'],
+            ]);
         
+            if ($validator->fails()) {
+                $errors = $validator->errors();
+                return response()->json($errors);
+            }
+        
+            $orderID = $request->input('orderID');
+            $authorizationID = $request->input('authorizationID');
+            $sessionId = $request->input('sessionId');
+        
+            $shoppingcart = Cache::get('_'. $sessionId);
+
+            $grand_total = $shoppingcart->payment->amount;
+            $payment_total = PaypalHelper::getOrder($orderID);
+        
+            if($payment_total!=$grand_total)
+            {
+                PaypalHelper::voidPaypal($authorizationID);
+                return response()->json([
+                        "id" => "2",
+                        "message" => 'Payment Not Valid'
+                    ]);
+            }
+        
+            $shoppingcart->payment->order_id = $orderID;
+            $shoppingcart->payment->authorization_id = $authorizationID;
+            $shoppingcart->payment->payment_status = 1;
+        
+            Cache::forget('_'. $sessionId);
+            Cache::add('_'. $sessionId, $shoppingcart, 172800);
+        
+            BookingHelper::set_bookingStatus($sessionId,'CONFIRMED');
+
+            $shoppingcart = BookingHelper::confirm_booking($sessionId);
+
+            return response()->json([
+                    "id" => "1",
+                    "message" => "/booking/receipt/".$shoppingcart->session_id."/".$shoppingcart->confirmation_code
+                ]);
+        }
     }
+
+    
 
     public function callbackpaymentoy(Request $request)
     {
@@ -1722,8 +1759,73 @@ class APIController extends Controller
 
     public function paypal_jscript($sessionId)
     {
-        
-        $jscript = '
+        if(env('PAYPAL_INTENT')=="CAPTURE")
+        {
+            $jscript = '
+        jQuery(document).ready(function($) {
+
+            $("#submitCheckout").slideUp("slow");  
+            $("#paymentContainer").html(\'<div id="proses"><h2 class="mt-0">Pay with</h2><div id="paypal-button-container"></div></div><div id=\"loader\" class=\"mb-4\"></div><div id=\"text-alert\" class=\"text-center\"></div>\');
+           
+            paypal.Buttons({
+                createOrder: function() {
+                    return fetch(\''. url('/api') .'/payment/paypal\', {
+                        method: \'POST\',
+                        credentials: \'same-origin\',
+                        headers: {
+                            \'sessionId\': \''.$sessionId.'\'
+                            }
+                    }).then(function(res) {
+                            return res.json();
+                    }).then(function(data) {
+                            return data.result.id;
+                    });
+                },
+                onError: function (err) {
+                    $(\'#alert-payment\').html(\'<div id="alert-failed" class="alert alert-danger text-center" role="alert"><h2 style="margin-bottom:10px; margin-top:10px;"><i class="far fa-frown"></i> Payment Error!</h2></div>\');
+                    $(\'#alert-payment\').fadeIn("slow");
+                },
+                onApprove: function(data, actions) {
+                    
+                    $("#proses").hide();
+                    $("#loader").addClass("loader");
+                    $("#text-alert").prepend( "Please wait and do not close the browser or refresh the page" );
+
+                    actions.order.capture().then(function(orderData) {
+                            
+                            $.ajax({
+                                data: {
+                                    "orderID": data.orderID,
+                                    "sessionId": \''.$sessionId.'\',
+                                },
+                                type: \'POST\',
+                                url: \''. url('/api') .'/payment/paypal/confirm\'
+                            }).done(function(data) {
+                                if(data.id=="1")
+                                {
+                                    $("#loader").hide();
+                                    $(\'#alert-payment\').html(\'<div id="alert-success" class="alert alert-primary text-center" role="alert"><h2 style="margin-bottom:10px; margin-top:10px;"><i class="far fa-smile"></i> Payment Successful!</h2></div>\');
+                                    $(\'#alert-payment\').fadeIn("slow");
+                                    window.openAppRoute(data.message); 
+                                }
+                                else
+                                {
+                                    $("#loader").hide();
+                                    $(\'#alert-payment\').html(\'<div id="alert-failed" class="alert alert-danger text-center" role="alert"><h2 style="margin-bottom:10px; margin-top:10px;"><i class="far fa-frown"></i> Payment Failed!</h2></div>\');
+                                    $(\'#alert-payment\').fadeIn("slow");
+                                }
+                            }).fail(function(error) {
+                                console.log(error);
+                            });
+
+                    });
+                }
+            }).render(\'#paypal-button-container\');
+        });';
+        }
+        else
+        {
+            $jscript = '
         jQuery(document).ready(function($) {
 
             $("#submitCheckout").slideUp("slow");  
@@ -1787,8 +1889,11 @@ class APIController extends Controller
                 }
             }).render(\'#paypal-button-container\');
         });';
+        }
         return response($jscript)->header('Content-Type', 'application/javascript');
     }
+
+    
 
     
     

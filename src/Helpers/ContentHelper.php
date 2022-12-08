@@ -437,6 +437,14 @@ class ContentHelper {
             'options' => $southkorea_list
         ];
 
+        if(env('PAYPAL_INTENT')=="CAPTURE")
+        {
+            $paypal_sdk = 'https://www.paypal.com/sdk/js?client-id='.self::env_paypalClientId().'&currency='. self::env_paypalCurrency();
+        }
+        else
+        {
+            $paypal_sdk = 'https://www.paypal.com/sdk/js?client-id='.self::env_paypalClientId().'&intent=authorize&currency='. self::env_paypalCurrency();
+        }
         
         $dataShoppingcart[] = array(
                 'id' => $shoppingcart->session_id,
@@ -460,7 +468,7 @@ class ContentHelper {
                 'paypal_currency' => self::env_paypalCurrency(),
                 'paypal_total' => GeneralHelper::numberFormat(BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,self::env_paypalCurrency(),"PAYPAL"),'USD'),
                 'paypal_rate' => BookingHelper::text_rate($shoppingcart,self::env_paypalCurrency(),"PAYPAL"),
-                'paypal_sdk' => 'https://www.paypal.com/sdk/js?client-id='.self::env_paypalClientId().'&intent=authorize&currency='. self::env_paypalCurrency(),
+                'paypal_sdk' => $paypal_sdk,
 
                 // Stripe Currency
                 'stripe_currency' => 'USD',

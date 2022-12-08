@@ -90,8 +90,17 @@ class PaypalHelper {
 
 	public static function buildRequestBodyCreateOrder($value,$name,$currency)
   {
+  		if(env('PAYPAL_INTENT')=="CAPTURE")
+  		{
+  			$intent = "CAPTURE";
+  		}
+  		else
+  		{
+  			$intent = "AUTHORIZE";
+  		}
+
         return array(
-            'intent' => 'AUTHORIZE',
+            'intent' => $intent,
             'application_context' =>
                 array(
                     'shipping_preference' => 'NO_SHIPPING'

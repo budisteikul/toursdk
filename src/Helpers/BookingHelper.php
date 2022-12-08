@@ -284,7 +284,6 @@ class BookingHelper {
 		$s_booking_channel = 'WEBSITE';
 		$s_currency = $contents->customerInvoice->currency;
 		$s_promo_code = NULL;
-		//if(isset($contents->promoCode)) $s_promo_code = $contents->promoCode->code;
 		
 		$grand_total = 0;
 		$grand_subtotal = 0;
@@ -364,7 +363,6 @@ class BookingHelper {
 						$total = $subtotal - $discount;
 
 						//===============================================================
-						
 						$ShoppingcartProductDetails[] = (object) array(
 							'type' => $spd_type,
 							'title' => $spd_title,
@@ -379,8 +377,6 @@ class BookingHelper {
 						);
 						//===============================================================
 						
-						
-
 						$subtotal_product += $subtotal;
 						$total_discount += $discount;
 						$total_product += $total;
@@ -772,16 +768,6 @@ class BookingHelper {
 
 		$shoppingcart->currency = $contents->customerInvoice->currency;
 
-		/*
-		if(isset($contents->promoCode))
-		{
-			$shoppingcart->promo_code = $contents->promoCode->code;
-		}
-		else
-		{
-			$shoppingcart->promo_code = null;
-		}
-		*/
 
 		unset($shoppingcart->products);
 		
@@ -984,8 +970,6 @@ class BookingHelper {
 		$shoppingcart->total = $grand_total;
 		$shoppingcart->due_now = $grand_due_now;
 		$shoppingcart->due_on_arrival = $grand_due_on_arrival;
-		
-
 		
 		//===============================================
 

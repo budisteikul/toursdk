@@ -1797,8 +1797,7 @@ class BookingHelper {
 					$shoppingcart->shoppingcart_payment->payment_status = 5;
 					$shoppingcart->shoppingcart_payment->save();
 				}
-
-				if($shoppingcart->shoppingcart_payment->payment_status==4)
+				else
 				{
 					$shoppingcart->booking_status = 'CANCELED';
 					$shoppingcart->save();

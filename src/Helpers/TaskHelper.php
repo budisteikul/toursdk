@@ -25,7 +25,11 @@ class TaskHelper {
 
 	public static function create($payload)
 	{
-		
+		if(env("APP_ENV")=="local")
+		{
+			return "";
+		}
+
 		$queue_id = Uuid::uuid4()->toString();
 		$project = env("TASK_PROJECT_ID");
 		$location = env("TASK_LOCATION_ID");

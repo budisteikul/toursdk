@@ -86,7 +86,7 @@ class DuitkuHelper {
                 $data->bank_payment_type = "LA";
             break;
             case "linkaja_qris":
-                $data->bank_name = "linkaja";
+                $data->bank_name = "qris";
                 $data->bank_code = "";
                 $data->bank_payment_type = "LQ";
             break;

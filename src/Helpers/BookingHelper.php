@@ -1988,6 +1988,15 @@ class BookingHelper {
 					$rate_to = 'AUD';
 				}
 
+				else if($data->transaction->bank=="promptpay")
+				{
+					$amount = self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'THB');
+					$currency = 'THB';
+					$rate = number_format((float)$shoppingcart->due_now / $amount, 2, '.', '');
+					$rate_from = $shoppingcart->currency;
+					$rate_to = 'THB';
+				}
+
 				else
 				{
 					$amount = self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'USD');
@@ -2570,35 +2579,7 @@ class BookingHelper {
 								</div>';
 						break;
 					case 4:
-						if($shoppingcart->shoppingcart_payment->bank_name=="paynow")
-						{
-							return '
-								<div class="card mb-1">
-								<span class="badge badge-info invoice-color-info" style="font-size:20px;">
-								<i class="fas fa-qrcode"></i> WAITING FOR PAYMENT </span>
-								</div>
-								<div class="card mb-1 img-fluid invoice-hilang"  style="min-height:350px; max-width:505px;">
-								
-								<div class="card-img-overlay">
-									<div class="row h-100">
-   										<div class="col-12 text-center">
-   											
-   											<br />
-    										<img id="paynow-img" class="img-fluid border border-white" alt="PAYNOW" style="max-width:250px;" src="'. self::generate_qrcode($shoppingcart) .' ">
-    										<br /><br />
-    										<span><strong>Amount :</strong> '. $shoppingcart->shoppingcart_payment->currency .' '. $shoppingcart->shoppingcart_payment->amount .'</span>
-   										</div>
-
-									</div>
-  								</div>
-								
-								</div>
-								<div class="card mb-4">
-								<a href="'. self::env_appApiUrl() .'/qrcode/'.$shoppingcart->session_id.'/'. $shoppingcart->confirmation_code .'" type="button" class="invoice-hilang btn btn-success invoice-hilang ">or Download QRCODE <i class="fas fa-download"></i> </a>
-								</div>
-								';
-						}
-						else
+						if($shoppingcart->shoppingcart_payment->bank_name=="qris")
 						{
 							$data_qris = self::get_qris_content($shoppingcart);
 							return '
@@ -2626,6 +2607,35 @@ class BookingHelper {
 								</div>
 								';
 							
+						}
+						
+						else
+						{
+							return '
+								<div class="card mb-1">
+								<span class="badge badge-info invoice-color-info" style="font-size:20px;">
+								<i class="fas fa-qrcode"></i> WAITING FOR PAYMENT </span>
+								</div>
+								<div class="card mb-1 img-fluid invoice-hilang"  style="min-height:350px; max-width:505px;">
+								
+								<div class="card-img-overlay">
+									<div class="row h-100">
+   										<div class="col-12 text-center">
+   											
+   											<br />
+    										<img id="paynow-img" class="img-fluid border border-white" alt="PAYNOW" style="max-width:250px;" src="'. self::generate_qrcode($shoppingcart) .' ">
+    										<br /><br />
+    										<span><strong>Amount :</strong> '. $shoppingcart->shoppingcart_payment->currency .' '. $shoppingcart->shoppingcart_payment->amount .'</span>
+   										</div>
+
+									</div>
+  								</div>
+								
+								</div>
+								<div class="card mb-4">
+								<a href="'. self::env_appApiUrl() .'/qrcode/'.$shoppingcart->session_id.'/'. $shoppingcart->confirmation_code .'" type="button" class="invoice-hilang btn btn-success invoice-hilang ">or Download QRCODE <i class="fas fa-download"></i> </a>
+								</div>
+								';
 						}
 						
 						
@@ -2863,14 +2873,14 @@ class BookingHelper {
 
 	public static function generate_qrcode($shoppingcart)
 	{
-		if($shoppingcart->shoppingcart_payment->bank_name=="paynow")
-		{
-			return $shoppingcart->shoppingcart_payment->qrcode;
-		}
-		else
+		if($shoppingcart->shoppingcart_payment->bank_name=="qris")
 		{
 			$qrcode = QrCode::errorCorrection('H')->format('png')->margin(0)->size(630)->generate($shoppingcart->shoppingcart_payment->qrcode);
 			return 'data:image/png;base64, '. base64_encode($qrcode);
+		}
+		else
+		{
+			return $shoppingcart->shoppingcart_payment->qrcode;
 		}
 		
 	}

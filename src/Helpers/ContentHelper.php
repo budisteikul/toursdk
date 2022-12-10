@@ -405,6 +405,26 @@ class ContentHelper {
             'label' => 'INDONESIA',
             'options' => $indonesia_list
         ];
+
+        
+
+        $australia_list[] = [
+            'value' => 'poli', 'label' => 'POLi', 'image' => self::env_appAssetUrl() .'/img/payment/poli.png', 'currency' => 'aud',
+        ];
+        $grouped_payment[] = [
+            'label' => 'AUSTRALIA',
+            'options' => $australia_list
+        ];
+
+
+        $philippines_list[] = [
+            'value' => 'grabpay', 'label' => 'GrabPay', 'image' => self::env_appAssetUrl() .'/img/payment/grabpay.png', 'currency' => 'php',
+        ];
+        $grouped_payment[] = [
+            'label' => 'PHILIPPINES',
+            'options' => $philippines_list
+        ];
+
         $singapore_list[] = [
             'value' => 'paynow', 'label' => 'Paynow QR', 'image' => self::env_appAssetUrl() .'/img/payment/paynow.png', 'currency' => 'sgd',
         ];
@@ -415,26 +435,23 @@ class ContentHelper {
             'label' => 'SINGAPORE',
             'options' => $singapore_list
         ];
-        $australia_list[] = [
-            'value' => 'poli', 'label' => 'POLi', 'image' => self::env_appAssetUrl() .'/img/payment/poli.png', 'currency' => 'aud',
-        ];
-        $grouped_payment[] = [
-            'label' => 'AUSTRALIA',
-            'options' => $australia_list
-        ];
-        $philippines_list[] = [
-            'value' => 'grabpay', 'label' => 'GrabPay', 'image' => self::env_appAssetUrl() .'/img/payment/grabpay.png', 'currency' => 'php',
-        ];
-        $grouped_payment[] = [
-            'label' => 'PHILIPPINES',
-            'options' => $philippines_list
-        ];
+
+
         $southkorea_list[] = [
             'value' => 'tmoney', 'label' => 'T money', 'image' => self::env_appAssetUrl() .'/img/payment/tmoney.png', 'currency' => 'krw',
         ];
         $grouped_payment[] = [
             'label' => 'SOUTH KOREA',
             'options' => $southkorea_list
+        ];
+
+
+        $thailand_list[] = [
+            'value' => 'promptpay', 'label' => 'PromptPay QR', 'image' => self::env_appAssetUrl() .'/img/payment/promptpay.png', 'currency' => 'thb',
+        ];
+        $grouped_payment[] = [
+            'label' => 'THAILAND',
+            'options' => $thailand_list
         ];
 
         if(env('PAYPAL_INTENT')=="CAPTURE")
@@ -504,6 +521,11 @@ class ContentHelper {
                 'php_currency' => 'PHP',
                 'php_total' => GeneralHelper::numberFormat(BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'PHP'),'PHP'),
                 'php_rate' => BookingHelper::text_rate($shoppingcart,'PHP'),
+
+                // THB Currency
+                'thb_currency' => 'THB',
+                'thb_total' => GeneralHelper::numberFormat(BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'THB'),'THB'),
+                'thb_rate' => BookingHelper::text_rate($shoppingcart,'THB'),
 
 
 

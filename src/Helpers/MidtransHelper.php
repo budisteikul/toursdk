@@ -93,14 +93,14 @@ class MidtransHelper {
                 $data->bank_payment_type = "shopeepay";
             break;
             case "gopay_qris":
-                $data->bank_name = "gopay";
-                $data->bank_code = "";
-                $data->bank_payment_type = "qris";
+                $data->bank_name = "qris";
+                $data->bank_code = "gopay";
+                $data->bank_payment_type = "qrcode";
             break;
             case "shopeepay_qris":
-                $data->bank_name = "shopeepay";
-                $data->bank_code = "";
-                $data->bank_payment_type = "qris";
+                $data->bank_name = "qris";
+                $data->bank_code = "shopeepay";
+                $data->bank_payment_type = "qrcode";
             break;
             default:
                 return response()->json([
@@ -150,13 +150,14 @@ class MidtransHelper {
           //$response->redirect = str_ireplace("gojek://","https://gojek.link/",$data2['deeplink_url']);
           $data_json->redirect = $data2['deeplink_url'];
         }
-        else if($payment->bank_payment_type=="qris")
+        else if($payment->bank_payment_type=="qrcode")
         {
           $data->transaction->mins_expired = 60;
           $data->transaction->date_expired = Carbon::parse($data->transaction->date_now)->addMinutes($data->transaction->mins_expired);
 
           $data1 = MidtransHelper::createSnap($data,$payment);
           $data2 = MidtransHelper::chargeSnap($data1->token,$data,$payment);
+          
           
           $data_json->bank_name = $payment->bank_name;
           $data_json->qrcode = $data2['qr_string'];
@@ -297,12 +298,12 @@ class MidtransHelper {
                ]
             ];
         
-        if($payment->bank_payment_type=="qris")
+        if($payment->bank_payment_type=="qrcode")
         {
                 $data_payment_type = [
-                  'payment_type' => $payment->bank_payment_type,
+                  'payment_type' => $payment->bank_name,
                   'payment_params' => [
-                      'acquirer' => [$payment->bank_name]
+                      'acquirer' => [$payment->bank_code]
                   ]
                 ];
         }

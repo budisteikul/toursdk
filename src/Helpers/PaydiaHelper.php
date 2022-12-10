@@ -124,7 +124,7 @@ class PaydiaHelper {
     $status = new \stdClass();
     $response = new \stdClass();
     
-    $data_json->bank_name = 'paydia';
+    $data_json->bank_name = 'qris';
 		$data_json->qrcode = $data1->rawqr;
 		$data_json->link = null;
 		$data_json->expiration_date = $data->transaction->date_expired;

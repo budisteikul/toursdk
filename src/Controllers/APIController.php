@@ -296,7 +296,7 @@ class APIController extends Controller
                 case 'paynow':
                     BookingHelper::set_bookingStatus($sessionId,'PENDING');
                     BookingHelper::set_confirmationCode($sessionId);
-                    $response = BookingHelper::create_payment($sessionId,"tazapay","paynow");
+                    $response = BookingHelper::create_payment($sessionId,"rapyd","paynow");
                 break;
 
                 case 'fast':
@@ -321,6 +321,12 @@ class APIController extends Controller
                     BookingHelper::set_bookingStatus($sessionId,'PENDING');
                     BookingHelper::set_confirmationCode($sessionId);
                     $response = BookingHelper::create_payment($sessionId,"rapyd","grabpay");
+                break;
+
+                case 'promptpay':
+                    BookingHelper::set_bookingStatus($sessionId,'PENDING');
+                    BookingHelper::set_confirmationCode($sessionId);
+                    $response = BookingHelper::create_payment($sessionId,"tazapay","promptpay");
                 break;
 
                 default:

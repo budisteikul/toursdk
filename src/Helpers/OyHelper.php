@@ -155,7 +155,7 @@ class OyHelper {
         $data->bank_payment_type = "dana_ewallet";
       break;
       case "qris":
-        $data->bank_name = "shopeepay";
+        $data->bank_name = "qris";
         $data->bank_code = "";
         $data->bank_payment_type = "qris_shopee";
       break;

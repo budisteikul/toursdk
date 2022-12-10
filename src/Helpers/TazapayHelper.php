@@ -74,6 +74,14 @@ class TazapayHelper {
                 $data->bank_payment_method = "au_poli_bank";
                 $data->bank_payment_type = "bank_redirect";
             break;
+            case "promptpay":
+                $data->bank_name = "promptpay";
+                $data->bank_code = "";
+                $data->bank_country = "TH";
+                $data->bank_payment_method = "th_thaipromptpayqr_bank";
+                $data->bank_payment_type = "qrcode";
+            break;
+            //th_thaipromptpayqr_bank
             default:
                 return response()->json([
                     "message" => 'Error'
@@ -161,18 +169,18 @@ class TazapayHelper {
         if($payment->bank_payment_type=="qrcode")
         {
             $qrcode = $tazapay['data']['qr_code'];
-            list($type, $qrcode) = explode(';', $qrcode);
-            list(, $qrcode)      = explode(',', $qrcode);
-            $contents = base64_decode($qrcode);
+            //list($type, $qrcode) = explode(';', $qrcode);
+            //list(, $qrcode)      = explode(',', $qrcode);
+            //$contents = base64_decode($qrcode);
 
-            $path = date('YmdHis');
-            $disk = Storage::disk('gcs');
-            $disk->put('qrcode/'. $path .'/'.$data->transaction->confirmation_code.'.png', $contents);
-            $url = $disk->url('qrcode/'. $path .'/'.$data->transaction->confirmation_code.'.png');
-            $qrcode = new QrReader($url);
+            //$path = date('YmdHis');
+            //$disk = Storage::disk('gcs');
+            //$disk->put('qrcode/'. $path .'/'.$data->transaction->confirmation_code.'.png', $contents);
+            //$url = $disk->url('qrcode/'. $path .'/'.$data->transaction->confirmation_code.'.png');
+            //$qrcode = new QrReader($url);
 
             $data_json->payment_type = 'qrcode';
-            $data_json->qrcode = $qrcode->text();
+            $data_json->qrcode = $qrcode;
 
             $data_json->redirect = $data->transaction->finish_url;
         }

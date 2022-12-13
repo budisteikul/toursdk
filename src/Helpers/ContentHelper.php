@@ -350,9 +350,12 @@ class ContentHelper {
         ];
         */
 
+        /*
         $indonesia_list[] = [
             'value' => 'qris', 'label' => 'QRIS', 'image' => self::env_appAssetUrl() .'/img/payment/qris.png', 'currency' => 'idr',
         ];
+        */
+        
         $indonesia_list[] = [
             'value' => 'permata', 'label' => 'Bank Transfer', 'image' => self::env_appAssetUrl() .'/img/payment/permata.png', 'currency' => 'idr',
         ];
@@ -396,7 +399,6 @@ class ContentHelper {
         $indonesia_list[] = [
             'value' => 'cimb', 'label' => 'CIMB NIAGA VA',  'image' => self::env_appAssetUrl() .'/img/payment/cimb.png', 'currency' => 'idr',
         ];
-        
         */
 
         
@@ -445,7 +447,7 @@ class ContentHelper {
             'options' => $southkorea_list
         ];
 
-
+        /*
         $thailand_list[] = [
             'value' => 'promptpay', 'label' => 'PromptPay QR', 'image' => self::env_appAssetUrl() .'/img/payment/promptpay.png', 'currency' => 'thb',
         ];
@@ -453,6 +455,7 @@ class ContentHelper {
             'label' => 'THAILAND',
             'options' => $thailand_list
         ];
+        */
 
         if(env('PAYPAL_INTENT')=="CAPTURE")
         {

@@ -986,8 +986,6 @@ class APIController extends Controller
         
             $shoppingcart = Cache::get('_'. $sessionId);
 
-        
-
             $shoppingcart->payment->order_id = $orderID;
             $shoppingcart->payment->authorization_id = $orderID;
             $shoppingcart->payment->payment_status = 2;

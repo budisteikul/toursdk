@@ -42,7 +42,7 @@ class PaypalHelper {
   		return env("PAYPAL_CLIENT_SECRET");
   }
 
-	public static function environment()
+  public static function environment()
   {
         $clientId = self::env_paypalClientId();
         $clientSecret = self::env_paypalClientSecret();
@@ -57,12 +57,12 @@ class PaypalHelper {
   			}
   }
 	
-	public static function getOrder($id)
+  public static function getOrder($id)
   {
 		  $client = self::client();
 		  $response = $client->execute(new OrdersGetRequest($id));
 		  return $response->result->purchase_units[0]->amount->value;
-	}
+  }
 	
 	public static function createPayment($data)
 	{
@@ -89,7 +89,7 @@ class PaypalHelper {
 	}
 
 	public static function buildRequestBodyCreateOrder($value,$name,$currency)
-  {
+    {
   		if(env('PAYPAL_INTENT')=="CAPTURE")
   		{
   			$intent = "CAPTURE";
@@ -118,11 +118,11 @@ class PaypalHelper {
                         )
                 )
         );
-  }
+    }
 	
 	public static function captureAuth($id)
-  {
-		  $request = new AuthorizationsCaptureRequest($id);
+    {
+        $request = new AuthorizationsCaptureRequest($id);
     	$request->body = self::buildRequestBodyCapture();
     	$client = self::client();
     	$response = $client->execute($request);
@@ -135,7 +135,7 @@ class PaypalHelper {
   	}
 	
 	public static function voidPaypal($id)
-  {
+    {
 			$PAYPAL_CLIENT = self::env_paypalClientId();
 			$PAYPAL_SECRET = self::env_paypalClientSecret();
 
@@ -172,6 +172,6 @@ class PaypalHelper {
 			$client = new \GuzzleHttp\Client(['headers' => $headers]);
     		$response = $client->request('POST', $PAYPAL_AUTHORIZATION_API . $id.'/void');
 			
-  }
+    }
 }
 ?>

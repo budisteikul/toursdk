@@ -58,6 +58,8 @@ class ContentHelper {
         $dataShoppingcart = array();
         $dataProducts = array();
 
+        
+        
         foreach(collect($shoppingcart->products)->sortBy('booking_id') as $shoppingcart_product)
         {
             
@@ -625,6 +627,8 @@ class ContentHelper {
 	public static function view_last_order($shoppingcarts)
 	{
 		$booking = array();
+
+
         foreach($shoppingcarts as $shoppingcart)
         {
             $invoice = self::view_invoice($shoppingcart);

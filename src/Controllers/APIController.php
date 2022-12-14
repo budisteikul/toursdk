@@ -778,9 +778,13 @@ class APIController extends Controller
 
         if(!isset($shoppingcart->products))
         {
-            abort(404);
+            return array();
         }
 
+        if(count($shoppingcart->products)==0)
+        {
+            return array();
+        }
         
         $dataShoppingcart = ContentHelper::view_shoppingcart($shoppingcart);
 
@@ -890,15 +894,15 @@ class APIController extends Controller
         
         if($shoppingcarts->isEmpty())
         {
-            abort(404);
+            return response()->json([
+                'message' => 'success',
+                'booking' => array()
+            ], 200);
         }
         
         $booking = ContentHelper::view_last_order($shoppingcarts);
         
-        $data = array(
-                'receipt' => $booking,
-                'message' => 'success'
-            );
+        
 
         return response()->json([
                 'message' => 'success',

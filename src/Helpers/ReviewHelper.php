@@ -27,6 +27,15 @@ class ReviewHelper {
 			return $star;
 	}
 
+	public static function product_have_review($product){
+        $status = false;
+        if($product->reviews()->exists()) $status = true;
+        return $status;
+    }
 
-
+    public static function channel_have_review($channel){
+        $status = false;
+        if($channel->reviews()->exists()) $status = true;
+        return $status;
+    }
 }

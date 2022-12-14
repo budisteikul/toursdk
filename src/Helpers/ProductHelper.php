@@ -23,12 +23,6 @@ class ProductHelper {
         return $products;
     }
 
-    public static function have_review($product){
-        $status = false;
-        if($product->reviews()->exists()) $status = true;
-        return $status;
-    }
-
     public static function get_product_id($productId)
     {
         $product_id = null;

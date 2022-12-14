@@ -528,8 +528,16 @@ class APIController extends Controller
 
             window.i18nLang = \''. $this->lang .'\';
 
-            $("#titleProduct").append(\''. $product->name .'\');
-        
+            try { 
+                $("#titleProduct").append(\''. $product->name .'\');
+            } catch(err) {  
+            }
+
+            try { 
+                $("#titleBooking").html(\'Booking '. $product->name .'\');
+            } catch(err) {  
+            }
+
             window.ActivityBookingWidgetConfig = {
                 currency: \''. $this->currency .'\',
                 language: \''. $this->lang .'\',

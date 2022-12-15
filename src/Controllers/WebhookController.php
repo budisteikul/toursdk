@@ -26,7 +26,7 @@ class WebhookController extends Controller
 
     public function test(Request $request)
     {
-        
+        //MC_DEBIT_OR_PREPAID
     }
 	
     

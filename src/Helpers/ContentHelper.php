@@ -352,11 +352,11 @@ class ContentHelper {
         ];
         */
 
-        /*
+        
         $indonesia_list[] = [
             'value' => 'qris', 'label' => 'QRIS', 'image' => self::env_appAssetUrl() .'/img/payment/qris.png', 'currency' => 'idr',
         ];
-        */
+       
         
         $indonesia_list[] = [
             'value' => 'permata', 'label' => 'Bank Transfer', 'image' => self::env_appAssetUrl() .'/img/payment/permata.png', 'currency' => 'idr',

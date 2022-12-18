@@ -624,6 +624,8 @@ class ContentHelper {
                     8. Make the payment to cashier according to your transaction amount. <br />
                     9. Get your receipt as a proof of payment and you will be notified of the payment status. <br />
                     10. Done.
+                    <br /><br />
+                    <i>If you have any difficulty to pay. Just pay cash to our tour guide at meeting point before the tour start ;)</i>
                     </div><br />';
                 }
             }

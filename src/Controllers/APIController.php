@@ -329,6 +329,12 @@ class APIController extends Controller
                     $response = BookingHelper::create_payment($sessionId,"tazapay","promptpay");
                 break;
 
+                case 'alfamart':
+                    BookingHelper::set_bookingStatus($sessionId,'PENDING');
+                    BookingHelper::set_confirmationCode($sessionId);
+                    $response = BookingHelper::create_payment($sessionId,"rapyd","alfa");
+                break;
+
                 default:
                     $payment_arr = explode("-",$payment);
 

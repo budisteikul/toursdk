@@ -352,14 +352,18 @@ class ContentHelper {
         ];
         */
 
-        
+        /*
         $indonesia_list[] = [
             'value' => 'qris', 'label' => 'QRIS', 'image' => self::env_appAssetUrl() .'/img/payment/qris.png', 'currency' => 'idr',
         ];
-       
+        */
         
         $indonesia_list[] = [
             'value' => 'permata', 'label' => 'Bank Transfer', 'image' => self::env_appAssetUrl() .'/img/payment/permata.png', 'currency' => 'idr',
+        ];
+
+        $indonesia_list[] = [
+            'value' => 'alfamart', 'label' => 'Cash on Alfamart', 'image' => self::env_appAssetUrl() .'/img/payment/alfamart.png', 'currency' => 'idr',
         ];
 
         /*
@@ -593,6 +597,28 @@ class ContentHelper {
             } 
         }
         
+        if($shoppingcart->shoppingcart_payment->payment_type=="cash")
+        {
+            if(strtolower($shoppingcart->shoppingcart_payment->bank_name)=="alfamart")
+            {
+                if($shoppingcart->shoppingcart_payment->payment_status==4)
+                {
+                $how_to_pay = '
+                    <div class="pl-2">
+                    1. Take note of your payment code and go to your nearest <b>Alfamart</b>. <br />
+                    2. Tell the cashier that you wish to make a <b>'. strtoupper($shoppingcart->shoppingcart_payment->payment_provider) .' VIA DOKU</b> payment. <br />
+                    3. If the cashier is unaware of <b>'. strtoupper($shoppingcart->shoppingcart_payment->payment_provider) .'</b>, provide the instruction to open the e-transaction terminal, choose "<b>no. 2 menu Pembayaran atau cari pada menu search</b>" <br />
+                    4. Ask cashier to press "<b>Shift</b>" and "<b>?</b>" and then type <b>'. strtoupper($shoppingcart->shoppingcart_payment->payment_provider) .'</b>, continue by clicking OK. <br />
+                    5. Ask cashier to choose "<b>'. strtoupper($shoppingcart->shoppingcart_payment->payment_provider) .' VIA DOKU</b>". <br />
+                    6. Cashier will request your payment code. Inform your payment code <b>'. $shoppingcart->shoppingcart_payment->va_number .'</b>. <br />
+                    7. Cashier will confirm customer data such as Nama Merchant, Nama Konsumen, and Nominal. <br />
+                    8. Make the payment to cashier according to your transaction amount. <br />
+                    9. Get your receipt as a proof of payment and you will be notified of the payment status. <br />
+                    10. Done.
+                    </div><br />';
+                }
+            }
+        }
 
         $payment_status_asText = BookingHelper::get_paymentStatus($shoppingcart);
         $booking_status_asText = BookingHelper::get_bookingStatus($shoppingcart);

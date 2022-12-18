@@ -94,6 +94,11 @@ class RapydHelper {
                 $data->bank_code = "";
                 $data->bank_payment_type = "kr_tmoney_ewallet";
             break;
+            case "alfa":
+                $data->bank_name = "alfamart";
+                $data->bank_code = "";
+                $data->bank_payment_type = "id_alfa_cash";
+            break;
             default:
                 return response()->json([
                     "message" => 'Error'
@@ -217,6 +222,23 @@ class RapydHelper {
             
             $data_json->payment_type = 'bank_transfer';
             $data_json->va_number = $data1['data']['textual_codes']['DBS Account No'];
+            $data_json->redirect = $data->transaction->finish_url;
+        }
+        else if($data->transaction->bank=="alfa")
+        {
+            $body = [
+                'amount' => $data->transaction->amount,
+                'currency' => $data->transaction->currency,
+                'payment_method' => [
+                    'type' => $payment->bank_payment_type,
+                    'fields' => []
+                ]
+            ];
+
+            $data1 = self::make_request('post','/v1/payments',$body);
+            
+            $data_json->payment_type = 'cash';
+            $data_json->va_number = $data1['data']['textual_codes']['pay_code'];
             $data_json->redirect = $data->transaction->finish_url;
         }
         else

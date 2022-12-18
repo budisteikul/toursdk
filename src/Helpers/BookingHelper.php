@@ -39,6 +39,8 @@ use Carbon\Carbon;
 use Barryvdh\DomPDF\Facade as PDF;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Illuminate\Support\Facades\Storage;
+use Milon\Barcode\DNS1D;
+
 class BookingHelper {
 	
 	public static function env_paypalCurrency()
@@ -2495,6 +2497,73 @@ class BookingHelper {
 								 </div>
 								<div>Total Bill : </div>
 								<div class="mb-2"><b>'. $amount_text .'</b> <button onclick="copyToClipboard(\'#va_total\')" id="va_total_button" data-toggle="tooltip" data-placement="right" title="Copied" data-trigger="click" class="btn btn-light btn-sm invoice-hilang"><i class="far fa-copy"></i></button></div>
+
+								
+								</div>
+								</div>
+								';
+						break;
+					default:
+						return '';
+				}
+            }
+
+            if($shoppingcart->shoppingcart_payment->payment_type=="cash")
+            {
+            	
+            	switch($shoppingcart->shoppingcart_payment->payment_status)
+				{
+					case 2:
+						return '<div class="card mb-4">
+								<span class="badge badge-success invoice-color-success" style="font-size:20px;">
+								<i class="fas fa-cash-register"></i> PAID </span>
+								'. $text .'
+								</div>';
+						break;
+					case 3:
+						return '<div class="card mb-4">
+								<span class="badge badge-danger invoice-color-danger" style="font-size:20px;">
+								<i class="fas fa-cash-register"></i> UNPAID </span>
+								'. $text .'
+								</div>';
+						break;
+					case 5:
+						return '<div class="card mb-4">
+								<span class="badge badge-danger invoice-color-danger" style="font-size:20px;">
+								<i class="fas fa-cash-register"></i> REFUNDED </span>
+								'. $text .'
+								</div>';
+						break;	
+					case 4:
+						$amount_text = null;
+						if($shoppingcart->shoppingcart_payment->currency=="IDR")
+						{
+							$amount_text = GeneralHelper::formatRupiah($shoppingcart->shoppingcart_payment->amount);
+						}
+						else
+						{
+							$amount_text = $shoppingcart->shoppingcart_payment->currency .' '. $shoppingcart->shoppingcart_payment->amount;
+						}
+
+						return '
+								<div class="card mb-1">
+								<span class="badge badge-info invoice-color-info" style="font-size:20px;">
+								<i class="fas fa-cash-register"></i> WAITING FOR PAYMENT </span>
+								</div>
+								<div class="card mb-4">
+								<input type="hidden" id="va_number" value="'. $shoppingcart->shoppingcart_payment->va_number .'">
+								<input type="hidden" id="va_total" value="'. $shoppingcart->shoppingcart_payment->amount .'">
+								<div class="card-body bg-light text-center">
+								<div>
+								<img id="alfamart-img" class="img-fluid border border-white" alt="Alfamart" style="height:40px;" src="'.self::env_appAssetUrl().'/img/payment/alfamart.png">
+								</div>
+
+									<div class="d-flex justify-content-center mt-2">
+								'. DNS1D::getBarcodeHTML($shoppingcart->shoppingcart_payment->va_number, 'C128',2.5,73,'black', 18) .'
+									</div>
+								
+								
+								<div class="mt-2 mb-2">Total Bill : <b>'. $amount_text .'</b></div>
 
 								
 								</div>

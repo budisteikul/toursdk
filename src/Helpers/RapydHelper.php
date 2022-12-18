@@ -84,6 +84,11 @@ class RapydHelper {
                 $data->bank_code = "013";
                 $data->bank_payment_type = "id_permata_bank";
             break;
+            case "mandiri":
+                $data->bank_name = "Mandiri Bank";
+                $data->bank_code = "013";
+                $data->bank_payment_type = "id_mandiri_bank";
+            break;
             case "grabpay":
                 $data->bank_name = "GrabPay";
                 $data->bank_code = "";

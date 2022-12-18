@@ -260,7 +260,7 @@ class APIController extends Controller
                 case 'mandiri':
                     BookingHelper::set_bookingStatus($sessionId,'PENDING');
                     BookingHelper::set_confirmationCode($sessionId);
-                    $response = BookingHelper::create_payment($sessionId,"doku","mandiri");
+                    $response = BookingHelper::create_payment($sessionId,"rapyd","mandiri");
                 break;
 
                 case 'bni':

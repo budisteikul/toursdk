@@ -363,7 +363,7 @@ class ContentHelper {
         ];
         
         $indonesia_list[] = [
-            'value' => 'alfamart', 'label' => 'Cash on Alfamart', 'image' => self::env_appAssetUrl() .'/img/payment/alfamart.png', 'currency' => 'idr',
+            'value' => 'alfamart', 'label' => 'Cash', 'image' => self::env_appAssetUrl() .'/img/payment/alfamart.png', 'currency' => 'idr',
         ];
 
         /*
@@ -625,7 +625,7 @@ class ContentHelper {
                     9. Get your receipt as a proof of payment and you will be notified of the payment status. <br />
                     10. Done.
                     <br /><br />
-                    <i>If you have any difficulty to pay. Just pay cash to our tour guide at meeting point before the tour start ;)</i>
+                    <i>If you have any difficulty to pay. Just pay cash to your tour guide at meeting point before the tour start ;)</i>
                     </div><br />';
                 }
             }

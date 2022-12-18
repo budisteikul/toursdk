@@ -2562,7 +2562,7 @@ class BookingHelper {
 								'. DNS1D::getBarcodeHTML($shoppingcart->shoppingcart_payment->va_number, 'C128',2.5,73,'black', 18) .'
 									</div>
 								
-								
+								<div class="mt-2 mb-2"><b>'. strtoupper($shoppingcart->shoppingcart_payment->payment_provider) .' VIA DOKU</b></div>
 								<div class="mt-2 mb-2">Total Bill : <b>'. $amount_text .'</b></div>
 
 								

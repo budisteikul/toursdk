@@ -229,6 +229,11 @@ class RapydHelper {
             $body = [
                 'amount' => $data->transaction->amount,
                 'currency' => $data->transaction->currency,
+                'customer' => [
+                    'name' => $data->contact->name,
+                    'phone_number' => $data->contact->phone,
+                    'email' => $data->contact->email
+                ],
                 'payment_method' => [
                     'type' => $payment->bank_payment_type,
                     'fields' => []

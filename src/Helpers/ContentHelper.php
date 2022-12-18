@@ -616,11 +616,11 @@ class ContentHelper {
                     <div class="pl-2">
                     1. Take note of your payment code and go to your nearest <b>Alfamart</b>. <br />
                     2. Tell the cashier that you wish to make a <b>'. strtoupper($shoppingcart->shoppingcart_payment->payment_provider) .' VIA DOKU</b> payment. <br />
-                    3. If the cashier is unaware of <b>'. strtoupper($shoppingcart->shoppingcart_payment->payment_provider) .'</b>, provide the instruction to open the e-transaction terminal, choose "<b>no. 2 menu Pembayaran atau cari pada menu search</b>" <br />
+                    3. If the cashier is unaware of <b>'. strtoupper($shoppingcart->shoppingcart_payment->payment_provider) .'</b>, provide the instruction to open the e-transaction terminal, choose "<b>No. 2 menu – Pembayaran</b>", or lookup the <b>'. strtoupper($shoppingcart->shoppingcart_payment->payment_provider) .' in the Search menu" <br />
                     4. Ask cashier to press "<b>Shift</b>" and "<b>?</b>" and then type <b>'. strtoupper($shoppingcart->shoppingcart_payment->payment_provider) .'</b>, continue by clicking OK. <br />
                     5. Ask cashier to choose "<b>'. strtoupper($shoppingcart->shoppingcart_payment->payment_provider) .' VIA DOKU</b>". <br />
                     6. Cashier will request your payment code. Inform your payment code <b>'. $shoppingcart->shoppingcart_payment->va_number .'</b>. <br />
-                    7. Cashier will confirm customer data such as Nama Merchant, Nama Konsumen, and Nominal. <br />
+                    7. Cashier will confirm customer data such as Merchant Name, Customer Name and Amount. <br />
                     8. Make the payment to cashier according to your transaction amount. <br />
                     9. Get your receipt as a proof of payment and you will be notified of the payment status. <br />
                     10. Done.

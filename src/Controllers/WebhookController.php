@@ -83,7 +83,6 @@ class WebhookController extends Controller
             switch($request->input('action'))
             {
             case 'BOOKING_CONFIRMED':
-
                 if(Shoppingcart::where('confirmation_code','BR-'.$data['externalBookingReference'])->count()==0)
                 {
                     $shoppingcart = BookingHelper::webhook_insert_shoppingcart($data);
@@ -96,6 +95,7 @@ class WebhookController extends Controller
             case 'BOOKING_ITEM_CANCELLED':
                 $shoppingcart = Shoppingcart::where('confirmation_code','BR-'.$data['externalBookingReference'])->firstOrFail();
                 BookingHelper::confirm_payment($shoppingcart,"CANCELED",true);
+                BookingHelper::shoppingcart_notif($shoppingcart);
                 return response('OK', 200)->header('Content-Type', 'text/plain');
             break;
             }

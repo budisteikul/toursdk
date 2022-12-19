@@ -29,6 +29,23 @@ class WiseHelper {
         }
     }
 
+    public function getBank($bank_code)
+    {
+        $bank_name = null;
+        $banks = json_decode($this->GET('/v1/banks?country=ID'));
+        foreach($banks->values as $bank)
+        {
+            if($bank->code==$bank_code)
+            {
+                $bank_name=$bank->title;
+            }
+            
+        }
+        return $bank_name;
+    }
+
+    
+
     public function getRecipientAccounts(){
         return json_decode($this->GET('/v1/accounts?profile='. $this->tw->profileId .'&currency=IDR'));
     }

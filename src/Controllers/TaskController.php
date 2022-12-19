@@ -69,13 +69,16 @@ class TaskController extends Controller
             $confirmation_code = $data->confirmation_code;
             $session_id = $data->session_id;
 
+            
+
             $shoppingcart = Shoppingcart::where('session_id',$session_id)->where('confirmation_code',$confirmation_code)->first();
             if($shoppingcart)
             {
-                
+                $booking_status = "New";
+                if($shoppingcart->booking_status=="CANCELED") $booking_status = "Canceled";
                 foreach($shoppingcart->shoppingcart_products as $product)
                 {
-                    $title = "New Booking: ". ProductHelper::datetotext($product->date) .' ('.$confirmation_code.')';
+                    $title = $booking_status . " Booking: ". ProductHelper::datetotext($product->date) .' ('.$confirmation_code.')';
                     
 
                     $message = $product->title .'

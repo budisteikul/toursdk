@@ -47,6 +47,17 @@ class TaskController extends Controller
 
                 $fund = $tw->postFundTransfer($transfer->id);
                 
+                    curl_setopt_array($ch = curl_init(), array(
+                    CURLOPT_URL => "https://api.pushover.net/1/messages.json",
+                    CURLOPT_POSTFIELDS => array(
+                        "token" => env('PUSHOVER_TOKEN'),
+                        "user" => env('PUSHOVER_USER'),
+                        "title" => 'New Transfer From Wise',
+                        "message" => 'Amount : '. $data->currency .' '. $data->amount,
+                    ),
+                    ));
+                    curl_exec($ch);
+                    curl_close($ch);
 
                 return response('OK', 200)->header('Content-Type', 'text/plain');
             }

@@ -363,7 +363,7 @@ class ContentHelper {
         ];
         
         $indonesia_list[] = [
-            'value' => 'alfamart', 'label' => 'Cash', 'image' => self::env_appAssetUrl() .'/img/payment/alfamart.png', 'currency' => 'idr',
+            'value' => 'alfamart', 'label' => 'Cash on Alfamart', 'image' => self::env_appAssetUrl() .'/img/payment/alfamart.png', 'currency' => 'idr',
         ];
 
         /*

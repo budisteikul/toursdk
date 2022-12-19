@@ -26,10 +26,7 @@ class WebhookController extends Controller
 
     public function test(Request $request)
     {
-        //8888 8041 0014 5849
-        //echo DNS1D::getBarcodeHTML('8888804100145849', 'C128',2,73,'black', 18);
-        $aaa =  DNS1D::getBarcodePNGPath('8888804100145849', 'C128',2,73,'black', 18);
-        echo '<img src="' . $aaa . '" alt="barcode"   />';
+        
     }
 	
     

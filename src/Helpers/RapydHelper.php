@@ -99,7 +99,7 @@ class RapydHelper {
                 $data->bank_code = "";
                 $data->bank_payment_type = "kr_tmoney_ewallet";
             break;
-            case "alfa":
+            case "alfamart":
                 $data->bank_name = "alfamart";
                 $data->bank_code = "";
                 $data->bank_payment_type = "id_alfa_cash";
@@ -229,7 +229,7 @@ class RapydHelper {
             $data_json->va_number = $data1['data']['textual_codes']['DBS Account No'];
             $data_json->redirect = $data->transaction->finish_url;
         }
-        else if($data->transaction->bank=="alfa")
+        else if($data->transaction->bank=="alfamart")
         {
             $body = [
                 'amount' => $data->transaction->amount,

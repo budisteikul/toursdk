@@ -332,7 +332,7 @@ class APIController extends Controller
                 case 'alfamart':
                     BookingHelper::set_bookingStatus($sessionId,'PENDING');
                     BookingHelper::set_confirmationCode($sessionId);
-                    $response = BookingHelper::create_payment($sessionId,"rapyd","alfa");
+                    $response = BookingHelper::create_payment($sessionId,"rapyd","alfamart");
                 break;
 
                 default:

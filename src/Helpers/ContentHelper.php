@@ -86,7 +86,7 @@ class ContentHelper {
 
             if($product_discount>0)
             {
-                $product_total_asText = '<strike className="text-muted">'.GeneralHelper::numberFormat($product_subtotal).'</strike><br /><b>'.GeneralHelper::numberFormat($product_total).'</b>';
+                $product_total_asText = '<strike class="text-muted">'.GeneralHelper::numberFormat($product_subtotal).'</strike><br /><b>'.GeneralHelper::numberFormat($product_total).'</b>';
             }
             else
             {
@@ -100,7 +100,7 @@ class ContentHelper {
                 {
                     if($product_detail->discount > 0)
                     {
-                        $pickup_price_asText = '<strike className="text-muted">'. GeneralHelper::numberFormat($product_detail->subtotal) .'</strike><br /><b>'. GeneralHelper::numberFormat($product_detail->total) .'</b>';
+                        $pickup_price_asText = '<strike class="text-muted">'. GeneralHelper::numberFormat($product_detail->subtotal) .'</strike><br /><b>'. GeneralHelper::numberFormat($product_detail->total) .'</b>';
                     }
                     else
                     {
@@ -126,7 +126,7 @@ class ContentHelper {
                     $extra_unit_price_asText = $product_detail->qty .' '. $product_detail->unit_price;
                     if($product_detail->discount > 0)
                     {
-                        $extra_price_asText = '<strike className="text-muted">'. GeneralHelper::numberFormat($product_detail->subtotal) .'</strike><br /><b>'. GeneralHelper::numberFormat($product_detail->total) .'</b>';
+                        $extra_price_asText = '<strike class="text-muted">'. GeneralHelper::numberFormat($product_detail->subtotal) .'</strike><br /><b>'. GeneralHelper::numberFormat($product_detail->total) .'</b>';
                     }
                     else
                     {
@@ -508,16 +508,26 @@ class ContentHelper {
                 'paypal_total' => GeneralHelper::numberFormat(BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,self::env_paypalCurrency(),"PAYPAL"),'USD'),
                 'paypal_rate' => BookingHelper::text_rate($shoppingcart,self::env_paypalCurrency(),"PAYPAL"),
                 'paypal_sdk' => $paypal_sdk,
+                'paypal_label' => '<strong class="mb-1"><img src="'. self::env_appAssetUrl() .'/img/payment/paypal.png" height="25" alt="Paypal" /></strong>',
 
                 // Stripe Currency
                 'stripe_currency' => 'USD',
                 'stripe_total' => GeneralHelper::numberFormat(BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'USD'),'USD'),
                 'stripe_rate' => BookingHelper::text_rate($shoppingcart,'USD'),
+                'stripe_label' => '
+                <strong class="mb-1">Card Payments 
+                    <img class="ml-2" src="'. self::env_appAssetUrl() .'/img/payment/stripe.png" height="20" alt="Card Payment" />
+                </strong>
+
+                <div class="ml-0 mb-1 mt-2">
+                    <img src="'. self::env_appAssetUrl() .'/img/payment/card-payment.png" style="max-height:40px" class="img-fluid" alt="Payment Logo" />
+                </div>',
 
                 // Local Payment Currency
                 'localpayment_currency' => 'IDR',
                 'localpayment_total' => GeneralHelper::numberFormat(BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'IDR'),'IDR'),
                 'localpayment_rate' => BookingHelper::text_rate($shoppingcart,'IDR'),
+                'localpayment_label' => '<strong class="mb-1">Local Payments</strong>',
 
                 // IDR Currency
                 'idr_currency' => 'IDR',

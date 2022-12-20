@@ -527,7 +527,7 @@ class ContentHelper {
                 'localpayment_currency' => 'IDR',
                 'localpayment_total' => GeneralHelper::numberFormat(BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'IDR'),'IDR'),
                 'localpayment_rate' => BookingHelper::text_rate($shoppingcart,'IDR'),
-                'localpayment_label' => '<strong class="mb-1">Local Payments</strong>',
+                'localpayment_label' => '<strong class="mb-1">Local Payments</strong> <small>by Rapyd</small>',
 
                 // IDR Currency
                 'idr_currency' => 'IDR',

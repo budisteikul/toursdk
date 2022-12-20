@@ -639,7 +639,7 @@ class ContentHelper {
                     9. Get your receipt as a proof of payment and you will be notified of the payment status. <br />
                     10. Done.
                     <br /><br />
-                    <i>If you have any difficulty to pay. Just pay cash to your tour guide at meeting point before the tour start ;)</i>
+                    <i>If you have any difficulty to pay. No worries! Give it money to your tour guide at meeting point before the tour start ;)</i>
                     </div><br />';
                 }
             }

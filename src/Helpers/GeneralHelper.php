@@ -1,7 +1,10 @@
 <?php
 namespace budisteikul\toursdk\Helpers;
 
+
 class GeneralHelper {
+
+    
 
     public static function digitFormat($number,$digit)
     {

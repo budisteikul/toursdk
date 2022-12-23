@@ -36,7 +36,8 @@
         "laravel": {
             "providers": [
                 "budisteikul\\toursdk\\TourSDKServiceProvider",
-                "SimpleSoftwareIO\\QrCode\\QrCodeServiceProvider"
+                "SimpleSoftwareIO\\QrCode\\QrCodeServiceProvider",
+                "Barryvdh\\DomPDF\\ServiceProvider"
             ],
             "aliases": {
                 "QrCode": "SimpleSoftwareIO\\QrCode\\Facades\\QrCode",

@@ -29,7 +29,7 @@
         "psr-4": {
             "budisteikul\\toursdk\\": "src/",
             "Zxing\\": "src/Libs/Zxing/",
-            "Barryvdh\\DomPDF\\": "src/Libs/src"
+            "Barryvdh\\DomPDF\\": "src/Libs/"
 
         }
     },

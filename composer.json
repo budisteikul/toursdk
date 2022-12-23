@@ -24,12 +24,18 @@
     },
     "autoload": {
         "psr-0": {
-            "SimpleSoftwareIO\\QrCode\\": "src/Libs/",
-            "Barryvdh\\DomPDF\\": "src/Libs/"
+            "SimpleSoftwareIO\\QrCode\\": "src/Libs/"
         },
         "psr-4": {
             "budisteikul\\toursdk\\": "src/",
-            "Zxing\\": "src/Libs/Zxing/"
+            "Zxing\\": "src/Libs/Zxing/",
+            "Barryvdh\\DomPDF\\": "src/Libs/src"
+
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Barryvdh\\DomPDF\\Tests\\": "src/Libs/tests"
         }
     },
     "extra": {
@@ -41,7 +47,7 @@
             ],
             "aliases": {
                 "QrCode": "SimpleSoftwareIO\\QrCode\\Facades\\QrCode",
-                "PDF": "Barryvdh\\DomPDF\\Facade"
+                "PDF": "Barryvdh\\DomPDF\\Facade\\Pdf"
             }
         }
     }

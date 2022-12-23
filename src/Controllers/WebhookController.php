@@ -24,10 +24,7 @@ class WebhookController extends Controller
 
     public function test(Request $request)
     {
-        $tw = new WiseHelper();
-        $aaa = $tw->getRecipientAccounts();
-        print_r($aaa);
-                
+             
     }
 	
     

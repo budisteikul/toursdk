@@ -8,7 +8,7 @@
         }
     ],
     "require": {
-        "barryvdh/laravel-dompdf": "^1.0",
+        "barryvdh/laravel-dompdf": "^2.0",
         "paypal/paypal-checkout-sdk": "^1.0",
         "yajra/laravel-datatables-oracle": "^10.2",
         "spatie/laravel-google-cloud-storage": "^2.0",

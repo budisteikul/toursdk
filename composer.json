@@ -30,7 +30,7 @@
             "budisteikul\\toursdk\\": "src/",
             "Zxing\\": "src/Libs/Zxing/",
             "Barryvdh\\DomPDF\\": "src/Libs/barryvdh/laravel-dompdf/src/",
-            "Dompdf\\Dompdf": "src/Libs/dompdf/dompdf/src/"
+            "Dompdf\\Dompdf\\": "src/Libs/dompdf/dompdf/src/"
         }
     },
     "extra": {

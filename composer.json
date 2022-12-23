@@ -39,7 +39,8 @@
                 "SimpleSoftwareIO\\QrCode\\QrCodeServiceProvider"
             ],
             "aliases": {
-                "QrCode": "SimpleSoftwareIO\\QrCode\\Facades\\QrCode"
+                "QrCode": "SimpleSoftwareIO\\QrCode\\Facades\\QrCode",
+                "PDF": "Barryvdh\\DomPDF\\Facade"
             }
         }
     }

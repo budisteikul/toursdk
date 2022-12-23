@@ -29,6 +29,7 @@ class WiseHelper {
         }
     }
 
+    /*
     public function getBank($bank_code)
     {
         $bank_name = null;
@@ -43,8 +44,12 @@ class WiseHelper {
         }
         return $bank_name;
     }
+    */
 
-    
+    public function getBank()
+    {
+        return json_decode($this->GET('/v1/banks?country=ID'));
+    }    
 
     public function getRecipientAccounts(){
         return json_decode($this->GET('/v1/accounts?profile='. $this->tw->profileId .'&currency=IDR'));
@@ -72,6 +77,33 @@ class WiseHelper {
         $data->sourceAmount		= $sourceAmount;
         $data->payOut			= 'BALANCE';
         return json_decode($this->POST('/v3/profiles/'.$data->profileId.'/quotes',$data));
+    }
+
+    public function createRecipient($bankCode,$accountNumber)
+    {
+        $data = new \stdClass();
+        $data->details = new \stdClass();
+        $data->details->address = new \stdClass();
+
+        $data->currency = 'IDR';
+        $data->profile = $this->tw->profileId;
+        $data->accountHolderName = 'BUDIYANTO';
+        $data->type = 'indonesian';
+        $data->ownedByCustomer = true;
+        
+        $data->details->legalType = 'PRIVATE';
+        $data->details->bankCode = $bankCode;
+        $data->details->accountNumber = $accountNumber;
+        $data->details->email = '';
+
+        $data->details->address->country = 'ID';
+        $data->details->address->countryCode = 'ID';
+        $data->details->address->firstLine = 'PERUM GUWOSARI BLOK XII, JALAN ABIYOSO VII NO.190';
+        $data->details->address->postCode = '55751';
+        $data->details->address->city = 'BANTUL';
+        $data->details->address->state = '';
+
+        return json_decode($this->POST('/v1/accounts',$data));
     }
 
     public function postCreateTransfer($quoteId,$customerTransactionId=null,$targetAccount=null,$reference=null){

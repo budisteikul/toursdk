@@ -28,17 +28,20 @@
         },
         "psr-4": {
             "budisteikul\\toursdk\\": "src/",
-            "Zxing\\": "src/Libs/Zxing/"
+            "Zxing\\": "src/Libs/Zxing/",
+            "Barryvdh\\DomPDF\\": "src/Libs/barryvdh/laravel-dompdf/src/"
         }
     },
     "extra": {
         "laravel": {
             "providers": [
                 "budisteikul\\toursdk\\TourSDKServiceProvider",
-                "SimpleSoftwareIO\\QrCode\\QrCodeServiceProvider"
+                "SimpleSoftwareIO\\QrCode\\QrCodeServiceProvider",
+                "Barryvdh\\DomPDF\\ServiceProvider"
             ],
             "aliases": {
-                "QrCode": "SimpleSoftwareIO\\QrCode\\Facades\\QrCode"
+                "QrCode": "SimpleSoftwareIO\\QrCode\\Facades\\QrCode",
+                "PDF": "Barryvdh\\DomPDF\\Facade\\Pdf"
             }
         }
     }

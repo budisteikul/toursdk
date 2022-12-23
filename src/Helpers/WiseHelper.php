@@ -4,6 +4,7 @@ use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\Exception\UnsatisfiedDependencyException;
 use Illuminate\Support\Facades\Storage;
 
+
 class WiseHelper {
 
     private $tw;
@@ -79,7 +80,7 @@ class WiseHelper {
         return json_decode($this->POST('/v3/profiles/'.$data->profileId.'/quotes',$data));
     }
 
-    public function createRecipient($bankCode,$accountNumber)
+    public function createRecipient($accountHolderName,$bankCode,$accountNumber)
     {
         $data = new \stdClass();
         $data->details = new \stdClass();
@@ -87,7 +88,7 @@ class WiseHelper {
 
         $data->currency = 'IDR';
         $data->profile = $this->tw->profileId;
-        $data->accountHolderName = 'BUDIYANTO';
+        $data->accountHolderName = $accountHolderName;
         $data->type = 'indonesian';
         $data->ownedByCustomer = true;
         

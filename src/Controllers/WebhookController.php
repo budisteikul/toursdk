@@ -8,9 +8,6 @@ use budisteikul\toursdk\Models\Shoppingcart;
 use budisteikul\toursdk\Helpers\WiseHelper;
 use budisteikul\toursdk\Helpers\TaskHelper;
 
-
-
-
 class WebhookController extends Controller
 {
     
@@ -24,7 +21,13 @@ class WebhookController extends Controller
 
     public function test(Request $request)
     {
-             
+                //$targetAccount = null;
+                //$recipient = Recipient::where('auto_transfer',1)->first();
+                //if($recipient)
+                //{
+                    //$targetAccount = $recipient->wise_id;
+                //}
+                //print_r($targetAccount);
     }
 	
     

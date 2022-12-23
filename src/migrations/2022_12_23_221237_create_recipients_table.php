@@ -13,10 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('settings', function (Blueprint $table) {
+        Schema::create('recipients', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->nullable();
-            $table->text('value')->nullable();
+            $table->string('wise_id')->nullable();
+            $table->string('nickname')->nullable();
+            $table->string('account_holder')->nullable();
+            $table->string('account_number')->nullable();
+            $table->tinyInteger('auto_transfer')->default(0);
             $table->timestamps(6);
         });
     }
@@ -28,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('settings');
+        Schema::dropIfExists('recipients');
     }
 };

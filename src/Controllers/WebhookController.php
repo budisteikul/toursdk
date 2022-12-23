@@ -8,7 +8,7 @@ use budisteikul\toursdk\Models\Shoppingcart;
 use budisteikul\toursdk\Helpers\WiseHelper;
 use budisteikul\toursdk\Helpers\TaskHelper;
 
-
+use budisteikul\tourcms\Helpers\CMSHelper;
 
 
 class WebhookController extends Controller
@@ -24,8 +24,8 @@ class WebhookController extends Controller
 
     public function test(Request $request)
     {
-                $date = '2022-08-12 00:00:00';
-
+        $date = '2022-08-12 00:00:00';
+        CMSHelper::cache_saldo_forget($date);
                 
     }
 	

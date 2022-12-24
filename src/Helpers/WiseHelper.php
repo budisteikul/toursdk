@@ -80,6 +80,11 @@ class WiseHelper {
         return json_decode($this->POST('/v3/profiles/'.$data->profileId.'/quotes',$data));
     }
 
+    public function deleteRecipient($id)
+    {
+        return json_decode($this->DELETE('/v1/accounts/'. $id));
+    }
+
     public function createRecipient($accountHolderName,$bankCode,$accountNumber)
     {
         $data = new \stdClass();

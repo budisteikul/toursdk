@@ -3,7 +3,7 @@ namespace budisteikul\toursdk\Helpers;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\Exception\UnsatisfiedDependencyException;
 use Illuminate\Support\Facades\Storage;
-
+use Illuminate\Support\Facades\Cache;
 
 class WiseHelper {
 
@@ -49,7 +49,11 @@ class WiseHelper {
 
     public function getBank()
     {
-        return json_decode($this->GET('/v1/banks?country=ID'));
+        $value = Cache::remember('_bank_code',86400, function() use ($currency,$lang,$bookingChannel)
+        {
+            return json_decode($this->GET('/v1/banks?country=ID'));
+        });
+        return $value;
     }    
 
     public function getRecipientAccounts(){

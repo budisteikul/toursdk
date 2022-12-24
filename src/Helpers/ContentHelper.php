@@ -352,25 +352,22 @@ class ContentHelper {
         ];
         */
 
-        /*
+        
 
         $indonesia_list[] = [
             'value' => 'qris', 'label' => 'QRIS', 'image' => self::env_appAssetUrl() .'/img/payment/qris.png', 'currency' => 'idr',
         ];
 
         $indonesia_list[] = [
-            'value' => 'permata', 'label' => 'Bank Transfer', 'image' => self::env_appAssetUrl() .'/img/payment/permata.png', 'currency' => 'idr',
-        ];
-        */
-
-        $indonesia_list[] = [
             'value' => 'mandiri', 'label' => 'Bank Transfer', 'image' => self::env_appAssetUrl() .'/img/payment/mandiri.png', 'currency' => 'idr',
         ];
 
-        
+        $indonesia_list[] = [
+            'value' => 'permata', 'label' => 'Bank Transfer', 'image' => self::env_appAssetUrl() .'/img/payment/permata.png', 'currency' => 'idr',
+        ];
         
         $indonesia_list[] = [
-            'value' => 'alfamart', 'label' => 'Cash', 'image' => self::env_appAssetUrl() .'/img/payment/alfamart.png', 'currency' => 'idr',
+            'value' => 'alfamart', 'label' => 'Cash on Alfamart', 'image' => self::env_appAssetUrl() .'/img/payment/alfamart.png', 'currency' => 'idr',
         ];
 
         /*

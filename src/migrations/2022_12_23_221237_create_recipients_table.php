@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('recipients', function (Blueprint $table) {
             $table->id();
             $table->string('wise_id')->nullable();
-            $table->string('nickname')->nullable();
+            $table->string('bank_name')->nullable();
             $table->string('account_holder')->nullable();
             $table->string('account_number')->nullable();
             $table->tinyInteger('auto_transfer')->default(0);

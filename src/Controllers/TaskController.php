@@ -88,6 +88,8 @@ class TaskController extends Controller
             {
                 $booking_status = "New";
                 if($shoppingcart->booking_status=="CANCELED") $booking_status = "Canceled";
+                if($shoppingcart->booking_status=="PENDING") $booking_status = "Pending";
+                
                 foreach($shoppingcart->shoppingcart_products as $product)
                 {
                     $title = $booking_status . " Booking: ". ProductHelper::datetotext($product->date) .' ('.$confirmation_code.')';

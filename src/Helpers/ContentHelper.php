@@ -367,6 +367,10 @@ class ContentHelper {
             'value' => 'permata', 'label' => 'Bank Transfer', 'image' => self::env_appAssetUrl() .'/img/payment/permata.png', 'currency' => 'idr',
         ];
 
+        $indonesia_list[] = [
+            'value' => 'cimb', 'label' => 'Bank Transfer',  'image' => self::env_appAssetUrl() .'/img/payment/cimb.png', 'currency' => 'idr',
+        ];
+
         if($shoppingcart->due_now<=2000000)
         {
             $indonesia_list[] = [

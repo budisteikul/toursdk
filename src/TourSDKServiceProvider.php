@@ -23,6 +23,7 @@ class TourSDKServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        $this->registerConfig();
         $this->loadViewsFrom(__DIR__.'/views', 'toursdk');
         $this->loadMigrationsFrom(__DIR__.'/migrations/2020_11_17_133006_create_categories_table.php');
 		$this->loadMigrationsFrom(__DIR__.'/migrations/2020_11_17_222702_create_products_table.php');
@@ -42,5 +43,21 @@ class TourSDKServiceProvider extends ServiceProvider
         $this->loadMigrationsFrom(__DIR__.'/migrations/2022_12_23_220624_create_settings_table.php');
         $this->loadMigrationsFrom(__DIR__.'/migrations/2022_12_23_221237_create_recipients_table.php');
         $this->loadRoutesFrom(__DIR__.'/routes/web.php');
+    }
+
+    protected function registerConfig()
+    {
+        app()->config["filesystems.disks.gcs"] = [
+            'driver' => 'gcs',
+            'key_file_path' => env('GOOGLE_CLOUD_KEY_FILE', null), 
+            'key_file' => [], 
+            'project_id' => env('GOOGLE_CLOUD_PROJECT_ID', 'your-project-id'), 
+            'bucket' => env('GOOGLE_CLOUD_STORAGE_BUCKET', 'your-bucket'),
+            'path_prefix' => env('GOOGLE_CLOUD_STORAGE_PATH_PREFIX', ''), 
+            'storage_api_uri' => env('GOOGLE_CLOUD_STORAGE_API_URI', null), 
+            'apiEndpoint' => env('GOOGLE_CLOUD_STORAGE_API_ENDPOINT', null), 
+            'visibility' => 'public', 
+            'metadata' => ['cacheControl'=> 'public,max-age=86400'], 
+        ];
     }
 }

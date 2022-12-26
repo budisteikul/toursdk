@@ -20,8 +20,7 @@
         "html2text/html2text": "^4.3",
         "google/cloud-tasks": "^1.11",
         "milon/barcode": "^9.0",
-        "propaganistas/laravel-phone": "^4.4",
-        "barryvdh/laravel-dompdf": "^2.0"
+        "propaganistas/laravel-phone": "^4.4"
     },
     "autoload": {
         "psr-0": {

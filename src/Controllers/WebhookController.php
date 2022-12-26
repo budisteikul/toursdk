@@ -8,6 +8,8 @@ use budisteikul\toursdk\Models\Shoppingcart;
 use budisteikul\toursdk\Helpers\WiseHelper;
 use budisteikul\toursdk\Helpers\TaskHelper;
 
+
+
 class WebhookController extends Controller
 {
     
@@ -17,13 +19,6 @@ class WebhookController extends Controller
         
     }
 
-    
-
-    public function test(Request $request)
-    {
-            
-    }
-	
     
 
     public function webhook($webhook_app,Request $request)

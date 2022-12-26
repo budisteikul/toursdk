@@ -88,7 +88,4 @@
 	// TASK
 	Route::post('/task', 'budisteikul\toursdk\Controllers\TaskController@task');
 
-	Route::get('/testwise', 'budisteikul\toursdk\Controllers\WebhookController@test');
-	Route::post('/testwise', 'budisteikul\toursdk\Controllers\WebhookController@test');
-
 	

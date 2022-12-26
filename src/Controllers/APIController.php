@@ -284,7 +284,7 @@ class APIController extends Controller
                 case 'cimb':
                     BookingHelper::set_bookingStatus($sessionId,'PENDING');
                     BookingHelper::set_confirmationCode($sessionId);
-                    $response = BookingHelper::create_payment($sessionId,"doku","cimb");
+                    $response = BookingHelper::create_payment($sessionId,"rapyd","cimb");
                 break;
 
                 case 'doku':

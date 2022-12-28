@@ -50,6 +50,85 @@ class APIController extends Controller
         $this->appAssetUrl = env("APP_ASSET_URL");
     }
 
+    public function navbar($sessionId)
+    {
+        $categories = Category::where('parent_id',0)->get();
+        $json_ld = self::json_ld();
+        return response()->json([
+            'message' => 'success',
+            'json_ld' => $json_ld,
+            'categories' => $categories
+        ], 200);
+    }
+
+    public function review_rate()
+    {
+        $rating = Review::sum('rating');
+        $count = Review::count();
+        if($count==0) $count = 1;
+
+        $rate = $rating/$count;
+        if ( strpos( $rate, "." ) !== false ) {
+            $rate = number_format((float)$rate, 2, '.', '');
+        }
+        return $rate;
+    }
+
+    public function json_ld()
+    {
+        $rating = self::review_rate();
+        $count = Review::count();
+        $json = '
+        {
+            "@context": "https://schema.org/",
+            "@type": "Product",
+            "name": "Yogyakarta Night Walking and Food Tours",
+            "image": [
+                "'.env("APP_ASSET_URL").'/img/schema/jogja-food-tour-1x1.jpg",
+                "'.env("APP_ASSET_URL").'/img/schema/jogja-food-tour-4x3.jpg",
+                "'.env("APP_ASSET_URL").'/img/schema/jogja-food-tour-16x9.jpg"
+            ],
+            "description": "See a different side of Yogyakarta, Indonesia’s cultural capital, on this fun night tour jam-packed with street food delights. Join your guide and no more than seven other travelers in the city center, then board a “becak” rickshaw to tour the sights. Savor the light, sweet flavors of Javanese cuisine; soak up the vibrant atmosphere of this university city; try traditional games; and enjoy fairground rides at Alun-Alun Kidul.",
+            "sku": "110844P2",
+            "mpn": "208273",
+            "brand": {
+                "@type": "Brand",
+                "name": "JOGJA FOOD TOUR"
+            },
+            "review": {
+                "@type": "Review",
+                "reviewRating": {
+                    "@type": "Rating",
+                    "ratingValue": "'.$rating.'",
+                    "bestRating": "5"
+                },
+                "author": {
+                    "@type": "Person",
+                    "name": "Travelers"
+                }
+            },
+            "aggregateRating": {
+                "@type": "AggregateRating",
+                "ratingValue": "'.$rating.'",
+                "reviewCount": "'.$count.'"
+            },
+            "offers": {
+                "@type": "Offer",
+                "url": "'.env("APP_URL").'/tour/yogyakarta-night-walking-and-food-tours",
+                "priceCurrency": "IDR",
+                "price": "500000",
+                "priceValidUntil": "2023-12-31",
+                "itemCondition": "https://schema.org/UsedCondition",
+                "availability": "https://schema.org/InStock",
+                "seller": {
+                    "@type": "Organization",
+                    "name": "'.env("APP_NAME").'"
+                }
+            }
+        }';
+        return json_encode(json_decode($json), JSON_UNESCAPED_SLASHES);
+    }
+
     public function schedule_jscript()
     {
         $jscript = '
@@ -149,18 +228,7 @@ class APIController extends Controller
         ], 200);
     }
 
-    public function review_rate()
-    {
-        $rating = Review::sum('rating');
-        $count = Review::count();
-        if($count==0) $count = 1;
-
-        $rate = $rating/$count;
-        if ( strpos( $rate, "." ) !== false ) {
-            $rate = number_format((float)$rate, 2, '.', '');
-        }
-        return $rate;
-    }
+    
 
     
 
@@ -460,14 +528,7 @@ class APIController extends Controller
         return $pdf->download('Ticket-'. $shoppingcart_product->product_confirmation_code .'.pdf');
     }
 
-    public function navbar($sessionId)
-    {
-        $categories = Category::where('parent_id',0)->get();
-        return response()->json([
-            'message' => 'success',
-            'categories' => $categories
-        ], 200);
-    }
+    
 
 
  

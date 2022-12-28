@@ -48,7 +48,11 @@ class TourSDKServiceProvider extends ServiceProvider
     protected function registerConfig()
     {
         
-
+        app()->config["filesystems.disks.local"] = [
+            'driver' => 'local',
+            'root' => env('APP_STORAGE', base_path() . '/storage'),
+            'throw' => false,
+        ];
         
 
         app()->config["filesystems.disks.gcs"] = [

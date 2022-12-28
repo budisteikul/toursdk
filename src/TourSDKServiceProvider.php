@@ -13,7 +13,7 @@ class TourSDKServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        
+        $this->app->useStoragePath(env('APP_STORAGE', base_path() . '/storage'));
     }
 
     /**
@@ -47,6 +47,10 @@ class TourSDKServiceProvider extends ServiceProvider
 
     protected function registerConfig()
     {
+        
+
+        
+
         app()->config["filesystems.disks.gcs"] = [
             'driver' => 'gcs',
             'key_file_path' => env('GOOGLE_CLOUD_KEY_FILE', null), 
@@ -59,5 +63,7 @@ class TourSDKServiceProvider extends ServiceProvider
             'visibility' => 'public', 
             'metadata' => ['cacheControl'=> 'public,max-age=86400'], 
         ];
+
+
     }
 }

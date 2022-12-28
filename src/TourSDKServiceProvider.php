@@ -13,7 +13,7 @@ class TourSDKServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->useStoragePath(env('APP_STORAGE', base_path() . '/storage'));
+        
     }
 
     /**

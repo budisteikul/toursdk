@@ -2492,7 +2492,7 @@ class BookingHelper {
 
 								<div>Bank Name : </div>
 								<div class="mb-2"><b>'. Str::upper($shoppingcart->shoppingcart_payment->bank_name) .' ('. $shoppingcart->shoppingcart_payment->bank_code .')</b></div>
-								<div>'.$account_number_text.' : </div>
+								<div>'. $account_number_text .' : </div>
 								<div class="mb-2"><b id="va">'. GeneralHelper::splitSpace($shoppingcart->shoppingcart_payment->va_number,4,0) .'</b> 
 								<button id="va_number_button" onclick="copyToClipboard(\'#va_number\')" title="Copied" data-toggle="tooltip" data-placement="right" data-trigger="click" class="btn btn-light btn-sm invoice-hilang"><i class="far fa-copy"></i></button>
 								

@@ -266,19 +266,31 @@ class APIController extends Controller
                 case 'bni':
                     BookingHelper::set_bookingStatus($sessionId,'PENDING');
                     BookingHelper::set_confirmationCode($sessionId);
-                    $response = BookingHelper::create_payment($sessionId,"midtrans","bni");
+                    $response = BookingHelper::create_payment($sessionId,"rapyd","bni");
                 break;
 
                 case 'bri':
                     BookingHelper::set_bookingStatus($sessionId,'PENDING');
                     BookingHelper::set_confirmationCode($sessionId);
-                    $response = BookingHelper::create_payment($sessionId,"midtrans","bri");
+                    $response = BookingHelper::create_payment($sessionId,"rapyd","bri");
                 break;
 
                 case 'danamon':
                     BookingHelper::set_bookingStatus($sessionId,'PENDING');
                     BookingHelper::set_confirmationCode($sessionId);
-                    $response = BookingHelper::create_payment($sessionId,"doku","danamon");
+                    $response = BookingHelper::create_payment($sessionId,"rapyd","danamon");
+                break;
+
+                case 'sinarmas':
+                    BookingHelper::set_bookingStatus($sessionId,'PENDING');
+                    BookingHelper::set_confirmationCode($sessionId);
+                    $response = BookingHelper::create_payment($sessionId,"rapyd","sinarmas");
+                break;
+
+                case 'maybank':
+                    BookingHelper::set_bookingStatus($sessionId,'PENDING');
+                    BookingHelper::set_confirmationCode($sessionId);
+                    $response = BookingHelper::create_payment($sessionId,"rapyd","maybank");
                 break;
 
                 case 'cimb':

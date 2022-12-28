@@ -94,6 +94,26 @@ class RapydHelper {
                 $data->bank_code = "022";
                 $data->bank_payment_type = "id_cimb_bank";
             break;
+            case "bni":
+                $data->bank_name = "BNI Bank";
+                $data->bank_code = "009";
+                $data->bank_payment_type = "id_bni_bank";
+            break;
+            case "sinarmas":
+                $data->bank_name = "Sinarmas Bank";
+                $data->bank_code = "153";
+                $data->bank_payment_type = "id_sinarmas_bank";
+            break;
+            case "maybank":
+                $data->bank_name = "Maybank";
+                $data->bank_code = "016";
+                $data->bank_payment_type = "id_maybank_bank";
+            break;
+            case "danamon":
+                $data->bank_name = "Danamon Bank";
+                $data->bank_code = "011";
+                $data->bank_payment_type = "id_danamon_bank";
+            break;
             case "grabpay":
                 $data->bank_name = "GrabPay";
                 $data->bank_code = "";
@@ -126,6 +146,7 @@ class RapydHelper {
         $status_json = new \stdClass();
         $response_json = new \stdClass();
 
+        
         if($data->transaction->bank=="paynow")
         {
             $body = [
@@ -236,6 +257,7 @@ class RapydHelper {
         }
         else if($data->transaction->bank=="alfamart")
         {
+
             $body = [
                 'amount' => $data->transaction->amount,
                 'currency' => $data->transaction->currency,
@@ -250,14 +272,18 @@ class RapydHelper {
                 ]
             ];
 
+
+            
             $data1 = self::make_request('post','/v1/payments',$body);
             
+           
             $data_json->payment_type = 'cash';
             $data_json->va_number = $data1['data']['textual_codes']['pay_code'];
             $data_json->redirect = $data->transaction->finish_url;
         }
         else
         {
+
             $body = [
                 'amount' => $data->transaction->amount,
                 'currency' => $data->transaction->currency,

@@ -360,15 +360,35 @@ class ContentHelper {
         }
 
         $indonesia_list[] = [
-            'value' => 'mandiri', 'label' => 'Bank Transfer', 'image' => self::env_appAssetUrl() .'/img/payment/mandiri.png', 'currency' => 'idr',
+            'value' => 'mandiri', 'label' => 'Mandiri VA', 'image' => self::env_appAssetUrl() .'/img/payment/mandiri.png', 'currency' => 'idr',
         ];
 
         $indonesia_list[] = [
-            'value' => 'permata', 'label' => 'Bank Transfer', 'image' => self::env_appAssetUrl() .'/img/payment/permata.png', 'currency' => 'idr',
+            'value' => 'permata', 'label' => 'Permata VA', 'image' => self::env_appAssetUrl() .'/img/payment/permata.png', 'currency' => 'idr',
         ];
 
         $indonesia_list[] = [
-            'value' => 'cimb', 'label' => 'Bank Transfer',  'image' => self::env_appAssetUrl() .'/img/payment/cimb.png', 'currency' => 'idr',
+            'value' => 'cimb', 'label' => 'CIMB VA',  'image' => self::env_appAssetUrl() .'/img/payment/cimb.png', 'currency' => 'idr',
+        ];
+
+        $indonesia_list[] = [
+            'value' => 'bni', 'label' => 'BNI VA',  'image' => self::env_appAssetUrl() .'/img/payment/bni.png', 'currency' => 'idr',
+        ];
+
+        $indonesia_list[] = [
+            'value' => 'bri', 'label' => 'BRI VA',  'image' => self::env_appAssetUrl() .'/img/payment/bri.png', 'currency' => 'idr',
+        ];
+
+        $indonesia_list[] = [
+            'value' => 'sinarmas', 'label' => 'Sinarmas VA',  'image' => self::env_appAssetUrl() .'/img/payment/sinarmas.png', 'currency' => 'idr',
+        ];
+
+        $indonesia_list[] = [
+            'value' => 'maybank', 'label' => 'Maybank VA',  'image' => self::env_appAssetUrl() .'/img/payment/maybank.png', 'currency' => 'idr',
+        ];
+
+        $indonesia_list[] = [
+            'value' => 'danamon', 'label' => 'Danamon VA',  'image' => self::env_appAssetUrl() .'/img/payment/danamon.png', 'currency' => 'idr',
         ];
 
         if($shoppingcart->due_now<=2000000)

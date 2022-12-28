@@ -352,12 +352,14 @@ class ContentHelper {
         ];
         */
 
+        /*
         if($shoppingcart->due_now<=2000000)
         {
             $indonesia_list[] = [
                 'value' => 'qris', 'label' => 'QRIS', 'image' => self::env_appAssetUrl() .'/img/payment/qris.png', 'currency' => 'idr',
             ];
         }
+        */
 
         $indonesia_list[] = [
             'value' => 'mandiri', 'label' => 'Mandiri VA', 'image' => self::env_appAssetUrl() .'/img/payment/mandiri.png', 'currency' => 'idr',

@@ -373,6 +373,7 @@ class ContentHelper {
             'value' => 'cimb', 'label' => 'CIMB VA',  'image' => self::env_appAssetUrl() .'/img/payment/cimb.png', 'currency' => 'idr',
         ];
 
+        /*
         $indonesia_list[] = [
             'value' => 'bni', 'label' => 'BNI VA',  'image' => self::env_appAssetUrl() .'/img/payment/bni.png', 'currency' => 'idr',
         ];
@@ -392,7 +393,8 @@ class ContentHelper {
         $indonesia_list[] = [
             'value' => 'danamon', 'label' => 'Danamon VA',  'image' => self::env_appAssetUrl() .'/img/payment/danamon.png', 'currency' => 'idr',
         ];
-
+        */
+        
         if($shoppingcart->due_now<=2000000)
         {
             $indonesia_list[] = [
@@ -442,14 +444,16 @@ class ContentHelper {
         ];
         */
 
-        
-
-        $grouped_payment[] = [
-            'label' => 'INDONESIA',
-            'options' => $indonesia_list
+        $singapore_list[] = [
+            'value' => 'paynow', 'label' => 'Paynow QR', 'image' => self::env_appAssetUrl() .'/img/payment/paynow.png', 'currency' => 'sgd',
         ];
-
-        
+        $singapore_list[] = [
+            'value' => 'fast', 'label' => 'FAST Transfer', 'image' => self::env_appAssetUrl() .'/img/payment/dbs.png', 'currency' => 'sgd',
+        ];
+        $grouped_payment[] = [
+            'label' => 'SINGAPORE',
+            'options' => $singapore_list
+        ];
 
         $australia_list[] = [
             'value' => 'poli', 'label' => 'POLi', 'image' => self::env_appAssetUrl() .'/img/payment/poli.png', 'currency' => 'aud',
@@ -458,6 +462,15 @@ class ContentHelper {
             'label' => 'AUSTRALIA',
             'options' => $australia_list
         ];
+
+        $grouped_payment[] = [
+            'label' => 'INDONESIA',
+            'options' => $indonesia_list
+        ];
+
+        
+
+        
 
         /*
         $philippines_list[] = [
@@ -469,16 +482,7 @@ class ContentHelper {
         ];
         */
 
-        $singapore_list[] = [
-            'value' => 'paynow', 'label' => 'Paynow QR', 'image' => self::env_appAssetUrl() .'/img/payment/paynow.png', 'currency' => 'sgd',
-        ];
-        $singapore_list[] = [
-            'value' => 'fast', 'label' => 'FAST Transfer', 'image' => self::env_appAssetUrl() .'/img/payment/dbs.png', 'currency' => 'sgd',
-        ];
-        $grouped_payment[] = [
-            'label' => 'SINGAPORE',
-            'options' => $singapore_list
-        ];
+        
 
         /*
         $southkorea_list[] = [
@@ -551,7 +555,7 @@ class ContentHelper {
                 'localpayment_currency' => 'IDR',
                 'localpayment_total' => GeneralHelper::numberFormat(BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'IDR'),'IDR'),
                 'localpayment_rate' => BookingHelper::text_rate($shoppingcart,'IDR'),
-                'localpayment_label' => '<strong class="mb-1">Bank Transfer</strong> <small>by Rapyd</small>',
+                'localpayment_label' => '<strong class="mb-1">Local Payments</strong> <small>by Rapyd</small>',
 
                 // IDR Currency
                 'idr_currency' => 'IDR',

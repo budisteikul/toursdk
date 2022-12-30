@@ -290,10 +290,6 @@ class ContentHelper {
         
         $payment_enable = 'localpayment,stripe,paypal';
         
-        
-        
-        
-        
         /*
         $bank_transfer_list[] = [
             'value' => 'permata', 'label' => 'PERMATA VA', 'image' => self::env_appAssetUrl() .'/img/payment/permata.png', 'currency' => 'idr',
@@ -448,10 +444,12 @@ class ContentHelper {
         $singapore_list[] = [
             'value' => 'fast', 'label' => 'FAST Transfer', 'image' => self::env_appAssetUrl() .'/img/payment/dbs.png', 'currency' => 'sgd',
         ];
+
         $grouped_payment[] = [
             'label' => 'SINGAPORE',
             'options' => $singapore_list
         ];
+
         /*
         $australia_list[] = [
             'value' => 'poli', 'label' => 'POLi', 'image' => self::env_appAssetUrl() .'/img/payment/poli.png', 'currency' => 'aud',
@@ -461,14 +459,11 @@ class ContentHelper {
             'options' => $australia_list
         ];
         */
+        
         $grouped_payment[] = [
             'label' => 'INDONESIA',
             'options' => $indonesia_list
         ];
-
-        
-
-        
 
         /*
         $philippines_list[] = [

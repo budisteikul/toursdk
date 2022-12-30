@@ -1164,9 +1164,11 @@ class APIController extends Controller
                         if($shoppingcart!==null){
                             if($status=="complete") {
                                 BookingHelper::confirm_payment($shoppingcart,"CONFIRMED");
+                                BookingHelper::shoppingcart_notif($shoppingcart);
                             }
                             if($status=="success") {
                                 BookingHelper::confirm_payment($shoppingcart,"CONFIRMED");
+                                BookingHelper::shoppingcart_notif($shoppingcart);
                             }
                         }
                     }
@@ -1183,6 +1185,7 @@ class APIController extends Controller
                             if($status)
                             {
                                 BookingHelper::confirm_payment($shoppingcart,"CONFIRMED");
+                                BookingHelper::shoppingcart_notif($shoppingcart);
                             }
                         }
                     }
@@ -1199,6 +1202,7 @@ class APIController extends Controller
                             if($status)
                             {
                                 BookingHelper::confirm_payment($shoppingcart,"CONFIRMED");
+                                BookingHelper::shoppingcart_notif($shoppingcart);
                             }
                         }
                     }
@@ -1225,6 +1229,7 @@ class APIController extends Controller
                     if($transaction_status=="CLO")
                     {
                         BookingHelper::confirm_payment($shoppingcart,"CONFIRMED");
+                        BookingHelper::shoppingcart_notif($shoppingcart);
                     }
                 }
             }
@@ -1233,8 +1238,6 @@ class APIController extends Controller
 
     public function confirmpaymenttazapay(Request $request)
     {
-            
-
             $data = $request->all();
             $order_id = null;
             $transaction_status = null;
@@ -1251,6 +1254,7 @@ class APIController extends Controller
                     if($transaction_status=="Escrow_Funds_Received" || $transaction_status=="Payment_Received")
                     {
                         BookingHelper::confirm_payment($shoppingcart,"CONFIRMED");
+                        BookingHelper::shoppingcart_notif($shoppingcart);
                     }
                 }
             }
@@ -1259,24 +1263,7 @@ class APIController extends Controller
 
     public function confirmpaymentdana(Request $request)
     {
-            //$data = $request->all();
-
             $data = json_decode($request->getContent(), true);
-
-            try
-            {
-                Storage::disk('gcs')->put('log/'. date('YmdHis') .'.txt', json_encode($data, JSON_PRETTY_PRINT));
-            }
-            catch(exception $e)
-            {
-                
-            }
-
-            //if(!DanaHelper::checkSignature($data))
-            //{
-                //return response('Invalid Signature', 400)->header('Content-Type', 'text/plain');
-            //}
-
             $order_id = null;
             $transaction_status = null;
 
@@ -1292,12 +1279,12 @@ class APIController extends Controller
                     if($transaction_status=="SUCCESS")
                     {
                         BookingHelper::confirm_payment($shoppingcart,"CONFIRMED");
+                        BookingHelper::shoppingcart_notif($shoppingcart);
                     }
                 }
             }
             
             $response = DanaHelper::composeResponse($data);
-            //return response()->json($response);
             return response($response, 200)->header('Content-Type', 'text/plain');
     }
 
@@ -1328,10 +1315,12 @@ class APIController extends Controller
                     if($transaction_status=="SUCCESS")
                     {
                         BookingHelper::confirm_payment($shoppingcart,"CONFIRMED");
+                        BookingHelper::shoppingcart_notif($shoppingcart);
                     }
                     else if($transaction_status=="S")
                     {
                         BookingHelper::confirm_payment($shoppingcart,"CONFIRMED");
+                        BookingHelper::shoppingcart_notif($shoppingcart);
                     }
                     else if ($transaction_status=="PENDING")
                     {
@@ -1340,6 +1329,7 @@ class APIController extends Controller
                     else
                     {
                         BookingHelper::confirm_payment($shoppingcart,"CANCELED");
+                        BookingHelper::shoppingcart_notif($shoppingcart);
                     }
                 }
             }
@@ -1371,6 +1361,7 @@ class APIController extends Controller
                 if($data['status']=="success")
                 {
                     BookingHelper::confirm_payment($shoppingcart,"CONFIRMED");
+                    BookingHelper::shoppingcart_notif($shoppingcart);
                 }
             }
         }
@@ -1399,6 +1390,7 @@ class APIController extends Controller
                         if($data['resultCode']=="00")
                         {
                             BookingHelper::confirm_payment($shoppingcart,"CONFIRMED");
+                            BookingHelper::shoppingcart_notif($shoppingcart);
                         }
                         else if($data['resultCode']=="01")
                         {
@@ -1407,6 +1399,7 @@ class APIController extends Controller
                         else
                         {
                             BookingHelper::confirm_payment($shoppingcart,"CANCELED");
+                            BookingHelper::shoppingcart_notif($shoppingcart);
                         }
             }
         }
@@ -1437,6 +1430,7 @@ class APIController extends Controller
                         if($data['transaction_status']=="settlement")
                         {
                             BookingHelper::confirm_payment($shoppingcart,"CONFIRMED");
+                            BookingHelper::shoppingcart_notif($shoppingcart);
                         }
                         else if($data['transaction_status']=="pending")
                         {
@@ -1445,6 +1439,7 @@ class APIController extends Controller
                         else
                         {
                             BookingHelper::confirm_payment($shoppingcart,"CANCELED");
+                            BookingHelper::shoppingcart_notif($shoppingcart);
                         }
                 }
             }

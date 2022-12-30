@@ -14,7 +14,6 @@ class WiseHelper {
     	$this->tw = new \stdClass();
     	$this->tw->profileId = env("WISE_ID");
     	$this->tw->api_key = env("WISE_TOKEN");
-    	$this->tw->bank_id = env("WISE_BANK_ID");
         
     	if(env("WISE_ENV")=="production")
         {
@@ -29,23 +28,6 @@ class WiseHelper {
             $this->tw->webhook_pem = Storage::disk('gcs')->get('credentials/wise/sandbox_webhook.pem');
         }
     }
-
-    /*
-    public function getBank($bank_code)
-    {
-        $bank_name = null;
-        $banks = json_decode($this->GET('/v1/banks?country=ID'));
-        foreach($banks->values as $bank)
-        {
-            if($bank->code==$bank_code)
-            {
-                $bank_name=$bank->title;
-            }
-            
-        }
-        return $bank_name;
-    }
-    */
 
     public function getBank()
     {
@@ -116,11 +98,10 @@ class WiseHelper {
         return json_decode($this->POST('/v1/accounts',$data));
     }
 
-    public function postCreateTransfer($quoteId,$customerTransactionId=null,$targetAccount=null,$reference=null){
+    public function postCreateTransfer($quoteId,$customerTransactionId=null,$targetAccount,$reference=null){
         $data = new \stdClass();
-        if($targetAccount==null) $targetAccount = $this->tw->bank_id;
         $data->targetAccount = $targetAccount;
-        $data->quoteUuid	    = $quoteId;
+        $data->quoteUuid     = $quoteId;
 
         $data->customerTransactionId    = Uuid::uuid4()->toString();
         if($customerTransactionId!=null) $data->customerTransactionId = $customerTransactionId;

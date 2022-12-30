@@ -58,8 +58,6 @@ class ContentHelper {
         $dataShoppingcart = array();
         $dataProducts = array();
 
-        
-        
         foreach(collect($shoppingcart->products)->sortBy('booking_id') as $shoppingcart_product)
         {
             

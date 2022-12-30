@@ -459,7 +459,7 @@ class ContentHelper {
             'options' => $australia_list
         ];
 
-
+        /*
         $philippines_list[] = [
             'value' => 'grabpay', 'label' => 'GrabPay', 'image' => self::env_appAssetUrl() .'/img/payment/grabpay.png', 'currency' => 'php',
         ];
@@ -467,19 +467,20 @@ class ContentHelper {
             'label' => 'PHILIPPINES',
             'options' => $philippines_list
         ];
+        */
 
         $singapore_list[] = [
             'value' => 'paynow', 'label' => 'Paynow QR', 'image' => self::env_appAssetUrl() .'/img/payment/paynow.png', 'currency' => 'sgd',
         ];
         $singapore_list[] = [
-            'value' => 'fast', 'label' => 'Bank Transfer', 'image' => self::env_appAssetUrl() .'/img/payment/dbs.png', 'currency' => 'sgd',
+            'value' => 'fast', 'label' => 'FAST Transfer', 'image' => self::env_appAssetUrl() .'/img/payment/dbs.png', 'currency' => 'sgd',
         ];
         $grouped_payment[] = [
             'label' => 'SINGAPORE',
             'options' => $singapore_list
         ];
 
-
+        /*
         $southkorea_list[] = [
             'value' => 'tmoney', 'label' => 'T money', 'image' => self::env_appAssetUrl() .'/img/payment/tmoney.png', 'currency' => 'krw',
         ];
@@ -487,6 +488,7 @@ class ContentHelper {
             'label' => 'SOUTH KOREA',
             'options' => $southkorea_list
         ];
+        */
 
         /*
         $thailand_list[] = [

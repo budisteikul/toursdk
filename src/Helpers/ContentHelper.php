@@ -449,7 +449,7 @@ class ContentHelper {
             'label' => 'INDONESIA',
             'options' => $indonesia_list
         ];
-        
+
         $grouped_payment[] = [
             'label' => 'SINGAPORE',
             'options' => $singapore_list
@@ -639,8 +639,19 @@ class ContentHelper {
         {
             if($shoppingcart->shoppingcart_payment->payment_status==4)
             {   
-                $how_to_pay = 'Log in to bank and transfer funds to this bank account to complete the transaction';
+                if($shoppingcart->shoppingcart_payment->currency=="SGD")
+                {
+                    $how_to_pay = 'Please Transfer funds to the provided DBS bank account using your Singapore based bank account via FAST';
+                }
+                else
+                {
+                    $how_to_pay = 'Log in to bank and transfer funds to this bank account to complete the transaction';
+                }
+                
+                
             } 
+
+
         }
         
         if($shoppingcart->shoppingcart_payment->payment_type=="cash")

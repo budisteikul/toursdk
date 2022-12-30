@@ -388,14 +388,14 @@ class ContentHelper {
             'value' => 'danamon', 'label' => 'Danamon VA',  'image' => self::env_appAssetUrl() .'/img/payment/danamon.png', 'currency' => 'idr',
         ];
         */
-
+        /*
         if($shoppingcart->due_now<=2000000)
         {
             $indonesia_list[] = [
                 'value' => 'alfamart', 'label' => 'Cash on Alfamart', 'image' => self::env_appAssetUrl() .'/img/payment/alfamart.png', 'currency' => 'idr',
             ];
         }
-        
+        */
 
         /*
         $indonesia_list[] = [
@@ -446,6 +446,11 @@ class ContentHelper {
         ];
 
         $grouped_payment[] = [
+            'label' => 'INDONESIA',
+            'options' => $indonesia_list
+        ];
+        
+        $grouped_payment[] = [
             'label' => 'SINGAPORE',
             'options' => $singapore_list
         ];
@@ -460,10 +465,7 @@ class ContentHelper {
         ];
         */
         
-        $grouped_payment[] = [
-            'label' => 'INDONESIA',
-            'options' => $indonesia_list
-        ];
+        
 
         /*
         $philippines_list[] = [

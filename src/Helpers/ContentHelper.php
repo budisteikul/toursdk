@@ -394,7 +394,7 @@ class ContentHelper {
             'value' => 'danamon', 'label' => 'Danamon VA',  'image' => self::env_appAssetUrl() .'/img/payment/danamon.png', 'currency' => 'idr',
         ];
         */
-        
+
         if($shoppingcart->due_now<=2000000)
         {
             $indonesia_list[] = [
@@ -454,7 +454,7 @@ class ContentHelper {
             'label' => 'SINGAPORE',
             'options' => $singapore_list
         ];
-
+        /*
         $australia_list[] = [
             'value' => 'poli', 'label' => 'POLi', 'image' => self::env_appAssetUrl() .'/img/payment/poli.png', 'currency' => 'aud',
         ];
@@ -462,7 +462,7 @@ class ContentHelper {
             'label' => 'AUSTRALIA',
             'options' => $australia_list
         ];
-
+        */
         $grouped_payment[] = [
             'label' => 'INDONESIA',
             'options' => $indonesia_list
@@ -555,7 +555,7 @@ class ContentHelper {
                 'localpayment_currency' => 'IDR',
                 'localpayment_total' => GeneralHelper::numberFormat(BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'IDR'),'IDR'),
                 'localpayment_rate' => BookingHelper::text_rate($shoppingcart,'IDR'),
-                'localpayment_label' => '<strong class="mb-1">Local Payments</strong> <small>by Rapyd</small>',
+                'localpayment_label' => '<strong class="mb-1">Local Payments</strong> <small>by Rapyd (Indonesia and Singapore)</small>',
 
                 // IDR Currency
                 'idr_currency' => 'IDR',
@@ -568,9 +568,9 @@ class ContentHelper {
                 'sgd_rate' => BookingHelper::text_rate($shoppingcart,'SGD'),
 
                 // AUD Currency
-                'aud_currency' => 'AUD',
-                'aud_total' => GeneralHelper::numberFormat(BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'AUD'),'AUD'),
-                'aud_rate' => BookingHelper::text_rate($shoppingcart,'AUD'),
+                //'aud_currency' => 'AUD',
+                //'aud_total' => GeneralHelper::numberFormat(BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'AUD'),'AUD'),
+                //'aud_rate' => BookingHelper::text_rate($shoppingcart,'AUD'),
 
                 // KRW Currency
                 'krw_currency' => 'KRW',

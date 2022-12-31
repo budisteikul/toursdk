@@ -354,17 +354,17 @@ class ContentHelper {
             ];
         }
         */
-
+        /*
         $indonesia_list[] = [
-            'value' => 'mandiri', 'label' => 'Mandiri VA', 'image' => self::env_appAssetUrl() .'/img/payment/mandiri.png', 'currency' => 'idr',
+            'value' => 'mandiri', 'label' => 'Virtual Account', 'image' => self::env_appAssetUrl() .'/img/payment/mandiri.png', 'currency' => 'idr',
         ];
-
         $indonesia_list[] = [
-            'value' => 'permata', 'label' => 'Permata VA', 'image' => self::env_appAssetUrl() .'/img/payment/permata.png', 'currency' => 'idr',
+            'value' => 'cimb', 'label' => 'Virtual Account',  'image' => self::env_appAssetUrl() .'/img/payment/cimb.png', 'currency' => 'idr',
         ];
-
+        */
+        
         $indonesia_list[] = [
-            'value' => 'cimb', 'label' => 'CIMB VA',  'image' => self::env_appAssetUrl() .'/img/payment/cimb.png', 'currency' => 'idr',
+            'value' => 'permata', 'label' => 'Bank Transfer', 'image' => self::env_appAssetUrl() .'/img/payment/bank_transfer.png', 'currency' => 'idr',
         ];
 
         /*

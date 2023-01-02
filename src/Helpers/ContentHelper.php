@@ -645,7 +645,7 @@ class ContentHelper {
                 }
                 else
                 {
-                    $how_to_pay = 'Log in to bank and transfer funds to this bank account to complete the transaction';
+                    $how_to_pay = 'Log in to bank and transfer funds to this bank account to complete the transaction. This is Virtual Account number, please don\'t use BI-FAST';
                 }
                 
                 

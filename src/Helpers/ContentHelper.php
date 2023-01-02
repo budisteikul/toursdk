@@ -442,7 +442,7 @@ class ContentHelper {
             'value' => 'paynow', 'label' => 'Paynow QR', 'image' => self::env_appAssetUrl() .'/img/payment/paynow.png', 'currency' => 'sgd',
         ];
         $singapore_list[] = [
-            'value' => 'fast', 'label' => 'FAST Transfer', 'image' => self::env_appAssetUrl() .'/img/payment/dbs.png', 'currency' => 'sgd',
+            'value' => 'fast', 'label' => 'FAST Transfer', 'image' => self::env_appAssetUrl() .'/img/payment/fast.png', 'currency' => 'sgd',
         ];
 
         $grouped_payment[] = [
@@ -645,7 +645,7 @@ class ContentHelper {
                 }
                 else
                 {
-                    $how_to_pay = 'Log in to bank and transfer funds to this bank account to complete the transaction. This is Virtual Account number, please don\'t use BI-FAST';
+                    $how_to_pay = 'Log in to bank and transfer funds to this bank account to complete the transaction. Please don\'t use BI-FAST transfer. This is Virtual Account number and will be generate random numbers in every transaction';
                 }
                 
                 

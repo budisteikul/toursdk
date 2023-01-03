@@ -56,12 +56,13 @@ class WiseHelper {
         return json_decode($this->POST('/v3/quotes/',$data));
     }
     
-    public function postCreateQuote($sourceAmount,$sourceCurrency){
+    public function postCreateQuote($sourceAmount=null,$sourceCurrency=null,$targetAmount=null,$targetCurrency='IDR'){
         $data = new \stdClass();
         $data->profileId		= $this->tw->profileId;
+        $data->sourceAmount     = $sourceAmount;
         $data->sourceCurrency	= $sourceCurrency;
-        $data->targetCurrency	= 'IDR';
-        $data->sourceAmount		= $sourceAmount;
+        $data->sourceAmount     = $sourceAmount;
+        $data->targetCurrency	= $targetCurrency;
         $data->payOut			= 'BALANCE';
         return json_decode($this->POST('/v3/profiles/'.$data->profileId.'/quotes',$data));
     }

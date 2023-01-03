@@ -46,6 +46,11 @@ class TaskController extends Controller
                     return response('OK', 200)->header('Content-Type', 'text/plain');
                 }
 
+                if($data->currency!='USD')
+                {
+                    return response('OK', 200)->header('Content-Type', 'text/plain');
+                }
+
                 $tw = new WiseHelper();
 
                 $quote = null;

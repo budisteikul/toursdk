@@ -49,7 +49,7 @@ class TaskController extends Controller
                 $tw = new WiseHelper();
 
                 $quote = null;
-                $transfer = Transfer::where('usd',$data->amount)->first();
+                $transfer = Transfer::where('usd',$data->amount)->where('status',0)->first();
                 if($transfer)
                 {
                     $quote = $tw->postCreateQuote(null,null,$transfer->idr,'IDR');

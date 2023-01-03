@@ -61,7 +61,7 @@ class WiseHelper {
         $data->profileId		= $this->tw->profileId;
         $data->sourceAmount     = $sourceAmount;
         $data->sourceCurrency	= $sourceCurrency;
-        $data->sourceAmount     = $sourceAmount;
+        $data->targetAmount     = $targetAmount;
         $data->targetCurrency	= $targetCurrency;
         $data->payOut			= 'BALANCE';
         return json_decode($this->POST('/v3/profiles/'.$data->profileId.'/quotes',$data));

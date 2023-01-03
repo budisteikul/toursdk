@@ -52,7 +52,7 @@ class TaskController extends Controller
                 $transfer = Transfer::where('usd',$data->amount)->where('status',0)->first();
                 if($transfer)
                 {
-                    $quote = $tw->postCreateQuote(null,null,$transfer->idr,'IDR');
+                    $quote = $tw->postCreateQuote(null,'USD',$transfer->idr,'IDR');
                     if(isset($quote->error))
                     {
                         return response('ERROR', 200)->header('Content-Type', 'text/plain');

@@ -48,7 +48,7 @@ class TaskController extends Controller
 
                 $tw = new WiseHelper();
 
-
+                $quote = null;
                 $transfer = Transfer::where('usd',$data->amount)->first();
                 if($transfer)
                 {
@@ -57,18 +57,15 @@ class TaskController extends Controller
                     {
                         return response('ERROR', 200)->header('Content-Type', 'text/plain');
                     }
-                }
-                else
-                {
-                    $quote = $tw->postCreateQuote($data->amount,$data->currency,null,null);
-                    if(isset($quote->error))
-                    {
-                        return response('ERROR', 200)->header('Content-Type', 'text/plain');
-                    }
+                    $transfer->status = 1;
+                    $transfer->save();
                 }
                 
 
-
+                if($quote==null)
+                {
+                    return response('OK', 200)->header('Content-Type', 'text/plain');
+                }
 
 
 

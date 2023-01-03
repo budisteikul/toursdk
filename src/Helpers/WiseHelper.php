@@ -31,7 +31,7 @@ class WiseHelper {
 
     public function getBank()
     {
-        $value = Cache::remember('_bank_code',60*24*30*12, function() use ($currency,$lang,$bookingChannel)
+        $value = Cache::remember('_bank_code',60*24*30*12, function()
         {
             return json_decode($this->GET('/v1/banks?country=ID'));
         });

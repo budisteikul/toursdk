@@ -16,6 +16,7 @@ use budisteikul\toursdk\Helpers\ProductHelper;
 use budisteikul\toursdk\Helpers\ContentHelper;
 use budisteikul\toursdk\Helpers\BookingHelper;
 use budisteikul\toursdk\Models\Recipient;
+use budisteikul\toursdk\Models\Transfer;
 
 class TaskController extends Controller
 {
@@ -48,13 +49,24 @@ class TaskController extends Controller
                 $tw = new WiseHelper();
 
 
-
-
-                $quote = $tw->postCreateQuote($data->amount,$data->currency,null,null);
-                if(isset($quote->error))
+                $transfer = Transfer::where('usd',$data->amount)->first();
+                if($transfer)
                 {
-                    return response('ERROR', 200)->header('Content-Type', 'text/plain');
+                    $quote = $tw->postCreateQuote(null,null,$transfer->idr,'IDR');
+                    if(isset($quote->error))
+                    {
+                        return response('ERROR', 200)->header('Content-Type', 'text/plain');
+                    }
                 }
+                else
+                {
+                    $quote = $tw->postCreateQuote($data->amount,$data->currency,null,null);
+                    if(isset($quote->error))
+                    {
+                        return response('ERROR', 200)->header('Content-Type', 'text/plain');
+                    }
+                }
+                
 
 
 

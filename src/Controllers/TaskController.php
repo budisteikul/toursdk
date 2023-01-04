@@ -57,41 +57,13 @@ class TaskController extends Controller
                 $transfer = Transfer::where('usd',$data->amount)->where('status',0)->orderBy('created_at','ASC')->first();
                 if($transfer)
                 {
-
-                    $target = 0;
-                    $data_tw = $tw->getTempQuote($transfer->idr);
-                    foreach($data_tw->paymentOptions as $paymentOption)
+                    $quote = $tw->postCreateQuote(null,'USD',$transfer->idr,'IDR');
+                    if(isset($quote->error))
                     {
-                
-                        if($paymentOption->payIn=="BALANCE")
-                        {
-                    
-                            $target = $paymentOption->sourceAmount;
-                        }
+                        return response('ERROR', 200)->header('Content-Type', 'text/plain');
                     }
-
-                    if($transfer->usd>$target)
-                    {
-                        $quote = $tw->postCreateQuote($target,'USD',null,'IDR');
-                        if(isset($quote->error))
-                        {
-                            return response('ERROR', 200)->header('Content-Type', 'text/plain');
-                        }
-                        $transfer->usd = $target;
-                        $transfer->status = 1;
-                        $transfer->save();
-                    }
-                    else
-                    {
-                        $quote = $tw->postCreateQuote(null,'USD',$transfer->idr,'IDR');
-                        if(isset($quote->error))
-                        {
-                            return response('ERROR', 200)->header('Content-Type', 'text/plain');
-                        }
-                        $transfer->status = 1;
-                        $transfer->save();
-                    }
-                    
+                    $transfer->status = 1;
+                    $transfer->save();
                 }
                 
 

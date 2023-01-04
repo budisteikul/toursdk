@@ -70,7 +70,7 @@ class TaskController extends Controller
                         }
                     }
 
-                    if($transfer->usd<$target)
+                    if($transfer->usd>$target)
                     {
                         $quote = $tw->postCreateQuote($target,'USD',null,'IDR');
                         if(isset($quote->error))

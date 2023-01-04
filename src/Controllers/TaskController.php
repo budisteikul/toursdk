@@ -54,16 +54,44 @@ class TaskController extends Controller
                 $tw = new WiseHelper();
 
                 $quote = null;
-                $transfer = Transfer::where('usd',$data->amount)->where('status',0)->first();
+                $transfer = Transfer::where('usd',$data->amount)->where('status',0)->orderBy('created_at','ASC')->first();
                 if($transfer)
                 {
-                    $quote = $tw->postCreateQuote(null,'USD',$transfer->idr,'IDR');
-                    if(isset($quote->error))
+
+                    $target = 0;
+                    $data_tw = $tw->getTempQuote($transfer->idr);
+                    foreach($data_tw->paymentOptions as $paymentOption)
                     {
-                        return response('ERROR', 200)->header('Content-Type', 'text/plain');
+                
+                        if($paymentOption->payIn=="BALANCE")
+                        {
+                    
+                            $target = $paymentOption->sourceAmount;
+                        }
                     }
-                    $transfer->status = 1;
-                    $transfer->save();
+
+                    if($transfer->usd<$target)
+                    {
+                        $quote = $tw->postCreateQuote($target,'USD',null,'IDR');
+                        if(isset($quote->error))
+                        {
+                            return response('ERROR', 200)->header('Content-Type', 'text/plain');
+                        }
+                        $transfer->usd = $target;
+                        $transfer->status = 1;
+                        $transfer->save();
+                    }
+                    else
+                    {
+                        $quote = $tw->postCreateQuote(null,'USD',$transfer->idr,'IDR');
+                        if(isset($quote->error))
+                        {
+                            return response('ERROR', 200)->header('Content-Type', 'text/plain');
+                        }
+                        $transfer->status = 1;
+                        $transfer->save();
+                    }
+                    
                 }
                 
 

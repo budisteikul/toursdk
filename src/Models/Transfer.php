@@ -11,4 +11,10 @@ class Transfer extends Model
 
     protected $table = 'transfers';
     protected $fillable = ['idr', 'usd', 'status', 'wise_id'];
+    protected $dateFormat = 'Y-m-d H:i:s.u';
+
+    public function recipient()
+    {
+        return $this->hasOne(Recipient::class,'wise_id','wise_id');
+    }
 }

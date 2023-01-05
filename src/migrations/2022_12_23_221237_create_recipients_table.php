@@ -19,7 +19,6 @@ return new class extends Migration
             $table->string('bank_name')->nullable();
             $table->string('account_holder')->nullable();
             $table->string('account_number')->nullable();
-            $table->tinyInteger('auto_transfer')->default(0);
             $table->timestamps(6);
         });
     }

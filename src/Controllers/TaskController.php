@@ -34,26 +34,14 @@ class TaskController extends Controller
         {
             if($data->token==env('WISE_TOKEN'))
             {
-                $targetAccount = null;
-                $recipient = Recipient::where('auto_transfer',1)->first();
-                if($recipient)
-                {
-                    $targetAccount = $recipient->wise_id;
-                }
-
-                if($targetAccount==null)
-                {
-                    return response('OK', 200)->header('Content-Type', 'text/plain');
-                }
-
+                
+                
                 if($data->currency!='USD')
                 {
                     return response('OK', 200)->header('Content-Type', 'text/plain');
                 }
 
                 $tw = new WiseHelper();
-
-                $quote = null;
                 $transfer = Transfer::where('usd',$data->amount)->where('status',0)->orderBy('created_at','ASC')->first();
                 if($transfer)
                 {
@@ -64,23 +52,15 @@ class TaskController extends Controller
                     }
                     $transfer->status = 1;
                     $transfer->save();
+
+                    $transfer = $tw->postCreateTransfer($quote->id,$data->customerTransactionId,$transfer->wise_id);
+                    if(isset($transfer->error))
+                    {
+                        return response('ERROR', 200)->header('Content-Type', 'text/plain');
+                    }
+
+                    $fund = $tw->postFundTransfer($transfer->id);
                 }
-                
-
-                if($quote==null)
-                {
-                    return response('OK', 200)->header('Content-Type', 'text/plain');
-                }
-
-
-
-                $transfer = $tw->postCreateTransfer($quote->id,$data->customerTransactionId,$targetAccount);
-                if(isset($transfer->error))
-                {
-                    return response('ERROR', 200)->header('Content-Type', 'text/plain');
-                }
-
-                $fund = $tw->postFundTransfer($transfer->id);
                   
                 return response('OK', 200)->header('Content-Type', 'text/plain');
             }

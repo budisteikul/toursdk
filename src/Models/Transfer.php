@@ -10,5 +10,5 @@ class Transfer extends Model
     use HasFactory;
 
     protected $table = 'transfers';
-    protected $fillable = ['idr', 'usd', 'status'];
+    protected $fillable = ['idr', 'usd', 'status', 'wise_id'];
 }

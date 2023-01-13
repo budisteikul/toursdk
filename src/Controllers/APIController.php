@@ -16,6 +16,7 @@ use budisteikul\toursdk\Helpers\MidtransHelper;
 use budisteikul\toursdk\Helpers\PaydiaHelper;
 use budisteikul\toursdk\Helpers\DanaHelper;
 use budisteikul\toursdk\Helpers\GeneralHelper;
+use budisteikul\toursdk\Helpers\VoucherHelper;
 
 use budisteikul\toursdk\Models\Category;
 use budisteikul\toursdk\Models\Review;
@@ -320,6 +321,7 @@ class APIController extends Controller
                 break;
 
                 case 'permata':
+                    VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
                     BookingHelper::set_bookingStatus($sessionId,'PENDING');
                     BookingHelper::set_confirmationCode($sessionId);
                     $response = BookingHelper::create_payment($sessionId,"rapyd","permata");
@@ -374,12 +376,14 @@ class APIController extends Controller
                 break;
 
                 case 'paynow':
+                    VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
                     BookingHelper::set_bookingStatus($sessionId,'PENDING');
                     BookingHelper::set_confirmationCode($sessionId);
                     $response = BookingHelper::create_payment($sessionId,"rapyd","paynow");
                 break;
 
                 case 'fast':
+                    VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
                     BookingHelper::set_bookingStatus($sessionId,'PENDING');
                     BookingHelper::set_confirmationCode($sessionId);
                     $response = BookingHelper::create_payment($sessionId,"rapyd","fast");

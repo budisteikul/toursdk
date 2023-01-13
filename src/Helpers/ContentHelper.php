@@ -455,7 +455,7 @@ class ContentHelper {
             'options' => $singapore_list
         ];
 
-        /*
+        
         $australia_list[] = [
             'value' => 'poli', 'label' => 'POLi', 'image' => self::env_appAssetUrl() .'/img/payment/poli.png', 'currency' => 'aud',
         ];
@@ -463,7 +463,7 @@ class ContentHelper {
             'label' => 'AUSTRALIA',
             'options' => $australia_list
         ];
-        */
+        
         
         
 
@@ -515,6 +515,8 @@ class ContentHelper {
         $sgd_total = $sgd_total - ($sgd_total * 10 / 100);
 
         $aud_total = BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'AUD');
+        $aud_total = $aud_total - ($aud_total * 10 / 100);
+        
         $krw_total = BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'KRW');
         $php_total = BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'PHP');
         $thb_total = BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'THB');

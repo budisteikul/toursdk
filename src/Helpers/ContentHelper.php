@@ -560,7 +560,7 @@ class ContentHelper {
                 </div>',
 
                 // Local Payment Currency
-                'localpayment_label' => '<strong class="mb-1">Local Payments</strong> <br /><span class="badge badge-danger">Automatic discount 10%</span></small>',
+                'localpayment_label' => '<strong class="mb-1">Local Payments</strong> <br /><span class="badge badge-danger">Automatic get discount 10%</span></small>',
 
                 // IDR Currency
                 'idr_currency' => 'IDR',

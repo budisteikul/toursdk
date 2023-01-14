@@ -479,15 +479,15 @@ class ContentHelper {
 
         
 
-        /*
+        
         $southkorea_list[] = [
-            'value' => 'tmoney', 'label' => 'T money', 'image' => self::env_appAssetUrl() .'/img/payment/tmoney.png', 'currency' => 'krw',
+            'value' => 'tmoney', 'label' => 'Tmoney', 'image' => self::env_appAssetUrl() .'/img/payment/tmoney.png', 'currency' => 'krw',
         ];
         $grouped_payment[] = [
             'label' => 'SOUTH KOREA',
             'options' => $southkorea_list
         ];
-        */
+        
 
         /*
         $thailand_list[] = [

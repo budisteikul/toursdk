@@ -518,6 +518,8 @@ class ContentHelper {
         $aud_total = $aud_total - ($aud_total * 10 / 100);
 
         $krw_total = BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'KRW');
+        $krw_total = $krw_total - ($krw_total * 10 / 100);
+        
         $php_total = BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'PHP');
         $thb_total = BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'THB');
 

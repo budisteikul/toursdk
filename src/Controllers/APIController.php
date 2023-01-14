@@ -397,6 +397,7 @@ class APIController extends Controller
                 break;
 
                 case 'tmoney':
+                    VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
                     BookingHelper::set_bookingStatus($sessionId,'PENDING');
                     BookingHelper::set_confirmationCode($sessionId);
                     $response = BookingHelper::create_payment($sessionId,"rapyd","tmoney");

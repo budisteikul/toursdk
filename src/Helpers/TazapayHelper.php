@@ -81,7 +81,6 @@ class TazapayHelper {
                 $data->bank_payment_method = "th_thaipromptpayqr_bank";
                 $data->bank_payment_type = "qrcode";
             break;
-            //th_thaipromptpayqr_bank
             default:
                 return response()->json([
                     "message" => 'Error'
@@ -93,6 +92,7 @@ class TazapayHelper {
 
     public static function createPayment($data)
     {
+        
         $payment = self::bankCode($data->transaction->bank);
 
         $data_json = new \stdClass();
@@ -112,8 +112,7 @@ class TazapayHelper {
 
 
         $tazapay = self::make_request('POST','/v1/user',$body);
-        //print_r($tazapay);
-
+        
         $body = [
             'txn_type' => 'service',
             'release_mechanism' => 'marketplace',
@@ -126,7 +125,7 @@ class TazapayHelper {
         ];
 
         $tazapay = self::make_request('POST','/v1/escrow/',$body);
-        //print_r($tazapay);
+        
 
         $txn_no = $tazapay['data']['txn_no'];
 
@@ -138,14 +137,14 @@ class TazapayHelper {
         ];
 
         $tazapay = self::make_request('POST','/v1/session/payment',$body);
-        //print_r($tazapay);
+        
 
         $redirect_url = $tazapay['data']['redirect_url'];
         $redirect_url_array = explode("/",$redirect_url);
         $auth_id = end($redirect_url_array);
 
         $tazapay = self::make_request('GET','/v1/session/payment/'.$auth_id);
-        //print_r($tazapay);
+        
         
         $body = [
                 'escrow_id' => $tazapay['data']['escrow_id'],
@@ -158,30 +157,17 @@ class TazapayHelper {
                 'redirect' => self::env_appUrl() . $data->transaction->finish_url
         ];
 
-        //print_r($body);
-        //exit();
+        
 
         $tazapay = self::make_request('POST','/v1/escrow/payment',$body,$tazapay['data']['session_token']);
         
-        //print_r($tazapay);
-        //exit();
+        
 
         if($payment->bank_payment_type=="qrcode")
         {
             $qrcode = $tazapay['data']['qr_code'];
-            //list($type, $qrcode) = explode(';', $qrcode);
-            //list(, $qrcode)      = explode(',', $qrcode);
-            //$contents = base64_decode($qrcode);
-
-            //$path = date('YmdHis');
-            //$disk = Storage::disk('gcs');
-            //$disk->put('qrcode/'. $path .'/'.$data->transaction->confirmation_code.'.png', $contents);
-            //$url = $disk->url('qrcode/'. $path .'/'.$data->transaction->confirmation_code.'.png');
-            //$qrcode = new QrReader($url);
-
             $data_json->payment_type = 'qrcode';
             $data_json->qrcode = $qrcode;
-
             $data_json->redirect = $data->transaction->finish_url;
         }
 
@@ -190,8 +176,7 @@ class TazapayHelper {
             $data_json->payment_type = 'bank_redirect';
             $data_json->redirect = $tazapay['data']['bank_redirect'];
         }
-
-        //$response->authorization_id = $data1['data']['id'];
+        
         $data_json->bank_name = $payment->bank_name;
         $data_json->bank_code = $payment->bank_code;
             

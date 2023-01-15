@@ -653,11 +653,11 @@ class ContentHelper {
             {   
                 if($shoppingcart->shoppingcart_payment->currency=="SGD")
                 {
-                    $how_to_pay = 'Please Transfer funds to the provided DBS bank account using your Singapore based bank account via FAST';
+                    $how_to_pay = 'Please Transfer funds to the provided DBS BANK account using your Singapore based bank account via FAST';
                 }
                 else
                 {
-                    $how_to_pay = 'Log in to bank and transfer funds to the provided '. strtoupper($shoppingcart->shoppingcart_payment->bank_name) .' bank account to complete the transaction. Please don\'t use BI-FAST transfer, it will cause payment failed';
+                    $how_to_pay = 'Log in to bank and transfer funds to the provided '. strtoupper($shoppingcart->shoppingcart_payment->bank_name) .' account to complete the transaction. Please don\'t use BI-FAST transfer, it will cause payment failed';
                 }
                 
                 

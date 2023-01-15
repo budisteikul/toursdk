@@ -657,7 +657,7 @@ class ContentHelper {
                 }
                 else
                 {
-                    $how_to_pay = 'Log in to bank and transfer funds to this bank account to complete the transaction. Please don\'t use BI-FAST transfer, will cause payment failed';
+                    $how_to_pay = 'Log in to bank and transfer funds to the provided '. strtoupper($shoppingcart->shoppingcart_payment->bank_name) .' bank account to complete the transaction. Please don\'t use BI-FAST transfer, it will cause payment failed';
                 }
                 
                 

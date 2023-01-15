@@ -657,7 +657,7 @@ class ContentHelper {
                 }
                 else
                 {
-                    $how_to_pay = 'Log in to bank and transfer funds to this bank account to complete the transaction. Please don\'t use BI-FAST transfer. This is Virtual Account number and will be generate random numbers in every transaction';
+                    $how_to_pay = 'Log in to bank and transfer funds to this bank account to complete the transaction. Please don\'t use BI-FAST transfer, will cause payment failed';
                 }
                 
                 

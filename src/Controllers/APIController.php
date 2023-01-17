@@ -285,36 +285,42 @@ class APIController extends Controller
                 break;
 
                 case 'qris':
+                    VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
                     BookingHelper::set_bookingStatus($sessionId,'PENDING');
                     BookingHelper::set_confirmationCode($sessionId);
                     $response = BookingHelper::create_payment($sessionId,"midtrans","gopay_qris");
                 break;
 
                 case 'gopay_qris':
+                    VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
                     BookingHelper::set_bookingStatus($sessionId,'PENDING');
                     BookingHelper::set_confirmationCode($sessionId);
                     $response = BookingHelper::create_payment($sessionId,"midtrans","gopay_qris");
                 break;
 
                 case 'shopeepay_qris':
+                    VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
                     BookingHelper::set_bookingStatus($sessionId,'PENDING');
                     BookingHelper::set_confirmationCode($sessionId);
                     $response = BookingHelper::create_payment($sessionId,"midtrans","shopeepay_qris");
                 break;
 
                 case 'shopeepay':
+                    VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
                     BookingHelper::set_bookingStatus($sessionId,'PENDING');
                     BookingHelper::set_confirmationCode($sessionId);
                     $response = BookingHelper::create_payment($sessionId,"midtrans","shopeepay");
                 break;
 
                 case 'gopay':
+                    VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
                     BookingHelper::set_bookingStatus($sessionId,'PENDING');
                     BookingHelper::set_confirmationCode($sessionId);
                     $response = BookingHelper::create_payment($sessionId,"midtrans","gopay");
                 break;
                 
                 case 'dana':
+                    VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
                     BookingHelper::set_bookingStatus($sessionId,'PENDING');
                     BookingHelper::set_confirmationCode($sessionId);
                     $response = BookingHelper::create_payment($sessionId,"dana","");
@@ -328,48 +334,56 @@ class APIController extends Controller
                 break;
 
                 case 'mandiri':
+                    VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
                     BookingHelper::set_bookingStatus($sessionId,'PENDING');
                     BookingHelper::set_confirmationCode($sessionId);
                     $response = BookingHelper::create_payment($sessionId,"rapyd","mandiri");
                 break;
 
                 case 'bni':
+                    VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
                     BookingHelper::set_bookingStatus($sessionId,'PENDING');
                     BookingHelper::set_confirmationCode($sessionId);
                     $response = BookingHelper::create_payment($sessionId,"rapyd","bni");
                 break;
 
                 case 'bri':
+                    VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
                     BookingHelper::set_bookingStatus($sessionId,'PENDING');
                     BookingHelper::set_confirmationCode($sessionId);
                     $response = BookingHelper::create_payment($sessionId,"rapyd","bri");
                 break;
 
                 case 'danamon':
+                    VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
                     BookingHelper::set_bookingStatus($sessionId,'PENDING');
                     BookingHelper::set_confirmationCode($sessionId);
                     $response = BookingHelper::create_payment($sessionId,"rapyd","danamon");
                 break;
 
                 case 'sinarmas':
+                    VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
                     BookingHelper::set_bookingStatus($sessionId,'PENDING');
                     BookingHelper::set_confirmationCode($sessionId);
                     $response = BookingHelper::create_payment($sessionId,"rapyd","sinarmas");
                 break;
 
                 case 'maybank':
+                    VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
                     BookingHelper::set_bookingStatus($sessionId,'PENDING');
                     BookingHelper::set_confirmationCode($sessionId);
                     $response = BookingHelper::create_payment($sessionId,"rapyd","maybank");
                 break;
 
                 case 'cimb':
+                    VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
                     BookingHelper::set_bookingStatus($sessionId,'PENDING');
                     BookingHelper::set_confirmationCode($sessionId);
                     $response = BookingHelper::create_payment($sessionId,"rapyd","cimb");
                 break;
 
                 case 'doku':
+                    VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
                     BookingHelper::set_bookingStatus($sessionId,'PENDING');
                     BookingHelper::set_confirmationCode($sessionId);
                     $response = BookingHelper::create_payment($sessionId,"doku","doku");
@@ -404,18 +418,21 @@ class APIController extends Controller
                 break;
 
                 case 'grabpay':
+                    VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
                     BookingHelper::set_bookingStatus($sessionId,'PENDING');
                     BookingHelper::set_confirmationCode($sessionId);
                     $response = BookingHelper::create_payment($sessionId,"rapyd","grabpay");
                 break;
 
                 case 'promptpay':
+                    VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
                     BookingHelper::set_bookingStatus($sessionId,'PENDING');
                     BookingHelper::set_confirmationCode($sessionId);
                     $response = BookingHelper::create_payment($sessionId,"tazapay","promptpay");
                 break;
 
                 case 'alfamart':
+                    VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
                     BookingHelper::set_bookingStatus($sessionId,'PENDING');
                     BookingHelper::set_confirmationCode($sessionId);
                     $response = BookingHelper::create_payment($sessionId,"rapyd","alfamart");
@@ -1494,6 +1511,7 @@ class APIController extends Controller
             }
             $phoneNumber = "0". $phoneNumber;
 
+            VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
             BookingHelper::set_bookingStatus($sessionId,'PENDING');
             BookingHelper::set_confirmationCode($sessionId);
 
@@ -1502,6 +1520,7 @@ class APIController extends Controller
             
             if(!$response->data)
             {
+                VoucherHelper::remove_voucher($sessionId);
                 return response()->json([
                     'message' => 'failed',
                 ]);
@@ -1530,7 +1549,7 @@ class APIController extends Controller
         $shoppingcart = Cache::get('_'. $sessionId);
         $jscript = '
             $("#submitCheckout").slideUp("slow");
-            $("#paymentContainer").html(\'<div class="form mb-2 mt-2"><strong>Please input your OVO number :</strong></div><div class="form-row mb-4 mt-2"><div class="col-xs-2"><input type="text" style="height:47px; width:50px;" class="form-control  disabled" value="+62" disabled></div><div class="col"><input id="ovoPhoneNumber" type="text" style="height:47px" class="form-control" placeholder="85743112112"></div></div><div id=\"text-alert\" class=\"text-center mb-4 mt-2\"></div><button id="submit" onClick="createpaymentovo()" class="btn btn-lg btn-block btn-theme" style="height:47px"><strong>Click to pay with <img class="ml-2 mr-2" src="'.$this->appAssetUrl.'/img/payment/ovo-light.png" height="30" /></strong></button>\');
+            $("#paymentContainer").html(\'<div class="form mb-2 mt-2"><strong>Please input your OVO number :</strong></div><div class="form-row mb-4 mt-2"><div class="col-xs-2"><input type="text" style="height:47px; width:50px;" class="form-control  disabled" value="+62" disabled></div><div class="col"><input id="ovoPhoneNumber" type="text" style="height:47px;" class="form-control" placeholder="85743112112"></div></div><div id=\"text-alert\" class=\"text-center mb-4 mt-2\"></div><button id="submit" onClick="createpaymentovo()" class="btn btn-lg btn-block btn-theme" style="height:47px"><strong>Click to pay with <img class="ml-2 mr-2" src="'.$this->appAssetUrl.'/img/payment/ovo-light.png" height="30" /></strong></button>\');
 
             function createpaymentovo()
             {

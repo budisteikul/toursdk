@@ -354,17 +354,18 @@ class ContentHelper {
             ];
         }
         */
-        /*
-        $indonesia_list[] = [
-            'value' => 'mandiri', 'label' => 'Virtual Account', 'image' => self::env_appAssetUrl() .'/img/payment/mandiri.png', 'currency' => 'idr',
-        ];
-        $indonesia_list[] = [
-            'value' => 'cimb', 'label' => 'Virtual Account',  'image' => self::env_appAssetUrl() .'/img/payment/cimb.png', 'currency' => 'idr',
-        ];
-        */
+        
         
         $indonesia_list[] = [
             'value' => 'permata', 'label' => 'Bank Transfer', 'image' => self::env_appAssetUrl() .'/img/payment/bank-transfer.png', 'currency' => 'idr',
+        ];
+
+        $indonesia_list[] = [
+            'value' => 'gopay', 'label' => 'GOPAY', 'image' => self::env_appAssetUrl() .'/img/payment/gopay.png', 'currency' => 'idr',
+        ];
+        
+        $indonesia_list[] = [
+            'value' => 'ovo', 'label' => 'OVO', 'image' => self::env_appAssetUrl() .'/img/payment/ovo.png', 'currency' => 'idr',
         ];
 
         /*

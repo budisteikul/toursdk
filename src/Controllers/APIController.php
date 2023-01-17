@@ -1044,6 +1044,13 @@ class APIController extends Controller
             ], 200);
     }
     
+    public function confirmpaymentxendit(Request $request)
+    {
+        return response()->json([
+                'message' => "success"
+            ], 200);
+    }
+
     public function confirmpaymentstripe(Request $request)
     {
         $validator = Validator::make($request->all(), [

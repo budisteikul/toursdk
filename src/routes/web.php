@@ -59,6 +59,7 @@
 	Route::post('/api/payment/midtrans/confirm', 'budisteikul\toursdk\Controllers\APIController@confirmpaymentmidtrans');
 	Route::post('/api/payment/duitku/confirm', 'budisteikul\toursdk\Controllers\APIController@confirmpaymentduitku');
 	Route::post('/api/payment/paydia/confirm', 'budisteikul\toursdk\Controllers\APIController@confirmpaymentpaydia');
+	Route::post('/api/payment/xendit/confirm', 'budisteikul\toursdk\Controllers\APIController@confirmpaymentxendit');
 
 	//Create Payment
 	Route::get('/api/payment/stripe/jscript/{sessionId}', 'budisteikul\toursdk\Controllers\APIController@stripe_jscript');

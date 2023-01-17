@@ -360,7 +360,7 @@ class ContentHelper {
             'value' => 'permata', 'label' => 'Bank Transfer', 'image' => self::env_appAssetUrl() .'/img/payment/bank-transfer.png', 'currency' => 'idr',
         ];
 
-        /*
+        
         $indonesia_list[] = [
             'value' => 'gopay', 'label' => 'GOPAY', 'image' => self::env_appAssetUrl() .'/img/payment/gopay.png', 'currency' => 'idr',
         ];
@@ -369,7 +369,7 @@ class ContentHelper {
             'value' => 'ovo', 'label' => 'OVO', 'image' => self::env_appAssetUrl() .'/img/payment/ovo.png', 'currency' => 'idr',
         ];
 
-        
+        /*
         $indonesia_list[] = [
             'value' => 'bni', 'label' => 'BNI VA',  'image' => self::env_appAssetUrl() .'/img/payment/bni.png', 'currency' => 'idr',
         ];

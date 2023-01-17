@@ -360,15 +360,16 @@ class ContentHelper {
             'value' => 'permata', 'label' => 'Bank Transfer', 'image' => self::env_appAssetUrl() .'/img/payment/bank-transfer.png', 'currency' => 'idr',
         ];
 
+        /*
         $indonesia_list[] = [
             'value' => 'gopay', 'label' => 'GOPAY', 'image' => self::env_appAssetUrl() .'/img/payment/gopay.png', 'currency' => 'idr',
         ];
-        
+
         $indonesia_list[] = [
             'value' => 'ovo', 'label' => 'OVO', 'image' => self::env_appAssetUrl() .'/img/payment/ovo.png', 'currency' => 'idr',
         ];
 
-        /*
+        
         $indonesia_list[] = [
             'value' => 'bni', 'label' => 'BNI VA',  'image' => self::env_appAssetUrl() .'/img/payment/bni.png', 'currency' => 'idr',
         ];
@@ -522,7 +523,10 @@ class ContentHelper {
         $krw_total = $krw_total - ($krw_total * 10 / 100);
         
         $php_total = BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'PHP');
+        $php_total = $php_total - ($php_total * 10 / 100);
+
         $thb_total = BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'THB');
+        $thb_total = $thb_total - ($thb_total * 10 / 100);
 
         $dataShoppingcart[] = array(
                 'id' => $shoppingcart->session_id,
@@ -563,7 +567,7 @@ class ContentHelper {
                 </div>',
 
                 // Local Payment Currency
-                'localpayment_label' => '<strong class="mb-1">Local Payments</strong> <br /><span class="badge badge-danger">Automatic get discount 10%</span></small>',
+                'localpayment_label' => '<strong class="mb-1">Asia Pacific Payments</strong> <br /><small>(Indonesia, Singapore, South Korea, Australia)</small><br /><span class="badge badge-danger">Automatic get discount 10%</span>',
 
                 // IDR Currency
                 'idr_currency' => 'IDR',

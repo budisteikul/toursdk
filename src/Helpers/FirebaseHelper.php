@@ -57,40 +57,23 @@ class FirebaseHelper {
         return $response;
     }
     
-	public static function delete($shoppingcart,$index="")
+	public static function delete($shoppingcart)
 	{
-        if($index=="") $index = "receipt";
-
-        if($index=="receipt")
-        {
             self::connect("receipt/".$shoppingcart->session_id .'/'. $shoppingcart->confirmation_code,"","DELETE");
-            
-        }
 	}
 
-	public static function upload($shoppingcart,$index="")
+	public static function upload($shoppingcart)
   	{
-        if($index=="") $index = "receipt";
-
-        if($index=="receipt")
-        {
             if(!BookingHelper::have_payment($shoppingcart))
             {
                 return "";
             }
-
             $dataObj = ContentHelper::view_receipt($shoppingcart); 
-
             $data = array(
                 'receipt' => $dataObj,
                 'message' => 'success'
             );
-            
             self::connect('receipt/'.$shoppingcart->session_id ."/". $shoppingcart->confirmation_code,$data,"PUT");
-            
-            return "";
-        }
-  		
   	}
 
     public static function upload_payment($status,$reference_id,$session_id=null,$redirect_url=null)
@@ -101,12 +84,11 @@ class FirebaseHelper {
                 'redirect_url' => $redirect_url
             );
             self::connect('payment/ovo/'.$reference_id,$data,"PUT");
-            return "";
     }
 
     public static function read_payment($reference_id)
     {
-        return self::connect('payment/ovo/'.$reference_id,"","GET");
+            return self::connect('payment/ovo/'.$reference_id,"","GET");
     }
 }
 ?>

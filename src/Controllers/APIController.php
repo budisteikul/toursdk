@@ -1555,10 +1555,18 @@ class APIController extends Controller
 
             $xendit = new XenditHelper();
             $response = $xendit->createEWalletOvoCharge($shoppingcart->due_now,$phoneNumber);
+            
+            if(isset($response->error_code))
+            {
+                return response()->json([
+                    "message" => "error"
+                ]);
+            }
 
             FirebaseHelper::upload_payment('PENDING',$response->reference_id,$sessionId);
 
             return response()->json([
+                    "message" => "success",
                     "reference_id" => $response->reference_id
                 ]);
     }
@@ -1605,17 +1613,24 @@ class APIController extends Controller
                                 url: \''. url('/api') .'/payment/ovo\'
                                 }).done(function(data) {
                                     
-                                    window.startListenerOvo(data.reference_id);
-                                    
-                                    setTimeout(
-                                    function() 
+                                    if(data.message=="success")
                                     {
-                                        window.stopListenerOvo(data.reference_id);
+                                        window.startListenerOvo(data.reference_id);
+                                        setTimeout(
+                                        function() 
+                                        {
+                                            window.stopListenerOvo(data.reference_id);
+                                            failedpaymentovo();
+                                        }, 60000);
+                                    }
+                                    else
+                                    {
                                         failedpaymentovo();
-                                    }, 60000);
+                                    }
 
                                 }).fail(function(error) {
 
+                                    failedpaymentovo();
                                         
                             });
 

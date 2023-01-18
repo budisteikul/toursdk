@@ -39,11 +39,11 @@ class ShoppingcartPayment extends Model
         parent::boot();
 
         self::created(function($model){
-                FirebaseHelper::upload($model->shoppingcart()->first(),'receipt');
+                FirebaseHelper::upload($model->shoppingcart()->first());
         });
 
         self::updated(function($model){
-                FirebaseHelper::upload($model->shoppingcart()->first(),'receipt');
+                FirebaseHelper::upload($model->shoppingcart()->first());
         });
 
         

@@ -2289,9 +2289,8 @@ class BookingHelper {
 
 	public static function delete_shoppingcart($shoppingcart)
 	{
-		
 		$shoppingcart->delete();
-		FirebaseHelper::delete($shoppingcart,'receipt');
+		FirebaseHelper::delete($shoppingcart);
 	}
 
 	public static function remove_activity($sessionId,$bookingId)

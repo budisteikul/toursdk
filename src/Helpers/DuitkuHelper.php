@@ -137,6 +137,7 @@ class DuitkuHelper {
             $response_json->status = $status_json;
             $response_json->data = $status;
 
+            
             return $response_json;
         }
         else if($payment->bank_payment_type=="LA")

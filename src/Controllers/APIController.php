@@ -1501,6 +1501,37 @@ class APIController extends Controller
                 'phoneNumber' => ['required', 'string', 'max:255'],
                 'paymentMethod' => ['required', 'string', 'max:255'],
             ]);
+
+            if ($validator->fails()) {
+                return response()->json([
+                    'message' => 'required',
+                ]);
+            }
+
+            $phoneNumber = $request->input('phoneNumber');
+            $sessionId = $request->input('sessionId');
+
+            if(substr($phoneNumber,0,1)=="0")
+            {
+                $phoneNumber = substr($phoneNumber,1);
+            }
+            $phoneNumber = "0". $phoneNumber;
+
+            FirebaseHelper::upload_payment($sessionId,$phoneNumber,'PENDING');
+
+            return response()->json([
+                    "session_id" => $sessionId,
+                    "phoneNumber" => $phoneNumber
+                ]);
+    }
+
+    public function createpaymentovo__(Request $request)
+    {
+            $validator = Validator::make($request->all(), [
+                'sessionId' => ['required', 'string', 'max:255'],
+                'phoneNumber' => ['required', 'string', 'max:255'],
+                'paymentMethod' => ['required', 'string', 'max:255'],
+            ]);
         
             if ($validator->fails()) {
                 return response()->json([
@@ -1524,7 +1555,6 @@ class APIController extends Controller
 
             $response = BookingHelper::create_payment($sessionId,"duitku","ovo",$phoneNumber);
 
-            
             if(!$response->data)
             {
                 VoucherHelper::remove_voucher($sessionId);
@@ -1549,9 +1579,72 @@ class APIController extends Controller
 
     }
 
-    
-
     public function ovo_jscript($sessionId)
+    {
+        $shoppingcart = Cache::get('_'. $sessionId);
+        $jscript = '
+            $("#submitCheckout").slideUp("slow");
+            $("#paymentContainer").html(\'<div class="form mb-2 mt-2"><strong>Please input your OVO number :</strong></div><div class="form-row mb-4 mt-2"><div class="col-xs-2"><input type="text" style="height:47px; width:50px;" class="form-control  disabled" value="+62" disabled></div><div class="col"><input id="ovoPhoneNumber" type="text" style="height:47px;" class="form-control" placeholder="85743112112"></div></div><div id=\"text-alert\" class=\"text-center mb-4 mt-2\"></div><button id="submit" onClick="createpaymentovo()" class="btn btn-lg btn-block btn-theme" style="height:47px"><strong>Click to pay with <img class="ml-2 mr-2" src="'.$this->appAssetUrl.'/img/payment/ovo-light.png" height="30" /></strong></button>\');
+
+            function ovotest()
+            {
+                console.log("ovo test");
+            }
+
+            function failedpaymentovo()
+            {
+                                        $("#text-alert").hide();
+                                        $("#text-alert").html( "" );
+
+                                        $(\'#alert-payment\').html(\'<div id="alert-failed" class="alert alert-danger text-center mt-2" role="alert"><h2 style="margin-bottom:10px; margin-top:10px;"><i class="far fa-frown"></i> Transaction failed</h2></div>\');
+                                        $(\'#alert-payment\').fadeIn("slow");
+                                        $("#ovoPhoneNumber").attr("disabled", false);
+                                        $("#submit").attr("disabled", false);
+                                        $("#submit").html(\' <strong>Click to pay with <img class="ml-2 mr-2" src="'.$this->appAssetUrl.'/img/payment/ovo-light.png" height="30" /></strong> \');
+            }
+
+            function createpaymentovo()
+            {
+                            var phoneNumber = document.getElementById("ovoPhoneNumber").value;
+                            $("#alert-payment").slideUp("slow");
+                            $("#ovoPhoneNumber").attr("disabled", true);
+                            $("#submit").attr("disabled", true);
+                            $("#submit").html(\' <i class="fa fa-spinner fa-spin fa-fw"></i>  processing... \');
+
+                            $("#text-alert").show();
+                            $("#text-alert").html( "Please check OVO app on your mobile phone, to process payment" );
+                            
+                            $.ajax({
+                                data: {
+                                    "sessionId": \''.$sessionId.'\',
+                                    "paymentMethod": "OV",
+                                    "phoneNumber": phoneNumber,
+                                },
+                                type: \'POST\',
+                                url: \''. url('/api') .'/payment/ovo\'
+                                }).done(function(data) {
+                                    
+                                    window.startListenerOvo(data.session_id,data.phoneNumber);
+
+                                    setTimeout(
+                                    function() 
+                                    {
+                                        window.stopListenerOvo(data.session_id,data.phoneNumber);
+                                        failedpaymentovo();
+                                    }, 10000);
+
+                                }).fail(function(error) {
+
+                                        
+                            });
+
+                            return false;
+            }
+        ';
+        return response($jscript)->header('Content-Type', 'application/javascript');
+    }
+
+    public function ovo_jscript__($sessionId)
     {
         $shoppingcart = Cache::get('_'. $sessionId);
         $jscript = '

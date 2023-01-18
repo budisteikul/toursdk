@@ -16,89 +16,7 @@ class FirebaseHelper {
         return env("FIREBASE_DATABASE_SECRET");
     }
 
-    public static function env_firebaseDynamicLinkApiKey()
-    {
-        return env("FIREBASE_DYNAMIC_LINK_API_KEY");
-    }
-
-    public static function env_firebaseDynamicLinkDomainUri()
-    {
-        return env("FIREBASE_DYNAMIC_LINK_DOMAIN_URI");
-    }
-
-    public static function createDynamicLink($link,$receipt_url,$app="gopay")
-    {
-        if($app=="gopay") {
-            $androidPackageName = 'com.gojek.app';
-            $androidFallbackLink = 'https://play.google.com/store/apps/details?id=com.gojek.app';
-            $iosFallbackLink = 'https://apps.apple.com/id/app/gojek/id944875099';
-            $iosBundleId = 'com.go-jek.ios';
-        }
-
-        if($app=="shopeepay") {
-            $androidPackageName = 'com.shopee.id';
-            $androidFallbackLink = 'https://play.google.com/store/apps/details?id=com.shopee.id';
-            $iosFallbackLink = 'https://apps.apple.com/id/app/shopee/id959841443';
-            $iosBundleId = 'com.beeasy.shopee.id';
-        }
-
-        if($app=="linkaja") {
-            $androidPackageName = 'com.telkom.mwallet';
-            $androidFallbackLink = 'https://play.google.com/store/apps/details?id=com.telkom.mwallet';
-            $iosFallbackLink = 'https://apps.apple.com/id/app/linkaja/id984436451';
-            $iosBundleId = 'com.telkomsel.wallet';
-        }
-
-        if($app=="dana") {
-            $androidPackageName = 'id.dana';
-            $androidFallbackLink = 'https://play.google.com/store/apps/details?id=id.dana';
-            $iosFallbackLink = 'https://apps.apple.com/id/app/dana/id1437123008';
-            $iosBundleId = 'id.dana.app';
-        }
-
-        if($app=="ovo") {
-            $androidPackageName = 'ovo.id';
-            $androidFallbackLink = 'https://play.google.com/store/apps/details?id=ovo.id';
-            $iosFallbackLink = 'https://apps.apple.com/id/app/ovo/id1142114207';
-            $iosBundleId = 'ovo.id';
-        }
-
-        $endpoint = "https://firebasedynamiclinks.googleapis.com/v1/shortLinks?key=". self::env_firebaseDynamicLinkApiKey();
-        $headers = [
-              'Accept' => 'application/jsons',
-              'Content-Type' => 'application/json'
-          ];
-
-        $data = [
-          'dynamicLinkInfo' => [
-            'domainUriPrefix' => self::env_firebaseDynamicLinkDomainUri(),
-            'link' => $link,
-            'androidInfo' => [
-                'androidFallbackLink' => $androidFallbackLink,
-                'androidPackageName' => $androidPackageName
-            ],
-            'iosInfo' => [
-                'iosFallbackLink' => $iosFallbackLink,
-                'iosBundleId' => $iosBundleId
-            ],
-            'desktopInfo' => [
-                'desktopFallbackLink' => $receipt_url
-            ]
-          ]
-        ];
-
-        $client = new \GuzzleHttp\Client(['headers' => $headers,'http_errors' => false]);
-        $response = $client->request('POST',$endpoint,
-          [
-            'json' => $data
-          ]
-        );
-
-        $data = $response->getBody()->getContents();
-        $data = json_decode($data);
-        
-        return $data->shortLink;
-    }
+    
 
     public static function connect($path,$data="",$method="PUT")
     {
@@ -160,5 +78,15 @@ class FirebaseHelper {
         }
   		
   	}
+
+    public static function upload_payment($session_id,$phoneNumber,$status,$confirmation_code="")
+    {
+            $data = array(
+                'status' => $status,
+                'confirmation_code' => $confirmation_code
+            );
+            self::connect('payment/'.$session_id ."/ovo/". $phoneNumber,$data,"PUT");
+            return "";
+    }
 }
 ?>

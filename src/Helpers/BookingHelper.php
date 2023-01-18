@@ -1925,7 +1925,6 @@ class BookingHelper {
 		$payment_status = NULL;
 
 		$transaction = new \stdClass();
-        //$transaction->id = self::get_payment_transaction_id();
         $transaction->id = $shoppingcart->confirmation_code;
         $transaction->amount = $amount;
         $transaction->currency = $currency;
@@ -2119,6 +2118,24 @@ class BookingHelper {
 				}
 
 				$response = DuitkuHelper::createPayment($data);
+			break;
+			case "xendit":
+				$amount = self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'IDR');
+				$currency = 'IDR';
+				$rate = number_format((float)$shoppingcart->due_now / $amount, 2, '.', '');
+				$data->transaction->amount = $amount;
+				$data->transaction->currency = $currency;
+
+				$payment_provider = 'xendit';
+				$payment_type = 'ewallet';
+				$bank_name = 'ovo';
+				$redirect = $data->transaction->finish_url;
+				$payment_status = 2;
+
+				$response = new \stdClass();
+				$response->status = new \stdClass();
+				$response->status->id = 1;
+
 			break;
 			case "doku":
 				$amount = self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'IDR');

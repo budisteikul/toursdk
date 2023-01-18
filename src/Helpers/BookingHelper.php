@@ -2126,15 +2126,19 @@ class BookingHelper {
 				$data->transaction->amount = $amount;
 				$data->transaction->currency = $currency;
 
-				$payment_provider = 'xendit';
-				$payment_type = 'ewallet';
-				$bank_name = 'ovo';
-				$redirect = $data->transaction->finish_url;
-				$payment_status = 2;
+				if($data->transaction->bank == 'ovo')
+				{
+					$payment_provider = 'xendit';
+					$payment_type = 'ewallet';
+					$bank_name = 'ovo';
+					$redirect = $data->transaction->finish_url;
+					$payment_status = 2;
 
-				$response = new \stdClass();
-				$response->status = new \stdClass();
-				$response->status->id = 1;
+					$response = new \stdClass();
+					$response->status = new \stdClass();
+					$response->status->id = 1;
+				}
+				
 
 			break;
 			case "doku":

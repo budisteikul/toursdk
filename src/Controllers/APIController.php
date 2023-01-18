@@ -1492,6 +1492,14 @@ class APIController extends Controller
 
     public function confirmpaymentxendit(Request $request)
     {
+        $value = $request->header('x-callback-token');
+        if(env('XENDIT_CALLBACK_TOKEN')!=$value)
+        {
+            return response()->json([
+                'message' => "ERROR"
+            ], 200);
+        }
+
         $data = $request->all();
         
         $reference_id = $data['data']['reference_id'];

@@ -13,7 +13,6 @@ class XenditHelper {
 
     	$this->xendit = new \stdClass();
     	$this->xendit->secret_key = env("XENDIT_SECRET_KEY");
-    	$this->xendit->public_key = env("XENDIT_PUBLIC_KEY");
         $this->xendit->endpoint = 'https://api.xendit.co';
         
     }

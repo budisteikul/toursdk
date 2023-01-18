@@ -1494,15 +1494,16 @@ class APIController extends Controller
     {
         $data = $request->all();
         
-
         $reference_id = $data['data']['reference_id'];
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, "https://". env('FIREBASE_DATABASE_URL') ."/payment/ovo/". $reference_id .".json");
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        $output = curl_exec($ch);
-        curl_close($ch);      
 
-        $output = json_decode($output);
+        if($reference_id=="test-payload")
+        {
+            return response()->json([
+                'message' => "TEST OK"
+            ], 200);
+        }
+
+        $output = FirebaseHelper::read_payment($reference_id);
         $sessionId = $output->session_id;
 
         if($data['data']['status']!="SUCCEEDED")
@@ -1512,9 +1513,6 @@ class APIController extends Controller
                 'message' => "error"
             ], 200);
         }
-
-        
-        
 
         VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
 
@@ -1554,7 +1552,6 @@ class APIController extends Controller
             $phoneNumber = "+62". $phoneNumber;
 
             $shoppingcart = Cache::get('_'. $sessionId);
-            //$shoppingcart->due_now;
 
             $xendit = new XenditHelper();
             $response = $xendit->createEWalletOvoCharge($shoppingcart->due_now,$phoneNumber);

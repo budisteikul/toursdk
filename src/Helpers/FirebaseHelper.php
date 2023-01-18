@@ -20,6 +20,8 @@ class FirebaseHelper {
 
     public static function connect($path,$data="",$method="PUT")
     {
+        $response = null;
+
         if($method=="PUT")
         {
             $endpoint = "https://". self::env_firebaseDatabaseUrl() ."/". $path .".json?auth=". self::env_firebaseDatabaseSecret();
@@ -28,7 +30,7 @@ class FirebaseHelper {
                 ['body' => json_encode($data)]
             );
             $data = $response->getBody()->getContents();
-            $data = json_decode($data,true);
+            $response = json_decode($data);
         }
 
         if($method=="DELETE")
@@ -38,9 +40,21 @@ class FirebaseHelper {
             $response = $client->request('DELETE',$endpoint);
 
             $data = $response->getBody()->getContents();
-            $data = json_decode($data,true);
+            $response = json_decode($data);
+        }
+
+        if($method=="GET")
+        {
+            $endpoint = "https://". self::env_firebaseDatabaseUrl() ."/".$path .".json?auth=". self::env_firebaseDatabaseSecret();
+            $client = new \GuzzleHttp\Client(['http_errors' => false]);
+            $response = $client->request('GET',$endpoint);
+
+            $data = $response->getBody()->getContents();
+            $response = json_decode($data);
+
         }
             
+        return $response;
     }
     
 	public static function delete($shoppingcart,$index="")
@@ -88,6 +102,11 @@ class FirebaseHelper {
             );
             self::connect('payment/ovo/'.$reference_id,$data,"PUT");
             return "";
+    }
+
+    public static function read_payment($reference_id)
+    {
+        return self::connect('payment/ovo/'.$reference_id,"","GET");
     }
 }
 ?>

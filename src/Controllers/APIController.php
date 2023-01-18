@@ -39,6 +39,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\URL;
 use Stripe;
 
+use budisteikul\toursdk\Helpers\XenditHelper;
 
 class APIController extends Controller
 {
@@ -1515,13 +1516,20 @@ class APIController extends Controller
             {
                 $phoneNumber = substr($phoneNumber,1);
             }
-            $phoneNumber = "0". $phoneNumber;
+            $phoneNumber = "+62". $phoneNumber;
 
-            FirebaseHelper::upload_payment($sessionId,$phoneNumber,'PENDING');
+            $shoppingcart = Cache::get('_'. $sessionId);
+            //$shoppingcart->due_now;
+
+            $xendit = new XenditHelper();
+            $response = $xendit->createEWalletOvoCharge(10000,$phoneNumber);
+
+            FirebaseHelper::upload_payment('PENDING',$sessionId,$phoneNumber,$response->reference_id);
 
             return response()->json([
                     "session_id" => $sessionId,
-                    "phoneNumber" => $phoneNumber
+                    "phoneNumber" => $phoneNumber,
+                    "reference_id" => $response->reference_id
                 ]);
     }
 

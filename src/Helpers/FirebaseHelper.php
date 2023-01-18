@@ -79,13 +79,13 @@ class FirebaseHelper {
   		
   	}
 
-    public static function upload_payment($session_id,$phoneNumber,$status,$confirmation_code="")
+    public static function upload_payment($status,$session_id,$phoneNumber,$reference_id,$confirmation_code=null)
     {
             $data = array(
                 'status' => $status,
                 'confirmation_code' => $confirmation_code
             );
-            self::connect('payment/'.$session_id ."/ovo/". $phoneNumber,$data,"PUT");
+            self::connect('payment/'.$session_id ."/ovo/". $reference_id,$data,"PUT");
             return "";
     }
 }

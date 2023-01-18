@@ -1526,7 +1526,7 @@ class APIController extends Controller
 
         BookingHelper::set_bookingStatus($sessionId,'CONFIRMED');
         BookingHelper::set_confirmationCode($sessionId);
-        $response = BookingHelper::create_payment($sessionId,"xendit","ovo");
+        BookingHelper::create_payment($sessionId,"xendit","ovo");
         $shoppingcart = BookingHelper::confirm_booking($sessionId);
         
         FirebaseHelper::upload_payment('CONFIRMED',$reference_id,$sessionId,"/booking/receipt/".$shoppingcart->session_id."/".$shoppingcart->confirmation_code);

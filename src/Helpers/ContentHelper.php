@@ -361,7 +361,6 @@ class ContentHelper {
             'value' => 'permata', 'label' => 'Bank Transfer', 'image' => self::env_appAssetUrl() .'/img/payment/bank-transfer.png', 'currency' => 'idr',
         ];
 
-         /*
         $indonesia_list[] = [
             'value' => 'ovo', 'label' => 'OVO', 'image' => self::env_appAssetUrl() .'/img/payment/ovo.png', 'currency' => 'idr',
         ];
@@ -369,6 +368,9 @@ class ContentHelper {
         $indonesia_list[] = [
             'value' => 'dana', 'label' => 'DANA', 'image' => self::env_appAssetUrl() .'/img/payment/dana.png', 'currency' => 'idr',
         ];
+        
+         /*
+        
 
        
        

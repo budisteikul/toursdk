@@ -361,10 +361,11 @@ class ContentHelper {
 
         if($shoppingcart->due_now<=2000000)
         {
+            /*
             $indonesia_list[] = [
                 'value' => 'gopay', 'label' => 'GOPAY', 'image' => self::env_appAssetUrl() .'/img/payment/gopay.png', 'currency' => 'idr',
             ];
-
+            */
             $indonesia_list[] = [
                 'value' => 'ovo', 'label' => 'OVO', 'image' => self::env_appAssetUrl() .'/img/payment/ovo.png', 'currency' => 'idr',
             ];

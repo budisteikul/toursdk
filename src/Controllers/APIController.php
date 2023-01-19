@@ -324,7 +324,7 @@ class APIController extends Controller
                     VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
                     BookingHelper::set_bookingStatus($sessionId,'PENDING');
                     BookingHelper::set_confirmationCode($sessionId);
-                    $response = BookingHelper::create_payment($sessionId,"dana","");
+                    $response = BookingHelper::create_payment($sessionId,"xendit","dana");
                 break;
 
                 case 'permata':
@@ -1533,6 +1533,14 @@ class APIController extends Controller
             FirebaseHelper::upload_payment('CONFIRMED',$reference_id,$sessionId,"/booking/receipt/".$shoppingcart->session_id."/".$shoppingcart->confirmation_code);
         }
 
+        if($channel_code=="ID_DANA")
+        {
+            $shoppingcart_payment = ShoppingcartPayment::where('payment_provider','xendit')->where('authorization_id',$reference_id)->first();
+            if($shoppingcart_payment!==null){
+                BookingHelper::confirm_payment($shoppingcart_payment->shoppingcart,"CONFIRMED");
+                BookingHelper::shoppingcart_notif($shoppingcart_payment->shoppingcart);
+            }
+        }
 
         return response()->json([
                 'message' => "success"

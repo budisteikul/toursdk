@@ -13,6 +13,7 @@ use budisteikul\toursdk\Helpers\OyHelper;
 use budisteikul\toursdk\Helpers\PaydiaHelper;
 use budisteikul\toursdk\Helpers\DokuHelper;
 use budisteikul\toursdk\Helpers\RapydHelper;
+use budisteikul\toursdk\Helpers\XenditHelper;
 use budisteikul\toursdk\Helpers\DanaHelper;
 use budisteikul\toursdk\Helpers\FirebaseHelper;
 use budisteikul\toursdk\Helpers\GeneralHelper;
@@ -2120,6 +2121,7 @@ class BookingHelper {
 				$response = DuitkuHelper::createPayment($data);
 			break;
 			case "xendit":
+
 				$amount = self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'IDR');
 				$currency = 'IDR';
 				$rate = number_format((float)$shoppingcart->due_now / $amount, 2, '.', '');
@@ -2139,6 +2141,15 @@ class BookingHelper {
 					$response->status->id = 1;
 				}
 				
+				if($data->transaction->bank == 'dana')
+				{
+					$payment_provider = 'xendit';
+					$payment_type = 'ewallet';
+					$bank_name = 'dana';
+					$payment_status = 4;
+
+					$response = XenditHelper::createPayment($data);
+				}
 
 			break;
 			case "doku":
@@ -2162,6 +2173,7 @@ class BookingHelper {
 				$response = DokuHelper::createPayment($data);
 			break;
 			case "midtrans":
+
 				$amount = self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'IDR');
 				$currency = 'IDR';
 				$rate = number_format((float)$shoppingcart->due_now / $amount, 2, '.', '');

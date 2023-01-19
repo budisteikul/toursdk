@@ -1502,6 +1502,7 @@ class APIController extends Controller
 
         $data = $request->all();
         
+        $channel_code = $data['data']['channel_code'];
         $reference_id = $data['data']['reference_id'];
 
         if($reference_id=="test-payload")
@@ -1511,25 +1512,27 @@ class APIController extends Controller
             ], 200);
         }
 
-        $output = FirebaseHelper::read_payment($reference_id);
-        $sessionId = $output->session_id;
-
-        if($data['data']['status']!="SUCCEEDED")
+        if($channel_code=="ID_OVO")
         {
-            FirebaseHelper::upload_payment('FAILED',$reference_id);
-            return response()->json([
-                'message' => "error"
-            ], 200);
+            $output = FirebaseHelper::read_payment($reference_id);
+            $sessionId = $output->session_id;
+
+            if($data['data']['status']!="SUCCEEDED")
+            {
+                FirebaseHelper::upload_payment('FAILED',$reference_id);
+                return response()->json([
+                    'message' => "error"
+                ], 200);
+            }
+
+            VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
+            BookingHelper::set_bookingStatus($sessionId,'CONFIRMED');
+            BookingHelper::set_confirmationCode($sessionId);
+            BookingHelper::create_payment($sessionId,"xendit","ovo");
+            $shoppingcart = BookingHelper::confirm_booking($sessionId);
+            FirebaseHelper::upload_payment('CONFIRMED',$reference_id,$sessionId,"/booking/receipt/".$shoppingcart->session_id."/".$shoppingcart->confirmation_code);
         }
 
-        VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
-
-        BookingHelper::set_bookingStatus($sessionId,'CONFIRMED');
-        BookingHelper::set_confirmationCode($sessionId);
-        BookingHelper::create_payment($sessionId,"xendit","ovo");
-        $shoppingcart = BookingHelper::confirm_booking($sessionId);
-        
-        FirebaseHelper::upload_payment('CONFIRMED',$reference_id,$sessionId,"/booking/receipt/".$shoppingcart->session_id."/".$shoppingcart->confirmation_code);
 
         return response()->json([
                 'message' => "success"

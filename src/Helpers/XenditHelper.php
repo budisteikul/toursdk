@@ -63,7 +63,7 @@ class XenditHelper {
         $data->amount = $amount;
         $data->currency = 'IDR';
 
-        return json_decode($this->POST('/qr_codes',$data));
+        return json_decode($this->POST('/qr_codes',$data,['api-version: 2022-07-31']));
     }
 
     public function createEWalletOvoCharge($amount,$mobile_number)
@@ -93,8 +93,8 @@ class XenditHelper {
         return json_decode($this->POST('/ewallets/charges',$data));
     }
 
-    private function POST($url,$data){
-        return $this->curl('POST',$url,$data);
+    private function POST($url,$data,$headers=NULL){
+        return $this->curl('POST',$url,$data,$headers);
     }
 
     private function GET($url){
@@ -117,6 +117,7 @@ class XenditHelper {
         curl_setopt($ch, CURLOPT_URL, $this->xendit->endpoint."$curl_url");
 
         $headerArray[] = "Authorization: Basic ". base64_encode($this->xendit->secret_key.':');
+
         if($mode=='POST'){
 
             $payload = json_encode($data);

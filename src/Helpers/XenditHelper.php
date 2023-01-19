@@ -55,6 +55,17 @@ class XenditHelper {
         return $response_json;
     }
 
+    public function createQrcode($amount)
+    {
+        $data = new \stdClass();
+        $data->reference_id = Uuid::uuid4()->toString();
+        $data->type = 'DYNAMIC';
+        $data->amount = $amount;
+        $data->currency = 'IDR';
+
+        return json_decode($this->POST('/qr_codes',$data));
+    }
+
     public function createEWalletOvoCharge($amount,$mobile_number)
     {
         $data = new \stdClass();

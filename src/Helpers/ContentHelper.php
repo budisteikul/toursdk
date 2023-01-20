@@ -283,81 +283,35 @@ class ContentHelper {
             
         }
 
-        //exit();
         
         $promo_code = $shoppingcart->promo_code;
         if($promo_code=="") $promo_code = null;
         
         $payment_enable = 'localpayment,stripe,paypal';
         
-        /*
-        $bank_transfer_list[] = [
-            'value' => 'permata', 'label' => 'PERMATA VA', 'image' => self::env_appAssetUrl() .'/img/payment/permata.png', 'currency' => 'idr',
-        ];
-        $bank_transfer_list[] = [
-            'value' => 'mandiri', 'label' => 'MANDIRI VA', 'image' => self::env_appAssetUrl() .'/img/payment/mandiri.png', 'currency' => 'idr',
-        ];
-        $bank_transfer_list[] = [
-            'value' => 'bni', 'label' => 'BNI VA', 'image' => self::env_appAssetUrl() .'/img/payment/bni.png', 'currency' => 'idr',
-        ];
-        $bank_transfer_list[] = [
-            'value' => 'bri', 'label' => 'BRI VA', 'image' => self::env_appAssetUrl() .'/img/payment/bri.png', 'currency' => 'idr',
-        ];
-        $bank_transfer_list[] = [
-            'value' => 'danamon', 'label' => 'DANAMON VA', 'image' => self::env_appAssetUrl() .'/img/payment/danamon.png', 'currency' => 'idr',
-        ];
-        $bank_transfer_list[] = [
-            'value' => 'cimb', 'label' => 'CIMB NIAGA VA',  'image' => self::env_appAssetUrl() .'/img/payment/cimb.png', 'currency' => 'idr',
-        ];
-        
-    
-        $qrcode_list[] = [
-            'value' => 'qris', 'label' => 'QRIS', 'image' => self::env_appAssetUrl() .'/img/payment/qris.png', 'currency' => 'idr',
-        ];
-        
-        $ewallet_list[] = [
-            'value' => 'dana', 'label' => 'DANA', 'image' => self::env_appAssetUrl() .'/img/payment/dana.png', 'currency' => 'idr',
-        ];
-        $ewallet_list[] = [
-            'value' => 'gopay', 'label' => 'GOPAY', 'image' => self::env_appAssetUrl() .'/img/payment/gopay.png', 'currency' => 'idr',
-        ];
-        $ewallet_list[] = [
-            'value' => 'shopeepay', 'label' => 'SHOPEEPAY', 'image' => self::env_appAssetUrl() .'/img/payment/shopeepay.png', 'currency' => 'idr',
-        ];
-        $ewallet_list[] = [
-            'value' => 'ovo', 'label' => 'OVO', 'image' => self::env_appAssetUrl() .'/img/payment/ovo.png', 'currency' => 'idr',
-        ];
-        
-        $grouped_payment[] = [
-            'label' => 'QRIS',
-            'options' => $qrcode_list
-        ];
+        $idr_total = BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'IDR');
+        $idr_total = $idr_total - ($idr_total * 10 / 100);
 
-        $grouped_payment[] = [
-            'label' => 'E-wallet',
-            'options' => $ewallet_list
-        ];
-        
-        $grouped_payment[] = [
-            'label' => 'Bank transfer',
-            'options' => $bank_transfer_list
-        ];
-        */
+        $sgd_total = BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'SGD');
+        $sgd_total = $sgd_total - ($sgd_total * 10 / 100);
 
-        /*
-        if($shoppingcart->due_now<=2000000)
-        {
-            $indonesia_list[] = [
-                'value' => 'qris', 'label' => 'QRIS', 'image' => self::env_appAssetUrl() .'/img/payment/qris.png', 'currency' => 'idr',
-            ];
-        }
-        */
+        $aud_total = BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'AUD');
+        $aud_total = $aud_total - ($aud_total * 10 / 100);
+
+        $krw_total = BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'KRW');
+        $krw_total = $krw_total - ($krw_total * 10 / 100);
+        
+        $php_total = BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'PHP');
+        $php_total = $php_total - ($php_total * 10 / 100);
+
+        $thb_total = BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'THB');
+        $thb_total = $thb_total - ($thb_total * 10 / 100);
         
         $indonesia_list[] = [
             'value' => 'permata', 'label' => 'Bank Transfer', 'image' => self::env_appAssetUrl() .'/img/payment/bank_transfer.png', 'currency' => 'idr',
         ];
 
-        if($shoppingcart->due_now<=2000000)
+        if($idr_total<=2000000)
         {
             /*
             $indonesia_list[] = [
@@ -368,7 +322,7 @@ class ContentHelper {
                 'value' => 'qris', 'label' => 'QRIS', 'image' => self::env_appAssetUrl() .'/img/payment/qris.png', 'currency' => 'idr',
             ];
             */
-            
+
             $indonesia_list[] = [
                 'value' => 'ovo', 'label' => 'OVO', 'image' => self::env_appAssetUrl() .'/img/payment/ovo.png', 'currency' => 'idr',
             ];
@@ -377,82 +331,6 @@ class ContentHelper {
                 'value' => 'dana', 'label' => 'DANA', 'image' => self::env_appAssetUrl() .'/img/payment/dana.png', 'currency' => 'idr',
             ];
         }
-
-        /*
-        
-        $indonesia_list[] = [
-            'value' => 'gopay', 'label' => 'GOPAY', 'image' => self::env_appAssetUrl() .'/img/payment/gopay.png', 'currency' => 'idr',
-        ];
-
-        $indonesia_list[] = [
-            'value' => 'bni', 'label' => 'BNI VA',  'image' => self::env_appAssetUrl() .'/img/payment/bni.png', 'currency' => 'idr',
-        ];
-
-        $indonesia_list[] = [
-            'value' => 'bri', 'label' => 'BRI VA',  'image' => self::env_appAssetUrl() .'/img/payment/bri.png', 'currency' => 'idr',
-        ];
-
-        $indonesia_list[] = [
-            'value' => 'sinarmas', 'label' => 'Sinarmas VA',  'image' => self::env_appAssetUrl() .'/img/payment/sinarmas.png', 'currency' => 'idr',
-        ];
-
-        $indonesia_list[] = [
-            'value' => 'maybank', 'label' => 'Maybank VA',  'image' => self::env_appAssetUrl() .'/img/payment/maybank.png', 'currency' => 'idr',
-        ];
-
-        $indonesia_list[] = [
-            'value' => 'danamon', 'label' => 'Danamon VA',  'image' => self::env_appAssetUrl() .'/img/payment/danamon.png', 'currency' => 'idr',
-        ];
-        */
-        /*
-        if($shoppingcart->due_now<=2000000)
-        {
-            $indonesia_list[] = [
-                'value' => 'alfamart', 'label' => 'Cash on Alfamart', 'image' => self::env_appAssetUrl() .'/img/payment/alfamart.png', 'currency' => 'idr',
-            ];
-        }
-        */
-
-        /*
-        $indonesia_list[] = [
-            'value' => 'dana', 'label' => 'DANA', 'image' => self::env_appAssetUrl() .'/img/payment/dana.png', 'currency' => 'idr',
-        ];
-        */
-        /*
-        $indonesia_list[] = [
-            'value' => 'gopay', 'label' => 'GoPay', 'image' => self::env_appAssetUrl() .'/img/payment/gopay.png', 'currency' => 'idr',
-        ];
-        */
-        /*
-        $indonesia_list[] = [
-            'value' => 'shopeepay', 'label' => 'SHOPEEPAY', 'image' => self::env_appAssetUrl() .'/img/payment/shopeepay.png', 'currency' => 'idr',
-        ];
-        */
-        /*
-        $indonesia_list[] = [
-            'value' => 'ovo', 'label' => 'OVO', 'image' => self::env_appAssetUrl() .'/img/payment/ovo.png', 'currency' => 'idr',
-        ];
-        */
-        /*
-        $indonesia_list[] = [
-            'value' => 'permata', 'label' => 'PERMATA VA', 'image' => self::env_appAssetUrl() .'/img/payment/permata.png', 'currency' => 'idr',
-        ];
-        $indonesia_list[] = [
-            'value' => 'mandiri', 'label' => 'MANDIRI VA', 'image' => self::env_appAssetUrl() .'/img/payment/mandiri.png', 'currency' => 'idr',
-        ];
-        $indonesia_list[] = [
-            'value' => 'bni', 'label' => 'BNI VA', 'image' => self::env_appAssetUrl() .'/img/payment/bni.png', 'currency' => 'idr',
-        ];
-        $indonesia_list[] = [
-            'value' => 'bri', 'label' => 'BRI VA', 'image' => self::env_appAssetUrl() .'/img/payment/bri.png', 'currency' => 'idr',
-        ];
-        $indonesia_list[] = [
-            'value' => 'danamon', 'label' => 'DANAMON VA', 'image' => self::env_appAssetUrl() .'/img/payment/danamon.png', 'currency' => 'idr',
-        ];
-        $indonesia_list[] = [
-            'value' => 'cimb', 'label' => 'CIMB NIAGA VA',  'image' => self::env_appAssetUrl() .'/img/payment/cimb.png', 'currency' => 'idr',
-        ];
-        */
 
         $singapore_list[] = [
             'value' => 'paynow', 'label' => 'PayNow QR', 'image' => self::env_appAssetUrl() .'/img/payment/paynow.png', 'currency' => 'sgd',
@@ -480,9 +358,6 @@ class ContentHelper {
             'options' => $australia_list
         ];
         
-        
-        
-
         /*
         $philippines_list[] = [
             'value' => 'grabpay', 'label' => 'GrabPay', 'image' => self::env_appAssetUrl() .'/img/payment/grabpay.png', 'currency' => 'php',
@@ -493,9 +368,6 @@ class ContentHelper {
         ];
         */
 
-        
-
-        
         $southkorea_list[] = [
             'value' => 'tmoney', 'label' => 'Tmoney', 'image' => self::env_appAssetUrl() .'/img/payment/tmoney.png', 'currency' => 'krw',
         ];
@@ -504,7 +376,6 @@ class ContentHelper {
             'options' => $southkorea_list
         ];
         
-
         /*
         $thailand_list[] = [
             'value' => 'promptpay', 'label' => 'PromptPay QR', 'image' => self::env_appAssetUrl() .'/img/payment/promptpay.png', 'currency' => 'thb',
@@ -524,23 +395,7 @@ class ContentHelper {
             $paypal_sdk = 'https://www.paypal.com/sdk/js?client-id='.self::env_paypalClientId().'&intent=authorize&currency='. self::env_paypalCurrency();
         }
         
-        $idr_total = BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'IDR');
-        $idr_total = $idr_total - ($idr_total * 10 / 100);
-
-        $sgd_total = BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'SGD');
-        $sgd_total = $sgd_total - ($sgd_total * 10 / 100);
-
-        $aud_total = BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'AUD');
-        $aud_total = $aud_total - ($aud_total * 10 / 100);
-
-        $krw_total = BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'KRW');
-        $krw_total = $krw_total - ($krw_total * 10 / 100);
         
-        $php_total = BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'PHP');
-        $php_total = $php_total - ($php_total * 10 / 100);
-
-        $thb_total = BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'THB');
-        $thb_total = $thb_total - ($thb_total * 10 / 100);
 
         $dataShoppingcart[] = array(
                 'id' => $shoppingcart->session_id,

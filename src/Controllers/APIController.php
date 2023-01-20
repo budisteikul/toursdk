@@ -1502,6 +1502,7 @@ class APIController extends Controller
 
         $data = $request->all();
         
+        $event = $data['event'];
         $channel_code = $data['data']['channel_code'];
         $reference_id = $data['data']['reference_id'];
 
@@ -1519,36 +1520,49 @@ class APIController extends Controller
             ], 200);
         }
 
-        if($channel_code=="ID_OVO")
+        if($event=="ewallet.capture")
         {
-            $output = FirebaseHelper::read_payment($reference_id);
-            $sessionId = $output->session_id;
-
-            if($data['data']['status']!="SUCCEEDED")
+            if($channel_code=="ID_OVO")
             {
-                FirebaseHelper::upload_payment('FAILED',$reference_id);
-                return response()->json([
-                    'message' => "error"
-                ], 200);
-            }
+                $output = FirebaseHelper::read_payment($reference_id);
+                $sessionId = $output->session_id;
 
-            VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
-            BookingHelper::set_bookingStatus($sessionId,'CONFIRMED');
-            BookingHelper::set_confirmationCode($sessionId);
-            BookingHelper::create_payment($sessionId,"xendit","ovo");
-            $shoppingcart = BookingHelper::confirm_booking($sessionId);
-            FirebaseHelper::upload_payment('CONFIRMED',$reference_id,$sessionId,"/booking/receipt/".$shoppingcart->session_id."/".$shoppingcart->confirmation_code);
-            BookingHelper::shoppingcart_notif($shoppingcart_payment->shoppingcart);
-        }
+                if($data['data']['status']!="SUCCEEDED")
+                {
+                    FirebaseHelper::upload_payment('FAILED',$reference_id);
+                    return response()->json([
+                        'message' => "error"
+                    ], 200);
+                }
 
-        if($channel_code=="ID_DANA")
-        {
-            $shoppingcart_payment = ShoppingcartPayment::where('payment_provider','xendit')->where('authorization_id',$reference_id)->first();
-            if($shoppingcart_payment!==null){
-                BookingHelper::confirm_payment($shoppingcart_payment->shoppingcart,"CONFIRMED");
+                VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
+                BookingHelper::set_bookingStatus($sessionId,'CONFIRMED');
+                BookingHelper::set_confirmationCode($sessionId);
+                BookingHelper::create_payment($sessionId,"xendit","ovo");
+                $shoppingcart = BookingHelper::confirm_booking($sessionId);
+                FirebaseHelper::upload_payment('CONFIRMED',$reference_id,$sessionId,"/booking/receipt/".$shoppingcart->session_id."/".$shoppingcart->confirmation_code);
                 BookingHelper::shoppingcart_notif($shoppingcart_payment->shoppingcart);
             }
+
+            if($channel_code=="ID_DANA")
+            {
+                $shoppingcart_payment = ShoppingcartPayment::where('payment_provider','xendit')->where('authorization_id',$reference_id)->first();
+                if($shoppingcart_payment!==null){
+                    BookingHelper::confirm_payment($shoppingcart_payment->shoppingcart,"CONFIRMED");
+                    BookingHelper::shoppingcart_notif($shoppingcart_payment->shoppingcart);
+                }
+            }
         }
+
+        if($event=="qr.payment")
+        {
+                $shoppingcart_payment = ShoppingcartPayment::where('payment_provider','xendit')->where('authorization_id',$reference_id)->first();
+                if($shoppingcart_payment!==null){
+                    BookingHelper::confirm_payment($shoppingcart_payment->shoppingcart,"CONFIRMED");
+                    BookingHelper::shoppingcart_notif($shoppingcart_payment->shoppingcart);
+                }
+        }
+        
 
         return response()->json([
                 'message' => "success"

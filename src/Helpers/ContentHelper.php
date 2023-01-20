@@ -367,6 +367,10 @@ class ContentHelper {
             ];
             */
             $indonesia_list[] = [
+                'value' => 'qris', 'label' => 'QRIS', 'image' => self::env_appAssetUrl() .'/img/payment/qris.png', 'currency' => 'idr',
+            ];
+            
+            $indonesia_list[] = [
                 'value' => 'ovo', 'label' => 'OVO', 'image' => self::env_appAssetUrl() .'/img/payment/ovo.png', 'currency' => 'idr',
             ];
 

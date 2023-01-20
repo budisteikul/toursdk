@@ -289,7 +289,7 @@ class APIController extends Controller
                     VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
                     BookingHelper::set_bookingStatus($sessionId,'PENDING');
                     BookingHelper::set_confirmationCode($sessionId);
-                    $response = BookingHelper::create_payment($sessionId,"midtrans","gopay_qris");
+                    $response = BookingHelper::create_payment($sessionId,"xendit","qris");
                 break;
 
                 case 'gopay_qris':

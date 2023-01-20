@@ -48,6 +48,26 @@ class XenditHelper {
             }
             
         }
+
+        if($data->transaction->bank=="qris")
+        {
+            $amount = round($data->transaction->amount);
+            $data1 = (new self)->createQrcode($amount);
+
+            if(isset($data1->error_code))
+            {
+                $status_json->id = '0';
+                $status_json->message = 'error';
+            }
+            else
+            {
+                $data_json->authorization_id = $data1->reference_id;
+                $data_json->qrcode = $data1->qr_string;
+
+                $status_json->id = '1';
+                $status_json->message = 'success';
+            }
+        }
         
         $response_json->status = $status_json;
         $response_json->data = $data_json;

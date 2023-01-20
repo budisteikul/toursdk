@@ -2151,6 +2151,16 @@ class BookingHelper {
 					$response = XenditHelper::createPayment($data);
 				}
 
+				if($data->transaction->bank == 'qris')
+				{
+					$payment_provider = 'xendit';
+					$payment_type = 'qrcode';
+					$bank_name = 'qris';
+					$payment_status = 4;
+
+					$response = XenditHelper::createPayment($data);
+				}
+
 			break;
 			case "doku":
 				$amount = self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'IDR');
@@ -2988,6 +2998,7 @@ class BookingHelper {
 		
 	}
 
+	
 	public static function disassembly_qris($new_string)
 	{
 		$dataObj = new \stdClass();
@@ -2998,7 +3009,7 @@ class BookingHelper {
             $value = '';
             try
             {
-                $value = @substr($new_string,4,$lenght);
+                $value = substr($new_string,4,$lenght);
             }
             catch(exception $e)
             {
@@ -3043,6 +3054,7 @@ class BookingHelper {
 		$dataObj1->nmid = 'NMID : '. $nmid;
 		return $dataObj1;
 	}
+	*/
 
 	public static function create_manual_pdf($shoppingcart)
 	{

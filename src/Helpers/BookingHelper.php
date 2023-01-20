@@ -1909,21 +1909,22 @@ class BookingHelper {
 		$bank_name = NULL;
 		$bank_code = NULL;
 		$va_number = NULL;
-
 		$payment_description = NULL;
-		
 		$qrcode = NULL;
 		$link = NULL;
-		$redirect = NULL;
-		$order_id = NULL;
 		$authorization_id = NULL;
-		$amount = NULL;
-		$currency = NULL;
-		$rate = NULL;
-		$rate_from = NULL;
-		$rate_to = NULL;
-		$expiration_date = NULL;
-		$payment_status = NULL;
+
+		$order_id = $shoppingcart->confirmation_code;
+		$amount = $shoppingcart->due_now;
+		$currency = $shoppingcart->currency;
+		$rate = 1;
+		$rate_from = $shoppingcart->currency;
+		$rate_to = $shoppingcart->currency;
+		$expiration_date = $date_expired;
+		$payment_status = 0;
+		if($shoppingcart->booking_status=="CONFIRMED") $payment_status = 2;
+		$redirect = '/booking/receipt/'. $sessionId .'/'. $shoppingcart->confirmation_code;
+
 
 		$transaction = new \stdClass();
         $transaction->id = $shoppingcart->confirmation_code;
@@ -1935,7 +1936,7 @@ class BookingHelper {
         $transaction->mins_expired = $mins_expired;
         $transaction->date_expired = $date_expired;
         $transaction->date_now = $date_now;
-        $transaction->finish_url = '/booking/receipt/'. $sessionId .'/'. $shoppingcart->confirmation_code;
+        $transaction->finish_url = $redirect;
 
         //============================================
         $products = array();
@@ -2133,7 +2134,6 @@ class BookingHelper {
 					$payment_provider = 'xendit';
 					$payment_type = 'ewallet';
 					$bank_name = 'ovo';
-					$redirect = $data->transaction->finish_url;
 					$payment_status = 2;
 
 					$response = new \stdClass();
@@ -2207,7 +2207,6 @@ class BookingHelper {
 			break;
 			case "paypal":
 				$payment_provider = 'paypal';
-
 				$amount = self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,self::env_paypalCurrency(),"PAYPAL");
 				$currency = self::env_paypalCurrency();
 				$rate = number_format((float)$shoppingcart->due_now / $amount, 2, '.', '');
@@ -2224,7 +2223,6 @@ class BookingHelper {
 			break;
 			case "stripe":
 				$payment_provider = 'stripe';
-
 				$amount = self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'USD');
 				$currency = 'USD';
 				$rate = number_format((float)$shoppingcart->due_now / $amount, 2, '.', '');
@@ -2239,17 +2237,8 @@ class BookingHelper {
 				$response = StripeHelper::createPayment($data);
 
 			break;
+			
 			default:
-				$payment_provider = 'none';
-				$amount = $shoppingcart->due_now;
-				$currency = $shoppingcart->currency;
-				$rate = number_format((float)$shoppingcart->due_now / $amount, 2, '.', '');;
-
-				$payment_status = 0;
-				if($shoppingcart->booking_status=="CONFIRMED")
-				{
-					$payment_status = 2;
-				}
 				
 
 				$response = new \stdClass();
@@ -2260,6 +2249,7 @@ class BookingHelper {
 
         		$response->status = $status_json;
         		$response->data = null;
+        	
 		}
 
 		if($response->status->id=="0")
@@ -2694,7 +2684,7 @@ class BookingHelper {
 					case 4:
 						if($shoppingcart->shoppingcart_payment->bank_name=="qris")
 						{
-							$data_qris = self::get_qris_content($shoppingcart);
+							//$data_qris = self::get_qris_content($shoppingcart);
 							return '
 								<div class="card mb-1">
 								<span class="badge badge-info invoice-color-info" style="font-size:20px;">
@@ -2709,7 +2699,7 @@ class BookingHelper {
     										<br />
     										<img id="qris-img" class="img-fluid border border-white mt-2" alt="QRIS" style="max-width:250px;" src="'. self::generate_qrcode($shoppingcart) .' ">
     										<br />
-    										<span><strong>'. $data_qris->nmid .'</strong></span>
+    										
    										</div>
 									</div>
   								</div>
@@ -2998,18 +2988,18 @@ class BookingHelper {
 		
 	}
 
-	
+	/*
 	public static function disassembly_qris($new_string)
 	{
 		$dataObj = new \stdClass();
 		while($new_string!="")
         {
             $new_object = substr($new_string,0,2);
-            $lenght = substr($new_string,2,2);
+            $lenght = (int)substr($new_string,2,2);
             $value = '';
             try
             {
-                $value = substr($new_string,4,$lenght);
+                $value = @substr($new_string,4,$lenght);
             }
             catch(exception $e)
             {

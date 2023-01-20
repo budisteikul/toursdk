@@ -1478,6 +1478,7 @@ class APIController extends Controller
     {
             $sessionId = $request->header('sessionId');
             BookingHelper::set_confirmationCode($sessionId);
+            BookingHelper::set_bookingStatus($sessionId,'PENDING');
             $response = BookingHelper::create_payment($sessionId,"paypal");
             return response()->json($response->data);
     }
@@ -1486,6 +1487,7 @@ class APIController extends Controller
     {
             $sessionId = $request->header('sessionId');
             BookingHelper::set_confirmationCode($sessionId);
+            BookingHelper::set_bookingStatus($sessionId,'PENDING');
             $response = BookingHelper::create_payment($sessionId,"stripe");
             return response()->json($response->data);
     }
@@ -1512,6 +1514,13 @@ class APIController extends Controller
             ], 200);
         }
 
+        if($reference_id=="testing_id_123")
+        {
+            return response()->json([
+                'message' => "TEST OK"
+            ], 200);
+        }
+
         if($channel_code=="ID_OVO")
         {
             $output = FirebaseHelper::read_payment($reference_id);
@@ -1531,6 +1540,7 @@ class APIController extends Controller
             BookingHelper::create_payment($sessionId,"xendit","ovo");
             $shoppingcart = BookingHelper::confirm_booking($sessionId);
             FirebaseHelper::upload_payment('CONFIRMED',$reference_id,$sessionId,"/booking/receipt/".$shoppingcart->session_id."/".$shoppingcart->confirmation_code);
+            BookingHelper::shoppingcart_notif($shoppingcart_payment->shoppingcart);
         }
 
         if($channel_code=="ID_DANA")

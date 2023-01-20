@@ -1478,7 +1478,6 @@ class APIController extends Controller
     {
             $sessionId = $request->header('sessionId');
             BookingHelper::set_confirmationCode($sessionId);
-            BookingHelper::set_bookingStatus($sessionId,'PENDING');
             $response = BookingHelper::create_payment($sessionId,"paypal");
             return response()->json($response->data);
     }
@@ -1487,7 +1486,6 @@ class APIController extends Controller
     {
             $sessionId = $request->header('sessionId');
             BookingHelper::set_confirmationCode($sessionId);
-            BookingHelper::set_bookingStatus($sessionId,'PENDING');
             $response = BookingHelper::create_payment($sessionId,"stripe");
             return response()->json($response->data);
     }

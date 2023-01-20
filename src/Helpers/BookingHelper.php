@@ -284,6 +284,7 @@ class BookingHelper {
 
 		$s_confirmation_code = self::get_ticket();
 		$s_session_id = $id;
+		$s_booking_status = 'PENDING';
 		$s_booking_channel = 'WEBSITE';
 		$s_currency = $contents->customerInvoice->currency;
 		$s_promo_code = NULL;
@@ -741,6 +742,7 @@ class BookingHelper {
 		
 		$ShoppingCart = (object)[
 			'session_id' => $s_session_id,
+			'booking_status' => $s_booking_status,
 			'booking_channel' => $s_booking_channel,
 			'confirmation_code' => $s_confirmation_code,
 			'currency' => $s_currency,

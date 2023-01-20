@@ -2612,9 +2612,9 @@ class BookingHelper {
 								<div class="card-img-overlay">
 									<div class="row h-100">
    										<div class="col-12 text-center">
-    										<img id="qris-img" class="img-fluid border border-white mt-2" alt="QRIS LOGO" style="max-width:250px; height:40px;" src="'.self::env_appAssetUrl().'/img/payment/qris-logo.png">
+    										<img class="img-fluid border border-white mt-2" alt="QRIS LOGO" style="max-width:250px; height:30px; image-rendering: -webkit-optimize-contrast;" src="'.self::env_appAssetUrl().'/img/payment/qris-logo.png">
     										<br />
-    										<img id="qris-img" class="img-fluid border border-white mt-2" alt="QRIS" style="max-width:250px;" src="'. self::generate_qrcode($shoppingcart) .' ">
+    										<img class="img-fluid border border-white mt-2" alt="QRIS" style="max-width:250px; image-rendering: -webkit-optimize-contrast;" src="'. self::generate_qrcode($shoppingcart) .' ">
     										<br />
     										
    										</div>

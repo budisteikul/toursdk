@@ -7,14 +7,9 @@ use budisteikul\toursdk\Helpers\BokunHelper;
 use budisteikul\toursdk\Helpers\ImageHelper;
 use budisteikul\toursdk\Helpers\ProductHelper;
 use budisteikul\toursdk\Helpers\PaypalHelper;
-use budisteikul\toursdk\Helpers\DuitkuHelper;
 use budisteikul\toursdk\Helpers\MidtransHelper;
-use budisteikul\toursdk\Helpers\OyHelper;
-use budisteikul\toursdk\Helpers\PaydiaHelper;
-use budisteikul\toursdk\Helpers\DokuHelper;
 use budisteikul\toursdk\Helpers\RapydHelper;
 use budisteikul\toursdk\Helpers\XenditHelper;
-use budisteikul\toursdk\Helpers\DanaHelper;
 use budisteikul\toursdk\Helpers\FirebaseHelper;
 use budisteikul\toursdk\Helpers\GeneralHelper;
 use budisteikul\toursdk\Helpers\VoucherHelper;
@@ -2078,56 +2073,12 @@ class BookingHelper {
 				$response = RapydHelper::createPayment($data);
 
 			break;
-			case "dana":
-				$amount = self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'IDR');
-
-				$currency = 'IDR';
-				$rate = number_format((float)$shoppingcart->due_now / $amount, 2, '.', '');
-				$payment_status = 4;
-
-				$data->transaction->amount = $amount;
-				$data->transaction->currency = $currency;
-
-				$response = DanaHelper::createPayment($data);
-			break;
-			case "oyindonesia":
-				$amount = self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'IDR');
-
-				$currency = 'IDR';
-				$rate = number_format((float)$shoppingcart->due_now / $amount, 2, '.', '');
-				$payment_status = 4;
-
-				$data->transaction->amount = $amount;
-				$data->transaction->currency = $currency;
-
-				$response = OyHelper::createPayment($data);
-			break;
-			case "duitku":
-				$amount = self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'IDR');
-
-				$currency = 'IDR';
-				$rate = number_format((float)$shoppingcart->due_now / $amount, 2, '.', '');
-				$payment_status = 4;
-
-				$data->transaction->amount = $amount;
-				$data->transaction->currency = $currency;
-
-				if($data->transaction->bank == 'ovo')
-				{
-					$contact->phone = $param1;
-					$payment_provider = 'duitku';
-					$payment_type = 'ewallet';
-					$bank_name = 'ovo';
-					$redirect = $data->transaction->finish_url;
-				}
-
-				$response = DuitkuHelper::createPayment($data);
-			break;
 			case "xendit":
 
 				$amount = self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'IDR');
 				$currency = 'IDR';
 				$rate = number_format((float)$shoppingcart->due_now / $amount, 2, '.', '');
+				
 				$data->transaction->amount = $amount;
 				$data->transaction->currency = $currency;
 
@@ -2164,28 +2115,7 @@ class BookingHelper {
 				}
 
 			break;
-			case "doku":
-				$amount = self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'IDR');
-				$currency = 'IDR';
-				$rate = number_format((float)$shoppingcart->due_now / $amount, 2, '.', '');
-				$payment_status = 4;
-
-				$data->transaction->amount = $amount;
-				$data->transaction->currency = $currency;
-
-				if($data->transaction->bank == 'ovo')
-				{
-					$contact->phone = $param1;
-					$payment_provider = 'doku';
-					$payment_type = 'ewallet';
-					$bank_name = 'ovo';
-					$redirect = $data->transaction->finish_url;
-				}
-
-				$response = DokuHelper::createPayment($data);
-			break;
 			case "midtrans":
-
 				$amount = self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'IDR');
 				$currency = 'IDR';
 				$rate = number_format((float)$shoppingcart->due_now / $amount, 2, '.', '');
@@ -2195,17 +2125,6 @@ class BookingHelper {
 				$data->transaction->currency = $currency;
 
 				$response = MidtransHelper::createPayment($data);
-			break;
-			case "paydia":
-				$amount = self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'IDR');
-				$currency = 'IDR';
-				$rate = number_format((float)$shoppingcart->due_now / $amount, 2, '.', '');
-				$payment_status = 4;
-
-				$data->transaction->amount = $amount;
-				$data->transaction->currency = $currency;
-
-				$response = PaydiaHelper::createPayment($data);
 			break;
 			case "paypal":
 				$payment_provider = 'paypal';
@@ -2239,10 +2158,7 @@ class BookingHelper {
 				$response = StripeHelper::createPayment($data);
 
 			break;
-			
 			default:
-				
-
 				$response = new \stdClass();
 				$status_json = new \stdClass();
 
@@ -2251,7 +2167,6 @@ class BookingHelper {
 
         		$response->status = $status_json;
         		$response->data = null;
-        	
 		}
 
 		if($response->status->id=="0")

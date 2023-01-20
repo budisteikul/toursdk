@@ -309,9 +309,7 @@ class ContentHelper {
         $bank_transfer_list[] = [
             'value' => 'cimb', 'label' => 'CIMB NIAGA VA',  'image' => self::env_appAssetUrl() .'/img/payment/cimb.png', 'currency' => 'idr',
         ];
-        $bank_transfer_list[] = [
-            'value' => 'doku', 'label' => 'DOKU VA', 'image' => self::env_appAssetUrl() .'/img/payment/doku.png', 'currency' => 'idr',
-        ];
+        
     
         $qrcode_list[] = [
             'value' => 'qris', 'label' => 'QRIS', 'image' => self::env_appAssetUrl() .'/img/payment/qris.png', 'currency' => 'idr',

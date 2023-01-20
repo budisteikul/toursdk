@@ -40,25 +40,12 @@
 	//Receipt
 	Route::get('/api/receipt/{sessionId}/{confirmationCode}', 'budisteikul\toursdk\Controllers\APIController@receipt');
 
-	//Redirect Callback
-	//Route::get('/api/redirect/dana/{sessionId}/{confirmationCode}', 'budisteikul\toursdk\Controllers\APIController@confirmpaymentdana');
-
 	//Callback Payment
 	Route::post('/api/payment/rapyd/confirm', 'budisteikul\toursdk\Controllers\APIController@confirmpaymentrapyd');
 	Route::post('/api/payment/stripe/confirm', 'budisteikul\toursdk\Controllers\APIController@confirmpaymentstripe');
 	Route::post('/api/payment/tazapay/confirm', 'budisteikul\toursdk\Controllers\APIController@confirmpaymenttazapay');
-	
-	Route::post('/api/payment/dana/confirm', 'budisteikul\toursdk\Controllers\APIController@confirmpaymentdana');
-	Route::post('/api/payment/dana/refund', 'budisteikul\toursdk\Controllers\APIController@confirmpaymentdana');
-	Route::post('/api/payment/dana/code', 'budisteikul\toursdk\Controllers\APIController@confirmpaymentdana');
-
 	Route::post('/api/payment/paypal/confirm', 'budisteikul\toursdk\Controllers\APIController@confirmpaymentpaypal');
-	Route::post('/api/payment/doku/confirm', 'budisteikul\toursdk\Controllers\APIController@confirmpaymentdoku');
-	//Route::post('/api/payment/oy/confirm', 'budisteikul\toursdk\Controllers\APIController@confirmpaymentoy');
-	Route::post('/api/payment/oy/callback', 'budisteikul\toursdk\Controllers\APIController@callbackpaymentoy');
 	Route::post('/api/payment/midtrans/confirm', 'budisteikul\toursdk\Controllers\APIController@confirmpaymentmidtrans');
-	Route::post('/api/payment/duitku/confirm', 'budisteikul\toursdk\Controllers\APIController@confirmpaymentduitku');
-	Route::post('/api/payment/paydia/confirm', 'budisteikul\toursdk\Controllers\APIController@confirmpaymentpaydia');
 	Route::post('/api/payment/xendit/confirm', 'budisteikul\toursdk\Controllers\APIController@confirmpaymentxendit');
 
 	//Create Payment

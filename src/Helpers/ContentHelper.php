@@ -334,10 +334,12 @@ class ContentHelper {
             $indonesia_list[] = [
                 'value' => 'dana', 'label' => 'DANA', 'image' => self::env_appAssetUrl() .'/img/payment/dana.png', 'currency' => 'idr',
             ];
-
+            
+            /*
             $indonesia_list[] = [
                 'value' => 'alfamart', 'label' => 'Convenience Store', 'image' => self::env_appAssetUrl() .'/img/payment/alfamart.png', 'currency' => 'idr',
             ];
+            */
         }
 
         $singapore_list[] = [

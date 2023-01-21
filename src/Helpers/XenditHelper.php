@@ -41,6 +41,7 @@ class XenditHelper {
             }
             else
             {
+                $data_json->order_id = $data1->id;
                 $data_json->redirect = $data1->actions->mobile_web_checkout_url;
                 $data_json->authorization_id = $data1->reference_id;
 
@@ -63,6 +64,7 @@ class XenditHelper {
             }
             else
             {
+                $data_json->order_id = $data1->id;
                 $data_json->authorization_id = $data1->reference_id;
                 $data_json->qrcode = $data1->qr_string;
 
@@ -87,6 +89,7 @@ class XenditHelper {
             }
             else
             {
+                $data_json->order_id = $data1->id;
                 $data_json->va_number = $data1->account_number;
                 $data_json->authorization_id = $data1->external_id;
 

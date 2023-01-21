@@ -108,6 +108,11 @@ class RapydHelper {
                 $data->bank_code = "016";
                 $data->bank_payment_type = "id_maybank_bank";
             break;
+            case "bca":
+                $data->bank_name = "Bank Central Asia";
+                $data->bank_code = "014";
+                $data->bank_payment_type = "id_bca_bank";
+            break;
             case "danamon":
                 $data->bank_name = "Danamon Bank";
                 $data->bank_code = "011";
@@ -285,7 +290,8 @@ class RapydHelper {
             ];
 
             $data1 = self::make_request('post','/v1/payments',$body);
-            
+            print_r($data1);
+            exit();
             $paycode = '';
             if(isset($data1['data']['textual_codes']['pay_code'])) $paycode = $data1['data']['textual_codes']['pay_code'];
 

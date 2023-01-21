@@ -2104,6 +2104,17 @@ class BookingHelper {
 					$response = XenditHelper::createPayment($data);
 				}
 
+				if($data->transaction->bank == 'bss')
+				{
+					$payment_provider = 'xendit';
+					$payment_type = 'bank_transfer';
+					$bank_name = 'SAHABAT SAMPOERNA';
+                	$bank_code = '523';
+					$payment_status = 4;
+
+					$response = XenditHelper::createPayment($data);
+				}
+
 				if($data->transaction->bank == 'qris')
 				{
 					$payment_provider = 'xendit';

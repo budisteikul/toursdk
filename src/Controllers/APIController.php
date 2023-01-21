@@ -329,6 +329,13 @@ class APIController extends Controller
                     $response = BookingHelper::create_payment($sessionId,"rapyd","permata");
                 break;
 
+                case 'bss':
+                    VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
+                    BookingHelper::set_bookingStatus($sessionId,'PENDING');
+                    BookingHelper::set_confirmationCode($sessionId);
+                    $response = BookingHelper::create_payment($sessionId,"xendit","bss");
+                break;
+
                 case 'mandiri':
                     VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
                     BookingHelper::set_bookingStatus($sessionId,'PENDING');
@@ -1264,6 +1271,30 @@ class APIController extends Controller
             return response()->json($response->data);
     }
 
+    public function confirmpaymentvaxendit(Request $request)
+    {
+        $value = $request->header('x-callback-token');
+        if(env('XENDIT_CALLBACK_TOKEN')!=$value)
+        {
+            return response()->json([
+                'message' => "ERROR"
+            ], 200);
+        }
+
+        $data = $request->all();
+        $external_id = $data['external_id'];
+
+        $shoppingcart_payment = ShoppingcartPayment::where('payment_provider','xendit')->where('authorization_id',$external_id)->first();
+        if($shoppingcart_payment){
+            BookingHelper::confirm_payment($shoppingcart_payment->shoppingcart,"CONFIRMED");
+            BookingHelper::shoppingcart_notif($shoppingcart_payment->shoppingcart);
+        }
+
+        return response()->json([
+                'message' => "success"
+            ], 200);
+    }
+
     public function confirmpaymentxendit(Request $request)
     {
         $value = $request->header('x-callback-token');
@@ -1321,7 +1352,7 @@ class APIController extends Controller
             if($channel_code=="ID_DANA")
             {
                 $shoppingcart_payment = ShoppingcartPayment::where('payment_provider','xendit')->where('authorization_id',$reference_id)->first();
-                if($shoppingcart_payment!==null){
+                if($shoppingcart_payment){
                     BookingHelper::confirm_payment($shoppingcart_payment->shoppingcart,"CONFIRMED");
                     BookingHelper::shoppingcart_notif($shoppingcart_payment->shoppingcart);
                 }
@@ -1331,7 +1362,7 @@ class APIController extends Controller
         if($event=="qr.payment")
         {
                 $shoppingcart_payment = ShoppingcartPayment::where('payment_provider','xendit')->where('authorization_id',$reference_id)->first();
-                if($shoppingcart_payment!==null){
+                if($shoppingcart_payment){
                     BookingHelper::confirm_payment($shoppingcart_payment->shoppingcart,"CONFIRMED");
                     BookingHelper::shoppingcart_notif($shoppingcart_payment->shoppingcart);
                 }

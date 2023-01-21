@@ -1,7 +1,6 @@
 <?php
 namespace budisteikul\toursdk\Helpers;
 
-
 class GeneralHelper {
 
     
@@ -51,6 +50,11 @@ class GeneralHelper {
             break;
             case 11:
                 return \Carbon\Carbon::parse($date)->format("D d.M'y");
+            break;
+            case 12:
+                $date = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $date, 'Asia/Jakarta');
+                $new_date = $date->setTimezone('UTC')->format('Y-m-d\TH:i:s.v\Z');
+                return $new_date;
             break;
             default:
                 return \Carbon\Carbon::now()->toDateTimeString();

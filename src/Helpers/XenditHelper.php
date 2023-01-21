@@ -4,6 +4,7 @@ use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\Exception\UnsatisfiedDependencyException;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Cache;
+use budisteikul\toursdk\Helpers\GeneralHelper;
 
 class XenditHelper {
 
@@ -52,7 +53,8 @@ class XenditHelper {
         if($data->transaction->bank=="qris")
         {
             $amount = round($data->transaction->amount);
-            $data1 = (new self)->createQrcode($amount);
+            $expired_at = GeneralHelper::dateFormat($data->transaction->date_expired,12);
+            $data1 = (new self)->createQrcode($amount,$expired_at);
 
             if(isset($data1->error_code))
             {
@@ -68,6 +70,30 @@ class XenditHelper {
                 $status_json->message = 'success';
             }
         }
+
+        if($data->transaction->bank=="bss")
+        {
+            $amount = round($data->transaction->amount);
+            $expired_at = GeneralHelper::dateFormat($data->transaction->date_expired,12);
+            $name = $data->contact->name;
+            $bank_code = 'SAHABAT_SAMPOERNA';
+
+            $data1 = (new self)->createVirtualAccount($bank_code,$amount,$name,$expired_at);
+
+            if(isset($data1->error_code))
+            {
+                $status_json->id = '0';
+                $status_json->message = 'error';
+            }
+            else
+            {
+                $data_json->va_number = $data1->account_number;
+                $data_json->authorization_id = $data1->external_id;
+
+                $status_json->id = '1';
+                $status_json->message = 'success';
+            }
+        }
         
         $response_json->status = $status_json;
         $response_json->data = $data_json;
@@ -75,15 +101,29 @@ class XenditHelper {
         return $response_json;
     }
 
-    public function createQrcode($amount)
+    public function createQrcode($amount,$expired_at)
     {
         $data = new \stdClass();
         $data->reference_id = Uuid::uuid4()->toString();
         $data->type = 'DYNAMIC';
         $data->amount = $amount;
         $data->currency = 'IDR';
+        $data->expired_at = $expired_at;
 
         return json_decode($this->POST('/qr_codes',$data,['api-version: 2022-07-31']));
+    }
+
+    public function createVirtualAccount($bank_code,$amount,$name,$expired_at)
+    {
+        $data = new \stdClass();
+        $data->external_id = Uuid::uuid4()->toString();
+        $data->bank_code = $bank_code;
+        $data->name = $name;
+        $data->is_closed = true;
+        $data->expected_amount = $amount;
+        $data->expiration_date = $expired_at;
+
+        return json_decode($this->POST('/callback_virtual_accounts',$data));
     }
 
     public function createEWalletOvoCharge($amount,$mobile_number)

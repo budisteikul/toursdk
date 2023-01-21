@@ -147,7 +147,6 @@ class MidtransHelper {
           $data_json->expiration_date = $data->transaction->date_expired;
           $data_json->order_id = $data->transaction->id;
           $data_json->payment_type = 'ewallet';
-          //$response->redirect = str_ireplace("gojek://","https://gojek.link/",$data2['deeplink_url']);
           $data_json->redirect = $data2['deeplink_url'];
         }
         else if($payment->bank_payment_type=="qrcode")

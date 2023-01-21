@@ -1,6 +1,5 @@
 <?php
 namespace budisteikul\toursdk\Helpers;
-use Zxing\QrReader;
 use Storage;
 
 class RapydHelper {
@@ -161,20 +160,7 @@ class RapydHelper {
             $data1 = self::make_request('post','/v1/payments',$body);
             $qrcode = $data1['data']['visual_codes']['PayNow QR'];
             
-            /*
-            list($type, $qrcode) = explode(';', $qrcode);
-            list(, $qrcode)      = explode(',', $qrcode);
-            $contents = base64_decode($qrcode);
-
-            $path = date('YmdHis');
-            $disk = Storage::disk('gcs');
-            $disk->put('qrcode/'. $path .'/'.$data->transaction->confirmation_code.'.png', $contents);
-            $url = $disk->url('qrcode/'. $path .'/'.$data->transaction->confirmation_code.'.png');
-            $qrcode = new QrReader($url);
-            */
-
             $data_json->payment_type = 'qrcode';
-            //$data_json->qrcode = $qrcode->text();
             $data_json->qrcode = $qrcode;
             $data_json->redirect = $data->transaction->finish_url;
         }

@@ -1175,10 +1175,10 @@ class APIController extends Controller
             if(isset($data['data']['status'])) $transaction_status = $data['data']['status'];
 
             $shoppingcart_payment = ShoppingcartPayment::where('order_id',$order_id)->first();
-            if($shoppingcart_payment!==null) {
+            if($shoppingcart_payment) {
                 $confirmation_code = $shoppingcart_payment->shoppingcart->confirmation_code;
                 $shoppingcart = Shoppingcart::where('confirmation_code',$confirmation_code)->first();
-                if($shoppingcart!==null)
+                if($shoppingcart)
                 {
                     if($transaction_status=="CLO")
                     {
@@ -1200,10 +1200,10 @@ class APIController extends Controller
             if(isset($data['state'])) $transaction_status = $data['state'];
 
             $shoppingcart_payment = ShoppingcartPayment::where('order_id',$order_id)->first();
-            if($shoppingcart_payment!==null) {
+            if($shoppingcart_payment) {
                 $confirmation_code = $shoppingcart_payment->shoppingcart->confirmation_code;
                 $shoppingcart = Shoppingcart::where('confirmation_code',$confirmation_code)->first();
-                if($shoppingcart!==null)
+                if($shoppingcart)
                 {
                     if($transaction_status=="Escrow_Funds_Received" || $transaction_status=="Payment_Received")
                     {
@@ -1228,11 +1228,11 @@ class APIController extends Controller
             if(isset($data['order_id'])) $order_id = $data['order_id'];
 
             $shoppingcart_payment = ShoppingcartPayment::where('order_id',$order_id)->first();
-            if($shoppingcart_payment!==null) {
+            if($shoppingcart_payment) {
 
                 $confirmation_code = $shoppingcart_payment->shoppingcart->confirmation_code;
                 $shoppingcart = Shoppingcart::where('confirmation_code',$confirmation_code)->first();
-                if($shoppingcart!==null)
+                if($shoppingcart)
                 {
                     
                         if($data['transaction_status']=="settlement")

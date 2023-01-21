@@ -2108,7 +2108,7 @@ class BookingHelper {
 				{
 					$payment_provider = 'xendit';
 					$payment_type = 'bank_transfer';
-					$bank_name = 'SAHABAT SAMPOERNA';
+					$bank_name = 'Bank Sahabat Sampoerna';
                 	$bank_code = '523';
 					$payment_status = 4;
 

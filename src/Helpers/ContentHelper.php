@@ -308,7 +308,7 @@ class ContentHelper {
         $thb_total = $thb_total - ($thb_total * 10 / 100);
         
         $indonesia_list[] = [
-            'value' => 'permata', 'label' => 'Bank Transfer', 'image' => self::env_appAssetUrl() .'/img/payment/bank_transfer.png', 'currency' => 'idr',
+            'value' => 'bss', 'label' => 'Bank Transfer', 'image' => self::env_appAssetUrl() .'/img/payment/bank_transfer.png', 'currency' => 'idr',
         ];
 
         if($idr_total<=2000000)
@@ -317,11 +317,11 @@ class ContentHelper {
             $indonesia_list[] = [
                 'value' => 'gopay', 'label' => 'GOPAY', 'image' => self::env_appAssetUrl() .'/img/payment/gopay.png', 'currency' => 'idr',
             ];
-            
+            */
             $indonesia_list[] = [
                 'value' => 'qris', 'label' => 'QRIS', 'image' => self::env_appAssetUrl() .'/img/payment/qris.png', 'currency' => 'idr',
             ];
-            */
+            
 
             $indonesia_list[] = [
                 'value' => 'ovo', 'label' => 'OVO', 'image' => self::env_appAssetUrl() .'/img/payment/ovo.png', 'currency' => 'idr',

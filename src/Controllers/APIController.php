@@ -839,8 +839,8 @@ class APIController extends Controller
                     }
 
                     //$output = $user.$post_title.$rating.$title.$text.$from;
-                    $output = $user.$post_title.$rating.$title.$text;
-
+                    //$output = $user.$post_title.$rating.$title.$text;
+                    $output = $user.$post_title.$title.$text;
                     return '<div class="bd-callout bd-callout-theme shadow-sm rounded" style="margin-top:5px;margin-bottom:5px;" >'. $output .'</div>';
                 })
                 ->rawColumns(['style'])

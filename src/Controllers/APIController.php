@@ -1271,30 +1271,6 @@ class APIController extends Controller
             return response()->json($response->data);
     }
 
-    public function confirmpaymentvaxendit(Request $request)
-    {
-        $value = $request->header('x-callback-token');
-        if(env('XENDIT_CALLBACK_TOKEN')!=$value)
-        {
-            return response()->json([
-                'message' => "ERROR"
-            ], 200);
-        }
-
-        $data = $request->all();
-        $external_id = $data['external_id'];
-
-        $shoppingcart_payment = ShoppingcartPayment::where('payment_provider','xendit')->where('authorization_id',$external_id)->first();
-        if($shoppingcart_payment){
-            BookingHelper::confirm_payment($shoppingcart_payment->shoppingcart,"CONFIRMED");
-            BookingHelper::shoppingcart_notif($shoppingcart_payment->shoppingcart);
-        }
-
-        return response()->json([
-                'message' => "success"
-            ], 200);
-    }
-
     public function confirmpaymentxendit(Request $request)
     {
         $value = $request->header('x-callback-token');
@@ -1307,6 +1283,20 @@ class APIController extends Controller
 
         $data = $request->all();
         
+        if(isset($data['external_id']))
+        {
+            $external_id = $data['external_id'];
+            $shoppingcart_payment = ShoppingcartPayment::where('payment_provider','xendit')->where('authorization_id',$external_id)->first();
+            if($shoppingcart_payment){
+                BookingHelper::confirm_payment($shoppingcart_payment->shoppingcart,"CONFIRMED");
+                BookingHelper::shoppingcart_notif($shoppingcart_payment->shoppingcart);
+            }
+
+            return response()->json([
+                'message' => "success"
+            ], 200);
+        }
+
         $event = $data['event'];
         $channel_code = $data['data']['channel_code'];
         $reference_id = $data['data']['reference_id'];

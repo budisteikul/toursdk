@@ -313,7 +313,7 @@ class ContentHelper {
 
         if($idr_total<=2000000)
         {
-            
+            /*
             $indonesia_list[] = [
                 'value' => 'gopay', 'label' => 'GOPAY', 'image' => self::env_appAssetUrl() .'/img/payment/gopay.png', 'currency' => 'idr',
             ];
@@ -325,7 +325,7 @@ class ContentHelper {
             $indonesia_list[] = [
                 'value' => 'qris', 'label' => 'QRIS', 'image' => self::env_appAssetUrl() .'/img/payment/qris.png', 'currency' => 'idr',
             ];
-            
+            */
 
             $indonesia_list[] = [
                 'value' => 'ovo', 'label' => 'OVO', 'image' => self::env_appAssetUrl() .'/img/payment/ovo.png', 'currency' => 'idr',
@@ -333,6 +333,10 @@ class ContentHelper {
 
             $indonesia_list[] = [
                 'value' => 'dana', 'label' => 'DANA', 'image' => self::env_appAssetUrl() .'/img/payment/dana.png', 'currency' => 'idr',
+            ];
+
+            $indonesia_list[] = [
+                'value' => 'alfamart', 'label' => 'Convenience Store', 'image' => self::env_appAssetUrl() .'/img/payment/alfamart.png', 'currency' => 'idr',
             ];
         }
 

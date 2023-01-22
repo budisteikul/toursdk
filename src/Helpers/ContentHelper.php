@@ -561,7 +561,7 @@ class ContentHelper {
                     1. Take a screenshot this screen and go to your nearest <b>Alfamart</b> store. <br />
                     2. Tell the cashier that you wish to make a <b>'. strtoupper($shoppingcart->shoppingcart_payment->payment_provider) .' VIA DOKU</b> payment. <br />
                     3. Show the screenshot to the cashier.<br />
-                    <small>Additional fee may be applicable per transaction.</small>
+                    <small>Additional small fee may be applicable per transaction.</small>
                     </div><br />';
                 }
             }

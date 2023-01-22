@@ -325,7 +325,7 @@ class ContentHelper {
             $indonesia_list[] = [
                 'value' => 'qris', 'label' => 'QRIS', 'image' => self::env_appAssetUrl() .'/img/payment/qris.png', 'currency' => 'idr',
             ];
-            */
+            
 
             $indonesia_list[] = [
                 'value' => 'ovo', 'label' => 'OVO', 'image' => self::env_appAssetUrl() .'/img/payment/ovo.png', 'currency' => 'idr',
@@ -334,10 +334,10 @@ class ContentHelper {
             $indonesia_list[] = [
                 'value' => 'dana', 'label' => 'DANA', 'image' => self::env_appAssetUrl() .'/img/payment/dana.png', 'currency' => 'idr',
             ];
-
+            */
             
             $indonesia_list[] = [
-                'value' => 'alfamart', 'label' => 'Alfamart Store', 'image' => self::env_appAssetUrl() .'/img/payment/alfamart.png', 'currency' => 'idr',
+                'value' => 'alfamart', 'label' => 'Cash on Alfamart', 'image' => self::env_appAssetUrl() .'/img/payment/alfamart.png', 'currency' => 'idr',
             ];
             
         }
@@ -541,7 +541,7 @@ class ContentHelper {
                 }
                 else
                 {
-                    $how_to_pay = 'Log in to bank and transfer funds to the provided '. strtoupper($shoppingcart->shoppingcart_payment->bank_name) .' account to complete the transaction. Please don\'t use BI-FAST transfer, it will cause payment failed';
+                    $how_to_pay = 'Log in to bank and transfer funds to the provided '. strtoupper($shoppingcart->shoppingcart_payment->bank_name) .' account to complete the transaction. Please don\'t use BI-FAST transfer, it may will cause payment failed';
                 }
                 
                 

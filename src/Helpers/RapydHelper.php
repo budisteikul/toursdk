@@ -142,8 +142,6 @@ class RapydHelper {
         return $data;
     }
 
-    
-
     public static function createPayment($data)
     {
         $payment = self::bankCode($data->transaction->bank);

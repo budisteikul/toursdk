@@ -326,9 +326,6 @@ class ContentHelper {
                 'value' => 'qris', 'label' => 'QRIS', 'image' => self::env_appAssetUrl() .'/img/payment/qris.png', 'currency' => 'idr',
             ];
             
-
-            
-
             $indonesia_list[] = [
                 'value' => 'dana', 'label' => 'DANA', 'image' => self::env_appAssetUrl() .'/img/payment/dana.png', 'currency' => 'idr',
             ];
@@ -375,7 +372,7 @@ class ContentHelper {
             'options' => $australia_list
         ];
         
-        /*
+        
         $philippines_list[] = [
             'value' => 'grabpay', 'label' => 'GrabPay', 'image' => self::env_appAssetUrl() .'/img/payment/grabpay.png', 'currency' => 'php',
         ];
@@ -383,7 +380,7 @@ class ContentHelper {
             'label' => 'PHILIPPINES',
             'options' => $philippines_list
         ];
-        */
+        
 
         $southkorea_list[] = [
             'value' => 'tmoney', 'label' => 'Tmoney', 'image' => self::env_appAssetUrl() .'/img/payment/tmoney.png', 'currency' => 'krw',
@@ -453,7 +450,7 @@ class ContentHelper {
                 </div>',
 
                 // Local Payment Currency
-                'localpayment_label' => '<strong class="mb-1">Asia Pacific Payments</strong> <br /><small>(Indonesia, Singapore, South Korea, Australia)</small><br /><span class="badge badge-danger">Automatic get discount 10%</span>',
+                'localpayment_label' => '<strong class="mb-1">Asia Pacific Payments</strong> <br /><small>(Indonesia, Singapore, Philippines, South Korea, Australia)</small><br /><span class="badge badge-danger">Automatic get discount 10%</span>',
 
                 // IDR Currency
                 'idr_currency' => 'IDR',

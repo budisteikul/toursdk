@@ -467,7 +467,7 @@ class APIController extends Controller
             if($shoppingcart->shoppingcart_payment->payment_type=="ewallet")
             {
                 $redirect_type = 2;
-                $text = '<strong>Click to pay with <img class="ml-2 mr-2" src="'. $this->appAssetUrl .'/img/payment/'.$shoppingcart->shoppingcart_payment->bank_name.'-light.png" height="30" /></strong>';
+                $text = '<strong>Click to pay with '.strtoupper($shoppingcart->shoppingcart_payment->bank_name).' app</strong>';
             }
 
             if($shoppingcart->shoppingcart_payment->payment_type=="bank_redirect")

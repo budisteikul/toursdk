@@ -2703,24 +2703,9 @@ class BookingHelper {
 								</div>';
 						break;
 					case 4:
-						$button = null;
-						if($shoppingcart->shoppingcart_payment->bank_name=="gopay")
-						{
-							$button = '<a class="btn btn-theme w-100" href="'. $shoppingcart->shoppingcart_payment->redirect .'"><b class="invoice-hilang"> Click to pay with<img alt="GOPAY" class="ml-2 mr-2" height="30" src="'.self::env_appAssetUrl().'/img/payment/gopay-light.png" /></b></a>';
-						}
-						if($shoppingcart->shoppingcart_payment->bank_name=="shopeepay")
-						{
-							$button = '<a class="btn btn-theme w-100" href="'. $shoppingcart->shoppingcart_payment->redirect .'"><b class="invoice-hilang"> Click to pay with<img alt="SHOPEEPAY" class="ml-2 mr-2" height="30" src="'.self::env_appAssetUrl().'/img/payment/shopeepay-light.png" /></b></a>';
-						}
-						if($shoppingcart->shoppingcart_payment->bank_name=="linkaja")
-						{
-							$button = '<a class="btn btn-theme w-100" href="'. $shoppingcart->shoppingcart_payment->redirect .'"><b class="invoice-hilang"> Click to pay with<img alt="LINKAJA" class="ml-2 mr-2" height="30" src="'.self::env_appAssetUrl().'/img/payment/linkaja-light.png" /></b></a>';
-						}
-						if($shoppingcart->shoppingcart_payment->bank_name=="dana")
-						{
-							$button = '<a class="btn btn-theme w-100" href="'. $shoppingcart->shoppingcart_payment->redirect .'"><b class="invoice-hilang"> Click to pay with<img alt="DANA" class="ml-2 mr-2" height="30" src="'.self::env_appAssetUrl().'/img/payment/dana-light.png" /></b></a>';
-						}
 						
+						$button = '<a class="btn btn-theme w-100" href="'. $shoppingcart->shoppingcart_payment->redirect .'"><b class="invoice-hilang"> Click to pay with '.strtoupper($shoppingcart->shoppingcart_payment->bank_name).' app</b></a>';
+
 						return '
 								<div class="card mb-1">
 								<span class="badge badge-info invoice-color-info" style="font-size:18px;">

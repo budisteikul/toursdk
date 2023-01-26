@@ -119,7 +119,7 @@ class RapydHelper {
                 $data->bank_payment_type = "id_danamon_bank";
             break;
             case "grabpay":
-                $data->bank_name = "GrabPay";
+                $data->bank_name = "grabpay";
                 $data->bank_code = "";
                 $data->bank_payment_type = "ph_grabpay_ewallet";
             break;
@@ -206,7 +206,7 @@ class RapydHelper {
             $data1 = self::make_request('post','/v1/payments',$body);
             
 
-            $data_json->payment_type = 'bank_redirect';
+            $data_json->payment_type = 'ewallet';
             $data_json->redirect = $data1['data']['redirect_url'];
         }
         else if($data->transaction->bank=="tmoney")

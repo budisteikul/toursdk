@@ -74,47 +74,47 @@ class RapydHelper {
                 $data->bank_payment_type = "au_poli_bank";
             break;
             case "bri":
-                $data->bank_name = "Bank BRI";
+                $data->bank_name = "bri";
                 $data->bank_code = "002";
                 $data->bank_payment_type = "id_bri_bank";
             break;
             case "permata":
-                $data->bank_name = "Permata Bank";
+                $data->bank_name = "permata";
                 $data->bank_code = "013";
                 $data->bank_payment_type = "id_permata_bank";
             break;
             case "mandiri":
-                $data->bank_name = "Mandiri Bank";
+                $data->bank_name = "mandiri";
                 $data->bank_code = "013";
                 $data->bank_payment_type = "id_mandiri_bank";
             break;
             case "cimb":
-                $data->bank_name = "CIMB Bank";
+                $data->bank_name = "cimb";
                 $data->bank_code = "022";
                 $data->bank_payment_type = "id_cimb_bank";
             break;
             case "bni":
-                $data->bank_name = "BNI Bank";
+                $data->bank_name = "bni";
                 $data->bank_code = "009";
                 $data->bank_payment_type = "id_bni_bank";
             break;
             case "sinarmas":
-                $data->bank_name = "Sinarmas Bank";
+                $data->bank_name = "sinarmas";
                 $data->bank_code = "153";
                 $data->bank_payment_type = "id_sinarmas_bank";
             break;
             case "maybank":
-                $data->bank_name = "Maybank";
+                $data->bank_name = "maybank";
                 $data->bank_code = "016";
                 $data->bank_payment_type = "id_maybank_bank";
             break;
             case "bca":
-                $data->bank_name = "Bank Central Asia";
+                $data->bank_name = "bca";
                 $data->bank_code = "014";
                 $data->bank_payment_type = "id_bca_bank";
             break;
             case "danamon":
-                $data->bank_name = "Danamon Bank";
+                $data->bank_name = "danamon";
                 $data->bank_code = "011";
                 $data->bank_payment_type = "id_danamon_bank";
             break;
@@ -124,7 +124,7 @@ class RapydHelper {
                 $data->bank_payment_type = "ph_grabpay_ewallet";
             break;
             case "tmoney":
-                $data->bank_name = "T money";
+                $data->bank_name = "tmoney";
                 $data->bank_code = "";
                 $data->bank_payment_type = "kr_tmoney_ewallet";
             break;

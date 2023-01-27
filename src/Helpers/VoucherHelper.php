@@ -24,10 +24,10 @@ class VoucherHelper {
 	{
 		$status = false;
 		$product = Product::where('bokun_id',$product_id)->first();
-        if($product!=null)
+        if($product)
         {
-            $aaa = $product->vouchers()->where('voucher_id', $voucher_id)->where('type', $type)->get();
-            if(@count($aaa)>0)
+            $aaa = $product->vouchers()->where('voucher_id', $voucher_id)->where('type', $type)->first();
+            if($aaa)
             {
             	$status = true;
             }

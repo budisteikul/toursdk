@@ -41,7 +41,7 @@ class CategoryHelper {
              print("<ul>");
              print('<li class="parent_li">');
              print('<span>'.$category->name.'</span>');
-             if(@count($category->child))
+             if(count($category->child))
              {
                 self::structure($category->id);
              }
@@ -89,7 +89,7 @@ class CategoryHelper {
         {
              array_push($array,$category->id);
              $a = array();
-             if(@count($category->child))
+             if(count($category->child))
              {
              	
                 $a = self::getChild_($category->id,$a);

@@ -2564,7 +2564,7 @@ class BookingHelper {
 						break;	
 					case 4:
 						
-						$button = '<a class="btn btn-theme w-100" href="'. $shoppingcart->shoppingcart_payment->redirect .'"><b class="invoice-hilang"> Open '.strtoupper($shoppingcart->shoppingcart_payment->bank_name).'</b></a>';
+						$button = '<a class="btn btn-theme w-100" href="'. $shoppingcart->shoppingcart_payment->redirect .'"><b class="invoice-hilang"> Click here to pay with '.strtoupper($shoppingcart->shoppingcart_payment->bank_name).'</b></a>';
 						
 						return '
 								<div class="card mb-1">
@@ -2573,14 +2573,7 @@ class BookingHelper {
 								</div>
 								<div class="card mb-4">
 								<div class="card-body bg-light">
-
-									<div class="mb-2 invoice-hilang">
 									Please wait while we are processing your payment.
-									</div>
-								
-								</div>
-								<div class="card-body">
-									'.$button.'
 								</div>
 								</div>
 								';
@@ -2711,7 +2704,7 @@ class BookingHelper {
 						break;
 					case 4:
 						
-						$button = '<a class="btn btn-theme w-100" href="'. $shoppingcart->shoppingcart_payment->redirect .'"><b class="invoice-hilang"> Open '.strtoupper($shoppingcart->shoppingcart_payment->bank_name).' app</b></a>';
+						$button = '<a class="btn btn-theme w-100" href="'. $shoppingcart->shoppingcart_payment->redirect .'"><b class="invoice-hilang"> Click to pay with '.strtoupper($shoppingcart->shoppingcart_payment->bank_name).' app</b></a>';
 
 						return '
 								<div class="card mb-1">
@@ -2722,13 +2715,8 @@ class BookingHelper {
 								
 								<div class="card-body bg-light">
 
-									<div class="mb-2 invoice-hilang">
 									Please wait while we are processing your payment.
-									</div>
 								
-								</div>
-								<div class="card-body">
-									'.$button.'
 								</div>
 								</div>
 								';

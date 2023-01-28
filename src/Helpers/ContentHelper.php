@@ -363,7 +363,7 @@ class ContentHelper {
             $indonesia_list[] = [
                 'value' => 'qris', 'label' => 'QRIS', 'image' => self::env_appAssetUrl() .'/img/payment/qris.png', 'currency' => 'idr',
             ];
-            */
+            
 
             $indonesia_list[] = [
                 'value' => 'dana', 'label' => 'Dana', 'image' => self::env_appAssetUrl() .'/img/payment/dana.png', 'currency' => 'idr',
@@ -373,7 +373,7 @@ class ContentHelper {
             $indonesia_list[] = [
                 'value' => 'ovo', 'label' => 'OVO', 'image' => self::env_appAssetUrl() .'/img/payment/ovo.png', 'currency' => 'idr',
             ];
-
+            */
             
             
         }
@@ -414,6 +414,9 @@ class ContentHelper {
         
         $philippines_list[] = [
             'value' => 'grabpay', 'label' => 'GrabPay', 'image' => self::env_appAssetUrl() .'/img/payment/grabpay.png', 'currency' => 'php',
+        ];
+        $philippines_list[] = [
+            'value' => 'gcash', 'label' => 'GCash', 'image' => self::env_appAssetUrl() .'/img/payment/gcash.png', 'currency' => 'php',
         ];
         $grouped_payment[] = [
             'label' => 'PHILIPPINES',

@@ -420,6 +420,13 @@ class APIController extends Controller
                     $response = BookingHelper::create_payment($sessionId,"rapyd","grabpay");
                 break;
 
+                case 'gcash':
+                    VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
+                    BookingHelper::set_bookingStatus($sessionId,'PENDING');
+                    BookingHelper::set_confirmationCode($sessionId);
+                    $response = BookingHelper::create_payment($sessionId,"rapyd","gcash");
+                break;
+
                 case 'promptpay':
                     VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
                     BookingHelper::set_bookingStatus($sessionId,'PENDING');
@@ -467,7 +474,7 @@ class APIController extends Controller
             if($shoppingcart->shoppingcart_payment->payment_type=="ewallet")
             {
                 $redirect_type = 2;
-                $text = '<strong>Click to pay with '.strtoupper($shoppingcart->shoppingcart_payment->bank_name).' app</strong>';
+                $text = '<strong>Click to pay with '.strtoupper($shoppingcart->shoppingcart_payment->bank_name).'</strong>';
             }
 
             if($shoppingcart->shoppingcart_payment->payment_type=="bank_redirect")

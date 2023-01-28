@@ -123,6 +123,11 @@ class RapydHelper {
                 $data->bank_code = "";
                 $data->bank_payment_type = "ph_grabpay_ewallet";
             break;
+            case "gcash":
+                $data->bank_name = "gcash";
+                $data->bank_code = "";
+                $data->bank_payment_type = "ph_gcash_ewallet";
+            break;
             case "tmoney":
                 $data->bank_name = "tmoney";
                 $data->bank_code = "";
@@ -190,6 +195,26 @@ class RapydHelper {
             $data_json->redirect = $data1['data']['redirect_url'];
         }
         else if($data->transaction->bank=="grabpay")
+        {
+            $body = [
+                'amount' => $data->transaction->amount,
+                'currency' => $data->transaction->currency,
+                'complete_payment_url' => self::env_appUrl() . $data->transaction->finish_url,
+                'error_payment_url' => self::env_appUrl() . $data->transaction->finish_url,
+                'description' => self::env_appName(),
+                'payment_method' => [
+                    'type' => $payment->bank_payment_type,
+                    'fields' => []
+                ]
+            ];
+
+            $data1 = self::make_request('post','/v1/payments',$body);
+            
+
+            $data_json->payment_type = 'ewallet';
+            $data_json->redirect = $data1['data']['redirect_url'];
+        }
+        else if($data->transaction->bank=="gcash")
         {
             $body = [
                 'amount' => $data->transaction->amount,

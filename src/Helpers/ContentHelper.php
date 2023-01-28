@@ -366,7 +366,7 @@ class ContentHelper {
             */
 
             $indonesia_list[] = [
-                'value' => 'dana', 'label' => 'DANA', 'image' => self::env_appAssetUrl() .'/img/payment/dana.png', 'currency' => 'idr',
+                'value' => 'dana', 'label' => 'Dana', 'image' => self::env_appAssetUrl() .'/img/payment/dana.png', 'currency' => 'idr',
             ];
             
 

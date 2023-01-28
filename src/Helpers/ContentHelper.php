@@ -369,11 +369,11 @@ class ContentHelper {
                 'value' => 'dana', 'label' => 'Dana', 'image' => self::env_appAssetUrl() .'/img/payment/dana.png', 'currency' => 'idr',
             ];
             
-
+            */
             $indonesia_list[] = [
                 'value' => 'ovo', 'label' => 'OVO', 'image' => self::env_appAssetUrl() .'/img/payment/ovo.png', 'currency' => 'idr',
             ];
-            */
+            
             
             
         }

@@ -1447,7 +1447,10 @@ class BookingHelper {
         	$date = Carbon::parse($group_shoppingcart_product->date)->format('Y-m-d');
             $people = ShoppingcartProductDetail::with('shoppingcart_product')
             ->WhereHas('shoppingcart_product', function($query) use ($date,$activityId) {
-                $query->whereDate('date','=',$date)->where(['product_id'=>$activityId]);
+            	$query->whereDate('date','=',$date)->where(['product_id'=>$activityId])->WhereHas('shoppingcart', function($query) {
+              		return $query->where('booking_status','CONFIRMED');
+            	});
+                return $query;
             })->get()->sum('people');
 
             $bookings[] = (object)[

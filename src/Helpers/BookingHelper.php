@@ -1450,7 +1450,6 @@ class BookingHelper {
             	$query->whereDate('date','=',$date)->where(['product_id'=>$activityId])->WhereHas('shoppingcart', function($query) {
               		return $query->where('booking_status','CONFIRMED');
             	});
-                return $query;
             })->get()->sum('people');
 
             $bookings[] = (object)[

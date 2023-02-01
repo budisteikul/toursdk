@@ -364,26 +364,23 @@ class ContentHelper {
                 'value' => 'qris', 'label' => 'QRIS', 'image' => self::env_appAssetUrl() .'/img/payment/qris.png', 'currency' => 'idr',
             ];
             
+            */
+
+            $indonesia_list[] = [
+                'value' => 'ovo', 'label' => 'OVO', 'image' => self::env_appAssetUrl() .'/img/payment/ovo.png', 'currency' => 'idr',
+            ];
 
             $indonesia_list[] = [
                 'value' => 'dana', 'label' => 'Dana', 'image' => self::env_appAssetUrl() .'/img/payment/dana.png', 'currency' => 'idr',
             ];
             
-            */
-            $indonesia_list[] = [
-                'value' => 'ovo', 'label' => 'OVO', 'image' => self::env_appAssetUrl() .'/img/payment/ovo.png', 'currency' => 'idr',
-            ];
-            
-            
-            
-        }
-
-        if($idr_total<=500000)
-        {
             $indonesia_list[] = [
                 'value' => 'alfamart', 'label' => 'Cash at Alfamart', 'image' => self::env_appAssetUrl() .'/img/payment/alfamart.png', 'currency' => 'idr',
             ];
+            
         }
+
+        
 
         $singapore_list[] = [
             'value' => 'paynow', 'label' => 'PayNow QR', 'image' => self::env_appAssetUrl() .'/img/payment/paynow.png', 'currency' => 'sgd',

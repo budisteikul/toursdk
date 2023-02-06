@@ -344,17 +344,22 @@ class ContentHelper {
         */
 
         //================================================
+        
+
+        
 
         $indonesia_list[] = [
             'value' => 'otherbank', 'label' => 'Bank Transfer', 'image' => self::env_appAssetUrl() .'/img/payment/bank_transfer.png', 'currency' => 'idr',
         ];
 
+        //if($idr_total<=500000)
+        //{
         $indonesia_list[] = [
             'value' => 'creditcard', 'label' => 'Credit Card', 'image' => self::env_appAssetUrl() .'/img/payment/creditcard.png', 'currency' => 'idr',
         ];
+        //}
 
-        if($idr_total<=2000000)
-        {
+        
             /*
             $indonesia_list[] = [
                 'value' => 'gopay', 'label' => 'GOPAY', 'image' => self::env_appAssetUrl() .'/img/payment/gopay.png', 'currency' => 'idr',
@@ -382,16 +387,17 @@ class ContentHelper {
                 'value' => 'alfamart', 'label' => 'Cash at Alfamart', 'image' => self::env_appAssetUrl() .'/img/payment/alfamart.png', 'currency' => 'idr',
             ];
             */
-        }
+        
 
         
+        $singapore_list[] = [
+            'value' => 'fast', 'label' => 'Bank Transfer', 'image' => self::env_appAssetUrl() .'/img/payment/dbs.png', 'currency' => 'sgd',
+        ];
 
         $singapore_list[] = [
             'value' => 'paynow', 'label' => 'PayNow QR', 'image' => self::env_appAssetUrl() .'/img/payment/paynow.png', 'currency' => 'sgd',
         ];
-        $singapore_list[] = [
-            'value' => 'fast', 'label' => 'DBS Singapore', 'image' => self::env_appAssetUrl() .'/img/payment/dbs.png', 'currency' => 'sgd',
-        ];
+        
 
         $grouped_payment[] = [
             'label' => 'INDONESIA',

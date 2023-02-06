@@ -312,19 +312,19 @@ class ContentHelper {
         //================================================
         
         $indonesia_list[] = [
-            'value' => 'mandiri', 'label' => 'Mandiri VA', 'image' => self::env_appAssetUrl() .'/img/payment/mandiri.png', 'currency' => 'idr',
+            'value' => 'mandiri', 'label' => 'Mandiri', 'image' => self::env_appAssetUrl() .'/img/payment/mandiri.png', 'currency' => 'idr',
         ];
         
         $indonesia_list[] = [
-            'value' => 'permata', 'label' => 'Permata VA', 'image' => self::env_appAssetUrl() .'/img/payment/permata.png', 'currency' => 'idr',
+            'value' => 'permata', 'label' => 'Permata', 'image' => self::env_appAssetUrl() .'/img/payment/permata.png', 'currency' => 'idr',
         ];
 
         $indonesia_list[] = [
-            'value' => 'cimb', 'label' => 'Cimb Niaga VA', 'image' => self::env_appAssetUrl() .'/img/payment/cimb.png', 'currency' => 'idr',
+            'value' => 'cimb', 'label' => 'Cimb Niaga', 'image' => self::env_appAssetUrl() .'/img/payment/cimb.png', 'currency' => 'idr',
         ];
 
         $indonesia_list[] = [
-            'value' => 'bni', 'label' => 'Mandiri VA', 'image' => self::env_appAssetUrl() .'/img/payment/bni.png', 'currency' => 'idr',
+            'value' => 'bni', 'label' => 'BNI', 'image' => self::env_appAssetUrl() .'/img/payment/bni.png', 'currency' => 'idr',
         ];
 
         /*
@@ -585,7 +585,7 @@ class ContentHelper {
                 }
                 else
                 {
-                    $how_to_pay = 'Log in to bank and transfer funds to the provided '. strtoupper($shoppingcart->shoppingcart_payment->bank_name) .' account to complete the transaction. Please don\'t use BI-FAST transfer, it may will cause payment failed';
+                    $how_to_pay = 'Log in to bank and transfer funds to the provided '. strtoupper($shoppingcart->shoppingcart_payment->bank_name) .' virtual account to complete the transaction. Please don\'t use BI-FAST transfer, it may will cause payment failed';
                 }
                 
                 

@@ -2327,6 +2327,13 @@ class BookingHelper {
 
 		$value = number_format((float)$value, 2, '.', '');
 
+		/*
+		if($to=="THB")
+		{
+			$value = round($value,0);
+		}
+		*/
+
 		return $value;
 	}
 

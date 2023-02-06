@@ -310,7 +310,7 @@ class ContentHelper {
         
 
         //================================================
-        /*
+        
         $indonesia_list[] = [
             'value' => 'mandiri', 'label' => 'Mandiri VA', 'image' => self::env_appAssetUrl() .'/img/payment/mandiri.png', 'currency' => 'idr',
         ];
@@ -320,33 +320,33 @@ class ContentHelper {
         ];
 
         $indonesia_list[] = [
-            'value' => 'bri', 'label' => 'BRI VA', 'image' => self::env_appAssetUrl() .'/img/payment/bri.png', 'currency' => 'idr',
+            'value' => 'cimb', 'label' => 'Cimb Niaga VA', 'image' => self::env_appAssetUrl() .'/img/payment/cimb.png', 'currency' => 'idr',
         ];
 
         $indonesia_list[] = [
             'value' => 'bni', 'label' => 'Mandiri VA', 'image' => self::env_appAssetUrl() .'/img/payment/bni.png', 'currency' => 'idr',
         ];
 
-        $indonesia_list[] = [
-            'value' => 'danamon', 'label' => 'Danamon VA', 'image' => self::env_appAssetUrl() .'/img/payment/danamon.png', 'currency' => 'idr',
-        ];
-
-        $indonesia_list[] = [
-            'value' => 'sinarmas', 'label' => 'Sinarmas VA', 'image' => self::env_appAssetUrl() .'/img/payment/sinarmas.png', 'currency' => 'idr',
-        ];
-
-        $indonesia_list[] = [
-            'value' => 'cimb', 'label' => 'Cimb Niaga VA', 'image' => self::env_appAssetUrl() .'/img/payment/cimb-06.png', 'currency' => 'idr',
-        ];
-
+        /*
         $indonesia_list[] = [
             'value' => 'maybank', 'label' => 'Maybank VA', 'image' => self::env_appAssetUrl() .'/img/payment/maybank.png', 'currency' => 'idr',
         ];
+        
+        $indonesia_list[] = [
+            'value' => 'sinarmas', 'label' => 'Sinarmas VA', 'image' => self::env_appAssetUrl() .'/img/payment/sinarmas.png', 'currency' => 'idr',
+        ];
+        $indonesia_list[] = [
+            'value' => 'danamon', 'label' => 'Danamon VA', 'image' => self::env_appAssetUrl() .'/img/payment/danamon.png', 'currency' => 'idr',
+        ];
+        $indonesia_list[] = [
+            'value' => 'bri', 'label' => 'BRI VA', 'image' => self::env_appAssetUrl() .'/img/payment/bri.png', 'currency' => 'idr',
+        ];
         */
+
         //================================================
 
         $indonesia_list[] = [
-            'value' => 'permata', 'label' => 'Bank Transfer', 'image' => self::env_appAssetUrl() .'/img/payment/bank_transfer.png', 'currency' => 'idr',
+            'value' => 'otherbank', 'label' => 'Other Bank VA', 'image' => self::env_appAssetUrl() .'/img/payment/bank_transfer.png', 'currency' => 'idr',
         ];
 
         if($idr_total<=2000000)
@@ -364,7 +364,7 @@ class ContentHelper {
                 'value' => 'qris', 'label' => 'QRIS', 'image' => self::env_appAssetUrl() .'/img/payment/qris.png', 'currency' => 'idr',
             ];
             
-            */
+            
 
             $indonesia_list[] = [
                 'value' => 'ovo', 'label' => 'OVO', 'image' => self::env_appAssetUrl() .'/img/payment/ovo.png', 'currency' => 'idr',
@@ -377,7 +377,7 @@ class ContentHelper {
             $indonesia_list[] = [
                 'value' => 'alfamart', 'label' => 'Cash at Alfamart', 'image' => self::env_appAssetUrl() .'/img/payment/alfamart.png', 'currency' => 'idr',
             ];
-            
+            */
         }
 
         

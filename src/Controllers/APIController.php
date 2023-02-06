@@ -392,6 +392,13 @@ class APIController extends Controller
                     $response = BookingHelper::create_payment($sessionId,"rapyd","permata");
                 break;
 
+                case 'creditcard':
+                    VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
+                    BookingHelper::set_bookingStatus($sessionId,'PENDING');
+                    BookingHelper::set_confirmationCode($sessionId);
+                    $response = BookingHelper::create_payment($sessionId,"rapyd","creditcard");
+                break;
+
                 case 'paynow':
                     VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
                     BookingHelper::set_bookingStatus($sessionId,'PENDING');

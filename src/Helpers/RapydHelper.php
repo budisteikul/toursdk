@@ -1,6 +1,6 @@
 <?php
 namespace budisteikul\toursdk\Helpers;
-use Storage;
+use Ramsey\Uuid\Uuid;
 
 class RapydHelper {
 
@@ -138,6 +138,11 @@ class RapydHelper {
                 $data->bank_code = "";
                 $data->bank_payment_type = "id_alfa_cash";
             break;
+            case "creditcard":
+                $data->bank_name = "rapyd";
+                $data->bank_code = "";
+                $data->bank_payment_type = "";
+            break;
             default:
                 return response()->json([
                     "message" => 'Error'
@@ -173,6 +178,26 @@ class RapydHelper {
             $data_json->payment_type = 'qrcode';
             $data_json->qrcode = $qrcode;
             $data_json->redirect = $data->transaction->finish_url;
+        }
+        else if($data->transaction->bank=="creditcard")
+        {
+            $body = [
+                'amount' => $data->transaction->amount,
+                'country' => 'ID',
+                'currency' => 'IDR',
+                'requested_currency' => 'IDR',
+                'complete_checkout_url' => self::env_appUrl() . $data->transaction->finish_url,
+                'cancel_checkout_url' => self::env_appUrl() . $data->transaction->finish_url,
+                'merchant_reference_id' => Uuid::uuid4()->toString(),
+                'payment_method_types_include' => ['id_visa_card','id_mastercard_card','id_jcb_card']
+            ];
+
+            $data1 = self::make_request('post','/v1/checkout',$body);
+            //print_r($data1);
+            //exit();
+            $data_json->payment_type = 'bank_redirect';
+            $data_json->redirect = $data1['data']['redirect_url'];
+
         }
         else if($data->transaction->bank=="poli")
         {

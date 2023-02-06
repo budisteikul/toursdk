@@ -310,7 +310,7 @@ class ContentHelper {
         
 
         //================================================
-        
+        /*
         $indonesia_list[] = [
             'value' => 'mandiri', 'label' => 'Mandiri', 'image' => self::env_appAssetUrl() .'/img/payment/mandiri.png', 'currency' => 'idr',
         ];
@@ -327,7 +327,7 @@ class ContentHelper {
             'value' => 'bni', 'label' => 'BNI', 'image' => self::env_appAssetUrl() .'/img/payment/bni.png', 'currency' => 'idr',
         ];
 
-        /*
+        
         $indonesia_list[] = [
             'value' => 'maybank', 'label' => 'Maybank VA', 'image' => self::env_appAssetUrl() .'/img/payment/maybank.png', 'currency' => 'idr',
         ];
@@ -346,7 +346,11 @@ class ContentHelper {
         //================================================
 
         $indonesia_list[] = [
-            'value' => 'otherbank', 'label' => 'Other Bank', 'image' => self::env_appAssetUrl() .'/img/payment/bank_transfer.png', 'currency' => 'idr',
+            'value' => 'otherbank', 'label' => 'Bank Transfer', 'image' => self::env_appAssetUrl() .'/img/payment/bank_transfer.png', 'currency' => 'idr',
+        ];
+
+        $indonesia_list[] = [
+            'value' => 'creditcard', 'label' => 'Credit Card', 'image' => self::env_appAssetUrl() .'/img/payment/creditcard.png', 'currency' => 'idr',
         ];
 
         if($idr_total<=2000000)
@@ -490,7 +494,7 @@ class ContentHelper {
                 </div>',
 
                 // Local Payment Currency
-                'localpayment_label' => '<strong class="mb-1">Local Payments</strong> <br /><small>(Indonesia, Singapore, Philippines, South Korea, Australia)</small><br /><span class="badge badge-danger">Automatic get discount 10%</span>',
+                'localpayment_label' => '<strong class="mb-1">Local Payments</strong> <small>by Rapyd</small><br /><small>(Indonesia, Singapore, Philippines, South Korea, Australia)</small><br /><span class="badge badge-danger">Automatic get discount 10%</span>',
 
                 // IDR Currency
                 'idr_currency' => 'IDR',

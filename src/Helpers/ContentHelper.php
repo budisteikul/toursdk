@@ -346,7 +346,7 @@ class ContentHelper {
         //================================================
 
         $indonesia_list[] = [
-            'value' => 'otherbank', 'label' => 'Other Bank VA', 'image' => self::env_appAssetUrl() .'/img/payment/bank_transfer.png', 'currency' => 'idr',
+            'value' => 'otherbank', 'label' => 'Other Bank', 'image' => self::env_appAssetUrl() .'/img/payment/bank_transfer.png', 'currency' => 'idr',
         ];
 
         if($idr_total<=2000000)

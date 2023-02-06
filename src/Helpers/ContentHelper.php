@@ -500,7 +500,7 @@ class ContentHelper {
                 </div>',
 
                 // Local Payment Currency
-                'localpayment_label' => '<strong class="mb-1">Local Payments</strong> <small>by Rapyd</small><br /><small>(Indonesia, Singapore, Philippines, South Korea, Australia)</small><br /><span class="badge badge-danger">Automatic get discount 10%</span>',
+                'localpayment_label' => '<strong class="mb-1">Local Payments</strong> <br /><small>(Indonesia, Singapore, Philippines, South Korea, Australia)</small><br /><span class="badge badge-danger">Automatic get discount 10%</span>',
 
                 // IDR Currency
                 'idr_currency' => 'IDR',

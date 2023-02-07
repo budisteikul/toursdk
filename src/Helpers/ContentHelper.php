@@ -310,7 +310,7 @@ class ContentHelper {
         
 
         //================================================
-        
+        /*
         $indonesia_list[] = [
             'value' => 'mandiri', 'label' => 'Mandiri', 'image' => self::env_appAssetUrl() .'/img/payment/mandiri.png', 'currency' => 'idr',
         ];
@@ -332,7 +332,7 @@ class ContentHelper {
             'value' => 'maybank', 'label' => 'Maybank', 'image' => self::env_appAssetUrl() .'/img/payment/maybank.png', 'currency' => 'idr',
         ];
         
-        /*
+        
         $indonesia_list[] = [
             'value' => 'sinarmas', 'label' => 'Sinarmas', 'image' => self::env_appAssetUrl() .'/img/payment/sinarmas.png', 'currency' => 'idr',
         ];
@@ -350,18 +350,17 @@ class ContentHelper {
         
 
         $indonesia_list[] = [
-            'value' => 'otherbank', 'label' => 'Other Bank', 'image' => self::env_appAssetUrl() .'/img/payment/bank_transfer.png', 'currency' => 'idr',
+            'value' => 'otherbank', 'label' => 'Bank Transfer', 'image' => self::env_appAssetUrl() .'/img/payment/bank_transfer.png', 'currency' => 'idr',
         ];
 
-        //if($idr_total<=500000)
-        //{
+        /*
         $indonesia_list[] = [
             'value' => 'creditcard', 'label' => 'Credit Card', 'image' => self::env_appAssetUrl() .'/img/payment/creditcard.png', 'currency' => 'idr',
         ];
-        //}
+        
 
         
-            /*
+            
             $indonesia_list[] = [
                 'value' => 'gopay', 'label' => 'GOPAY', 'image' => self::env_appAssetUrl() .'/img/payment/gopay.png', 'currency' => 'idr',
             ];
@@ -392,7 +391,7 @@ class ContentHelper {
 
         
         $singapore_list[] = [
-            'value' => 'fast', 'label' => 'DBS Singapore', 'image' => self::env_appAssetUrl() .'/img/payment/dbs.png', 'currency' => 'sgd',
+            'value' => 'fast', 'label' => 'Bank Transfer', 'image' => self::env_appAssetUrl() .'/img/payment/fast.png', 'currency' => 'sgd',
         ];
 
         $singapore_list[] = [

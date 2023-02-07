@@ -310,7 +310,7 @@ class ContentHelper {
         
 
         //================================================
-        /*
+        
         $indonesia_list[] = [
             'value' => 'mandiri', 'label' => 'Mandiri', 'image' => self::env_appAssetUrl() .'/img/payment/mandiri.png', 'currency' => 'idr',
         ];
@@ -329,14 +329,15 @@ class ContentHelper {
 
         
         $indonesia_list[] = [
-            'value' => 'maybank', 'label' => 'Maybank VA', 'image' => self::env_appAssetUrl() .'/img/payment/maybank.png', 'currency' => 'idr',
+            'value' => 'maybank', 'label' => 'Maybank', 'image' => self::env_appAssetUrl() .'/img/payment/maybank.png', 'currency' => 'idr',
         ];
         
+        /*
         $indonesia_list[] = [
-            'value' => 'sinarmas', 'label' => 'Sinarmas VA', 'image' => self::env_appAssetUrl() .'/img/payment/sinarmas.png', 'currency' => 'idr',
+            'value' => 'sinarmas', 'label' => 'Sinarmas', 'image' => self::env_appAssetUrl() .'/img/payment/sinarmas.png', 'currency' => 'idr',
         ];
         $indonesia_list[] = [
-            'value' => 'danamon', 'label' => 'Danamon VA', 'image' => self::env_appAssetUrl() .'/img/payment/danamon.png', 'currency' => 'idr',
+            'value' => 'danamon', 'label' => 'Danamon', 'image' => self::env_appAssetUrl() .'/img/payment/danamon.png', 'currency' => 'idr',
         ];
         $indonesia_list[] = [
             'value' => 'bri', 'label' => 'BRI VA', 'image' => self::env_appAssetUrl() .'/img/payment/bri.png', 'currency' => 'idr',
@@ -349,7 +350,7 @@ class ContentHelper {
         
 
         $indonesia_list[] = [
-            'value' => 'otherbank', 'label' => 'Bank Transfer', 'image' => self::env_appAssetUrl() .'/img/payment/bank_transfer.png', 'currency' => 'idr',
+            'value' => 'otherbank', 'label' => 'Other Bank', 'image' => self::env_appAssetUrl() .'/img/payment/bank_transfer.png', 'currency' => 'idr',
         ];
 
         //if($idr_total<=500000)
@@ -391,7 +392,7 @@ class ContentHelper {
 
         
         $singapore_list[] = [
-            'value' => 'fast', 'label' => 'Bank Transfer', 'image' => self::env_appAssetUrl() .'/img/payment/dbs.png', 'currency' => 'sgd',
+            'value' => 'fast', 'label' => 'DBS Singapore', 'image' => self::env_appAssetUrl() .'/img/payment/dbs.png', 'currency' => 'sgd',
         ];
 
         $singapore_list[] = [

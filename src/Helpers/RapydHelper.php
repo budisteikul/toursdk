@@ -189,7 +189,7 @@ class RapydHelper {
                 'complete_checkout_url' => self::env_appUrl() . $data->transaction->finish_url,
                 'cancel_checkout_url' => self::env_appUrl() . $data->transaction->finish_url,
                 'merchant_reference_id' => Uuid::uuid4()->toString(),
-                'payment_method_types_include' => ['id_visa_card','id_mastercard_card','id_jcb_card']
+                //'payment_method_types_include' => ['id_visa_card','id_mastercard_card','id_jcb_card']
             ];
 
             $data1 = self::make_request('post','/v1/checkout',$body);

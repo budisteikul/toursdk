@@ -2449,7 +2449,7 @@ class BookingHelper {
 						if($shoppingcart->shoppingcart_payment->currency=="IDR")
 						{
 							$amount_text = GeneralHelper::formatRupiah($shoppingcart->shoppingcart_payment->amount);
-							$account_number_text = 'Virtual Account Number';
+							$account_number_text = 'Account Number';
 						}
 						else
 						{

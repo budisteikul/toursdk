@@ -427,7 +427,7 @@ class ContentHelper {
         ];
         */
         $philippines_list[] = [
-            'value' => 'bancnet', 'label' => 'BancNet', 'image' => self::env_appAssetUrl() .'/img/payment/bancnet-01.png', 'currency' => 'php',
+            'value' => 'bancnet', 'label' => 'BancNet', 'image' => self::env_appAssetUrl() .'/img/payment/bancnet.png', 'currency' => 'php',
         ];
         $philippines_list[] = [
             'value' => 'grabpay', 'label' => 'GrabPay', 'image' => self::env_appAssetUrl() .'/img/payment/grabpay.png', 'currency' => 'php',

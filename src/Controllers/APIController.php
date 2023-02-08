@@ -434,6 +434,13 @@ class APIController extends Controller
                     $response = BookingHelper::create_payment($sessionId,"rapyd","grabpay");
                 break;
 
+                case 'bancnet':
+                    VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
+                    BookingHelper::set_bookingStatus($sessionId,'PENDING');
+                    BookingHelper::set_confirmationCode($sessionId);
+                    $response = BookingHelper::create_payment($sessionId,"rapyd","bancnet");
+                break;
+
                 case 'gcash':
                     VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
                     BookingHelper::set_bookingStatus($sessionId,'PENDING');

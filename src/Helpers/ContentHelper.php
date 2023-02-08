@@ -310,7 +310,7 @@ class ContentHelper {
         
 
         //================================================
-        /*
+        
         $indonesia_list[] = [
             'value' => 'mandiri', 'label' => 'Mandiri', 'image' => self::env_appAssetUrl() .'/img/payment/mandiri.png', 'currency' => 'idr',
         ];
@@ -332,7 +332,7 @@ class ContentHelper {
             'value' => 'maybank', 'label' => 'Maybank', 'image' => self::env_appAssetUrl() .'/img/payment/maybank.png', 'currency' => 'idr',
         ];
         
-        
+        /*
         $indonesia_list[] = [
             'value' => 'sinarmas', 'label' => 'Sinarmas', 'image' => self::env_appAssetUrl() .'/img/payment/sinarmas.png', 'currency' => 'idr',
         ];
@@ -350,7 +350,7 @@ class ContentHelper {
         
 
         $indonesia_list[] = [
-            'value' => 'otherbank', 'label' => 'Bank Transfer', 'image' => self::env_appAssetUrl() .'/img/payment/bank_transfer.png', 'currency' => 'idr',
+            'value' => 'otherbank', 'label' => 'Other Bank', 'image' => self::env_appAssetUrl() .'/img/payment/bank_transfer.png', 'currency' => 'idr',
         ];
 
         /*
@@ -391,7 +391,7 @@ class ContentHelper {
 
         
         $singapore_list[] = [
-            'value' => 'fast', 'label' => 'Bank Transfer', 'image' => self::env_appAssetUrl() .'/img/payment/fast.png', 'currency' => 'sgd',
+            'value' => 'fast', 'label' => 'DBS Singapore', 'image' => self::env_appAssetUrl() .'/img/payment/dbs.png', 'currency' => 'sgd',
         ];
 
         $singapore_list[] = [
@@ -426,6 +426,9 @@ class ContentHelper {
             'options' => $thailand_list
         ];
         */
+        $philippines_list[] = [
+            'value' => 'bancnet', 'label' => 'BancNet', 'image' => self::env_appAssetUrl() .'/img/payment/bancnet-01.png', 'currency' => 'php',
+        ];
         $philippines_list[] = [
             'value' => 'grabpay', 'label' => 'GrabPay', 'image' => self::env_appAssetUrl() .'/img/payment/grabpay.png', 'currency' => 'php',
         ];
@@ -500,7 +503,7 @@ class ContentHelper {
                 </div>',
 
                 // Local Payment Currency
-                'localpayment_label' => '<strong class="mb-1">Local Payments</strong> <br /><small>(Indonesia, Singapore, Philippines, South Korea, Australia)</small><br /><span class="badge badge-danger">Automatic get discount 10%</span>',
+                'localpayment_label' => '<strong class="mb-1">Fund Transfer</strong> <br /><small>(Indonesia, Singapore, Philippines, South Korea, Australia)</small><br /><span class="badge badge-danger">Automatic get discount 10%</span>',
 
                 // IDR Currency
                 'idr_currency' => 'IDR',

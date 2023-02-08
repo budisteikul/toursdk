@@ -138,6 +138,11 @@ class RapydHelper {
                 $data->bank_code = "";
                 $data->bank_payment_type = "id_alfa_cash";
             break;
+            case "bancnet":
+                $data->bank_name = "bancnet";
+                $data->bank_code = "";
+                $data->bank_payment_type = "ph_bancnet_bank";
+            break;
             case "creditcard":
                 $data->bank_name = "rapyd";
                 $data->bank_code = "";
@@ -200,6 +205,26 @@ class RapydHelper {
 
         }
         else if($data->transaction->bank=="poli")
+        {
+            $body = [
+                'amount' => $data->transaction->amount,
+                'currency' => $data->transaction->currency,
+                'complete_payment_url' => self::env_appUrl() . $data->transaction->finish_url,
+                'error_payment_url' => self::env_appUrl() . $data->transaction->finish_url,
+                'description' => self::env_appName(),
+                'payment_method' => [
+                    'type' => $payment->bank_payment_type,
+                    'fields' => []
+                ]
+            ];
+
+            $data1 = self::make_request('post','/v1/payments',$body);
+            
+
+            $data_json->payment_type = 'bank_redirect';
+            $data_json->redirect = $data1['data']['redirect_url'];
+        }
+        else if($data->transaction->bank=="bancnet")
         {
             $body = [
                 'amount' => $data->transaction->amount,

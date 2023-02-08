@@ -2066,6 +2066,14 @@ class BookingHelper {
 					$rate_from = $shoppingcart->currency;
 					$rate_to = 'PHP';
 				}
+				else if($data->transaction->bank=="bancnet")
+				{
+					$amount = self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'PHP');
+					$currency = 'PHP';
+					$rate = number_format((float)$shoppingcart->due_now / $amount, 2, '.', '');
+					$rate_from = $shoppingcart->currency;
+					$rate_to = 'PHP';
+				}
 				else
 				{
 					$amount = self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'IDR');

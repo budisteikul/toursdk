@@ -38,8 +38,12 @@ class WiseHelper {
         return $value;
     }    
 
+    public function getAllCard(){
+        return json_decode($this->GET('/v3/spend/profiles/'. $this->tw->profileId .'/cards'));
+    }
+
     public function getRecipientAccounts(){
-        return json_decode($this->GET('/v1/accounts?profile='. $this->tw->profileId .'&currency=IDR'));
+        return json_decode($this->GET('/v2/accounts?profile='. $this->tw->profileId .'&currency=IDR'));
     }
 
     public function getBalanceAccounts(){

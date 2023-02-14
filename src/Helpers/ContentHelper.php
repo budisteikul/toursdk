@@ -315,7 +315,7 @@ class ContentHelper {
             ];
 
         $indonesia_list[] = [
-                'value' => 'permata', 'label' => 'Bank Transfer', 'image' => self::env_appAssetUrl() .'/img/payment/bank_transfer.png', 'currency' => 'idr',
+                'value' => 'mandiri', 'label' => 'Bank Transfer', 'image' => self::env_appAssetUrl() .'/img/payment/mandiri.png', 'currency' => 'idr',
             ];
 
         $grouped_payment[] = [
@@ -329,7 +329,7 @@ class ContentHelper {
         ];
 
         $singapore_list[] = [
-            'value' => 'fast', 'label' => 'Bank Transfer', 'image' => self::env_appAssetUrl() .'/img/payment/fast.png', 'currency' => 'sgd',
+            'value' => 'fast', 'label' => 'Bank Transfer', 'image' => self::env_appAssetUrl() .'/img/payment/dbs.png', 'currency' => 'sgd',
         ];
 
         $grouped_payment[] = [
@@ -349,7 +349,7 @@ class ContentHelper {
 
 
         $philippines_list[] = [
-            'value' => 'bancnet', 'label' => 'Bancnet', 'image' => self::env_appAssetUrl() .'/img/payment/bancnet.png', 'currency' => 'php',
+            'value' => 'bancnet', 'label' => 'BancNet', 'image' => self::env_appAssetUrl() .'/img/payment/bancnet.png', 'currency' => 'php',
         ];
 
         $philippines_list[] = [
@@ -374,17 +374,42 @@ class ContentHelper {
             'label' => 'SOUTH KOREA',
             'options' => $southkorea_list
         ];
+        
         /*
-        $thailand_list[] = [
-            'value' => 'promptpay', 'label' => 'PromptPay QR', 'image' => self::env_appAssetUrl() .'/img/payment/promptpay.png', 'currency' => 'thb',
-        ];
+        $bank_list[] = [
+                'value' => 'qris', 'label' => 'QRIS', 'image' => self::env_appAssetUrl() .'/img/payment/qris.png', 'currency' => 'idr',
+            ];
+
+        $bank_list[] = [
+                'value' => 'mandiri', 'label' => 'BANK TRANSFER', 'image' => self::env_appAssetUrl() .'/img/payment/mandiri.png', 'currency' => 'idr',
+            ];
+
         $grouped_payment[] = [
-            'label' => 'THAILAND',
-            'options' => $thailand_list
+            'label' => 'BANK TRANSFER',
+            'options' => $bank_list
+        ];
+
+        $ewallet_list[] = [
+                'value' => 'gopay', 'label' => 'GOPAY', 'image' => self::env_appAssetUrl() .'/img/payment/gopay.png', 'currency' => 'idr',
+            ];
+
+        $ewallet_list[] = [
+                'value' => 'shopeepay', 'label' => 'SHOPEEPAY', 'image' => self::env_appAssetUrl() .'/img/payment/shopeepay.png', 'currency' => 'idr',
+            ];
+
+        $ewallet_list[] = [
+                'value' => 'dana', 'label' => 'DANA', 'image' => self::env_appAssetUrl() .'/img/payment/dana.png', 'currency' => 'idr',
+            ];
+
+        $ewallet_list[] = [
+                'value' => 'ovo', 'label' => 'OVO', 'image' => self::env_appAssetUrl() .'/img/payment/ovo.png', 'currency' => 'idr',
+            ];
+
+        $grouped_payment[] = [
+            'label' => 'EWALLET',
+            'options' => $ewallet_list
         ];
         */
-        
-
 
 
         if(env('PAYPAL_INTENT')=="CAPTURE")

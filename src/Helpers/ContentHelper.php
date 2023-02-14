@@ -314,13 +314,22 @@ class ContentHelper {
                 'value' => 'qris', 'label' => 'QRIS', 'image' => self::env_appAssetUrl() .'/img/payment/qris.png', 'currency' => 'idr',
             ];
 
+        $indonesia_list[] = [
+                'value' => 'permata', 'label' => 'Bank Transfer', 'image' => self::env_appAssetUrl() .'/img/payment/bank_transfer.png', 'currency' => 'idr',
+            ];
+
         $grouped_payment[] = [
             'label' => 'INDONESIA',
             'options' => $indonesia_list
         ];
 
+
         $singapore_list[] = [
             'value' => 'paynow', 'label' => 'PayNow QR', 'image' => self::env_appAssetUrl() .'/img/payment/paynow.png', 'currency' => 'sgd',
+        ];
+
+        $singapore_list[] = [
+            'value' => 'fast', 'label' => 'Bank Transfer', 'image' => self::env_appAssetUrl() .'/img/payment/fast.png', 'currency' => 'sgd',
         ];
 
         $grouped_payment[] = [
@@ -328,6 +337,44 @@ class ContentHelper {
             'options' => $singapore_list
         ];
 
+
+        $australia_list[] = [
+            'value' => 'poli', 'label' => 'POLi', 'image' => self::env_appAssetUrl() .'/img/payment/poli.png', 'currency' => 'aud',
+        ];
+
+        $grouped_payment[] = [
+            'label' => 'AUSTRALIA',
+            'options' => $australia_list
+        ];
+
+
+        $philippines_list[] = [
+            'value' => 'bancnet', 'label' => 'Bancnet', 'image' => self::env_appAssetUrl() .'/img/payment/bancnet.png', 'currency' => 'php',
+        ];
+
+        $philippines_list[] = [
+            'value' => 'grabpay', 'label' => 'GrabPay', 'image' => self::env_appAssetUrl() .'/img/payment/grabpay.png', 'currency' => 'php',
+        ];
+
+        $philippines_list[] = [
+            'value' => 'gcash', 'label' => 'GCash', 'image' => self::env_appAssetUrl() .'/img/payment/gcash.png', 'currency' => 'php',
+        ];
+
+        $grouped_payment[] = [
+            'label' => 'PHILIPPINES',
+            'options' => $philippines_list
+        ];
+
+
+        $southkorea_list[] = [
+            'value' => 'tmoney', 'label' => 'TMoney', 'image' => self::env_appAssetUrl() .'/img/payment/tmoney.png', 'currency' => 'krw',
+        ];
+
+        $grouped_payment[] = [
+            'label' => 'SOUTH KOREA',
+            'options' => $southkorea_list
+        ];
+        /*
         $thailand_list[] = [
             'value' => 'promptpay', 'label' => 'PromptPay QR', 'image' => self::env_appAssetUrl() .'/img/payment/promptpay.png', 'currency' => 'thb',
         ];
@@ -335,6 +382,7 @@ class ContentHelper {
             'label' => 'THAILAND',
             'options' => $thailand_list
         ];
+        */
         
 
 
@@ -389,7 +437,7 @@ class ContentHelper {
                 </div>',
 
                 // Local Payment Currency
-                'localpayment_label' => '<strong class="mb-1">QR Payment</strong> <br /><small>(Indonesia, Singapore, Thailand)</small><br /><span class="badge badge-danger">Automatic get discount 10%</span>',
+                'localpayment_label' => '<strong class="mb-1">Fund Transfer</strong> <br /><small>(Indonesia, Singapore, Australia, Philippines, South Korea)</small><br /><span class="badge badge-danger">Automatic get discount 10%</span>',
 
                 // IDR Currency
                 'idr_currency' => 'IDR',

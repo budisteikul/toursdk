@@ -403,7 +403,7 @@ class APIController extends Controller
                     VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
                     BookingHelper::set_bookingStatus($sessionId,'PENDING');
                     BookingHelper::set_confirmationCode($sessionId);
-                    $response = BookingHelper::create_payment($sessionId,"tazapay","paynow");
+                    $response = BookingHelper::create_payment($sessionId,"rapyd","paynow");
                 break;
 
                 case 'fast':

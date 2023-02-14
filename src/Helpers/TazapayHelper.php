@@ -19,22 +19,22 @@ class TazapayHelper {
         return env("TAZAPAY_ENV");
     }
 
-	  public static function env_tazapayAccessKey()
-  	{
+      public static function env_tazapayAccessKey()
+    {
         return env("TAZAPAY_ACCESS_KEY");
-  	}
+    }
 
-  	public static function env_tazapaySecretKey()
-  	{
+    public static function env_tazapaySecretKey()
+    {
         return env("TAZAPAY_SECRET_KEY");
-  	}
+    }
 
     public static function env_tazapaySellerID()
     {
         return env("TAZAPAY_SELLER_ID");
     }
 
-  	public static function generate_string($length=12)
+    public static function generate_string($length=12)
     {
         $permitted_chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
         return substr(str_shuffle($permitted_chars), 0, $length);
@@ -62,9 +62,10 @@ class TazapayHelper {
                 $data->bank_name = "paynow";
                 $data->bank_code = "";
                 $data->bank_country = "SG";
-                $data->bank_payment_method = "sg_paynow_bank";
                 $data->bank_payment_type = "qrcode";
-                $data->bank_provider = "rapyd";
+                //$data->bank_provider = "rapyd";
+                $data->bank_provider = "reddotpay";
+                $data->bank_payment_method = "sg_paynow_bank";
             break;
             case "poli":
                 $data->bank_name = "poli";
@@ -78,9 +79,11 @@ class TazapayHelper {
                 $data->bank_name = "promptpay";
                 $data->bank_code = "";
                 $data->bank_country = "TH";
-                $data->bank_payment_method = "th_thaipromptpayqr_bank";
                 $data->bank_payment_type = "qrcode";
-                $data->bank_provider = "rapyd";
+                //$data->bank_provider = "rapyd";
+                //$data->bank_payment_method = "th_thaipromptpayqr_bank";
+                $data->bank_provider = "finmo";
+                $data->bank_payment_method = "th_bank_promptpaycash_thb";
             break;
             default:
                 return response()->json([
@@ -112,6 +115,8 @@ class TazapayHelper {
 
         $tazapay = self::make_request('POST','/v1/user',$body);
         
+        //print_r($tazapay);
+
         $body = [
             'txn_type' => 'service',
             'release_mechanism' => 'marketplace',
@@ -125,6 +130,7 @@ class TazapayHelper {
 
         $tazapay = self::make_request('POST','/v1/escrow/',$body);
         
+        //print_r($tazapay);
 
         $txn_no = $tazapay['data']['txn_no'];
 
@@ -137,6 +143,7 @@ class TazapayHelper {
 
         $tazapay = self::make_request('POST','/v1/session/payment',$body);
         
+        //print_r($tazapay);
 
         $redirect_url = $tazapay['data']['redirect_url'];
         $redirect_url_array = explode("/",$redirect_url);
@@ -144,6 +151,7 @@ class TazapayHelper {
 
         $tazapay = self::make_request('GET','/v1/session/payment/'.$auth_id);
         
+        //print_r($tazapay);
         
         $body = [
                 'escrow_id' => $tazapay['data']['escrow_id'],
@@ -158,6 +166,10 @@ class TazapayHelper {
 
         $tazapay = self::make_request('POST','/v1/escrow/payment',$body,$tazapay['data']['session_token']);
         
+        //print_r($tazapay);
+
+        //exit();
+
         if($payment->bank_payment_type=="qrcode")
         {
             $qrcode = $tazapay['data']['qr_code'];

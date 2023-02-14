@@ -64,6 +64,7 @@ class TazapayHelper {
                 $data->bank_country = "SG";
                 $data->bank_payment_method = "sg_paynow_bank";
                 $data->bank_payment_type = "qrcode";
+                $data->bank_provider = "rapyd";
             break;
             case "poli":
                 $data->bank_name = "poli";
@@ -71,6 +72,7 @@ class TazapayHelper {
                 $data->bank_country = "AU";
                 $data->bank_payment_method = "au_poli_bank";
                 $data->bank_payment_type = "bank_redirect";
+                $data->bank_provider = "rapyd";
             break;
             case "promptpay":
                 $data->bank_name = "promptpay";
@@ -78,6 +80,7 @@ class TazapayHelper {
                 $data->bank_country = "TH";
                 $data->bank_payment_method = "th_thaipromptpayqr_bank";
                 $data->bank_payment_type = "qrcode";
+                $data->bank_provider = "rapyd";
             break;
             default:
                 return response()->json([
@@ -146,7 +149,7 @@ class TazapayHelper {
                 'escrow_id' => $tazapay['data']['escrow_id'],
                 'payment_method' => $payment->bank_payment_method,
                 'redirect' => $redirect_url,
-                'provider' => 'rapyd',
+                'provider' => $payment->bank_provider,
                 'currency' => $data->transaction->currency,
                 'document' => null,
                 'is_first_payment' => false,

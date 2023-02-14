@@ -1,7 +1,5 @@
 <?php
 namespace budisteikul\toursdk\Helpers;
-use Zxing\QrReader;
-use Storage;
 use Carbon\Carbon;
 
 class TazapayHelper {

@@ -92,7 +92,6 @@ class TazapayHelper {
 
     public static function createPayment($data)
     {
-        
         $payment = self::bankCode($data->transaction->bank);
 
         $data_json = new \stdClass();
@@ -110,7 +109,6 @@ class TazapayHelper {
             'last_name' => $data->contact->last_name,
         ];
 
-
         $tazapay = self::make_request('POST','/v1/user',$body);
         
         $body = [
@@ -121,7 +119,7 @@ class TazapayHelper {
             'seller_id' => self::env_tazapaySellerID(),
             'txn_description' => 'Payment for '. $data->transaction->confirmation_code,
             'invoice_currency' => $data->transaction->currency,
-            'invoice_amount' => (int)$data->transaction->amount,
+            'invoice_amount' => (float)$data->transaction->amount,
         ];
 
         $tazapay = self::make_request('POST','/v1/escrow/',$body);
@@ -157,12 +155,8 @@ class TazapayHelper {
                 'redirect' => self::env_appUrl() . $data->transaction->finish_url
         ];
 
-        
-
         $tazapay = self::make_request('POST','/v1/escrow/payment',$body,$tazapay['data']['session_token']);
         
-        
-
         if($payment->bank_payment_type=="qrcode")
         {
             $qrcode = $tazapay['data']['qr_code'];

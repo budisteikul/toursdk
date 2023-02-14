@@ -308,100 +308,19 @@ class ContentHelper {
         $thb_total = $thb_total - ($thb_total * 10 / 100);
         
         
-
         //================================================
         
         $indonesia_list[] = [
-            'value' => 'mandiri', 'label' => 'Mandiri', 'image' => self::env_appAssetUrl() .'/img/payment/mandiri.png', 'currency' => 'idr',
-        ];
-        
-        $indonesia_list[] = [
-            'value' => 'permata', 'label' => 'Permata', 'image' => self::env_appAssetUrl() .'/img/payment/permata.png', 'currency' => 'idr',
-        ];
-
-        $indonesia_list[] = [
-            'value' => 'cimb', 'label' => 'Cimb Niaga', 'image' => self::env_appAssetUrl() .'/img/payment/cimb.png', 'currency' => 'idr',
-        ];
-
-        $indonesia_list[] = [
-            'value' => 'bni', 'label' => 'BNI', 'image' => self::env_appAssetUrl() .'/img/payment/bni.png', 'currency' => 'idr',
-        ];
-
-        
-        $indonesia_list[] = [
-            'value' => 'maybank', 'label' => 'Maybank', 'image' => self::env_appAssetUrl() .'/img/payment/maybank.png', 'currency' => 'idr',
-        ];
-        
-        /*
-        $indonesia_list[] = [
-            'value' => 'sinarmas', 'label' => 'Sinarmas', 'image' => self::env_appAssetUrl() .'/img/payment/sinarmas.png', 'currency' => 'idr',
-        ];
-        $indonesia_list[] = [
-            'value' => 'danamon', 'label' => 'Danamon', 'image' => self::env_appAssetUrl() .'/img/payment/danamon.png', 'currency' => 'idr',
-        ];
-        $indonesia_list[] = [
-            'value' => 'bri', 'label' => 'BRI VA', 'image' => self::env_appAssetUrl() .'/img/payment/bri.png', 'currency' => 'idr',
-        ];
-        */
-
-        //================================================
-        
-
-        
-
-        $indonesia_list[] = [
-            'value' => 'otherbank', 'label' => 'Other Bank', 'image' => self::env_appAssetUrl() .'/img/payment/bank_transfer.png', 'currency' => 'idr',
-        ];
-
-        /*
-        $indonesia_list[] = [
-            'value' => 'creditcard', 'label' => 'Credit Card', 'image' => self::env_appAssetUrl() .'/img/payment/creditcard.png', 'currency' => 'idr',
-        ];
-        
-
-        
-            
-            $indonesia_list[] = [
-                'value' => 'gopay', 'label' => 'GOPAY', 'image' => self::env_appAssetUrl() .'/img/payment/gopay.png', 'currency' => 'idr',
-            ];
-
-            $indonesia_list[] = [
-                'value' => 'shopeepay', 'label' => 'SHOPEEPAY', 'image' => self::env_appAssetUrl() .'/img/payment/shopeepay.png', 'currency' => 'idr',
-            ];
-            
-            $indonesia_list[] = [
                 'value' => 'qris', 'label' => 'QRIS', 'image' => self::env_appAssetUrl() .'/img/payment/qris.png', 'currency' => 'idr',
             ];
-            
-            
-
-            $indonesia_list[] = [
-                'value' => 'ovo', 'label' => 'OVO', 'image' => self::env_appAssetUrl() .'/img/payment/ovo.png', 'currency' => 'idr',
-            ];
-
-            $indonesia_list[] = [
-                'value' => 'dana', 'label' => 'Dana', 'image' => self::env_appAssetUrl() .'/img/payment/dana.png', 'currency' => 'idr',
-            ];
-            
-            $indonesia_list[] = [
-                'value' => 'alfamart', 'label' => 'Cash at Alfamart', 'image' => self::env_appAssetUrl() .'/img/payment/alfamart.png', 'currency' => 'idr',
-            ];
-            */
-        
-
-        
-        $singapore_list[] = [
-            'value' => 'fast', 'label' => 'DBS Singapore', 'image' => self::env_appAssetUrl() .'/img/payment/dbs.png', 'currency' => 'sgd',
-        ];
-
-        $singapore_list[] = [
-            'value' => 'paynow', 'label' => 'PayNow QR', 'image' => self::env_appAssetUrl() .'/img/payment/paynow.png', 'currency' => 'sgd',
-        ];
-        
 
         $grouped_payment[] = [
             'label' => 'INDONESIA',
             'options' => $indonesia_list
+        ];
+
+        $singapore_list[] = [
+            'value' => 'paynow', 'label' => 'PayNow QR', 'image' => self::env_appAssetUrl() .'/img/payment/paynow.png', 'currency' => 'sgd',
         ];
 
         $grouped_payment[] = [
@@ -409,15 +328,6 @@ class ContentHelper {
             'options' => $singapore_list
         ];
 
-        
-        $australia_list[] = [
-            'value' => 'poli', 'label' => 'POLi', 'image' => self::env_appAssetUrl() .'/img/payment/poli.png', 'currency' => 'aud',
-        ];
-        $grouped_payment[] = [
-            'label' => 'AUSTRALIA',
-            'options' => $australia_list
-        ];
-        /*
         $thailand_list[] = [
             'value' => 'promptpay', 'label' => 'PromptPay QR', 'image' => self::env_appAssetUrl() .'/img/payment/promptpay.png', 'currency' => 'thb',
         ];
@@ -425,33 +335,9 @@ class ContentHelper {
             'label' => 'THAILAND',
             'options' => $thailand_list
         ];
-        */
-        $philippines_list[] = [
-            'value' => 'bancnet', 'label' => 'BancNet', 'image' => self::env_appAssetUrl() .'/img/payment/bancnet.png', 'currency' => 'php',
-        ];
-        $philippines_list[] = [
-            'value' => 'grabpay', 'label' => 'GrabPay', 'image' => self::env_appAssetUrl() .'/img/payment/grabpay.png', 'currency' => 'php',
-        ];
-        $philippines_list[] = [
-            'value' => 'gcash', 'label' => 'GCash', 'image' => self::env_appAssetUrl() .'/img/payment/gcash.png', 'currency' => 'php',
-        ];
-        $grouped_payment[] = [
-            'label' => 'PHILIPPINES',
-            'options' => $philippines_list
-        ];
         
 
-        $southkorea_list[] = [
-            'value' => 'tmoney', 'label' => 'Tmoney', 'image' => self::env_appAssetUrl() .'/img/payment/tmoney.png', 'currency' => 'krw',
-        ];
-        $grouped_payment[] = [
-            'label' => 'SOUTH KOREA',
-            'options' => $southkorea_list
-        ];
-        
-        
-        
-        
+
 
         if(env('PAYPAL_INTENT')=="CAPTURE")
         {
@@ -503,7 +389,7 @@ class ContentHelper {
                 </div>',
 
                 // Local Payment Currency
-                'localpayment_label' => '<strong class="mb-1">Fund Transfer</strong> <br /><small>(Indonesia, Singapore, Philippines, South Korea, Australia)</small><br /><span class="badge badge-danger">Automatic get discount 10%</span>',
+                'localpayment_label' => '<strong class="mb-1">QR Payment</strong> <br /><small>(Indonesia, Singapore, Thailand)</small><br /><span class="badge badge-danger">Automatic get discount 10%</span>',
 
                 // IDR Currency
                 'idr_currency' => 'IDR',

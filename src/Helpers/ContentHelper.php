@@ -309,7 +309,7 @@ class ContentHelper {
         
         
         //================================================
-        /*
+        
         $indonesia_list[] = [
                 'value' => 'qris', 'label' => 'QRIS', 'image' => self::env_appAssetUrl() .'/img/payment/qris.png', 'currency' => 'idr',
             ];
@@ -390,8 +390,8 @@ class ContentHelper {
             'label' => 'SOUTH KOREA',
             'options' => $southkorea_list
         ];
-        */
         
+        /*
         $bank_list[] = [
                 'value' => 'qris', 'label' => 'QRIS', 'image' => self::env_appAssetUrl() .'/img/payment/qris.png', 'currency' => 'idr',
             ];
@@ -425,7 +425,7 @@ class ContentHelper {
             'label' => 'E-WALLET',
             'options' => $ewallet_list
         ];
-        
+        */
 
 
         if(env('PAYPAL_INTENT')=="CAPTURE")
@@ -478,7 +478,9 @@ class ContentHelper {
                 </div>',
 
                 // Local Payment Currency
-                'localpayment_label' => '<strong class="mb-1">Local Payments</strong>
+                'localpayment_label' => '<strong class="mb-1">Fund Transfer</strong>
+                <br />
+                <small>(Indonesia, Singapore, Philippines, Australia, South Korea)</small>
                 <br />
                 <span class="badge badge-danger">Automatic get discount 10%</span>',
 

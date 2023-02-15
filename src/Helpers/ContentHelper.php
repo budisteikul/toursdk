@@ -309,7 +309,7 @@ class ContentHelper {
         
         
         //================================================
-        /*
+        
         $indonesia_list[] = [
                 'value' => 'qris', 'label' => 'QRIS', 'image' => self::env_appAssetUrl() .'/img/payment/qris.png', 'currency' => 'idr',
             ];
@@ -391,7 +391,16 @@ class ContentHelper {
             'options' => $southkorea_list
         ];
         
-        
+        $thailand_list[] = [
+            'value' => 'promptpay', 'label' => 'PromptPay QR', 'image' => self::env_appAssetUrl() .'/img/payment/promptpay.png', 'currency' => 'thb',
+        ];
+
+        $grouped_payment[] = [
+            'label' => 'Thailand',
+            'options' => $thailand_list
+        ];
+
+        /*
         $bank_list[] = [
                 'value' => 'qris', 'label' => 'QRIS', 'image' => self::env_appAssetUrl() .'/img/payment/qris.png', 'currency' => 'idr',
             ];
@@ -425,7 +434,7 @@ class ContentHelper {
             'label' => 'E-WALLET',
             'options' => $ewallet_list
         ];
-        */
+        
 
         $indonesia_list[] = [
                 'value' => 'qris', 'label' => 'QRIS', 'image' => self::env_appAssetUrl() .'/img/payment/qris.png', 'currency' => 'idr',
@@ -454,7 +463,7 @@ class ContentHelper {
             'label' => 'Thailand',
             'options' => $thailand_list
         ];
-
+        */
 
         if(env('PAYPAL_INTENT')=="CAPTURE")
         {
@@ -506,19 +515,20 @@ class ContentHelper {
                 </div>',
 
                 // Local Payment Currency
-                /*
+                
                 'localpayment_label' => '<strong class="mb-1">Fund Transfer</strong>
                 <br />
-                <small>(Indonesia, Singapore, Philippines, Australia, South Korea)</small>
+                <small>(Indonesia, Singapore, Philippines, Australia, South Korea, Thailand)</small>
                 <br />
                 <span class="badge badge-danger">Automatic get discount 10%</span>',
-                */
-
+                
+                /*
                 'localpayment_label' => '<strong class="mb-1">QR Payment</strong>
                 <br />
                 <small>(Indonesia, Singapore, Thailand)</small>
                 <br />
                 <span class="badge badge-danger">Automatic get discount 10%</span>',
+                */
 
                 // IDR Currency
                 'idr_currency' => 'IDR',

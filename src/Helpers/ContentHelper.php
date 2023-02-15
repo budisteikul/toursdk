@@ -309,13 +309,13 @@ class ContentHelper {
         
         
         //================================================
-        
+        /*
         $indonesia_list[] = [
                 'value' => 'qris', 'label' => 'QRIS', 'image' => self::env_appAssetUrl() .'/img/payment/qris.png', 'currency' => 'idr',
             ];
 
         $indonesia_list[] = [
-                'value' => 'permata', 'label' => 'Bank Transfer', 'image' => self::env_appAssetUrl() .'/img/payment/bank_transfer.png', 'currency' => 'idr',
+                'value' => 'mandiri', 'label' => 'Bank Transfer', 'image' => self::env_appAssetUrl() .'/img/payment/bank_transfer.png', 'currency' => 'idr',
             ];
 
         $indonesia_list[] = [
@@ -391,7 +391,7 @@ class ContentHelper {
             'options' => $southkorea_list
         ];
         
-        /*
+        
         $bank_list[] = [
                 'value' => 'qris', 'label' => 'QRIS', 'image' => self::env_appAssetUrl() .'/img/payment/qris.png', 'currency' => 'idr',
             ];
@@ -426,6 +426,34 @@ class ContentHelper {
             'options' => $ewallet_list
         ];
         */
+
+        $indonesia_list[] = [
+                'value' => 'qris', 'label' => 'QRIS', 'image' => self::env_appAssetUrl() .'/img/payment/qris.png', 'currency' => 'idr',
+            ];
+
+        $grouped_payment[] = [
+            'label' => 'INDONESIA',
+            'options' => $indonesia_list
+        ];
+
+
+        $singapore_list[] = [
+            'value' => 'paynow', 'label' => 'PayNow QR', 'image' => self::env_appAssetUrl() .'/img/payment/paynow.png', 'currency' => 'sgd',
+        ];
+
+        $grouped_payment[] = [
+            'label' => 'SINGAPORE',
+            'options' => $singapore_list
+        ];
+
+        $thailand_list[] = [
+            'value' => 'promptpay', 'label' => 'Promptpay QR', 'image' => self::env_appAssetUrl() .'/img/payment/promptpay.png', 'currency' => 'thb',
+        ];
+
+        $grouped_payment[] = [
+            'label' => 'Thailand',
+            'options' => $thailand_list
+        ];
 
 
         if(env('PAYPAL_INTENT')=="CAPTURE")
@@ -478,9 +506,17 @@ class ContentHelper {
                 </div>',
 
                 // Local Payment Currency
+                /*
                 'localpayment_label' => '<strong class="mb-1">Fund Transfer</strong>
                 <br />
                 <small>(Indonesia, Singapore, Philippines, Australia, South Korea)</small>
+                <br />
+                <span class="badge badge-danger">Automatic get discount 10%</span>',
+                */
+
+                'localpayment_label' => '<strong class="mb-1">QR Payment</strong>
+                <br />
+                <small>(Indonesia and Singapore)</small>
                 <br />
                 <span class="badge badge-danger">Automatic get discount 10%</span>',
 

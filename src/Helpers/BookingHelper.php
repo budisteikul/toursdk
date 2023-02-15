@@ -2666,7 +2666,7 @@ class BookingHelper {
 							
 						}
 						
-						else
+						if($shoppingcart->shoppingcart_payment->bank_name=="paynow")
 						{
 							return '
 								<div class="card mb-1">
@@ -2682,6 +2682,36 @@ class BookingHelper {
    											<br />
     										<img id="paynow-img" class="img-fluid border border-white" alt="PAYNOW" style="max-width:250px;" src="'. self::generate_qrcode($shoppingcart) .' ">
     										<br /><br />
+    										<span><strong>Amount :</strong> '. $shoppingcart->shoppingcart_payment->currency .' '. $shoppingcart->shoppingcart_payment->amount .'</span>
+   										</div>
+
+									</div>
+  								</div>
+								
+								</div>
+								<div class="card mb-4">
+								<a href="'. self::env_appApiUrl() .'/qrcode/'.$shoppingcart->session_id.'/'. $shoppingcart->confirmation_code .'" type="button" class="invoice-hilang btn btn-success invoice-hilang ">or Download QRCODE <i class="fas fa-download"></i> </a>
+								</div>
+								';
+						}
+
+						if($shoppingcart->shoppingcart_payment->bank_name=="promptpay")
+						{
+							return '
+								<div class="card mb-1">
+								<span class="badge badge-info invoice-color-info" style="font-size:18px;">
+								<i class="fa fa-circle-notch fa-spin"></i> Waiting for payment </span>
+								</div>
+								<div class="card mb-1 img-fluid invoice-hilang"  style="min-height:350px; max-width:505px;">
+								
+								<div class="card-img-overlay">
+									<div class="row h-100">
+   										<div class="col-12 text-center">
+   											<br />
+   											<img class="img-fluid border border-white mt-2" alt="QRIS LOGO" style="max-width:250px; height:30px; image-rendering: -webkit-optimize-contrast;" src="'.self::env_appAssetUrl().'/img/payment/promptpay-logo.png">
+   											<br />
+    										<img id="promptpay-img" class="img-fluid border border-white" alt="PROMPTPAY" style="width:194px;" src="'. self::generate_qrcode($shoppingcart) .' ">
+    										<br />
     										<span><strong>Amount :</strong> '. $shoppingcart->shoppingcart_payment->currency .' '. $shoppingcart->shoppingcart_payment->amount .'</span>
    										</div>
 
@@ -2919,6 +2949,10 @@ class BookingHelper {
 		{
 			$qrcode = QrCode::errorCorrection('H')->format('png')->margin(0)->size(630)->generate($shoppingcart->shoppingcart_payment->qrcode);
 			return 'data:image/png;base64, '. base64_encode($qrcode);
+		}
+		else if($shoppingcart->shoppingcart_payment->bank_name=="promptpay")
+		{
+			return 'data:image/png;base64, '. $shoppingcart->shoppingcart_payment->qrcode;
 		}
 		else
 		{

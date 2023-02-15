@@ -516,7 +516,7 @@ class ContentHelper {
 
                 'localpayment_label' => '<strong class="mb-1">QR Payment</strong>
                 <br />
-                <small>(Indonesia and Singapore)</small>
+                <small>(Indonesia, Singapore, Thailand)</small>
                 <br />
                 <span class="badge badge-danger">Automatic get discount 10%</span>',
 

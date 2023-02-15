@@ -519,7 +519,7 @@ class ContentHelper {
                 
                 'localpayment_label' => '<strong class="mb-1">Fund Transfer</strong>
                 <br />
-                <small>(Indonesia, Singapore, Philippines, Australia, South Korea, Thailand)</small>
+                <small>(Indonesia, Singapore, Thailand)</small>
                 <br />
                 <span class="badge badge-danger">Automatic get discount 10%</span>',
                 

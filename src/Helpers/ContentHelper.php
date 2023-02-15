@@ -315,7 +315,23 @@ class ContentHelper {
             ];
 
         $indonesia_list[] = [
-                'value' => 'mandiri', 'label' => 'Bank Transfer', 'image' => self::env_appAssetUrl() .'/img/payment/mandiri.png', 'currency' => 'idr',
+                'value' => 'permata', 'label' => 'Bank Transfer', 'image' => self::env_appAssetUrl() .'/img/payment/bank_transfer.png', 'currency' => 'idr',
+            ];
+
+        $indonesia_list[] = [
+                'value' => 'gopay', 'label' => 'GoPay', 'image' => self::env_appAssetUrl() .'/img/payment/gopay.png', 'currency' => 'idr',
+            ];
+
+        $indonesia_list[] = [
+                'value' => 'shopeepay', 'label' => 'ShopeePay', 'image' => self::env_appAssetUrl() .'/img/payment/shopeepay.png', 'currency' => 'idr',
+            ];
+
+        $indonesia_list[] = [
+                'value' => 'dana', 'label' => 'Dana', 'image' => self::env_appAssetUrl() .'/img/payment/dana.png', 'currency' => 'idr',
+            ];
+
+        $indonesia_list[] = [
+                'value' => 'ovo', 'label' => 'OVO', 'image' => self::env_appAssetUrl() .'/img/payment/ovo.png', 'currency' => 'idr',
             ];
 
         $grouped_payment[] = [
@@ -329,7 +345,7 @@ class ContentHelper {
         ];
 
         $singapore_list[] = [
-            'value' => 'fast', 'label' => 'Bank Transfer', 'image' => self::env_appAssetUrl() .'/img/payment/dbs.png', 'currency' => 'sgd',
+            'value' => 'fast', 'label' => 'Bank Transfer', 'image' => self::env_appAssetUrl() .'/img/payment/fast.png', 'currency' => 'sgd',
         ];
 
         $grouped_payment[] = [
@@ -462,7 +478,9 @@ class ContentHelper {
                 </div>',
 
                 // Local Payment Currency
-                'localpayment_label' => '<strong class="mb-1">Fund Transfer</strong> <br /><small>(Indonesia, Singapore, Australia, Philippines, South Korea)</small><br /><span class="badge badge-danger">Automatic get discount 10%</span>',
+                'localpayment_label' => '<strong class="mb-1">Fund Transfer</strong>
+                <br />
+                <span class="badge badge-danger">Automatic get discount 10%</span>',
 
                 // IDR Currency
                 'idr_currency' => 'IDR',

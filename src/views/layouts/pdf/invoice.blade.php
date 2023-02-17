@@ -253,10 +253,10 @@ footer {
           @php
             $main_contact = $BookingHelper->get_answer_contact($shoppingcart);
           @endphp
-          <h2 class="name" style=" line-height: 18px; font-size:14px;">Name : {{ $main_contact->firstName }}
+          <h2 class="name" style=" line-height: 18px; font-size:14px;">{{ $main_contact->firstName }}
                         {{ $main_contact->lastName }} </h2>
-          <div class="address" style=" line-height: 18px; font-size:14px;">Phone : {{ $main_contact->phoneNumber }}</div>
-          <div class="email" style=" line-height: 18px; font-size:14px;">Email : <a href="mailto:{{ $main_contact->email }} ">{{ $main_contact->email }} </a></div>
+          <div class="address" style=" line-height: 18px; font-size:14px;">{{ $main_contact->phoneNumber }}</div>
+          <div class="email" style=" line-height: 18px; font-size:14px;">{{ $main_contact->email }}</div>
           @else
           
           <h2 class="name" style=" line-height: 18px; font-size:16px;">{{ $shoppingcart->booking_channel }}</h2>
@@ -269,9 +269,9 @@ footer {
            </td>
            <td valign="top" style="background-color:#FFFFFF; text-align:right; padding-right:0px; padding-top:0px;">
             <div id="invoice">
-          		<h1 style="margin-top: 5px;">INVOICE</h1>
+          		<!-- h1 style="margin-top: 5px;">INVOICE</h1 -->
               <div class="date" style=" line-height: 18px; font-size:14px;">
-                No : <b>{{ $shoppingcart->confirmation_code }}</b>
+                Invoice# : <b>{{ $shoppingcart->confirmation_code }}</b>
               </div>
           		<div class="date" style=" line-height: 18px; font-size:14px;">
                 Date of Invoice : {{ Carbon\Carbon::parse($shoppingcart->created_at)->formatLocalized('%d %b %Y  %H:%M') }}</div>
@@ -358,6 +358,7 @@ footer {
             <td>{{ $GeneralHelper->numberFormat($shoppingcart->due_now) }}</td>
           </tr>
           
+          
         </tfoot>
 </table>
 
@@ -366,7 +367,7 @@ footer {
 @if($shoppingcart->shoppingcart_payment->payment_provider!="none")
 <div id="notices" style="margin-top: 10px;float:right;">
   
-  <div style="font-size: 14px; color: #AAAAAA; line-height: 18px; ">PAYMENT STATUS</div>  
+  <div style="font-size: 14px; color: #AAAAAA; line-height: 18px; font-weight: bold; ">PAYMENT STATUS</div>  
   <div class="notice"><small>{!! $BookingHelper->get_paymentStatus($shoppingcart) !!}</small></div>
   
 </div>

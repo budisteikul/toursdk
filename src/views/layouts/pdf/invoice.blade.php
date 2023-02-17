@@ -213,14 +213,23 @@ footer {
        <tbody>
          <tr>
           <td style="background-color:#FFFFFF; text-align:left; padding-left:0px; line-height: 18px; font-size:14px; color:#777777">
-                        <div style="margin-top:3px;">
+
+                        <!-- div style="margin-top:3px;">
                           <strong style="font-size:18px;">{{env('APP_NAME')}}</strong>
                         </div>
-                        <div>Perumnas Guwosari Blok XII</div>
-                        <div>Jalan Abiyoso VII No.190</div>
+                        <div>Perum Guwosari Blok XII No.190</div>
+                        <div>Jalan Abiyoso VII</div>
                         <div>Bantul D.I Yogyakarta 55751 ID</div>
                         <div>Phone : +62 857 4311-2112</div>
-                        <div>Email : guide@vertikaltrip.com</div>
+                        <div>Email : guide@vertikaltrip.com</div -->
+
+                        <div style="margin-top:3px; margin-bottom:2px;">
+                          <strong style="font-size:18px;">VERTIKAL TRIP LLC</strong>
+                        </div>
+                        <div>530 Harkle Road, SUITE 100</div>
+                        <div>Santa Fe, NM 87505, US</div>
+                        <div>Phone : +1 505 585-2112</div>
+                        <div>Email : corporate@vertikaltrip.com</div>
                   
            </td>
            <td style="background-color:#FFFFFF; text-align:right; padding-right:0px; line-height: 18px; font-size:14px; color:#777777">

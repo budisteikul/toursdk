@@ -19,7 +19,7 @@ class TazapayHelper {
         return env("TAZAPAY_ENV");
     }
 
-      public static function env_tazapayAccessKey()
+    public static function env_tazapayAccessKey()
     {
         return env("TAZAPAY_ACCESS_KEY");
     }
@@ -71,9 +71,9 @@ class TazapayHelper {
                 $data->bank_name = "poli";
                 $data->bank_code = "";
                 $data->bank_country = "AU";
-                $data->bank_payment_method = "au_poli_bank";
+                $data->bank_payment_method = "au_bank_poli_aud";
                 $data->bank_payment_type = "bank_redirect";
-                $data->bank_provider = "rapyd";
+                $data->bank_provider = "finmo";
             break;
             case "promptpay":
                 $data->bank_name = "promptpay";
@@ -115,7 +115,7 @@ class TazapayHelper {
 
         $tazapay = self::make_request('POST','/v1/user',$body);
         
-        print_r($tazapay);
+        //print_r($tazapay);
 
         $body = [
             'txn_type' => 'service',
@@ -130,7 +130,7 @@ class TazapayHelper {
 
         $tazapay = self::make_request('POST','/v1/escrow/',$body);
         
-        print_r($tazapay);
+        //print_r($tazapay);
 
         $txn_no = $tazapay['data']['txn_no'];
 
@@ -143,7 +143,7 @@ class TazapayHelper {
 
         $tazapay = self::make_request('POST','/v1/session/payment',$body);
         
-        print_r($tazapay);
+        //print_r($tazapay);
         
 
         $redirect_url = $tazapay['data']['redirect_url'];
@@ -152,7 +152,7 @@ class TazapayHelper {
 
         $tazapay = self::make_request('GET','/v1/session/payment/'.$auth_id);
         
-        print_r($tazapay);
+        //print_r($tazapay);
         
         $body = [
                 'escrow_id' => $tazapay['data']['escrow_id'],
@@ -167,7 +167,7 @@ class TazapayHelper {
 
         $tazapay = self::make_request('POST','/v1/escrow/payment',$body,$tazapay['data']['session_token']);
         
-        print_r($tazapay);
+        //print_r($tazapay);
         
         
 

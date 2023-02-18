@@ -53,7 +53,7 @@ class TaskController extends Controller
                     $transfer->status = 1;
                     $transfer->save();
 
-                    $transfer = $tw->postCreateTransfer($quote->id,$data->customerTransactionId,$transfer->wise_id);
+                    $transfer = $tw->postCreateTransfer($quote->id,$data->customerTransactionId,$transfer->wise_id, 'Restore balance');
                     if(isset($transfer->error))
                     {
                         return response('ERROR', 200)->header('Content-Type', 'text/plain');
@@ -82,8 +82,6 @@ class TaskController extends Controller
         {
             $confirmation_code = $data->confirmation_code;
             $session_id = $data->session_id;
-
-            
 
             $shoppingcart = Shoppingcart::where('session_id',$session_id)->where('confirmation_code',$confirmation_code)->first();
             if($shoppingcart)

@@ -1459,6 +1459,8 @@ class APIController extends Controller
             function createpaymentovo()
             {
                             var phoneNumber = document.getElementById("ovoPhoneNumber").value;
+                            
+                            $("#ovoPhoneNumber").removeClass("is-invalid");
                             $("#alert-payment").slideUp("slow");
                             $("#ovoPhoneNumber").attr("disabled", true);
                             $("#submit").attr("disabled", true);
@@ -1467,6 +1469,19 @@ class APIController extends Controller
                             $("#text-alert").show();
                             $("#text-alert").html( "Please check OVO app on your mobile phone, to process payment" );
                             
+                            if(phoneNumber=="")
+                            {
+                                $("#ovoPhoneNumber").addClass("is-invalid");
+                                
+                                $("#text-alert").hide();
+                                $("#text-alert").html( "" );
+                                $("#ovoPhoneNumber").attr("disabled", false);
+                                $("#submit").attr("disabled", false);
+                                $("#submit").html(\' <strong>Click to pay with <img class="ml-2 mr-2" src="'.$this->appAssetUrl.'/img/payment/ovo-light.png" height="30" /></strong> \');
+                                return false;
+                            }
+
+
                             $.ajax({
                                 data: {
                                     "sessionId": \''.$sessionId.'\',

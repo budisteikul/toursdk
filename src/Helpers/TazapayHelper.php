@@ -115,7 +115,7 @@ class TazapayHelper {
 
         $tazapay = self::make_request('POST','/v1/user',$body);
         
-        //print_r($tazapay);
+
 
         $body = [
             'txn_type' => 'service',
@@ -130,6 +130,7 @@ class TazapayHelper {
 
         $tazapay = self::make_request('POST','/v1/escrow/',$body);
         
+        //print_r($body);
         //print_r($tazapay);
 
         $txn_no = $tazapay['data']['txn_no'];

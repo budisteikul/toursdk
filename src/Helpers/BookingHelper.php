@@ -2708,7 +2708,7 @@ class BookingHelper {
 									<div class="row h-100">
    										<div class="col-12 text-center">
    											<br />
-   											<img class="img-fluid border border-white mt-2" alt="QRIS LOGO" style="max-width:250px; height:30px; image-rendering: -webkit-optimize-contrast;" src="'.self::env_appAssetUrl().'/img/payment/promptpay-logo.png">
+   											<img class="img-fluid border border-white mt-2" alt="PROMPTPAY LOGO" style="max-width:250px; height:45px; image-rendering: -webkit-optimize-contrast;" src="'.self::env_appAssetUrl().'/img/payment/promptpay-logo.png">
    											<br />
     										<img id="promptpay-img" class="img-fluid border border-white" alt="PROMPTPAY" style="width:194px;" src="'. self::generate_qrcode($shoppingcart) .' ">
     										<br />

@@ -318,11 +318,16 @@ class ContentHelper {
                 'value' => 'mandiri', 'label' => 'Bank Transfer', 'image' => self::env_appAssetUrl() .'/img/payment/mandiri.png', 'currency' => 'idr',
             ];
 
-        /*
+        
         $indonesia_list[] = [
                 'value' => 'gopay', 'label' => 'GoPay', 'image' => self::env_appAssetUrl() .'/img/payment/gopay.png', 'currency' => 'idr',
             ];
 
+        $indonesia_list[] = [
+                'value' => 'ovo', 'label' => 'OVO', 'image' => self::env_appAssetUrl() .'/img/payment/ovo.png', 'currency' => 'idr',
+            ];
+
+        /*
         $indonesia_list[] = [
                 'value' => 'shopeepay', 'label' => 'ShopeePay', 'image' => self::env_appAssetUrl() .'/img/payment/shopeepay.png', 'currency' => 'idr',
             ];
@@ -392,6 +397,7 @@ class ContentHelper {
             'options' => $southkorea_list
         ];
         */
+        
         $thailand_list[] = [
             'value' => 'promptpay', 'label' => 'PromptPay QR', 'image' => self::env_appAssetUrl() .'/img/payment/promptpay.png', 'currency' => 'thb',
         ];

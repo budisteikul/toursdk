@@ -73,6 +73,11 @@ class RapydHelper {
                 $data->bank_code = "";
                 $data->bank_payment_type = "au_poli_bank";
             break;
+            case "qris":
+                $data->bank_name = "qris";
+                $data->bank_code = "";
+                $data->bank_payment_type = "id_qris_bank";
+            break;
             case "bri":
                 $data->bank_name = "bri";
                 $data->bank_code = "002";
@@ -143,6 +148,11 @@ class RapydHelper {
                 $data->bank_code = "";
                 $data->bank_payment_type = "ph_bancnet_bank";
             break;
+            case "promptpay":
+                $data->bank_name = "promptpay";
+                $data->bank_code = "";
+                $data->bank_payment_type = "th_thaipromptpayqr_bank";
+            break;
             case "creditcard":
                 $data->bank_name = "rapyd";
                 $data->bank_code = "";
@@ -194,12 +204,9 @@ class RapydHelper {
                 'complete_checkout_url' => self::env_appUrl() . $data->transaction->finish_url,
                 'cancel_checkout_url' => self::env_appUrl() . $data->transaction->finish_url,
                 'merchant_reference_id' => Uuid::uuid4()->toString(),
-                //'payment_method_types_include' => ['id_visa_card','id_mastercard_card','id_jcb_card']
             ];
 
             $data1 = self::make_request('post','/v1/checkout',$body);
-            //print_r($data1);
-            //exit();
             $data_json->payment_type = 'bank_redirect';
             $data_json->redirect = $data1['data']['redirect_url'];
 
@@ -345,6 +352,47 @@ class RapydHelper {
            
             $data_json->payment_type = 'cash';
             $data_json->va_number = $data1['data']['textual_codes']['pay_code'];
+            $data_json->redirect = $data->transaction->finish_url;
+        }
+        else if($data->transaction->bank=="promptpay")
+        {
+            $body = [
+                'amount' => $data->transaction->amount,
+                'currency' => $data->transaction->currency,
+                'payment_method' => [
+                    'type' => $payment->bank_payment_type,
+                    'fields' => []
+                ]
+            ];
+
+
+            $data1 = self::make_request('post','/v1/payments',$body);
+            $qrcode = $data1['data']['visual_codes']['qrcode_image_base64'];
+            $qrcode = str_ireplace('data:image/png;base64,','',$qrcode);
+            
+            $data_json->payment_type = 'qrcode';
+            $data_json->qrcode = $qrcode;
+            $data_json->redirect = $data->transaction->finish_url;
+        }
+        else if($data->transaction->bank=="qris")
+        {
+            $body = [
+                'amount' => $data->transaction->amount,
+                'currency' => $data->transaction->currency,
+                'payment_method' => [
+                    'type' => $payment->bank_payment_type,
+                    'fields' => []
+                ]
+            ];
+
+
+            $data1 = self::make_request('post','/v1/payments',$body);
+            
+            $qrcode = $data1['data']['visual_codes']['qrcode_image_base64'];
+            $qrcode = str_ireplace('data:image/png;base64,','',$qrcode);
+            
+            $data_json->payment_type = 'qrcode';
+            $data_json->qrcode = $qrcode;
             $data_json->redirect = $data->transaction->finish_url;
         }
         else

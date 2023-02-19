@@ -2048,6 +2048,14 @@ class BookingHelper {
 					$rate_from = $shoppingcart->currency;
 					$rate_to = 'SGD';
 				}
+				else if($data->transaction->bank=="promptpay")
+				{
+					$amount = self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'THB');
+					$currency = 'THB';
+					$rate = number_format((float)$shoppingcart->due_now / $amount, 2, '.', '');
+					$rate_from = $shoppingcart->currency;
+					$rate_to = 'THB';
+				}
 				else if($data->transaction->bank=="poli")
 				{
 					$amount = self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'AUD');
@@ -2071,14 +2079,6 @@ class BookingHelper {
 					$rate = number_format((float)$shoppingcart->due_now / $amount, 2, '.', '');
 					$rate_from = $shoppingcart->currency;
 					$rate_to = 'KRW';
-				}
-				else if($data->transaction->bank=="grabpay")
-				{
-					$amount = self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'PHP');
-					$currency = 'PHP';
-					$rate = number_format((float)$shoppingcart->due_now / $amount, 2, '.', '');
-					$rate_from = $shoppingcart->currency;
-					$rate_to = 'PHP';
 				}
 				else if($data->transaction->bank=="gcash")
 				{

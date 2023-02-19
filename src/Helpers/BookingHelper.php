@@ -10,6 +10,8 @@ use budisteikul\toursdk\Helpers\PaypalHelper;
 use budisteikul\toursdk\Helpers\MidtransHelper;
 use budisteikul\toursdk\Helpers\RapydHelper;
 use budisteikul\toursdk\Helpers\XenditHelper;
+use budisteikul\toursdk\Helpers\TazapayHelper;
+use budisteikul\toursdk\Helpers\FinmoHelper;
 use budisteikul\toursdk\Helpers\FirebaseHelper;
 use budisteikul\toursdk\Helpers\GeneralHelper;
 use budisteikul\toursdk\Helpers\VoucherHelper;
@@ -1969,6 +1971,26 @@ class BookingHelper {
 
 		switch($payment_provider)
 		{
+			case "finmo":
+				$payment_provider = 'finmo';
+				
+				if($data->transaction->bank=="promptpay")
+				{
+					$amount = self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'THB');
+					$currency = 'THB';
+					$rate = number_format((float)$shoppingcart->due_now / $amount, 2, '.', '');
+					$rate_from = $shoppingcart->currency;
+					$rate_to = 'THB';
+				}
+
+				$data->transaction->amount = $amount;
+				$data->transaction->currency = $currency;
+
+				$payment_status = 4;
+
+				$response = FinmoHelper::createPayment($data);
+
+			break;
 			case "tazapay":
 				$payment_provider = 'tazapay';
 				

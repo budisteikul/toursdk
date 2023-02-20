@@ -370,6 +370,19 @@ class ContentHelper {
         ];
 
 
+        
+
+
+        $southkorea_list[] = [
+            'value' => 'tmoney', 'label' => 'TMoney', 'image' => self::env_appAssetUrl() .'/img/payment/tmoney.png', 'currency' => 'krw',
+        ];
+
+        $grouped_payment[] = [
+            'label' => 'SOUTH KOREA',
+            'options' => $southkorea_list
+        ];
+        */
+
         $philippines_list[] = [
             'value' => 'bancnet', 'label' => 'BancNet', 'image' => self::env_appAssetUrl() .'/img/payment/bancnet.png', 'currency' => 'php',
         ];
@@ -387,17 +400,6 @@ class ContentHelper {
             'options' => $philippines_list
         ];
 
-
-        $southkorea_list[] = [
-            'value' => 'tmoney', 'label' => 'TMoney', 'image' => self::env_appAssetUrl() .'/img/payment/tmoney.png', 'currency' => 'krw',
-        ];
-
-        $grouped_payment[] = [
-            'label' => 'SOUTH KOREA',
-            'options' => $southkorea_list
-        ];
-        */
-        
         $thailand_list[] = [
             'value' => 'promptpay', 'label' => 'PromptPay QR', 'image' => self::env_appAssetUrl() .'/img/payment/promptpay.png', 'currency' => 'thb',
         ];
@@ -523,9 +525,9 @@ class ContentHelper {
 
                 // Local Payment Currency
                 
-                'localpayment_label' => '<strong class="mb-1">Fund Transfer</strong>
+                'localpayment_label' => '<strong class="mb-1">Fund Transfers</strong>
                 <br />
-                <small>(Indonesia, Singapore, Thailand)</small>
+                <small>(Indonesia, Singapore, Thailand, Philippines)</small>
                 <br />
                 <span class="badge badge-danger">Automatic get discount 10%</span>',
                 

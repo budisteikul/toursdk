@@ -310,6 +310,9 @@ class ContentHelper {
         
         //================================================
         
+        
+
+
         $indonesia_list[] = [
                 'value' => 'qris', 'label' => 'QRIS', 'image' => self::env_appAssetUrl() .'/img/payment/qris.png', 'currency' => 'idr',
             ];
@@ -382,7 +385,15 @@ class ContentHelper {
             'options' => $southkorea_list
         ];
         */
+        $thailand_list[] = [
+            'value' => 'promptpay', 'label' => 'PromptPay QR', 'image' => self::env_appAssetUrl() .'/img/payment/promptpay.png', 'currency' => 'thb',
+        ];
 
+        $grouped_payment[] = [
+            'label' => 'Thailand',
+            'options' => $thailand_list
+        ];
+        
         $philippines_list[] = [
             'value' => 'bancnet', 'label' => 'BancNet', 'image' => self::env_appAssetUrl() .'/img/payment/bancnet.png', 'currency' => 'php',
         ];
@@ -400,14 +411,7 @@ class ContentHelper {
             'options' => $philippines_list
         ];
 
-        $thailand_list[] = [
-            'value' => 'promptpay', 'label' => 'PromptPay QR', 'image' => self::env_appAssetUrl() .'/img/payment/promptpay.png', 'currency' => 'thb',
-        ];
-
-        $grouped_payment[] = [
-            'label' => 'Thailand',
-            'options' => $thailand_list
-        ];
+        
 
         /*
         $bank_list[] = [

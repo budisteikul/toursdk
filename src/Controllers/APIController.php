@@ -287,6 +287,13 @@ class APIController extends Controller
                     $response = BookingHelper::create_payment($sessionId,"midtrans","gopay_qris");
                 break;
 
+                case 'id_qr':
+                    VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
+                    BookingHelper::set_bookingStatus($sessionId,'PENDING');
+                    BookingHelper::set_confirmationCode($sessionId);
+                    $response = BookingHelper::create_payment($sessionId,"midtrans","gopay_qris");
+                break;
+
                 case 'gopay_qris':
                     VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
                     BookingHelper::set_bookingStatus($sessionId,'PENDING');
@@ -406,6 +413,13 @@ class APIController extends Controller
                     $response = BookingHelper::create_payment($sessionId,"rapyd","paynow");
                 break;
 
+                case 'sg_qr':
+                    VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
+                    BookingHelper::set_bookingStatus($sessionId,'PENDING');
+                    BookingHelper::set_confirmationCode($sessionId);
+                    $response = BookingHelper::create_payment($sessionId,"rapyd","paynow");
+                break;
+
                 case 'fast':
                     VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
                     BookingHelper::set_bookingStatus($sessionId,'PENDING');
@@ -449,6 +463,13 @@ class APIController extends Controller
                 break;
 
                 case 'promptpay':
+                    VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
+                    BookingHelper::set_bookingStatus($sessionId,'PENDING');
+                    BookingHelper::set_confirmationCode($sessionId);
+                    $response = BookingHelper::create_payment($sessionId,"tazapay","promptpay");
+                break;
+
+                case 'th_qr':
                     VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
                     BookingHelper::set_bookingStatus($sessionId,'PENDING');
                     BookingHelper::set_confirmationCode($sessionId);

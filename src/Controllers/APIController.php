@@ -1379,7 +1379,7 @@ class APIController extends Controller
                     ], 200);
                 }
 
-                VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
+                //VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
                 BookingHelper::set_bookingStatus($sessionId,'CONFIRMED');
                 BookingHelper::set_confirmationCode($sessionId);
                 BookingHelper::create_payment($sessionId,"xendit","ovo");

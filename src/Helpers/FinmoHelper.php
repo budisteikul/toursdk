@@ -37,6 +37,14 @@ class FinmoHelper {
                 $data->bank_provider = "finmo";
                 $data->bank_payment_method = "th_bank_promptpaycash_thb";
             break;
+            case "paynow":
+                $data->bank_name = "paynow";
+                $data->bank_code = "";
+                $data->bank_country = "SG";
+                $data->bank_payment_type = "qrcode";
+                $data->bank_provider = "finmo";
+                $data->bank_payment_method = "sg_bank_promptpaycash_thb";
+            break;
             default:
                 return response()->json([
                     "message" => 'Error'

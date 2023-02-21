@@ -281,203 +281,203 @@ class APIController extends Controller
                 break;
 
                 case 'qris':
-                    VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
+                    //VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
                     BookingHelper::set_bookingStatus($sessionId,'PENDING');
                     BookingHelper::set_confirmationCode($sessionId);
                     $response = BookingHelper::create_payment($sessionId,"midtrans","gopay_qris");
                 break;
 
                 case 'id_qr':
-                    VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
+                    //VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
                     BookingHelper::set_bookingStatus($sessionId,'PENDING');
                     BookingHelper::set_confirmationCode($sessionId);
                     $response = BookingHelper::create_payment($sessionId,"midtrans","gopay_qris");
                 break;
 
                 case 'gopay_qris':
-                    VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
+                    //VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
                     BookingHelper::set_bookingStatus($sessionId,'PENDING');
                     BookingHelper::set_confirmationCode($sessionId);
                     $response = BookingHelper::create_payment($sessionId,"midtrans","gopay_qris");
                 break;
 
                 case 'shopeepay_qris':
-                    VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
+                    //VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
                     BookingHelper::set_bookingStatus($sessionId,'PENDING');
                     BookingHelper::set_confirmationCode($sessionId);
                     $response = BookingHelper::create_payment($sessionId,"midtrans","shopeepay_qris");
                 break;
 
                 case 'shopeepay':
-                    VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
+                    //VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
                     BookingHelper::set_bookingStatus($sessionId,'PENDING');
                     BookingHelper::set_confirmationCode($sessionId);
                     $response = BookingHelper::create_payment($sessionId,"midtrans","shopeepay");
                 break;
 
                 case 'gopay':
-                    VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
+                    //VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
                     BookingHelper::set_bookingStatus($sessionId,'PENDING');
                     BookingHelper::set_confirmationCode($sessionId);
                     $response = BookingHelper::create_payment($sessionId,"midtrans","gopay");
                 break;
                 
                 case 'dana':
-                    VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
+                    //VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
                     BookingHelper::set_bookingStatus($sessionId,'PENDING');
                     BookingHelper::set_confirmationCode($sessionId);
                     $response = BookingHelper::create_payment($sessionId,"xendit","dana");
                 break;
 
                 case 'permata':
-                    VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
+                    //VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
                     BookingHelper::set_bookingStatus($sessionId,'PENDING');
                     BookingHelper::set_confirmationCode($sessionId);
                     $response = BookingHelper::create_payment($sessionId,"midtrans","permata");
                 break;
 
                 case 'bss':
-                    VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
+                    //VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
                     BookingHelper::set_bookingStatus($sessionId,'PENDING');
                     BookingHelper::set_confirmationCode($sessionId);
                     $response = BookingHelper::create_payment($sessionId,"xendit","bss");
                 break;
 
                 case 'mandiri':
-                    VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
+                    //VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
                     BookingHelper::set_bookingStatus($sessionId,'PENDING');
                     BookingHelper::set_confirmationCode($sessionId);
                     $response = BookingHelper::create_payment($sessionId,"rapyd","mandiri");
                 break;
 
                 case 'bni':
-                    VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
+                    //VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
                     BookingHelper::set_bookingStatus($sessionId,'PENDING');
                     BookingHelper::set_confirmationCode($sessionId);
                     $response = BookingHelper::create_payment($sessionId,"rapyd","bni");
                 break;
 
                 case 'bri':
-                    VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
+                    //VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
                     BookingHelper::set_bookingStatus($sessionId,'PENDING');
                     BookingHelper::set_confirmationCode($sessionId);
                     $response = BookingHelper::create_payment($sessionId,"rapyd","bri");
                 break;
 
                 case 'danamon':
-                    VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
+                    //VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
                     BookingHelper::set_bookingStatus($sessionId,'PENDING');
                     BookingHelper::set_confirmationCode($sessionId);
                     $response = BookingHelper::create_payment($sessionId,"rapyd","danamon");
                 break;
 
                 case 'sinarmas':
-                    VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
+                    //VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
                     BookingHelper::set_bookingStatus($sessionId,'PENDING');
                     BookingHelper::set_confirmationCode($sessionId);
                     $response = BookingHelper::create_payment($sessionId,"rapyd","sinarmas");
                 break;
 
                 case 'maybank':
-                    VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
+                    //VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
                     BookingHelper::set_bookingStatus($sessionId,'PENDING');
                     BookingHelper::set_confirmationCode($sessionId);
                     $response = BookingHelper::create_payment($sessionId,"rapyd","maybank");
                 break;
 
                 case 'cimb':
-                    VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
+                    //VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
                     BookingHelper::set_bookingStatus($sessionId,'PENDING');
                     BookingHelper::set_confirmationCode($sessionId);
                     $response = BookingHelper::create_payment($sessionId,"rapyd","cimb");
                 break;
 
                 case 'otherbank':
-                    VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
+                    //VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
                     BookingHelper::set_bookingStatus($sessionId,'PENDING');
                     BookingHelper::set_confirmationCode($sessionId);
                     $response = BookingHelper::create_payment($sessionId,"rapyd","permata");
                 break;
 
                 case 'creditcard':
-                    VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
+                    //VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
                     BookingHelper::set_bookingStatus($sessionId,'PENDING');
                     BookingHelper::set_confirmationCode($sessionId);
                     $response = BookingHelper::create_payment($sessionId,"rapyd","creditcard");
                 break;
 
                 case 'paynow':
-                    VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
+                    //VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
                     BookingHelper::set_bookingStatus($sessionId,'PENDING');
                     BookingHelper::set_confirmationCode($sessionId);
                     $response = BookingHelper::create_payment($sessionId,"rapyd","paynow");
                 break;
 
                 case 'sg_qr':
-                    VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
+                    //VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
                     BookingHelper::set_bookingStatus($sessionId,'PENDING');
                     BookingHelper::set_confirmationCode($sessionId);
                     $response = BookingHelper::create_payment($sessionId,"rapyd","paynow");
                 break;
 
                 case 'fast':
-                    VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
+                    //VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
                     BookingHelper::set_bookingStatus($sessionId,'PENDING');
                     BookingHelper::set_confirmationCode($sessionId);
                     $response = BookingHelper::create_payment($sessionId,"rapyd","fast");
                 break;
 
                 case 'poli':
-                    VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
+                    //VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
                     BookingHelper::set_bookingStatus($sessionId,'PENDING');
                     BookingHelper::set_confirmationCode($sessionId);
                     $response = BookingHelper::create_payment($sessionId,"rapyd","poli");
                 break;
 
                 case 'tmoney':
-                    VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
+                    //VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
                     BookingHelper::set_bookingStatus($sessionId,'PENDING');
                     BookingHelper::set_confirmationCode($sessionId);
                     $response = BookingHelper::create_payment($sessionId,"rapyd","tmoney");
                 break;
 
                 case 'grabpay':
-                    VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
+                    //VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
                     BookingHelper::set_bookingStatus($sessionId,'PENDING');
                     BookingHelper::set_confirmationCode($sessionId);
                     $response = BookingHelper::create_payment($sessionId,"rapyd","grabpay");
                 break;
 
                 case 'bancnet':
-                    VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
+                    //VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
                     BookingHelper::set_bookingStatus($sessionId,'PENDING');
                     BookingHelper::set_confirmationCode($sessionId);
                     $response = BookingHelper::create_payment($sessionId,"rapyd","bancnet");
                 break;
 
                 case 'gcash':
-                    VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
+                    //VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
                     BookingHelper::set_bookingStatus($sessionId,'PENDING');
                     BookingHelper::set_confirmationCode($sessionId);
                     $response = BookingHelper::create_payment($sessionId,"rapyd","gcash");
                 break;
 
                 case 'promptpay':
-                    VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
+                    //VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
                     BookingHelper::set_bookingStatus($sessionId,'PENDING');
                     BookingHelper::set_confirmationCode($sessionId);
                     $response = BookingHelper::create_payment($sessionId,"tazapay","promptpay");
                 break;
 
                 case 'th_qr':
-                    VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
+                    //VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
                     BookingHelper::set_bookingStatus($sessionId,'PENDING');
                     BookingHelper::set_confirmationCode($sessionId);
                     $response = BookingHelper::create_payment($sessionId,"tazapay","promptpay");
                 break;
 
                 case 'alfamart':
-                    VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
+                    //VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
                     BookingHelper::set_bookingStatus($sessionId,'PENDING');
                     BookingHelper::set_confirmationCode($sessionId);
                     $response = BookingHelper::create_payment($sessionId,"rapyd","alfamart");

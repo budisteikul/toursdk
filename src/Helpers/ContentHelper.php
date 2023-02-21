@@ -290,35 +290,35 @@ class ContentHelper {
         $payment_enable = 'localpayment,stripe,paypal';
         
         $idr_total = BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'IDR');
-        $idr_total = $idr_total - ($idr_total * 10 / 100);
+        //$idr_total = $idr_total - ($idr_total * 10 / 100);
 
         $sgd_total = BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'SGD');
-        $sgd_total = $sgd_total - ($sgd_total * 10 / 100);
+        //$sgd_total = $sgd_total - ($sgd_total * 10 / 100);
 
         $aud_total = BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'AUD');
-        $aud_total = $aud_total - ($aud_total * 10 / 100);
+        //$aud_total = $aud_total - ($aud_total * 10 / 100);
 
         $krw_total = BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'KRW');
-        $krw_total = $krw_total - ($krw_total * 10 / 100);
+        //$krw_total = $krw_total - ($krw_total * 10 / 100);
         
         $php_total = BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'PHP');
-        $php_total = $php_total - ($php_total * 10 / 100);
+        //$php_total = $php_total - ($php_total * 10 / 100);
 
         $thb_total = BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'THB');
-        $thb_total = $thb_total - ($thb_total * 10 / 100);
+        //$thb_total = $thb_total - ($thb_total * 10 / 100);
         
         
         //================================================
         
         
 
-
+        /*
         $indonesia_list[] = [
                 'value' => 'qris', 'label' => 'QRIS', 'image' => self::env_appAssetUrl() .'/img/payment/qris.png', 'currency' => 'idr',
             ];
 
         $indonesia_list[] = [
-                'value' => 'mandiri', 'label' => 'Bank Transfer', 'image' => self::env_appAssetUrl() .'/img/payment/bank_transfer.png', 'currency' => 'idr',
+                'value' => 'permata', 'label' => 'Bank Transfer', 'image' => self::env_appAssetUrl() .'/img/payment/bank_transfer.png', 'currency' => 'idr',
             ];
 
         
@@ -330,7 +330,7 @@ class ContentHelper {
                 'value' => 'ovo', 'label' => 'OVO', 'image' => self::env_appAssetUrl() .'/img/payment/ovo.png', 'currency' => 'idr',
             ];
 
-        /*
+        
         $indonesia_list[] = [
                 'value' => 'shopeepay', 'label' => 'ShopeePay', 'image' => self::env_appAssetUrl() .'/img/payment/shopeepay.png', 'currency' => 'idr',
             ];
@@ -342,13 +342,13 @@ class ContentHelper {
         $indonesia_list[] = [
                 'value' => 'ovo', 'label' => 'OVO', 'image' => self::env_appAssetUrl() .'/img/payment/ovo.png', 'currency' => 'idr',
             ];
-        */
+        
         $grouped_payment[] = [
             'label' => 'INDONESIA',
             'options' => $indonesia_list
         ];
 
-
+        
         $singapore_list[] = [
             'value' => 'paynow', 'label' => 'PayNow QR', 'image' => self::env_appAssetUrl() .'/img/payment/paynow.png', 'currency' => 'sgd',
         ];
@@ -362,7 +362,7 @@ class ContentHelper {
             'options' => $singapore_list
         ];
 
-        /*
+        
         $australia_list[] = [
             'value' => 'poli', 'label' => 'POLi', 'image' => self::env_appAssetUrl() .'/img/payment/poli.png', 'currency' => 'aud',
         ];
@@ -384,7 +384,7 @@ class ContentHelper {
             'label' => 'SOUTH KOREA',
             'options' => $southkorea_list
         ];
-        */
+        
         $thailand_list[] = [
             'value' => 'promptpay', 'label' => 'PromptPay QR', 'image' => self::env_appAssetUrl() .'/img/payment/promptpay.png', 'currency' => 'thb',
         ];
@@ -410,10 +410,10 @@ class ContentHelper {
             'label' => 'PHILIPPINES',
             'options' => $philippines_list
         ];
-
+        */
         
 
-        /*
+        
         $bank_list[] = [
                 'value' => 'qris', 'label' => 'QRIS', 'image' => self::env_appAssetUrl() .'/img/payment/qris.png', 'currency' => 'idr',
             ];
@@ -453,6 +453,7 @@ class ContentHelper {
                 'value' => 'qris', 'label' => 'QRIS', 'image' => self::env_appAssetUrl() .'/img/payment/qris.png', 'currency' => 'idr',
             ];
 
+        /*
         $grouped_payment[] = [
             'label' => 'INDONESIA',
             'options' => $indonesia_list
@@ -529,11 +530,7 @@ class ContentHelper {
 
                 // Local Payment Currency
                 
-                'localpayment_label' => '<strong class="mb-1">Fund Transfers</strong>
-                <br />
-                <small>(Indonesia, Singapore, Thailand, Philippines)</small>
-                <br />
-                <span class="badge badge-danger">Automatic get discount 10%</span>',
+                'localpayment_label' => '<strong class="mb-1">Local Transfers</strong>',
                 
                 /*
                 'localpayment_label' => '<strong class="mb-1">QR Payment</strong>

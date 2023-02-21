@@ -423,7 +423,7 @@ class ContentHelper {
             ];
 
         $grouped_payment[] = [
-            'label' => 'BANK TRANSFER',
+            'label' => 'FUND TRANSFERS',
             'options' => $bank_list
         ];
 
@@ -444,7 +444,7 @@ class ContentHelper {
             ];
 
         $grouped_payment[] = [
-            'label' => 'E-WALLET',
+            'label' => 'E-WALLETS',
             'options' => $ewallet_list
         ];
         

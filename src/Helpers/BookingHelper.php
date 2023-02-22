@@ -1841,6 +1841,7 @@ class BookingHelper {
 			$date = $shoppingcart->shoppingcart_payment->expiration_date;
 		}
 
+
 		if($date!==null)
 		{
 			$due_date = $date;
@@ -2489,8 +2490,8 @@ class BookingHelper {
 
 						return '
 								<div class="card mb-1">
-								<span class="badge badge-info invoice-color-info" style="font-size:18px;">
-								<i class="fa fa-circle-notch fa-spin"></i> Waiting for payment </span>
+								<span class="badge badge-info invoice-color-info" style="font-size:18px; ">
+								Waiting for payment <br /><b id="payment_timer" class="text-white"  style="font-size:12px; "></b></span>
 								</div>
 								<div class="card mb-4">
 								<input type="hidden" id="va_number" value="'. $shoppingcart->shoppingcart_payment->va_number .'">
@@ -2556,10 +2557,11 @@ class BookingHelper {
 
 						return '
 								<div class="card mb-1">
-								<span class="badge badge-info invoice-color-info" style="font-size:18px;">
-								<i class="fa fa-circle-notch fa-spin"></i> Waiting for payment </span>
+								<span class="badge badge-info invoice-color-info" style="font-size:18px; ">
+								Waiting for payment <br /><b id="payment_timer" class="text-white"  style="font-size:12px; "></b></span>
 								</div>
 								<div class="card mb-4">
+
 								<input type="hidden" id="va_number" value="'. $shoppingcart->shoppingcart_payment->va_number .'">
 								<input type="hidden" id="va_total" value="'. $shoppingcart->shoppingcart_payment->amount .'">
 								<div class="card-body bg-light text-center">
@@ -2615,8 +2617,8 @@ class BookingHelper {
 						
 							return '
 								<div class="card mb-1">
-								<span class="badge badge-info invoice-color-info" style="font-size:18px;">
-								 <i class="fa fa-circle-notch fa-spin"></i> Waiting for payment </span>
+								<span class="badge badge-info invoice-color-info" style="font-size:18px; ">
+								Waiting for payment <br /><b id="payment_timer" class="text-white"  style="font-size:12px; "></b></span>
 								</div>
 								<div class="card mb-4">
 								<div class="card-body bg-light">
@@ -2663,14 +2665,15 @@ class BookingHelper {
 							//$data_qris = self::get_qris_content($shoppingcart);
 							return '
 								<div class="card mb-1">
-								<span class="badge badge-info invoice-color-info" style="font-size:18px;">
-								<i class="fa fa-circle-notch fa-spin"></i> Waiting for payment </span>
+								<span class="badge badge-info invoice-color-info" style="font-size:18px; ">
+								Waiting for payment <br /><b id="payment_timer" class="text-white"  style="font-size:12px; "></b></span>
 								</div>
 								<div class="card mb-1 img-fluid invoice-hilang"  style="min-height:360px; ">
 								
 								<div class="card-img-overlay">
 									<div class="row h-100">
    										<div class="col-12 text-center">
+
     										<img class="img-fluid border border-white mt-2" alt="QRIS LOGO" style="max-width:250px; height:30px; image-rendering: -webkit-optimize-contrast;" src="'.self::env_appAssetUrl().'/img/payment/qris-logo.png">
     										<br />
     										<img class="img-fluid border border-white mt-2" alt="QRIS" style="max-width:250px; image-rendering: -webkit-optimize-contrast;" src="'. self::generate_qrcode($shoppingcart) .' ">
@@ -2692,8 +2695,8 @@ class BookingHelper {
 						{
 							return '
 								<div class="card mb-1">
-								<span class="badge badge-info invoice-color-info" style="font-size:18px;">
-								<i class="fa fa-circle-notch fa-spin"></i> Waiting for payment </span>
+								<span class="badge badge-info invoice-color-info" style="font-size:18px; ">
+								Waiting for payment <br /><b id="payment_timer" class="text-white"  style="font-size:12px; "></b></span>
 								</div>
 								<div class="card mb-1 img-fluid invoice-hilang"  style="min-height:350px; max-width:505px;">
 								
@@ -2721,8 +2724,8 @@ class BookingHelper {
 						{
 							return '
 								<div class="card mb-1">
-								<span class="badge badge-info invoice-color-info" style="font-size:18px;">
-								<i class="fa fa-circle-notch fa-spin"></i> Waiting for payment </span>
+								<span class="badge badge-info invoice-color-info" style="font-size:18px; ">
+								Waiting for payment <br /><b id="payment_timer" class="text-white"  style="font-size:12px; "></b></span>
 								</div>
 								<div class="card mb-1 img-fluid invoice-hilang"  style="min-height:350px; max-width:505px;">
 								
@@ -2786,14 +2789,14 @@ class BookingHelper {
 
 						return '
 								<div class="card mb-1">
-								<span class="badge badge-info invoice-color-info" style="font-size:18px;">
-								<i class="fa fa-circle-notch fa-spin"></i> Waiting for payment </span>
+								<span class="badge badge-info invoice-color-info" style="font-size:18px; ">
+								Waiting for payment <br /><b id="payment_timer" class="text-white"  style="font-size:12px; "></b></span>
 								</div>
 								<div class="card mb-4">
 								
 								<div class="card-body bg-light">
-
-									Please wait while we are processing your payment.
+									'.$button.'
+									<!-- Please wait while we are processing your payment. -->
 								
 								</div>
 								</div>

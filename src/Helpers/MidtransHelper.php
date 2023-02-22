@@ -120,6 +120,8 @@ class MidtransHelper {
         $response_json = new \stdClass();
 
         $payment = self::bankCode($data->transaction->bank);
+        $data->transaction->mins_expired = 60;
+        $data->transaction->date_expired = Carbon::parse($data->transaction->date_now)->addMinutes($data->transaction->mins_expired);
 
         if($payment->bank_payment_type=="permata_va")
         {
@@ -136,9 +138,6 @@ class MidtransHelper {
         }
         else if($payment->bank_payment_type=="gopay")
         {
-          $data->transaction->mins_expired = 60;
-          $data->transaction->date_expired = Carbon::parse($data->transaction->date_now)->addMinutes($data->transaction->mins_expired);
-
           $data1 = MidtransHelper::createSnap($data,$payment);
           $data2 = MidtransHelper::chargeSnap($data1->token,$data,$payment);
           
@@ -151,12 +150,8 @@ class MidtransHelper {
         }
         else if($payment->bank_payment_type=="qrcode")
         {
-          $data->transaction->mins_expired = 60;
-          $data->transaction->date_expired = Carbon::parse($data->transaction->date_now)->addMinutes($data->transaction->mins_expired);
-
           $data1 = MidtransHelper::createSnap($data,$payment);
           $data2 = MidtransHelper::chargeSnap($data1->token,$data,$payment);
-          
           
           $data_json->bank_name = $payment->bank_name;
           $data_json->qrcode = $data2['qr_string'];
@@ -169,9 +164,6 @@ class MidtransHelper {
         }
         else if($payment->bank_payment_type=="shopeepay")
         {
-          $data->transaction->mins_expired = 60;
-          $data->transaction->date_expired = Carbon::parse($data->transaction->date_now)->addMinutes($data->transaction->mins_expired);
-
           $data1 = MidtransHelper::createSnap($data,$payment);
           $data2 = MidtransHelper::chargeSnap($data1->token,$data,$payment);
           

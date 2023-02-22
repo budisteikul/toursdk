@@ -9,6 +9,7 @@ use budisteikul\toursdk\Helpers\ProductHelper;
 use budisteikul\toursdk\Helpers\BookingHelper;
 use budisteikul\toursdk\Models\Category;
 use Html2Text\Html2Text;
+use Carbon\Carbon;
 
 class ContentHelper {
 
@@ -663,6 +664,7 @@ class ContentHelper {
         $booking_status_asText = BookingHelper::get_bookingStatus($shoppingcart);
         
         $main_contact = BookingHelper::get_answer_contact($shoppingcart);
+        $due_date = Carbon::createFromFormat('Y-m-d H:i:s', BookingHelper::due_date($shoppingcart,"database"));
         
         $dataObj = array(
             'vendor' => self::env_appName(),
@@ -681,6 +683,7 @@ class ContentHelper {
             'paymentProvider' => $shoppingcart->shoppingcart_payment->payment_provider,
             'pdf_url' => $how_to_pay,
             'how_to_pay' => $how_to_pay,
+            'due_date' => $due_date
         );
 
         return $dataObj;

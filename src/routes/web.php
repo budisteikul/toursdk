@@ -38,6 +38,7 @@
 	Route::post('/api/promocode/remove', 'budisteikul\toursdk\Controllers\APIController@removepromocode');
 
 	//Receipt
+	Route::get('/api/receipt/jscript', 'budisteikul\toursdk\Controllers\APIController@receipt_jscript');
 	Route::get('/api/receipt/{sessionId}/{confirmationCode}', 'budisteikul\toursdk\Controllers\APIController@receipt');
 
 	//Callback Payment
@@ -76,5 +77,8 @@
 
 	// TASK
 	Route::post('/task', 'budisteikul\toursdk\Controllers\TaskController@task');
+
+	
+
 
 	

@@ -1799,6 +1799,48 @@ class APIController extends Controller
         return response($jscript)->header('Content-Type', 'application/javascript');
     }
 
+    public function receipt_jscript()
+    {
+        $jscript = '
+            
+            function clear_timer()
+            {
+                clearInterval(document.getElementById("timer_id").value);
+            }
+
+            
+
+            function payment_timer(due_date,session_id,confirmation_code)
+            {
+                 clearInterval(document.getElementById("timer_id").value);
+
+                 var x = {};
+                 var countDownDate = new Date(due_date).getTime();
+                 x[due_date] = setInterval(function() {
+
+                    
+                    var now = new Date().getTime();
+                    var distance = countDownDate - now;
+
+                    var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                    var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                    document.getElementById("payment_timer").innerHTML = minutes + " minutes " + seconds + " seconds ";
+
+                    document.getElementById("timer_id").value = x[due_date];
+                    if (distance < 0) {
+                        clearInterval(x[due_date]);
+                        document.getElementById("payment_timer").innerHTML = "Payment expired";
+                        $.get("'.url('/api').'/receipt/"+session_id+"/"+confirmation_code);
+                    }
+
+                }, 1000);
+
+                
+            }';
+        return response($jscript)->header('Content-Type', 'application/javascript');
+    }
+
     public function paypal_jscript($sessionId)
     {
         if(env('PAYPAL_INTENT')=="CAPTURE")

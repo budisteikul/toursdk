@@ -1808,8 +1808,6 @@ class APIController extends Controller
                 clearInterval(document.getElementById("timer_id").value);
             }
 
-            
-
             function payment_timer(due_date,session_id,confirmation_code)
             {
                  clearInterval(document.getElementById("timer_id").value);

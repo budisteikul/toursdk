@@ -2491,7 +2491,7 @@ class BookingHelper {
 						return '
 								<div class="card mb-1">
 								<span class="badge badge-info invoice-color-info" style="font-size:18px; ">
-								Waiting for payment <br /><b id="payment_timer" class="text-white"  style="font-size:12px; "></b></span>
+								Waiting for payment <br /><b id="payment_timer" class="text-white"  style="font-size:12px; font-weight: lighter;"></b></span>
 								</div>
 								<div class="card mb-4">
 								<input type="hidden" id="va_number" value="'. $shoppingcart->shoppingcart_payment->va_number .'">
@@ -2558,7 +2558,7 @@ class BookingHelper {
 						return '
 								<div class="card mb-1">
 								<span class="badge badge-info invoice-color-info" style="font-size:18px; ">
-								Waiting for payment <br /><b id="payment_timer" class="text-white"  style="font-size:12px; "></b></span>
+								Waiting for payment <br /><b id="payment_timer" class="text-white"  style="font-size:12px; font-weight: lighter;"></b></span>
 								</div>
 								<div class="card mb-4">
 
@@ -2618,7 +2618,7 @@ class BookingHelper {
 							return '
 								<div class="card mb-1">
 								<span class="badge badge-info invoice-color-info" style="font-size:18px; ">
-								Waiting for payment <br /><b id="payment_timer" class="text-white"  style="font-size:12px; "></b></span>
+								Waiting for payment <br /><b id="payment_timer" class="text-white"  style="font-size:12px; font-weight: lighter;"></b></span>
 								</div>
 								<div class="card mb-4">
 								<div class="card-body bg-light">
@@ -2666,7 +2666,7 @@ class BookingHelper {
 							return '
 								<div class="card mb-1">
 								<span class="badge badge-info invoice-color-info" style="font-size:18px; ">
-								Waiting for payment <br /><b id="payment_timer" class="text-white"  style="font-size:12px; "></b></span>
+								Waiting for payment <br /><b id="payment_timer" class="text-white"  style="font-size:12px; font-weight: lighter;"></b></span>
 								</div>
 								<div class="card mb-1 img-fluid invoice-hilang"  style="min-height:360px; ">
 								
@@ -2696,7 +2696,7 @@ class BookingHelper {
 							return '
 								<div class="card mb-1">
 								<span class="badge badge-info invoice-color-info" style="font-size:18px; ">
-								Waiting for payment <br /><b id="payment_timer" class="text-white"  style="font-size:12px; "></b></span>
+								Waiting for payment <br /><b id="payment_timer" class="text-white"  style="font-size:12px; font-weight: lighter;"></b></span>
 								</div>
 								<div class="card mb-1 img-fluid invoice-hilang"  style="min-height:350px; max-width:505px;">
 								
@@ -2725,7 +2725,7 @@ class BookingHelper {
 							return '
 								<div class="card mb-1">
 								<span class="badge badge-info invoice-color-info" style="font-size:18px; ">
-								Waiting for payment <br /><b id="payment_timer" class="text-white"  style="font-size:12px; "></b></span>
+								Waiting for payment <br /><b id="payment_timer" class="text-white"  style="font-size:12px; font-weight: lighter;"></b></span>
 								</div>
 								<div class="card mb-1 img-fluid invoice-hilang"  style="min-height:350px; max-width:505px;">
 								
@@ -2790,7 +2790,7 @@ class BookingHelper {
 						return '
 								<div class="card mb-1">
 								<span class="badge badge-info invoice-color-info" style="font-size:18px; ">
-								Waiting for payment <br /><b id="payment_timer" class="text-white"  style="font-size:12px; "></b></span>
+								Waiting for payment <br /><b id="payment_timer" class="text-white"  style="font-size:12px; font-weight: lighter;"></b></span>
 								</div>
 								<div class="card mb-4">
 								

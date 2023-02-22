@@ -63,7 +63,7 @@ class MidtransHelper {
                 $data->bank_payment_type = "echannel";
             break;
             case "permata":
-                $data->bank_name = "permata";
+                $data->bank_name = "permatabank";
                 $data->bank_code = "013";
                 $data->bank_payment_type = "permata_va";
             break;

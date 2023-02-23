@@ -53,7 +53,7 @@ class TaskController extends Controller
                     $transfer->status = 1;
                     $transfer->save();
 
-                    $transfer = $tw->postCreateTransfer($quote->id,$data->customerTransactionId,$transfer->wise_id, 'Restore balance');
+                    $transfer = $tw->postCreateTransfer($quote->id,$data->customerTransactionId,$transfer->wise_id);
                     if(isset($transfer->error))
                     {
                         return response('ERROR', 200)->header('Content-Type', 'text/plain');

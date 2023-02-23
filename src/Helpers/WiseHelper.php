@@ -46,8 +46,25 @@ class WiseHelper {
         return json_decode($this->GET('/v2/accounts?profile='. $this->tw->profileId .'&currency=IDR'));
     }
 
-    public function getBalanceAccounts(){
-        return json_decode($this->GET('/v4/profiles/'. $this->tw->profileId .'/balances?types=STANDARD'));
+    public function getBalanceAccounts($currency=null){
+        if($currency==null)
+        {
+            return json_decode($this->GET('/v4/profiles/'. $this->tw->profileId .'/balances?types=STANDARD'));
+        }
+        else
+        {
+            $value = 0;
+            $balances = json_decode($this->GET('/v4/profiles/'. $this->tw->profileId .'/balances?types=STANDARD'));
+            foreach($balances as $balance)
+            {
+                if($balance->currency==$currency)
+                {
+                    $value = $balance->amount->value;
+                }
+            }
+            return $value;
+        }
+        
     }
 
     public function getTempQuote($targetAmount)

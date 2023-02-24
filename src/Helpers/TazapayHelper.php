@@ -66,6 +66,7 @@ class TazapayHelper {
                 //$data->bank_provider = "rapyd";
                 $data->bank_provider = "reddotpay";
                 $data->bank_payment_method = "sg_paynow_bank";
+                $data->bank_payment_name = "PayNow QR";
             break;
             case "poli":
                 $data->bank_name = "poli";
@@ -84,6 +85,7 @@ class TazapayHelper {
                 //$data->bank_payment_method = "th_thaipromptpayqr_bank";
                 $data->bank_provider = "finmo";
                 $data->bank_payment_method = "th_bank_promptpaycash_thb";
+                $data->bank_payment_name = "PromptPay QR";
             break;
             default:
                 return response()->json([
@@ -126,6 +128,7 @@ class TazapayHelper {
             'txn_description' => 'Payment for '. $data->transaction->confirmation_code,
             'invoice_currency' => $data->transaction->currency,
             'invoice_amount' => (float)$data->transaction->amount,
+            "payment_methods" => $payment->bank_payment_name
         ];
 
         $tazapay = self::make_request('POST','/v1/escrow/',$body);

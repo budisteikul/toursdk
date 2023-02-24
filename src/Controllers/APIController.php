@@ -280,6 +280,59 @@ class APIController extends Controller
                     ]);
                 break;
 
+                /*
+                case 'gopay':
+                    BookingHelper::set_bookingStatus($sessionId,'PENDING');
+                    BookingHelper::set_confirmationCode($sessionId);
+                    $response = BookingHelper::create_payment($sessionId,"midtrans","gopay");
+                    FirebaseHelper::upload_payment('PENDING',$response->data->order_id,$sessionId,'gopay');
+                    return response()->json([
+                        'message' => 'success',
+                        'payment' => 'ewallet',
+                        'name' => strtoupper($response->data->bank_name),
+                        'redirect' => $response->data->redirect,
+                        'reference_id' => $response->data->order_id,
+                        'id' => 3
+                    ]);
+                break;
+
+                case 'shopeepay':
+                    BookingHelper::set_bookingStatus($sessionId,'PENDING');
+                    BookingHelper::set_confirmationCode($sessionId);
+                    $response = BookingHelper::create_payment($sessionId,"midtrans","shopeepay");
+                    FirebaseHelper::upload_payment('PENDING',$response->data->order_id,$sessionId,'shopeepay');
+                    return response()->json([
+                        'message' => 'success',
+                        'payment' => 'ewallet',
+                        'name' => strtoupper($response->data->bank_name),
+                        'redirect' => $response->data->redirect,
+                        'reference_id' => $response->data->order_id,
+                        'id' => 3
+                    ]);
+                break;
+                */
+
+                case 'gopay':
+                    //VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
+                    BookingHelper::set_bookingStatus($sessionId,'PENDING');
+                    BookingHelper::set_confirmationCode($sessionId);
+                    $response = BookingHelper::create_payment($sessionId,"midtrans","gopay");
+                break;
+
+                case 'shopeepay':
+                    //VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
+                    BookingHelper::set_bookingStatus($sessionId,'PENDING');
+                    BookingHelper::set_confirmationCode($sessionId);
+                    $response = BookingHelper::create_payment($sessionId,"midtrans","shopeepay");
+                break;
+
+                case 'gopay_qris':
+                    //VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
+                    BookingHelper::set_bookingStatus($sessionId,'PENDING');
+                    BookingHelper::set_confirmationCode($sessionId);
+                    $response = BookingHelper::create_payment($sessionId,"midtrans","gopay_qris");
+                break;
+
                 case 'qris':
                     //VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
                     BookingHelper::set_bookingStatus($sessionId,'PENDING');
@@ -294,13 +347,6 @@ class APIController extends Controller
                     $response = BookingHelper::create_payment($sessionId,"midtrans","gopay_qris");
                 break;
 
-                case 'gopay_qris':
-                    //VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
-                    BookingHelper::set_bookingStatus($sessionId,'PENDING');
-                    BookingHelper::set_confirmationCode($sessionId);
-                    $response = BookingHelper::create_payment($sessionId,"midtrans","gopay_qris");
-                break;
-
                 case 'shopeepay_qris':
                     //VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
                     BookingHelper::set_bookingStatus($sessionId,'PENDING');
@@ -308,20 +354,6 @@ class APIController extends Controller
                     $response = BookingHelper::create_payment($sessionId,"midtrans","shopeepay_qris");
                 break;
 
-                case 'shopeepay':
-                    //VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
-                    BookingHelper::set_bookingStatus($sessionId,'PENDING');
-                    BookingHelper::set_confirmationCode($sessionId);
-                    $response = BookingHelper::create_payment($sessionId,"midtrans","shopeepay");
-                break;
-
-                case 'gopay':
-                    //VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
-                    BookingHelper::set_bookingStatus($sessionId,'PENDING');
-                    BookingHelper::set_confirmationCode($sessionId);
-                    $response = BookingHelper::create_payment($sessionId,"midtrans","gopay");
-                break;
-                
                 case 'dana':
                     //VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
                     BookingHelper::set_bookingStatus($sessionId,'PENDING');
@@ -516,7 +548,7 @@ class APIController extends Controller
             if($shoppingcart->shoppingcart_payment->payment_type=="ewallet")
             {
                 $redirect_type = 2;
-                $text = '<strong>Click to pay with '.strtoupper($shoppingcart->shoppingcart_payment->bank_name).'</strong>';
+                $text = strtoupper($shoppingcart->shoppingcart_payment->bank_name);
             }
 
             if($shoppingcart->shoppingcart_payment->payment_type=="bank_redirect")
@@ -1275,14 +1307,45 @@ class APIController extends Controller
 
             $order_id = null;
             if(isset($data['order_id'])) $order_id = $data['order_id'];
+            $payment_type = null;
+            if(isset($data['payment_type'])) $payment_type = $data['payment_type'];
 
-            $shoppingcart_payment = ShoppingcartPayment::where('order_id',$order_id)->first();
-            if($shoppingcart_payment) {
-
-                $confirmation_code = $shoppingcart_payment->shoppingcart->confirmation_code;
-                $shoppingcart = Shoppingcart::where('confirmation_code',$confirmation_code)->first();
-                if($shoppingcart)
+            /*
+            if($payment_type=="gopay" || $payment_type=="shopeepay")
+            {
+                if($order_id!=null)
                 {
+                    $reference_id = $order_id;
+                    $output = FirebaseHelper::read_payment($reference_id);
+                    if($output=="")
+                    {
+                        return response('ERROR', 200)->header('Content-Type', 'text/plain');
+                    }
+
+                    $sessionId = $output->session_id;
+
+                    if($data['transaction_status']=="settlement")
+                    {
+                        BookingHelper::set_bookingStatus($sessionId,'CONFIRMED');
+                        $shoppingcart = BookingHelper::confirm_booking($sessionId);
+                        BookingHelper::confirm_payment($shoppingcart,"CONFIRMED",true);
+                        FirebaseHelper::upload_payment('CONFIRMED',$reference_id,$sessionId,$payment_type,"/booking/receipt/".$shoppingcart->session_id."/".$shoppingcart->confirmation_code);
+                        BookingHelper::shoppingcart_notif($shoppingcart_payment->shoppingcart);
+                    }
+
+                    
+                }
+            }
+            else
+            {
+            */
+                $shoppingcart_payment = ShoppingcartPayment::where('order_id',$order_id)->first();
+                if($shoppingcart_payment) {
+
+                    $confirmation_code = $shoppingcart_payment->shoppingcart->confirmation_code;
+                    $shoppingcart = Shoppingcart::where('confirmation_code',$confirmation_code)->first();
+                    if($shoppingcart)
+                    {
                     
                         if($data['transaction_status']=="settlement")
                         {
@@ -1298,8 +1361,11 @@ class APIController extends Controller
                             BookingHelper::confirm_payment($shoppingcart,"CANCELED");
                             BookingHelper::shoppingcart_notif($shoppingcart);
                         }
+                    }
                 }
-            }
+            //}
+
+            
                 
             return response('SUCCESS', 200)->header('Content-Type', 'text/plain');
     }
@@ -1373,7 +1439,7 @@ class APIController extends Controller
 
                 if($data['data']['status']!="SUCCEEDED")
                 {
-                    FirebaseHelper::upload_payment('FAILED',$reference_id);
+                    FirebaseHelper::upload_payment('FAILED',$reference_id,$sessionId,'ovo');
                     return response()->json([
                         'message' => "error"
                     ], 200);
@@ -1384,7 +1450,7 @@ class APIController extends Controller
                 BookingHelper::set_confirmationCode($sessionId);
                 BookingHelper::create_payment($sessionId,"xendit","ovo");
                 $shoppingcart = BookingHelper::confirm_booking($sessionId);
-                FirebaseHelper::upload_payment('CONFIRMED',$reference_id,$sessionId,"/booking/receipt/".$shoppingcart->session_id."/".$shoppingcart->confirmation_code);
+                FirebaseHelper::upload_payment('CONFIRMED',$reference_id,$sessionId,'ovo',"/booking/receipt/".$shoppingcart->session_id."/".$shoppingcart->confirmation_code);
                 BookingHelper::shoppingcart_notif($shoppingcart_payment->shoppingcart);
             }
 
@@ -1440,6 +1506,7 @@ class APIController extends Controller
 
             $xendit = new XenditHelper();
             $response = $xendit->createEWalletOvoCharge($shoppingcart->due_now,$phoneNumber);
+            //$response = $xendit->createEWalletOvoCharge(20107,$phoneNumber);
             
             if(isset($response->error_code))
             {
@@ -1448,7 +1515,7 @@ class APIController extends Controller
                 ]);
             }
 
-            FirebaseHelper::upload_payment('PENDING',$response->reference_id,$sessionId);
+            FirebaseHelper::upload_payment('PENDING',$response->reference_id,$sessionId,'ovo');
 
             return response()->json([
                     "message" => "success",
@@ -1465,17 +1532,7 @@ class APIController extends Controller
 
             
 
-            function failedpaymentovo()
-            {
-                                        $("#text-alert").hide();
-                                        $("#text-alert").html( "" );
-
-                                        $(\'#alert-payment\').html(\'<div id="alert-failed" class="alert alert-danger text-center mt-2" role="alert"><h2 style="margin-bottom:10px; margin-top:10px;"><i class="far fa-frown"></i> Transaction failed</h2></div>\');
-                                        $(\'#alert-payment\').fadeIn("slow");
-                                        $("#ovoPhoneNumber").attr("disabled", false);
-                                        $("#submit").attr("disabled", false);
-                                        $("#submit").html(\' <strong>Click to pay with <img class="ml-2 mr-2" src="'.$this->appAssetUrl.'/img/payment/ovo-light.png" height="30" /></strong> \');
-            }
+            
 
             function createpaymentovo()
             {
@@ -1515,22 +1572,22 @@ class APIController extends Controller
                                     
                                     if(data.message=="success")
                                     {
-                                        window.startListenerOvo(data.reference_id);
+                                        window.startListenerEwallet(data.reference_id);
                                         setTimeout(
                                         function() 
                                         {
-                                            window.stopListenerOvo(data.reference_id);
-                                            failedpaymentovo();
+                                            window.stopListenerEwallet(data.reference_id);
+                                            failedpaymentEwallet("ovo");
                                         }, 60000);
                                     }
                                     else
                                     {
-                                        failedpaymentovo();
+                                        failedpaymentEwallet("ovo");
                                     }
 
                                 }).fail(function(error) {
 
-                                    failedpaymentovo();
+                                    failedpaymentEwallet("ovo");
                                         
                             });
 
@@ -1540,7 +1597,7 @@ class APIController extends Controller
         return response($jscript)->header('Content-Type', 'application/javascript');
     }
 
-    
+
 
     public function stripe_jscript($sessionId)
     {
@@ -1799,6 +1856,89 @@ class APIController extends Controller
         return response($jscript)->header('Content-Type', 'application/javascript');
     }
 
+    public function checkout_jscript()
+    {
+        $jscript = '
+        
+        function clearFormAlert(data)
+        {
+            $.each(data, function( index, value ) {
+                $(\'#\'+ value).removeClass(\'is-invalid\');
+                $(\'#span-\'+ value).remove();
+            });
+        }
+
+        function formAlert(data)
+        {
+            $.each( data, function( index, value ) {
+            $(\'#\'+ index).addClass(\'is-invalid\');
+                if(value!="")
+                {
+                    $(\'#\'+ index).after(\'<span id="span-\'+ index  +\'" class="invalid-feedback" role="alert"><strong>\'+ value +\'</strong></span>\');
+                }
+            });
+            
+        }
+
+        function showAlert(string,status)
+        {
+            if(status=="show")
+            {
+                $(\'#info-payment\').html(\'<div id="alert-failed" class="alert alert-danger text-center mt-2" role="alert"><h2 style="margin-bottom:10px; margin-top:10px;"><i class="far fa-frown"></i> \'+ string +\'</h2></div>\');
+                $(\'#info-payment\').fadeIn("slow");
+            }
+            else
+            {
+                $("#info-payment").slideUp("slow");
+            }
+        }
+
+        function failedpaymentEwallet(ewallet)
+            {
+                if(ewallet=="ovo")
+                {
+                                        $("#text-alert").hide();
+                                        $("#text-alert").html( "" );
+
+                                        $(\'#alert-payment\').html(\'<div id="alert-failed" class="alert alert-danger text-center mt-2" role="alert"><h2 style="margin-bottom:10px; margin-top:10px;"><i class="far fa-frown"></i> Transaction failed</h2></div>\');
+                                        $(\'#alert-payment\').fadeIn("slow");
+                                        $("#ovoPhoneNumber").attr("disabled", false);
+                                        $("#submit").attr("disabled", false);
+                                        $("#submit").html(\' <strong>Click to pay with <img class="ml-2 mr-2" src="'.$this->appAssetUrl.'/img/payment/ovo-light.png" height="30" /></strong> \');
+                }
+            }
+
+        function submitDisabled()
+        {
+            $("#submitCheckout").attr("disabled", true);
+            $(\'#submitCheckout\').html(\'<i class="fa fa-spinner fa-spin"></i>&nbsp;&nbsp;processing...\');
+        }
+
+        function submitEnabled()
+        {
+            $("#submitCheckout").attr("disabled", false);
+            $(\'#submitCheckout\').html(\'<i class="fas fa-lock"></i> <strong id="submitText"></strong>\');
+        }
+
+        function redirect(url)
+        {
+            $(\'#submitCheckout\').html(\'<i class="fa fa-spinner fa-spin"></i>&nbsp;&nbsp;redirecting...\');
+            setTimeout(function (){
+                window.location.href = url;
+            }, 1000);
+        }
+
+        function showButton(deeplink,name)
+        {
+            $("#submitCheckout").slideUp("slow");
+            $("#paymentContainer").html(\'<a class="btn btn-lg btn-block btn-theme" style="height:47px" href="\'+ deeplink +\'"><strong>Click to pay with \'+ name +\'</strong></a>\');
+        }
+
+        ';
+        
+        return response($jscript)->header('Content-Type', 'application/javascript');
+    }
+
     public function receipt_jscript()
     {
         $jscript = '
@@ -1852,6 +1992,7 @@ class APIController extends Controller
 
                 
             }';
+
         return response($jscript)->header('Content-Type', 'application/javascript');
     }
 

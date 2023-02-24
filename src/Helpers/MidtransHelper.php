@@ -26,19 +26,6 @@ class MidtransHelper {
         return env("MIDTRANS_API_KEY");
   }
 
-  public static function midtransApiEndpoint()
-  {
-        if(env('MIDTRANS_ENV')=="production")
-        {
-            $endpoint = "https://app.midtrans.com/iris";
-        }
-        else
-        {
-            $endpoint = "https://app.sandbox.midtrans.com/iris";
-        }
-        return $endpoint;
-  }
-
   public static function midtransSnapEndpoint()
   {
         if(env('MIDTRANS_ENV')=="production")
@@ -111,7 +98,6 @@ class MidtransHelper {
         return $data;
     }
 
-  
 
   public static function createPayment($data)
   {
@@ -233,11 +219,28 @@ class MidtransHelper {
               'start_time' => $data->transaction->date_now,
               'unit' => 'minutes',
               'duration' => $data->transaction->mins_expired
-            ],
-            'callbacks' => [
-              'finish' => self::env_appUrl() . $data->transaction->finish_url,
             ]
           ];
+
+        if($payment->bank_payment_type=="gopay" || $payment->bank_payment_type=="shopeepay")
+        {
+          $data_callback = [
+            'callbacks' => [
+                //'finish' => self::env_appUrl() . '/booking/lastorder'
+                'finish' => self::env_appUrl() . $data->transaction->finish_url
+              ]
+          ];
+          $data_post = array_merge($data_post,$data_callback);
+        }
+        else
+        {
+          $data_callback = [
+            'callbacks' => [
+                'finish' => self::env_appUrl() . $data->transaction->finish_url
+              ]
+          ];
+          $data_post = array_merge($data_post,$data_callback);
+        }
 
         if($payment->bank_payment_type=="permata_va")
         {
@@ -250,12 +253,14 @@ class MidtransHelper {
             $data_post = array_merge($data_post,$data_permata);
         }
 
+
+
         if($payment->bank_payment_type=="gopay")
         {
             $data_gopay = [
               'gopay' => [
                 'enable_callback' => true,
-                'callback_url' => self::env_appUrl() . $data->transaction->finish_url,
+                'callback_url' => self::env_appUrl() . $data->transaction->finish_url
               ]
             ];
 

@@ -1916,7 +1916,8 @@ class BookingHelper {
 		$link = NULL;
 		$authorization_id = NULL;
 
-		$order_id = $shoppingcart->confirmation_code;
+		//$order_id = $shoppingcart->confirmation_code;
+		$order_id = Uuid::uuid4()->toString();
 		$amount = $shoppingcart->due_now;
 		$currency = $shoppingcart->currency;
 		$rate = 1;
@@ -1929,7 +1930,7 @@ class BookingHelper {
 
 
 		$transaction = new \stdClass();
-        $transaction->id = $shoppingcart->confirmation_code;
+        $transaction->id = $order_id;
         $transaction->amount = $amount;
         $transaction->currency = $currency;
         $transaction->confirmation_code = $shoppingcart->confirmation_code;

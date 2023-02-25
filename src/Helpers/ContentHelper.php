@@ -531,7 +531,7 @@ class ContentHelper {
 
                 // Local Payment Currency
                 
-                'localpayment_label' => '<strong class="mb-1">Local Transfers</strong>',
+                'localpayment_label' => '<strong class="mb-1">Domestic Payments</strong>',
                 
                 /*
                 'localpayment_label' => '<strong class="mb-1">QR Payment</strong>

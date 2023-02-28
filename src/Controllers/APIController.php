@@ -7,11 +7,14 @@ use budisteikul\toursdk\Helpers\BokunHelper;
 use budisteikul\toursdk\Helpers\BookingHelper;
 use budisteikul\toursdk\Helpers\ContentHelper;
 use budisteikul\toursdk\Helpers\FirebaseHelper;
+use budisteikul\toursdk\Helpers\GeneralHelper;
+use budisteikul\toursdk\Helpers\VoucherHelper;
+
 use budisteikul\toursdk\Helpers\PaypalHelper;
 use budisteikul\toursdk\Helpers\RapydHelper;
 use budisteikul\toursdk\Helpers\MidtransHelper;
-use budisteikul\toursdk\Helpers\GeneralHelper;
-use budisteikul\toursdk\Helpers\VoucherHelper;
+use budisteikul\toursdk\Helpers\DuitkuHelper;
+use budisteikul\toursdk\Helpers\XenditHelper;
 
 use budisteikul\toursdk\Models\Category;
 use budisteikul\toursdk\Models\Review;
@@ -34,7 +37,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\URL;
 use Stripe;
 
-use budisteikul\toursdk\Helpers\XenditHelper;
+
 
 class APIController extends Controller
 {
@@ -352,6 +355,13 @@ class APIController extends Controller
                     BookingHelper::set_bookingStatus($sessionId,'PENDING');
                     BookingHelper::set_confirmationCode($sessionId);
                     $response = BookingHelper::create_payment($sessionId,"midtrans","shopeepay_qris");
+                break;
+
+                case 'linkaja_qris':
+                    //VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
+                    BookingHelper::set_bookingStatus($sessionId,'PENDING');
+                    BookingHelper::set_confirmationCode($sessionId);
+                    $response = BookingHelper::create_payment($sessionId,"duitku","linkaja_qris");
                 break;
 
                 case 'dana':
@@ -1368,6 +1378,41 @@ class APIController extends Controller
             
                 
             return response('SUCCESS', 200)->header('Content-Type', 'text/plain');
+    }
+
+    public function confirmpaymentduitku(Request $request)
+    {
+        if(!DuitkuHelper::checkSignature($request))
+        {
+            return response('Invalid Signature', 200)->header('Content-Type', 'text/plain');
+        }
+
+        $data = $request->all();
+
+        $order_id = null;
+        if(isset($data['merchantOrderId'])) $order_id = $data['merchantOrderId'];
+        $shoppingcart_payment = ShoppingcartPayment::where('order_id',$order_id)->first();
+        if($shoppingcart_payment!==null) {
+            $confirmation_code = $shoppingcart_payment->shoppingcart->confirmation_code;
+            $shoppingcart = Shoppingcart::where('confirmation_code',$confirmation_code)->first();
+            if($shoppingcart!==null)
+            {
+                        if($data['resultCode']=="00")
+                        {
+                            BookingHelper::confirm_payment($shoppingcart,"CONFIRMED");
+                        }
+                        else if($data['resultCode']=="01")
+                        {
+                            BookingHelper::confirm_payment($shoppingcart,"PENDING");
+                        }
+                        else
+                        {
+                            BookingHelper::confirm_payment($shoppingcart,"CANCELED");
+                        }
+            }
+        }
+
+        return response('SUCCESS', 200)->header('Content-Type', 'text/plain');
     }
 
     public function createpaymentpaypal(Request $request)

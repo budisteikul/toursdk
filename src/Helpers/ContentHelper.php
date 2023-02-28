@@ -444,6 +444,10 @@ class ContentHelper {
                 'value' => 'ovo', 'label' => 'OVO', 'image' => self::env_appAssetUrl() .'/img/payment/ovo.png', 'currency' => 'idr',
             ];
 
+        $ewallet_list[] = [
+                'value' => 'linkaja', 'label' => 'LinkAja', 'image' => self::env_appAssetUrl() .'/img/payment/linkaja.png', 'currency' => 'idr',
+            ];
+
         $grouped_payment[] = [
             'label' => 'E-WALLETS',
             'options' => $ewallet_list

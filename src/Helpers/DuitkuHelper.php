@@ -126,6 +126,7 @@ class DuitkuHelper {
 
         $payment = self::payment($data->transaction->bank);
 
+        $data->transaction->amount = (int)$data->transaction->amount;
         $data->transaction->mins_expired = 60;
         $data->transaction->date_expired = Carbon::parse($data->transaction->date_now)->addMinutes($data->transaction->mins_expired);
 
@@ -136,8 +137,6 @@ class DuitkuHelper {
 
             $data1 = self::createSnap($data);
             $data2 = self::createCharge($data1->reference,$payment,$data->contact->phone);
-            
-           
             
             if(isset($data2->statusCode)) $statusCode = $data2->statusCode;
             if($statusCode=="00")
@@ -166,16 +165,12 @@ class DuitkuHelper {
         else if($payment->bank_payment_type=="LQ")
         {   
 
-            $data1 = self::createSnap($data);
-            $data2 = self::getStatus($data1->paymentUrl);
-            $ticket = GeneralHelper::get_string_between($data2,'"ticket":"','"');
-            $data3 = self::createCharge($data1->reference,$payment,$ticket);
-
+            $data1 = self::createTransaction($data,$payment);
+            
             $data_json->bank_name = $payment->bank_name;
             $data_json->qrcode = $data1->qrString;
-            $data_json->link = null;
             
-            $data_json->payment_type = 'qris';
+            $data_json->payment_type = 'qrcode';
             $data_json->redirect = $data->transaction->finish_url;
             
         }
@@ -288,7 +283,7 @@ class DuitkuHelper {
 
         $item1 = array(
             'name' => $data->transaction->confirmation_code,
-            'price' => (int)$paymentAmount,
+            'price' => $paymentAmount,
             'quantity' => 1);
 
         $itemDetails = array(
@@ -298,7 +293,7 @@ class DuitkuHelper {
     	$data = [
             'merchantCode' => $merchantCode,
             'apiKey' => $apiKey,
-            'paymentAmount' => (int)$paymentAmount,
+            'paymentAmount' => $paymentAmount,
             'merchantOrderId' => $merchantOrderId,
             'productDetails' => $productDetails,
             'email' => $email,
@@ -336,23 +331,22 @@ class DuitkuHelper {
 
     public static function createTransaction($data,$payment)
     {
-        $merchantCode = self::env_duitkuMerchantCode(); // dari duitku
-        $apiKey = self::env_duitkuApiKey(); // dari duitku
-        $paymentAmount = (int)$data->transaction->amount;
-        $paymentMethod = $payment->bank_payment_type; // VC = Credit Card
-        $merchantOrderId = $data->transaction->id; // dari merchant, unik
+        $merchantCode = self::env_duitkuMerchantCode();
+        $apiKey = self::env_duitkuApiKey();
+        $paymentAmount = $data->transaction->amount;
+        $paymentMethod = $payment->bank_payment_type;
+        $merchantOrderId = $data->transaction->id;
         $productDetails = 'Payment for '. self::env_appName();
-        $email = $data->contact->email; // email pelanggan anda
-        $customerVaName = $data->contact->name; // tampilan nama pada tampilan konfirmasi bank
-        $callbackUrl = self::env_appApiUrl().'/payment/duitku/confirm'; // url untuk callback
-        //$returnUrl = self::env_appUrl() . $data->transaction->finish_url; // url untuk redirect
-        $returnUrl = 'https://sandbox.vertikaltrip.com' . $data->transaction->finish_url;
-        $expiryPeriod = $data->transaction->mins_expired; // atur waktu kadaluarsa dalam hitungan menit
+        $email = $data->contact->email;
+        $customerVaName = $data->contact->name; 
+        $callbackUrl = self::env_appApiUrl().'/payment/duitku/confirm';
+        $returnUrl = self::env_appUrl() . $data->transaction->finish_url;
+        $expiryPeriod = $data->transaction->mins_expired;
         $signature = md5($merchantCode . $merchantOrderId . $paymentAmount . $apiKey);
 
         $item1 = array(
             'name' => $data->transaction->confirmation_code,
-            'price' => (int)$paymentAmount,
+            'price' => $paymentAmount,
             'quantity' => 1);
 
         $itemDetails = array(
@@ -376,8 +370,8 @@ class DuitkuHelper {
         ];
 
         $headers = [
-              'Accept' => 'application/json',
               'Content-Type' => 'application/json',
+              'Content-Length' => strlen(json_encode($data)),
           ];
 
         $url = self::duitkuApiEndpoint();
@@ -389,10 +383,10 @@ class DuitkuHelper {
           ['json' => $data]
         );
 
-        $data = $response->getBody()->getContents();
-        
-        $data = json_decode($data);
+        //$statusCode = $response->getStatusCode();
 
+        $data = $response->getBody()->getContents();
+        $data = json_decode($data);
         return $data;
     }
 

@@ -12,6 +12,7 @@ use budisteikul\toursdk\Helpers\RapydHelper;
 use budisteikul\toursdk\Helpers\XenditHelper;
 use budisteikul\toursdk\Helpers\TazapayHelper;
 use budisteikul\toursdk\Helpers\FinmoHelper;
+use budisteikul\toursdk\Helpers\DuitkuHelper;
 use budisteikul\toursdk\Helpers\FirebaseHelper;
 use budisteikul\toursdk\Helpers\GeneralHelper;
 use budisteikul\toursdk\Helpers\VoucherHelper;
@@ -1973,6 +1974,27 @@ class BookingHelper {
 
 		switch($payment_provider)
 		{
+			case "duitku":
+				$amount = self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'IDR');
+
+				$currency = 'IDR';
+				$rate = number_format((float)$shoppingcart->due_now / $amount, 2, '.', '');
+				$payment_status = 4;
+
+				$data->transaction->amount = $amount;
+				$data->transaction->currency = $currency;
+
+				if($data->transaction->bank == 'ovo')
+				{
+					$contact->phone = $param1;
+					$payment_provider = 'duitku';
+					$payment_type = 'ewallet';
+					$bank_name = 'ovo';
+					$redirect = $data->transaction->finish_url;
+				}
+
+				$response = DuitkuHelper::createPayment($data);
+			break;
 			case "finmo":
 				$payment_provider = 'finmo';
 				

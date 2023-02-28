@@ -1,5 +1,6 @@
 <?php
 namespace budisteikul\toursdk\Helpers;
+use budisteikul\toursdk\Helpers\GeneralHelper;
 use Carbon\Carbon;
 
 class DuitkuHelper {
@@ -34,7 +35,7 @@ class DuitkuHelper {
         return env("DUITKU_API_KEY");
   	}
 
-  	public static function duitkuPopApiEndpoint()
+  	public static function duitkuSnapApiEndpoint()
   	{
         if(self::env_duitkuEnv()=="production")
         {
@@ -46,6 +47,19 @@ class DuitkuHelper {
         }
         return $endpoint;
   	}
+
+    public static function duitkuChargeApiEndpoint()
+    {
+        if(self::env_duitkuEnv()=="production")
+        {
+            $endpoint = "https://app-prod.duitku.com";
+        }
+        else
+        {
+            $endpoint = "https://app-sandbox.duitku.com";
+        }
+        return $endpoint;
+    }
 
     public static function duitkuApiEndpoint()
     {
@@ -60,7 +74,7 @@ class DuitkuHelper {
         return $endpoint;
     }
 
-  	public static function bankCode($bank)
+  	public static function payment($bank)
     {
         $data = new \stdClass();
         switch($bank)
@@ -110,7 +124,7 @@ class DuitkuHelper {
         $status_json = new \stdClass();
         $response_json = new \stdClass();
 
-        $payment = self::bankCode($data->transaction->bank);
+        $payment = self::payment($data->transaction->bank);
 
         $data->transaction->mins_expired = 60;
         $data->transaction->date_expired = Carbon::parse($data->transaction->date_now)->addMinutes($data->transaction->mins_expired);
@@ -141,21 +155,21 @@ class DuitkuHelper {
         }
         else if($payment->bank_payment_type=="LA")
         {
-            //$data1 = self::createTransaction($data,$payment);
-
             $data1 = self::createSnap($data);
-            $data2 = self::createCharge($data1->reference,$payment);
-		
-            //print_r($data1);
-            //print_r($data2);
-            //exit();
-
+            $data2 = self::getStatus($data1->paymentUrl);
+		    $ticket = GeneralHelper::get_string_between($data2,'"ticket":"','"');
+            $data3 = self::createCharge($data1->reference,$payment,$ticket);
+            
             $data_json->payment_type = 'ewallet';
             $data_json->redirect = $data2->qrString;
         }
         else if($payment->bank_payment_type=="LQ")
-        {
-            $data1 = self::createTransaction($data,$payment);
+        {   
+
+            $data1 = self::createSnap($data);
+            $data2 = self::getStatus($data1->paymentUrl);
+            $ticket = GeneralHelper::get_string_between($data2,'"ticket":"','"');
+            $data3 = self::createCharge($data1->reference,$payment,$ticket);
 
             $data_json->bank_name = $payment->bank_name;
             $data_json->qrcode = $data1->qrString;
@@ -167,14 +181,10 @@ class DuitkuHelper {
         }
         else if($payment->bank_payment_type=="DA")
         {
-            //$data1 = self::createTransaction($data,$payment);
-
             $data1 = self::createSnap($data);
-            $data2 = self::createCharge($data1->reference,$payment);
-            print_r($data1);
-            print_r($data2);
-            exit();
-
+            $data2 = self::getStatus($data1->paymentUrl);
+            $ticket = GeneralHelper::get_string_between($data2,'"ticket":"','"');
+            $data3 = self::createCharge($data1->reference,$payment,$ticket);
             
             $data_json->payment_type = 'ewallet';
             $data_json->redirect = $data1->paymentUrl;
@@ -182,7 +192,10 @@ class DuitkuHelper {
         else
         {
             $data1 = self::createSnap($data);
-            $data2 = self::createCharge($data1->reference,$payment);
+            $data2 = self::getStatus($data1->paymentUrl);
+            $ticket = GeneralHelper::get_string_between($data2,'"ticket":"','"');
+            $data3 = self::createCharge($data1->reference,$payment,$ticket);
+
             $data_json->payment_type = 'bank_transfer';
             $data_json->va_number = $data2->vaNumber;
             $data_json->redirect = $data->transaction->finish_url;
@@ -203,30 +216,48 @@ class DuitkuHelper {
         return $response_json;
     }
 
-    public static function createCharge($token,$payment,$param1="")
+    public static function getStatus($url)
+    { 
+        $headers = [
+                'content-type' => 'application/json',
+            ];
+        $client = new \GuzzleHttp\Client(['headers' => $headers]);
+
+        $response = $client->request('GET', $url);
+        $contents = $response->getBody()->getContents();
+        
+        return $contents;
+    }
+
+    public static function createCharge($token,$payment,$ticket)
     {
         if($payment->bank_payment_type=="OV")
         {
             $data = [
-                'paymentMethod' => $payment->bank_payment_type,
+                'channel' => $payment->bank_payment_type,
                 'phoneNumber' => $param1,
             ];
         }
         else
         {
             $data = [
-                'paymentMethod' => $payment->bank_payment_type,
+                'channel' => $payment->bank_payment_type,
             ];
         }
         
+        
+        $timestamp = round(microtime(true) * 1000);
+        $url = self::duitkuChargeApiEndpoint();
 
         $headers = [
               'Content-Type' => 'application/json',
+              'Content-Length' => strlen(json_encode($data)),
+              'x-duitku-timestamp' => $timestamp,
+              'x-duitku-ticket' => $ticket,
           ];
-
-        $url = self::duitkuPopApiEndpoint();
-        $targetPath = '/api/payment/'. $token .'/pay';
-        $endpoint = $url . $targetPath;
+        
+        $targetPath = $url . '/api/process/'. $token;
+        $endpoint = $targetPath;
 
         $client = new \GuzzleHttp\Client(['headers' => $headers,'http_errors' => false]);
         $response = $client->request('POST',$endpoint,
@@ -239,11 +270,75 @@ class DuitkuHelper {
         return $data;
     }
 
+    public static function createSnap($data)
+    {
+    	$merchantCode = self::env_duitkuMerchantCode(); // dari duitku
+    	$apiKey = self::env_duitkuApiKey(); // dari duitku
+    	$paymentAmount = $data->transaction->amount;
+    	$merchantOrderId = $data->transaction->id; // dari merchant, unik
+    	$productDetails = 'Payment for '. self::env_appName();
+    	$email = $data->contact->email; // email pelanggan anda
+    	$customerVaName = $data->contact->name; // tampilan nama pada tampilan konfirmasi bank
+    	$callbackUrl = self::env_appApiUrl().'/payment/duitku/confirm'; // url untuk callback
+    	$returnUrl = self::env_appUrl() . $data->transaction->finish_url; // url untuk redirect
+    	$expiryPeriod = $data->transaction->mins_expired; // atur waktu kadaluarsa dalam hitungan menit
+        $timestamp = round(microtime(true) * 1000);
+        $phoneNumber = $data->contact->phone;
+        $signature = hash("sha256", $merchantCode . $timestamp . $apiKey);
+
+        $item1 = array(
+            'name' => $data->transaction->confirmation_code,
+            'price' => (int)$paymentAmount,
+            'quantity' => 1);
+
+        $itemDetails = array(
+            $item1
+        );
+
+    	$data = [
+            'merchantCode' => $merchantCode,
+            'apiKey' => $apiKey,
+            'paymentAmount' => (int)$paymentAmount,
+            'merchantOrderId' => $merchantOrderId,
+            'productDetails' => $productDetails,
+            'email' => $email,
+            'customerVaName' => $customerVaName,
+            'callbackUrl' => $callbackUrl,
+            'returnUrl' => $returnUrl,
+            'expiryPeriod' => $expiryPeriod,
+            'email' => $data->contact->email,
+            'itemDetails' => $itemDetails,
+        ];
+
+        $headers = [
+              'Content-Type' => 'application/json',
+              'Content-Length' => strlen(json_encode($data)),
+              'x-duitku-signature' => $signature,
+              'x-duitku-timestamp' => $timestamp,
+              'x-duitku-merchantcode' => self::env_duitkuMerchantCode(),
+          ];
+
+        
+
+        $url = self::duitkuSnapApiEndpoint();
+        $targetPath = '/api/merchant/createInvoice';
+        $endpoint = $url . $targetPath;
+
+        $client = new \GuzzleHttp\Client(['headers' => $headers,'http_errors' => false]);
+        $response = $client->request('POST',$endpoint,
+          ['json' => $data]
+        );
+
+        $data = $response->getBody()->getContents();
+        $data = json_decode($data);
+        return $data;
+    }
+
     public static function createTransaction($data,$payment)
     {
         $merchantCode = self::env_duitkuMerchantCode(); // dari duitku
         $apiKey = self::env_duitkuApiKey(); // dari duitku
-        $paymentAmount = $data->transaction->amount;
+        $paymentAmount = (int)$data->transaction->amount;
         $paymentMethod = $payment->bank_payment_type; // VC = Credit Card
         $merchantOrderId = $data->transaction->id; // dari merchant, unik
         $productDetails = 'Payment for '. self::env_appName();
@@ -267,7 +362,7 @@ class DuitkuHelper {
         $data = [
             'merchantCode' => $merchantCode,
             'apiKey' => $apiKey,
-            'paymentAmount' => (int)$paymentAmount,
+            'paymentAmount' => $paymentAmount,
             'paymentMethod' => $paymentMethod,
             'merchantOrderId' => $merchantOrderId,
             'productDetails' => $productDetails,
@@ -287,78 +382,6 @@ class DuitkuHelper {
 
         $url = self::duitkuApiEndpoint();
         $targetPath = '/webapi/api/merchant/v2/inquiry';
-        $endpoint = $url . $targetPath;
-
-        $client = new \GuzzleHttp\Client(['headers' => $headers,'http_errors' => false]);
-        $response = $client->request('POST',$endpoint,
-          ['json' => $data]
-        );
-
-        $data = $response->getBody()->getContents();
-        
-        $data = json_decode($data);
-
-        return $data;
-    }
-
-
-    public static function createSnap($data)
-    {
-    	$merchantCode = self::env_duitkuMerchantCode(); // dari duitku
-    	$apiKey = self::env_duitkuApiKey(); // dari duitku
-    	$paymentAmount = $data->transaction->amount;
-    	//$paymentMethod = "DA"; // VC = Credit Card
-    	$merchantOrderId = $data->transaction->id; // dari merchant, unik
-    	$productDetails = 'Payment for '. self::env_appName();
-    	$email = $data->contact->email; // email pelanggan anda
-    	$customerVaName = $data->contact->name; // tampilan nama pada tampilan konfirmasi bank
-    	$callbackUrl = self::env_appApiUrl().'/payment/duitku/confirm'; // url untuk callback
-    	$returnUrl = self::env_appUrl() . $data->transaction->finish_url; // url untuk redirect
-    	$expiryPeriod = $data->transaction->mins_expired; // atur waktu kadaluarsa dalam hitungan menit
-    	//$signature = md5($merchantCode . $merchantOrderId . $paymentAmount . $apiKey);
-        $timestamp = round(microtime(true) * 1000);
-        $phoneNumber = $data->contact->phone;
-        $signature = hash("sha256", $merchantCode . $timestamp . $apiKey);
-
-        $item1 = array(
-            'name' => $data->transaction->confirmation_code,
-            'price' => (int)$paymentAmount,
-            'quantity' => 1);
-
-        $itemDetails = array(
-            $item1
-        );
-
-    	$data = [
-            'merchantCode' => $merchantCode,
-            'apiKey' => $apiKey,
-            'paymentAmount' => (int)$paymentAmount,
-            //'paymentMethod' => "LA",
-            'merchantOrderId' => $merchantOrderId,
-            'productDetails' => $productDetails,
-            'email' => $email,
-            'customerVaName' => $customerVaName,
-            'callbackUrl' => $callbackUrl,
-            'returnUrl' => $returnUrl,
-            'expiryPeriod' => $expiryPeriod,
-            'email' => $data->contact->email,
-            'itemDetails' => $itemDetails,
-            //'phoneNumber' => $data->contact->phone,
-            //'signature' => $signature,
-        ];
-
-        $headers = [
-              'Content-Type' => 'application/json',
-              'Content-Length' => strlen(json_encode($data)),
-              'x-duitku-signature' => $signature,
-              'x-duitku-timestamp' => $timestamp,
-              'x-duitku-merchantcode' => self::env_duitkuMerchantCode(),
-          ];
-
-        
-
-        $url = self::duitkuPopApiEndpoint();
-        $targetPath = '/api/merchant/createInvoice';
         $endpoint = $url . $targetPath;
 
         $client = new \GuzzleHttp\Client(['headers' => $headers,'http_errors' => false]);

@@ -357,6 +357,13 @@ class APIController extends Controller
                     $response = BookingHelper::create_payment($sessionId,"midtrans","shopeepay_qris");
                 break;
 
+                case 'linkaja':
+                    //VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
+                    BookingHelper::set_bookingStatus($sessionId,'PENDING');
+                    BookingHelper::set_confirmationCode($sessionId);
+                    $response = BookingHelper::create_payment($sessionId,"duitku","linkaja");
+                break;
+
                 case 'linkaja_qris':
                     //VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
                     BookingHelper::set_bookingStatus($sessionId,'PENDING');

@@ -135,10 +135,14 @@ class DuitkuHelper {
             $status = false;
             $statusCode = null;
 
+            $data->contact->phone = str_replace("+62","0",$data->contact->phone);
+
             $data1 = self::createSnap($data);
-            $data2 = self::createCharge($data1->reference,$payment,$data->contact->phone);
-            
-            if(isset($data2->statusCode)) $statusCode = $data2->statusCode;
+            $data2 = self::getStatus($data1->paymentUrl);
+            $ticket = GeneralHelper::get_string_between($data2,'"ticket":"','"');
+            $data3 = self::createCharge($data1->reference,$payment,$ticket,$data->contact->phone);
+
+            if(isset($data3->statusCode)) $statusCode = $data3->statusCode;
             if($statusCode=="00")
             {
                 $status = true;
@@ -224,13 +228,13 @@ class DuitkuHelper {
         return $contents;
     }
 
-    public static function createCharge($token,$payment,$ticket)
+    public static function createCharge($token,$payment,$ticket,$phoneNumber=null)
     {
         if($payment->bank_payment_type=="OV")
         {
             $data = [
                 'channel' => $payment->bank_payment_type,
-                'phoneNumber' => $param1,
+                'phoneNumber' => $phoneNumber,
             ];
         }
         else

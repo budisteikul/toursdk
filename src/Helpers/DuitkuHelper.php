@@ -162,13 +162,11 @@ class DuitkuHelper {
         return $contents;
     }
 
-    public static function createCharge($token,$payment,$ticket,$phoneNumber=null)
+    public static function createCharge($token,$payment,$ticket)
     {
-        
         $data = [
             'channel' => $payment->bank_payment_type,
         ];
-        
         
         $timestamp = round(microtime(true) * 1000);
         $url = self::duitkuChargeApiEndpoint();
@@ -241,8 +239,6 @@ class DuitkuHelper {
               'x-duitku-timestamp' => $timestamp,
               'x-duitku-merchantcode' => self::env_duitkuMerchantCode(),
           ];
-
-        
 
         $url = self::duitkuSnapApiEndpoint();
         $targetPath = '/api/merchant/createInvoice';

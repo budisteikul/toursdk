@@ -1407,14 +1407,17 @@ class APIController extends Controller
                         if($data['resultCode']=="00")
                         {
                             BookingHelper::confirm_payment($shoppingcart,"CONFIRMED");
+                            BookingHelper::shoppingcart_notif($shoppingcart);
                         }
                         else if($data['resultCode']=="01")
                         {
                             BookingHelper::confirm_payment($shoppingcart,"PENDING");
+                            BookingHelper::shoppingcart_notif($shoppingcart);
                         }
                         else
                         {
                             BookingHelper::confirm_payment($shoppingcart,"CANCELED");
+                            BookingHelper::shoppingcart_notif($shoppingcart);
                         }
             }
         }

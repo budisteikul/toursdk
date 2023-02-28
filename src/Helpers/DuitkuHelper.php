@@ -160,7 +160,7 @@ class DuitkuHelper {
             $data3 = self::createCharge($data1->reference,$payment,$ticket);
             
             $data_json->payment_type = 'ewallet';
-            $data_json->redirect = $data2->qrString;
+            $data_json->redirect = $data3->qrString;
         }
         else if($payment->bank_payment_type=="LQ")
         {   

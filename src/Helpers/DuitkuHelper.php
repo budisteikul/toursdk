@@ -79,21 +79,6 @@ class DuitkuHelper {
         $data = new \stdClass();
         switch($bank)
         {
-            case "sampoerna":
-                $data->bank_name = "sahabat sampoerna";
-                $data->bank_code = "523";
-                $data->bank_payment_type = "S1";
-            break;
-            case "mandiri":
-                $data->bank_name = "mandiri";
-                $data->bank_code = "008";
-                $data->bank_payment_type = "M2";
-            break;
-            case "ovo":
-                $data->bank_name = "ovo";
-                $data->bank_code = "";
-                $data->bank_payment_type = "OV";
-            break;
             case "linkaja":
                 $data->bank_name = "linkaja";
                 $data->bank_code = "";
@@ -103,11 +88,6 @@ class DuitkuHelper {
                 $data->bank_name = "qris";
                 $data->bank_code = "";
                 $data->bank_payment_type = "LQ";
-            break;
-            case "dana":
-                $data->bank_name = "dana";
-                $data->bank_code = "";
-                $data->bank_payment_type = "DA";
             break;
             default:
                 return response()->json([
@@ -130,33 +110,8 @@ class DuitkuHelper {
         $data->transaction->mins_expired = 60;
         $data->transaction->date_expired = Carbon::parse($data->transaction->date_now)->addMinutes($data->transaction->mins_expired);
 
-        if($payment->bank_payment_type=="OV")
-        {
-            $status = false;
-            $statusCode = null;
-
-            $data->contact->phone = str_replace("+62","0",$data->contact->phone);
-
-            $data1 = self::createSnap($data);
-            $data2 = self::getStatus($data1->paymentUrl);
-            $ticket = GeneralHelper::get_string_between($data2,'"ticket":"','"');
-            $data3 = self::createCharge($data1->reference,$payment,$ticket,$data->contact->phone);
-
-            if(isset($data3->statusCode)) $statusCode = $data3->statusCode;
-            if($statusCode=="00")
-            {
-                $status = true;
-            }
-
-            $status_json->id = '1';
-            $status_json->message = 'success';
         
-            $response_json->status = $status_json;
-            $response_json->data = $status;
-
-            return $response_json;
-        }
-        else if($payment->bank_payment_type=="LA")
+        if($payment->bank_payment_type=="LA")
         {
             $data1 = self::createSnap($data);
             $data2 = self::getStatus($data1->paymentUrl);
@@ -177,27 +132,6 @@ class DuitkuHelper {
             $data_json->payment_type = 'qrcode';
             $data_json->redirect = $data->transaction->finish_url;
             
-        }
-        else if($payment->bank_payment_type=="DA")
-        {
-            $data1 = self::createSnap($data);
-            $data2 = self::getStatus($data1->paymentUrl);
-            $ticket = GeneralHelper::get_string_between($data2,'"ticket":"','"');
-            $data3 = self::createCharge($data1->reference,$payment,$ticket);
-            
-            $data_json->payment_type = 'ewallet';
-            $data_json->redirect = $data1->paymentUrl;
-        }
-        else
-        {
-            $data1 = self::createSnap($data);
-            $data2 = self::getStatus($data1->paymentUrl);
-            $ticket = GeneralHelper::get_string_between($data2,'"ticket":"','"');
-            $data3 = self::createCharge($data1->reference,$payment,$ticket);
-
-            $data_json->payment_type = 'bank_transfer';
-            $data_json->va_number = $data2->vaNumber;
-            $data_json->redirect = $data->transaction->finish_url;
         }
 		
         $data_json->authorization_id = $data1->reference;
@@ -230,19 +164,10 @@ class DuitkuHelper {
 
     public static function createCharge($token,$payment,$ticket,$phoneNumber=null)
     {
-        if($payment->bank_payment_type=="OV")
-        {
-            $data = [
-                'channel' => $payment->bank_payment_type,
-                'phoneNumber' => $phoneNumber,
-            ];
-        }
-        else
-        {
-            $data = [
-                'channel' => $payment->bank_payment_type,
-            ];
-        }
+        
+        $data = [
+            'channel' => $payment->bank_payment_type,
+        ];
         
         
         $timestamp = round(microtime(true) * 1000);
@@ -271,16 +196,16 @@ class DuitkuHelper {
 
     public static function createSnap($data)
     {
-    	$merchantCode = self::env_duitkuMerchantCode(); // dari duitku
-    	$apiKey = self::env_duitkuApiKey(); // dari duitku
+    	$merchantCode = self::env_duitkuMerchantCode();
+    	$apiKey = self::env_duitkuApiKey();
     	$paymentAmount = $data->transaction->amount;
-    	$merchantOrderId = $data->transaction->id; // dari merchant, unik
+    	$merchantOrderId = $data->transaction->id;
     	$productDetails = 'Payment for '. self::env_appName();
-    	$email = $data->contact->email; // email pelanggan anda
-    	$customerVaName = $data->contact->name; // tampilan nama pada tampilan konfirmasi bank
-    	$callbackUrl = self::env_appApiUrl().'/payment/duitku/confirm'; // url untuk callback
-    	$returnUrl = self::env_appUrl() . $data->transaction->finish_url; // url untuk redirect
-    	$expiryPeriod = $data->transaction->mins_expired; // atur waktu kadaluarsa dalam hitungan menit
+    	$email = $data->contact->email;
+    	$customerVaName = $data->contact->name;
+    	$callbackUrl = self::env_appApiUrl().'/payment/duitku/confirm';
+    	$returnUrl = self::env_appUrl() . $data->transaction->finish_url;
+    	$expiryPeriod = $data->transaction->mins_expired;
         $timestamp = round(microtime(true) * 1000);
         $phoneNumber = $data->contact->phone;
         $signature = hash("sha256", $merchantCode . $timestamp . $apiKey);
@@ -386,8 +311,6 @@ class DuitkuHelper {
         $response = $client->request('POST',$endpoint,
           ['json' => $data]
         );
-
-        //$statusCode = $response->getStatusCode();
 
         $data = $response->getBody()->getContents();
         $data = json_decode($data);

@@ -293,6 +293,7 @@ class ContentHelper {
         $idr_total = BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'IDR');
         //$idr_total = $idr_total - ($idr_total * 10 / 100);
 
+        /*
         $sgd_total = BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'SGD');
         //$sgd_total = $sgd_total - ($sgd_total * 10 / 100);
 
@@ -307,7 +308,7 @@ class ContentHelper {
 
         $thb_total = BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'THB');
         //$thb_total = $thb_total - ($thb_total * 10 / 100);
-        
+        */
         
         //================================================
         
@@ -545,36 +546,36 @@ class ContentHelper {
                 <span class="badge badge-danger">Automatic get discount 10%</span>',
                 */
 
-                // IDR Currency
+                
                 'idr_currency' => 'IDR',
                 'idr_total' => GeneralHelper::numberFormat($idr_total,'IDR'),
                 'idr_rate' => BookingHelper::text_rate($shoppingcart,'IDR'),
 
-                // SGD Currency
+                /*
                 'sgd_currency' => 'SGD',
                 'sgd_total' => GeneralHelper::numberFormat($sgd_total,'SGD'),
                 'sgd_rate' => BookingHelper::text_rate($shoppingcart,'SGD'),
 
-                // AUD Currency
+                
                 'aud_currency' => 'AUD',
                 'aud_total' => GeneralHelper::numberFormat($aud_total,'AUD'),
                 'aud_rate' => BookingHelper::text_rate($shoppingcart,'AUD'),
 
-                // KRW Currency
+                
                 'krw_currency' => 'KRW',
                 'krw_total' => GeneralHelper::numberFormat($krw_total,'KRW'),
                 'krw_rate' => BookingHelper::text_rate($shoppingcart,'KRW'),
 
-                // PHP Currency
+                
                 'php_currency' => 'PHP',
                 'php_total' => GeneralHelper::numberFormat($php_total,'PHP'),
                 'php_rate' => BookingHelper::text_rate($shoppingcart,'PHP'),
 
-                // THB Currency
+                
                 'thb_currency' => 'THB',
                 'thb_total' => GeneralHelper::numberFormat($thb_total,'THB'),
                 'thb_rate' => BookingHelper::text_rate($shoppingcart,'THB'),
-
+                */
 
 
             );

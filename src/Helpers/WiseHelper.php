@@ -27,6 +27,7 @@ class WiseHelper {
             $this->tw->priv_pem = Storage::disk('gcs')->get('credentials/wise/sandbox_private.pem');
             $this->tw->webhook_pem = Storage::disk('gcs')->get('credentials/wise/sandbox_webhook.pem');
         }
+
     }
 
     public function getBank()
@@ -229,14 +230,14 @@ class WiseHelper {
             
             $SCA=json_decode($response);
             if($SCA->status==403 && !empty($SCA->path)){
-                
+
+                $Xsignature = '';
                 openssl_sign($this->OTT, $Xsignature, $this->tw->priv_pem, OPENSSL_ALGO_SHA256);
-                openssl_free_key($this->tw->priv_pem);
-                $Xsignature= base64_encode( $Xsignature);
-                
+                $Xsignature= base64_encode($Xsignature);
                 $headers[] = "x-2fa-approval: $this->OTT";
                 $headers[] = "X-Signature: $Xsignature";
                 $response = $this->curl($mode, $SCA->path,$data,$headers);
+                
             }
         }
         

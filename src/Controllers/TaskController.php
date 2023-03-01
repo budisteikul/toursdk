@@ -50,10 +50,13 @@ class TaskController extends Controller
                     {
                         return response('ERROR', 200)->header('Content-Type', 'text/plain');
                     }
-                    $transfer->status = 1;
-                    $transfer->save();
+                    
 
                     $transfer = $tw->postCreateTransfer($quote->id,$data->customerTransactionId,$transfer->wise_id);
+                    $transfer->transaction_id = $transfer->id;
+                    $transfer->status = 1;
+                    $transfer->save();
+                    
                     if(isset($transfer->error))
                     {
                         return response('ERROR', 200)->header('Content-Type', 'text/plain');

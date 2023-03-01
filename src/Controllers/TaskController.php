@@ -52,17 +52,17 @@ class TaskController extends Controller
                     }
                     
 
-                    $transfer = $tw->postCreateTransfer($quote->id,$data->customerTransactionId,$transfer->wise_id);
-                    $transfer->transaction_id = $transfer->id;
+                    $transferwise = $tw->postCreateTransfer($quote->id,$data->customerTransactionId,$transfer->wise_id);
+                    $transfer->transaction_id = $transferwise->id;
                     $transfer->status = 1;
                     $transfer->save();
-                    
-                    if(isset($transfer->error))
+
+                    if(isset($transferwise->error))
                     {
                         return response('ERROR', 200)->header('Content-Type', 'text/plain');
                     }
 
-                    $fund = $tw->postFundTransfer($transfer->id);
+                    $fund = $tw->postFundTransfer($transferwise->id);
                 }
                   
                 return response('OK', 200)->header('Content-Type', 'text/plain');

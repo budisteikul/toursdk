@@ -622,8 +622,8 @@ class ContentHelper {
                     <br />
                     3.  Check your payment details in the app, then tap <b>Pay</b>. <br />
                     4.  Enter your <b>PIN</b>. <br />
-                    5.  Your transaction is complete. <br />
-                    6.  Alternatively, you can download QR code from this site and upload to your E-wallet or Mobile Banking apps.
+                    5.  Your transaction is complete. <br /><br />
+                    Alternatively, you can download or screenshot QR code from this site and upload it to your E-wallet or Mobile Banking apps.
                     </div><br />';
             }
         }

@@ -367,6 +367,8 @@ class RapydHelper {
 
 
             $data1 = self::make_request('post','/v1/payments',$body);
+            print_r($data1);
+            exit();
             $qrcode = $data1['data']['visual_codes']['qrcode_image_base64'];
             $qrcode = str_ireplace('data:image/png;base64,','',$qrcode);
             
@@ -388,6 +390,8 @@ class RapydHelper {
 
             $data1 = self::make_request('post','/v1/payments',$body);
             
+            print_r($data1);
+            exit();
             $qrcode = $data1['data']['visual_codes']['qrcode_image_base64'];
             $qrcode = str_ireplace('data:image/png;base64,','',$qrcode);
             

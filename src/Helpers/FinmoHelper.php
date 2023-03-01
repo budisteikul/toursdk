@@ -72,7 +72,6 @@ class FinmoHelper {
 
         if($payment->bank_payment_type=="qrcode")
         {
-            //$qrcode = $tazapay['data']['qr_code'];
             $data_json->payment_type = 'qrcode';
             $data_json->qrcode = $qrcode;
             $data_json->redirect = $data->transaction->finish_url;
@@ -82,7 +81,6 @@ class FinmoHelper {
         $data_json->bank_code = $payment->bank_code;
             
         $data_json->expiration_date = $data->transaction->date_expired;
-        //$data_json->order_id = $txn_no;
 
         $status_json->id = '1';
         $status_json->message = 'success';

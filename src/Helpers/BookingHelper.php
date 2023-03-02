@@ -2395,8 +2395,27 @@ class BookingHelper {
 	{
 		if(self::have_payment($shoppingcart))
 		{
-			$text = '';
+			
 
+			if($shoppingcart->shoppingcart_payment->payment_provider=="none")
+            {
+            	switch($shoppingcart->shoppingcart_payment->payment_status)
+				{
+					
+					case 2:
+						return '<div class="card mb-4">
+            				<span class="badge badge-success invoice-color-success" style="font-size:20px;">INVOICED</span>
+							</div>';
+					default:
+						return '<div class="card mb-4">
+            				<span class="badge badge-danger invoice-color-danger" style="font-size:20px;">INVOICE CANCELED</span>
+							</div>';
+
+				}
+            	
+            }
+
+            $text = '';
 			if($shoppingcart->shoppingcart_payment->currency!="IDR")
 			{
 				$text .= '<b>Total :</b> '.$shoppingcart->shoppingcart_payment->currency.' '. $shoppingcart->shoppingcart_payment->amount .'<br />';
@@ -2404,102 +2423,35 @@ class BookingHelper {
 				$text = '<div class="card-body bg-light">'. $text .'</div>';
 			}
 
-			if($shoppingcart->shoppingcart_payment->payment_provider=="paypal")
-            {
-            	switch($shoppingcart->shoppingcart_payment->payment_status)
-				{
-					case 1:
-						return '
+			switch($shoppingcart->shoppingcart_payment->payment_status)
+			{
+				case 1:
+					return '
 								<div class="card mb-4">
-								<span class="badge badge-success invoice-color-success" style="font-size:20px;"><i class="fab fa-paypal"></i> PAYPAL AUTHORIZED </span>
+								<span class="badge badge-success invoice-color-success" style="font-size:20px;"> AUTHORIZED </span>
 								'. $text .'
 								</div>';
-					break;
-					case 2:
-						return '
+				break;
+				case 2:
+					return '
 								<div class="card mb-4">
-								<span class="badge badge-success invoice-color-success" style="font-size:20px;"><i class="fab fa-paypal"></i> PAID </span>
+								<span class="badge badge-success invoice-color-success" style="font-size:20px;"> PAID </span>
 								'. $text .'
 								</div>';
-					break;
-					case 3:
-						return '
+				break;
+				case 3:
+					return '
 								<div class="card mb-4">
-								<span class="badge badge-danger invoice-color-danger" style="font-size:20px;"><i class="fab fa-paypal"></i> UNPAID </span>
+								<span class="badge badge-danger invoice-color-danger" style="font-size:20px;"> UNPAID </span>
 								'. $text .'
 								</div>';
-					break;
-					case 5:
-						return '
-								<div class="card mb-4">
-								<span class="badge badge-danger invoice-color-danger" style="font-size:20px;"><i class="fab fa-paypal"></i> REFUNDED </span>
-								'. $text .'
-								</div>';
-					break;
-					default:
-						return '';
-				}
-            }
-            if($shoppingcart->shoppingcart_payment->payment_provider=="stripe")
-            {
-            	
 
-            	switch($shoppingcart->shoppingcart_payment->payment_status)
-				{
-					case 2:
-						return '
-								<div class="card mb-4">
-								<span class="badge badge-success invoice-color-success" style="font-size:20px;"><i class="fas fa-credit-card"></i> PAID </span>
-								'. $text .'
-								</div>';
-					break;
-					case 3:
-						return '
-								<div class="card mb-4">
-								<span class="badge badge-danger invoice-color-danger" style="font-size:20px;"><i class="fas fa-credit-card"></i> UNPAID </span>
-								'. $text .'
-								</div>';
-					break;
-					case 5:
-						return '
-								<div class="card mb-4">
-								<span class="badge badge-danger invoice-color-danger" style="font-size:20px;"><i class="fas fa-credit-card"></i> REFUNDED </span>
-								'. $text .'
-								</div>';
-					break;
-					default:
-						return '';
-				}
-            }
-
-            if($shoppingcart->shoppingcart_payment->payment_type=="bank_transfer")
-            {
-            	
-            	switch($shoppingcart->shoppingcart_payment->payment_status)
-				{
-					case 2:
-						return '<div class="card mb-4">
-								<span class="badge badge-success invoice-color-success" style="font-size:20px;">
-								<i class="fas fa-university"></i> PAID </span>
-								'. $text .'
-								</div>';
-						break;
-					case 3:
-						return '<div class="card mb-4">
-								<span class="badge badge-danger invoice-color-danger" style="font-size:20px;">
-								<i class="fas fa-university"></i> UNPAID </span>
-								'. $text .'
-								</div>';
-						break;
-					case 5:
-						return '<div class="card mb-4">
-								<span class="badge badge-danger invoice-color-danger" style="font-size:20px;">
-								<i class="fas fa-university"></i> REFUNDED </span>
-								'. $text .'
-								</div>';
-						break;	
-					case 4:
-						$amount_text = null;
+				break;
+				case 4:
+					// =================================================================================
+					if($shoppingcart->shoppingcart_payment->payment_type=="bank_transfer")
+            		{
+            			$amount_text = null;
 						if($shoppingcart->shoppingcart_payment->currency=="IDR")
 						{
 							$amount_text = GeneralHelper::formatRupiah($shoppingcart->shoppingcart_payment->amount);
@@ -2535,40 +2487,49 @@ class BookingHelper {
 								</div>
 								</div>
 								';
-						break;
-					default:
-						return '';
-				}
-            }
+            		}
+            		// =================================================================================
+            		if($shoppingcart->shoppingcart_payment->payment_type=="bank_redirect")
+            		{
+            			$button = '<a class="btn btn-theme w-100" href="'. $shoppingcart->shoppingcart_payment->redirect .'"><b class="invoice-hilang"> Click here to open '.strtoupper($shoppingcart->shoppingcart_payment->bank_name).' checkout</b></a>';
+						
+							return '
+								<div class="card mb-1">
+								<span class="badge badge-info invoice-color-info" style="font-size:18px; ">
+								Waiting for payment <br /><b id="payment_timer" class="text-white"  style="font-size:12px; font-weight: lighter;"><i class="fa fa-spinner fa-spin fa-fw"></i></b></span>
+								</div>
+								<div class="card mb-4">
+								<div class="card-body bg-light">
+									'.$button.'
+								</div>
+								</div>
+								';
 
-            if($shoppingcart->shoppingcart_payment->payment_type=="cash")
-            {
-            	
-            	switch($shoppingcart->shoppingcart_payment->payment_status)
-				{
-					case 2:
-						return '<div class="card mb-4">
-								<span class="badge badge-success invoice-color-success" style="font-size:20px;">
-								<i class="fas fa-cash-register"></i> PAID </span>
-								'. $text .'
-								</div>';
-						break;
-					case 3:
-						return '<div class="card mb-4">
-								<span class="badge badge-danger invoice-color-danger" style="font-size:20px;">
-								<i class="fas fa-cash-register"></i> UNPAID </span>
-								'. $text .'
-								</div>';
-						break;
-					case 5:
-						return '<div class="card mb-4">
-								<span class="badge badge-danger invoice-color-danger" style="font-size:20px;">
-								<i class="fas fa-cash-register"></i> REFUNDED </span>
-								'. $text .'
-								</div>';
-						break;	
-					case 4:
-						$amount_text = null;
+            		}
+            		// =================================================================================
+            		if($shoppingcart->shoppingcart_payment->payment_type=="ewallet")
+            		{
+            			$button = '<a class="btn btn-theme w-100" href="'. $shoppingcart->shoppingcart_payment->redirect .'"><b class="invoice-hilang"> Click to pay with '.strtoupper($shoppingcart->shoppingcart_payment->bank_name).' app</b></a>';
+
+						return '
+								<div class="card mb-1">
+								<span class="badge badge-info invoice-color-info" style="font-size:18px; ">
+								Waiting for payment <br /><b id="payment_timer" class="text-white"  style="font-size:12px; font-weight: lighter;"><i class="fa fa-spinner fa-spin fa-fw"></i></b></span>
+								</div>
+								<div class="card mb-4">
+								
+								<div class="card-body bg-light">
+									'.$button.'
+									<!-- Please wait while we are processing your payment. -->
+								
+								</div>
+								</div>
+								';
+            		}
+            		// =================================================================================
+            		if($shoppingcart->shoppingcart_payment->payment_type=="cash")
+            		{
+            			$amount_text = null;
 						if($shoppingcart->shoppingcart_payment->currency=="IDR")
 						{
 							$amount_text = GeneralHelper::formatRupiah($shoppingcart->shoppingcart_payment->amount);
@@ -2603,87 +2564,11 @@ class BookingHelper {
 								</div>
 								</div>
 								';
-						break;
-					default:
-						return '';
-				}
-            }
-
-            if($shoppingcart->shoppingcart_payment->payment_type=="bank_redirect")
-            {
-            	switch($shoppingcart->shoppingcart_payment->payment_status)
-				{
-					case 2:
-						return '<div class="card mb-4">
-								<span class="badge badge-success invoice-color-success" style="font-size:20px;">
-								 <i class="fas fa-university"></i> PAID </span>
-								 '. $text .'
-								</div>';
-						break;
-					case 3:
-						return '<div class="card mb-4">
-								<span class="badge badge-danger invoice-color-danger" style="font-size:20px;">
-								 <i class="fas fa-university"></i> UNPAID </span>
-								 '. $text .'
-								</div>';
-						break;
-					case 5:
-						return '<div class="card mb-4">
-								<span class="badge badge-danger invoice-color-danger" style="font-size:20px;">
-								 <i class="fas fa-university"></i> REFUNDED </span>
-								 '. $text .'
-								</div>';
-						break;	
-					case 4:
-						
-						$button = '<a class="btn btn-theme w-100" href="'. $shoppingcart->shoppingcart_payment->redirect .'"><b class="invoice-hilang"> Click here to open '.strtoupper($shoppingcart->shoppingcart_payment->bank_name).' checkout</b></a>';
-						
-							return '
-								<div class="card mb-1">
-								<span class="badge badge-info invoice-color-info" style="font-size:18px; ">
-								Waiting for payment <br /><b id="payment_timer" class="text-white"  style="font-size:12px; font-weight: lighter;"><i class="fa fa-spinner fa-spin fa-fw"></i></b></span>
-								</div>
-								<div class="card mb-4">
-								<div class="card-body bg-light">
-									'.$button.'
-								</div>
-								</div>
-								';
-						
-						break;
-					default:
-						return '';
-				}
-            }
-
-            if($shoppingcart->shoppingcart_payment->payment_type=="qrcode")
-            {
-
-            	switch($shoppingcart->shoppingcart_payment->payment_status)
-				{
-					case 2:
-						return '<div class="card mb-4">
-								<span class="badge badge-success invoice-color-success" style="font-size:20px;">
-								<i class="fas fa-qrcode"></i> PAID </span>
-								'. $text .'
-								</div>';
-						break;
-					case 3:
-						return '<div class="card mb-4">
-								<span class="badge badge-danger invoice-color-danger" style="font-size:20px;">
-								<i class="fas fa-qrcode"></i> UNPAID </span>
-								'. $text .'
-								</div>';
-						break;
-					case 5:
-						return '<div class="card mb-4">
-								<span class="badge badge-danger invoice-color-danger" style="font-size:20px;">
-								<i class="fas fa-qrcode"></i> REFUNDED </span>
-								'. $text .'
-								</div>';
-						break;
-					case 4:
-						if($shoppingcart->shoppingcart_payment->bank_name=="qris")
+            		}
+            		// =================================================================================
+            		if($shoppingcart->shoppingcart_payment->payment_type=="qrcode")
+            		{
+            			if($shoppingcart->shoppingcart_payment->bank_name=="qris")
 						{
 							//$data_qris = self::get_qris_content($shoppingcart);
 							return '
@@ -2772,81 +2657,21 @@ class BookingHelper {
 								</div>
 								';
 						}
-						
-						
-						break;
-					default:
-						return '';
-				}
-            }
-
-            if($shoppingcart->shoppingcart_payment->payment_type=="ewallet")
-            {
-
-            	switch($shoppingcart->shoppingcart_payment->payment_status)
-				{
-					case 2:
-						return '<div class="card mb-4">
-								<span class="badge badge-success invoice-color-success" style="font-size:20px;">
-								<i class="fas fa-wallet"></i> PAID </span>
-								'. $text .'
-								</div>';
-						break;
-					case 3:
-						return '<div class="card mb-4">
-								<span class="badge badge-danger invoice-color-danger" style="font-size:20px;">
-								<i class="fas fa-wallet"></i> UNPAID </span>
-								'. $text .'
-								</div>';
-						break;
-					case 5:
-						return '<div class="card mb-4">
-								<span class="badge badge-danger invoice-color-danger" style="font-size:20px;">
-								<i class="fas fa-wallet"></i> REFUNDED </span>
-								'. $text .'
-								</div>';
-						break;
-					case 4:
-						
-						$button = '<a class="btn btn-theme w-100" href="'. $shoppingcart->shoppingcart_payment->redirect .'"><b class="invoice-hilang"> Click to pay with '.strtoupper($shoppingcart->shoppingcart_payment->bank_name).' app</b></a>';
-
-						return '
-								<div class="card mb-1">
-								<span class="badge badge-info invoice-color-info" style="font-size:18px; ">
-								Waiting for payment <br /><b id="payment_timer" class="text-white"  style="font-size:12px; font-weight: lighter;"><i class="fa fa-spinner fa-spin fa-fw"></i></b></span>
-								</div>
+            		}
+				break;
+				case 5:
+					return '
 								<div class="card mb-4">
-								
-								<div class="card-body bg-light">
-									'.$button.'
-									<!-- Please wait while we are processing your payment. -->
-								
-								</div>
-								</div>
-								';
-						break;
-					default:
-						return '';
-				}
-            }
+								<span class="badge badge-warning invoice-color-warning" style="font-size:20px;"> REFUNDED </span>
+								'. $text .'
+								</div>';
+				break;
+				default:
+					return '';
+			}
 
-            if($shoppingcart->shoppingcart_payment->payment_provider=="none")
-            {
-            	switch($shoppingcart->shoppingcart_payment->payment_status)
-				{
-					
-					case 2:
-						return '<div class="card mb-4">
-            				<span class="badge badge-success invoice-color-success" style="font-size:20px;">INVOICED</span>
-							</div>';
-					default:
-						return '<div class="card mb-4">
-            				<span class="badge badge-danger invoice-color-danger" style="font-size:20px;">INVOICE CANCELED</span>
-							</div>';
 
-				}
-            	
-            }
+			
 		}
 		return '';
 	}

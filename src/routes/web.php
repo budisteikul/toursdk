@@ -56,10 +56,13 @@
 	//Create Payment
 	Route::get('/api/payment/stripe/jscript/{sessionId}', 'budisteikul\toursdk\Controllers\APIController@stripe_jscript');
 	Route::post('/api/payment/stripe', 'budisteikul\toursdk\Controllers\APIController@createpaymentstripe');
+	
 	Route::get('/api/payment/paypal/jscript/{sessionId}', 'budisteikul\toursdk\Controllers\APIController@paypal_jscript');
 	Route::post('/api/payment/paypal', 'budisteikul\toursdk\Controllers\APIController@createpaymentpaypal');
+	
 	Route::get('/api/payment/ovo/jscript/{sessionId}', 'budisteikul\toursdk\Controllers\APIController@ovo_jscript');
 	Route::post('/api/payment/ovo', 'budisteikul\toursdk\Controllers\APIController@createpaymentovo');
+	
 	Route::post('/api/payment', 'budisteikul\toursdk\Controllers\APIController@createpayment');
 	
 	//PDF

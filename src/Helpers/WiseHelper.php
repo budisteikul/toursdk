@@ -47,6 +47,11 @@ class WiseHelper {
         return json_decode($this->GET('/v2/accounts?profile='. $this->tw->profileId .'&currency=IDR'));
     }
 
+    public function getReceipt($transferId){
+        return $this->GET('/v1/transfers/'.$transferId.'/receipt.pdf');
+        
+    }
+
     public function getBalanceAccounts($currency=null){
         if($currency==null)
         {

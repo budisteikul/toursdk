@@ -2616,21 +2616,21 @@ class BookingHelper {
 					case 2:
 						return '<div class="card mb-4">
 								<span class="badge badge-success invoice-color-success" style="font-size:20px;">
-								 PAID </span>
+								 <i class="fas fa-university"></i> PAID </span>
 								 '. $text .'
 								</div>';
 						break;
 					case 3:
 						return '<div class="card mb-4">
 								<span class="badge badge-danger invoice-color-danger" style="font-size:20px;">
-								 UNPAID </span>
+								 <i class="fas fa-university"></i> UNPAID </span>
 								 '. $text .'
 								</div>';
 						break;
 					case 5:
 						return '<div class="card mb-4">
 								<span class="badge badge-danger invoice-color-danger" style="font-size:20px;">
-								 REFUNDED </span>
+								 <i class="fas fa-university"></i> REFUNDED </span>
 								 '. $text .'
 								</div>';
 						break;	

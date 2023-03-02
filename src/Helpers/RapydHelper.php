@@ -1,6 +1,5 @@
 <?php
 namespace budisteikul\toursdk\Helpers;
-use Ramsey\Uuid\Uuid;
 
 class RapydHelper {
 
@@ -203,7 +202,7 @@ class RapydHelper {
                 'requested_currency' => 'IDR',
                 'complete_checkout_url' => self::env_appUrl() . $data->transaction->finish_url,
                 'cancel_checkout_url' => self::env_appUrl() . $data->transaction->finish_url,
-                'merchant_reference_id' => Uuid::uuid4()->toString(),
+                'merchant_reference_id' => $data->transaction->id,
             ];
 
             $data1 = self::make_request('post','/v1/checkout',$body);

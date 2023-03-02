@@ -2404,11 +2404,12 @@ class BookingHelper {
 					
 					case 2:
 						return '<div class="card mb-4">
-            				<span class="badge badge-success invoice-color-success" style="font-size:20px;">INVOICED</span>
+            				<span class="badge badge-success invoice-color-success" style="font-size:20px;"><i class="fa fa-check-circle" aria-hidden="true"></i> INVOICED</span>
 							</div>';
 					default:
 						return '<div class="card mb-4">
-            				<span class="badge badge-danger invoice-color-danger" style="font-size:20px;">INVOICE CANCELED</span>
+            				<span class="badge badge-danger invoice-color-danger" style="font-size:20px;"><i class="fa fa-times-circle" aria-hidden="true"></i>
+ INVOICE CANCELED</span>
 							</div>';
 
 				}
@@ -2428,24 +2429,33 @@ class BookingHelper {
 				case 1:
 					return '
 								<div class="card mb-4">
-								<span class="badge badge-success invoice-color-success" style="font-size:20px;"> AUTHORIZED </span>
+								<span class="badge badge-success invoice-color-success" style="font-size:20px;"><i class="fa fa-info-circle" aria-hidden="true"></i> AUTHORIZED </span>
 								'. $text .'
 								</div>';
 				break;
 				case 2:
 					return '
 								<div class="card mb-4">
-								<span class="badge badge-success invoice-color-success" style="font-size:20px;"> PAID </span>
+								<span class="badge badge-success invoice-color-success" style="font-size:20px;"><i class="fa fa-check-circle" aria-hidden="true"></i> PAID </span>
 								'. $text .'
 								</div>';
 				break;
 				case 3:
 					return '
 								<div class="card mb-4">
-								<span class="badge badge-danger invoice-color-danger" style="font-size:20px;"> UNPAID </span>
+								<span class="badge badge-danger invoice-color-danger" style="font-size:20px;"><i class="fa fa-times-circle" aria-hidden="true"></i>
+ UNPAID </span>
 								'. $text .'
 								</div>';
 
+				break;
+				case 5:
+					return '
+								<div class="card mb-4">
+								<span class="badge badge-warning invoice-color-warning" style="font-size:20px;"><i class="fa fa-info-circle" aria-hidden="true"></i>
+ REFUNDED </span>
+								'. $text .'
+								</div>';
 				break;
 				case 4:
 					// =================================================================================
@@ -2658,13 +2668,6 @@ class BookingHelper {
 								';
 						}
             		}
-				break;
-				case 5:
-					return '
-								<div class="card mb-4">
-								<span class="badge badge-warning invoice-color-warning" style="font-size:20px;"> REFUNDED </span>
-								'. $text .'
-								</div>';
 				break;
 				default:
 					return '';

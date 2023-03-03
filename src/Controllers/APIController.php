@@ -1553,9 +1553,6 @@ class APIController extends Controller
 
             $shoppingcart = Cache::get('_'. $sessionId);
             
-
-            
-
             // Xendit ========================================================================
             /*
             if(substr($phoneNumber,0,1)=="0")

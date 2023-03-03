@@ -414,8 +414,6 @@ class ContentHelper {
         ];
         */
         
-
-        
         $bank_list[] = [
                 'value' => 'qris', 'label' => 'QRIS', 'image' => self::env_appAssetUrl() .'/img/payment/qris.png', 'currency' => 'idr',
             ];
@@ -429,7 +427,7 @@ class ContentHelper {
                 'value' => 'creditcard', 'label' => 'Credit Card', 'image' => self::env_appAssetUrl() .'/img/payment/creditcard.png', 'currency' => 'idr',
             ];
         */
-            
+
         $grouped_payment[] = [
             'label' => 'FUND TRANSFERS',
             'options' => $bank_list
@@ -440,19 +438,19 @@ class ContentHelper {
             ];
 
         $ewallet_list[] = [
-                'value' => 'shopeepay', 'label' => 'ShopeePay', 'image' => self::env_appAssetUrl() .'/img/payment/shopeepay.png', 'currency' => 'idr',
-            ];
-
-        $ewallet_list[] = [
-                'value' => 'dana', 'label' => 'Dana', 'image' => self::env_appAssetUrl() .'/img/payment/dana.png', 'currency' => 'idr',
-            ];
-
-        $ewallet_list[] = [
                 'value' => 'ovo', 'label' => 'OVO', 'image' => self::env_appAssetUrl() .'/img/payment/ovo.png', 'currency' => 'idr',
             ];
 
         $ewallet_list[] = [
                 'value' => 'linkaja', 'label' => 'LinkAja', 'image' => self::env_appAssetUrl() .'/img/payment/linkaja.png', 'currency' => 'idr',
+            ];
+           
+        $ewallet_list[] = [
+                'value' => 'dana', 'label' => 'Dana', 'image' => self::env_appAssetUrl() .'/img/payment/dana.png', 'currency' => 'idr',
+            ];
+
+        $ewallet_list[] = [
+                'value' => 'shopeepay', 'label' => 'ShopeePay', 'image' => self::env_appAssetUrl() .'/img/payment/shopeepay.png', 'currency' => 'idr',
             ];
 
         $grouped_payment[] = [

@@ -1551,31 +1551,63 @@ class APIController extends Controller
             $phoneNumber = $request->input('phoneNumber');
             $sessionId = $request->input('sessionId');
 
+            $shoppingcart = Cache::get('_'. $sessionId);
+            
+
+            
+
+            // Xendit ========================================================================
+            /*
             if(substr($phoneNumber,0,1)=="0")
             {
                 $phoneNumber = substr($phoneNumber,1);
             }
             $phoneNumber = "+62". $phoneNumber;
 
-            $shoppingcart = Cache::get('_'. $sessionId);
-
             $xendit = new XenditHelper();
             $response = $xendit->createEWalletOvoCharge($shoppingcart->due_now,$phoneNumber);
-            //$response = $xendit->createEWalletOvoCharge(20107,$phoneNumber);
-            
             if(isset($response->error_code))
             {
                 return response()->json([
                     "message" => "error"
                 ]);
             }
-
             FirebaseHelper::upload_payment('PENDING',$response->reference_id,$sessionId,'ovo');
-
             return response()->json([
                     "message" => "success",
                     "reference_id" => $response->reference_id
                 ]);
+            */
+            // ==============================================================================
+            
+            if(substr($phoneNumber,0,1)=="0")
+            {
+                $phoneNumber = substr($phoneNumber,1);
+            }
+            $phoneNumber = "0". $phoneNumber;
+
+            $duitku = new DuitkuHelper();
+            $response = $duitku->createOvoTransaction($shoppingcart->due_now,$phoneNumber);
+            if($response->resultCode!="00")
+            {
+                return response()->json([
+                    "message" => "error"
+                ]);
+            }
+
+            $reference_id = $response->merchantOrderId;
+            BookingHelper::set_bookingStatus($sessionId,'CONFIRMED');
+            BookingHelper::set_confirmationCode($sessionId);
+            BookingHelper::create_payment($sessionId,"duitku","ovo");
+            $shoppingcart = BookingHelper::confirm_booking($sessionId);
+            FirebaseHelper::upload_payment('CONFIRMED',$reference_id,$sessionId,'ovo',"/booking/receipt/".$shoppingcart->session_id."/".$shoppingcart->confirmation_code);
+            BookingHelper::shoppingcart_notif($shoppingcart);
+            return response()->json([
+                    "message" => "success",
+                    "reference_id" => $reference_id
+                ]);
+
+            // ==============================================================================
     }
 
     public function ovo_jscript($sessionId)
@@ -1633,7 +1665,7 @@ class APIController extends Controller
                                         {
                                             window.stopListenerEwallet(data.reference_id);
                                             failedpaymentEwallet("ovo");
-                                        }, 60000);
+                                        }, 65000);
                                     }
                                     else
                                     {

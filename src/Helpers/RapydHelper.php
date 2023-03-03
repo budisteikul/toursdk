@@ -1,6 +1,7 @@
 <?php
 namespace budisteikul\toursdk\Helpers;
 
+
 class RapydHelper {
 
     public static function env_appUrl()
@@ -195,11 +196,25 @@ class RapydHelper {
         }
         else if($data->transaction->bank=="creditcard")
         {
+            if(self::env_rapydEnv()=="production")
+            {
+                $currency = 'IDR';
+                $country = 'ID';
+                $amount = $data->transaction->amount;
+            }
+            else
+            {
+                $currency = 'SGD';
+                $country = 'SG';
+                $amount = 10;
+            }
+            
+
             $body = [
-                'amount' => $data->transaction->amount,
-                'country' => 'ID',
-                'currency' => 'IDR',
-                'requested_currency' => 'IDR',
+                'amount' => $amount,
+                'country' => $country,
+                'currency' => $currency,
+                'requested_currency' => $currency,
                 'complete_checkout_url' => self::env_appUrl() . $data->transaction->finish_url,
                 'cancel_checkout_url' => self::env_appUrl() . $data->transaction->finish_url,
                 'merchant_reference_id' => $data->transaction->id,

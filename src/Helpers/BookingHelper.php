@@ -1986,14 +1986,20 @@ class BookingHelper {
 
 				if($data->transaction->bank == 'ovo')
 				{
-					$contact->phone = $param1;
 					$payment_provider = 'duitku';
 					$payment_type = 'ewallet';
 					$bank_name = 'ovo';
-					$redirect = $data->transaction->finish_url;
-				}
+					$payment_status = 2;
 
-				$response = DuitkuHelper::createPayment($data);
+					$response = new \stdClass();
+					$response->status = new \stdClass();
+					$response->status->id = 1;
+				}
+				else
+				{
+					$response = DuitkuHelper::createPayment($data);
+				}
+				
 			break;
 			case "finmo":
 				$payment_provider = 'finmo';
@@ -2249,8 +2255,12 @@ class BookingHelper {
 			unset($response->data);
 			return $response;
 		}
-
+		
 		if(isset($response->data->payment_type)) $payment_type = $response->data->payment_type;
+		if(isset($response->data->currency)) $currency = $response->data->currency;
+		if(isset($response->data->rate)) $rate = $response->data->rate;
+		if(isset($response->data->rate_from)) $rate_from = $response->data->rate_from;
+		if(isset($response->data->rate_to)) $rate_to = $response->data->rate_to;
 		if(isset($response->data->bank_name)) $bank_name = $response->data->bank_name;
 		if(isset($response->data->bank_code)) $bank_code = $response->data->bank_code;
 		if(isset($response->data->va_number)) $va_number = $response->data->va_number;

@@ -424,6 +424,12 @@ class ContentHelper {
                 'value' => 'permata', 'label' => 'Bank Transfer', 'image' => self::env_appAssetUrl() .'/img/payment/bank_transfer.png', 'currency' => 'idr',
             ];
 
+        /*
+        $bank_list[] = [
+                'value' => 'creditcard', 'label' => 'Credit Card', 'image' => self::env_appAssetUrl() .'/img/payment/creditcard.png', 'currency' => 'idr',
+            ];
+        */
+            
         $grouped_payment[] = [
             'label' => 'FUND TRANSFERS',
             'options' => $bank_list

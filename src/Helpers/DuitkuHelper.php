@@ -2,6 +2,7 @@
 namespace budisteikul\toursdk\Helpers;
 use budisteikul\toursdk\Helpers\GeneralHelper;
 use Carbon\Carbon;
+use Ramsey\Uuid\Uuid;
 
 class DuitkuHelper {
 
@@ -242,6 +243,43 @@ class DuitkuHelper {
 
         $url = self::duitkuSnapApiEndpoint();
         $targetPath = '/api/merchant/createInvoice';
+        $endpoint = $url . $targetPath;
+
+        $client = new \GuzzleHttp\Client(['headers' => $headers,'http_errors' => false]);
+        $response = $client->request('POST',$endpoint,
+          ['json' => $data]
+        );
+
+        $data = $response->getBody()->getContents();
+        $data = json_decode($data);
+        return $data;
+    }
+
+    public function createOvoTransaction($paymentAmount,$phoneNumber)
+    {
+        $merchantCode = self::env_duitkuMerchantCode();
+        $merchantOrderId = Uuid::uuid4()->toString();
+        $paymentAmount = (int)$paymentAmount;
+        $apiKey = self::env_duitkuApiKey();
+        $signature = md5($merchantCode . $merchantOrderId . $paymentAmount . $apiKey);
+
+        $data = [
+            'merchantCode' => $merchantCode,
+            'paymentAmount' => $paymentAmount,
+            'merchantOrderId' =>  $merchantOrderId,
+            'productDetails' => env('APP_NAME'),
+            'email' => env('MAIL_FROM_ADDRESS'),
+            'phoneNumber' => $phoneNumber,
+            'signature' => $signature
+        ];
+
+        $headers = [
+              'Content-Type' => 'application/json',
+              'Content-Length' => strlen(json_encode($data)),
+          ];
+
+        $url = self::duitkuApiEndpoint();
+        $targetPath = '/webapi/api/merchant/ovo/createtransaction';
         $endpoint = $url . $targetPath;
 
         $client = new \GuzzleHttp\Client(['headers' => $headers,'http_errors' => false]);

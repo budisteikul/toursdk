@@ -2511,7 +2511,7 @@ class BookingHelper {
             		// =================================================================================
             		if($shoppingcart->shoppingcart_payment->payment_type=="bank_redirect")
             		{
-            			$button = '<a class="btn btn-theme w-100" href="'. $shoppingcart->shoppingcart_payment->redirect .'"><b class="invoice-hilang"> Click here to open '.strtoupper($shoppingcart->shoppingcart_payment->bank_name).' checkout</b></a>';
+            			$button = '<a class="btn btn-theme w-100" href="'. $shoppingcart->shoppingcart_payment->redirect .'"><b class="invoice-hilang"> Open '.strtoupper($shoppingcart->shoppingcart_payment->bank_name).' Checkout</b></a>';
 						
 							return '
 								<div class="card mb-1">
@@ -2529,7 +2529,7 @@ class BookingHelper {
             		// =================================================================================
             		if($shoppingcart->shoppingcart_payment->payment_type=="ewallet")
             		{
-            			$button = '<a class="btn btn-theme w-100" href="'. $shoppingcart->shoppingcart_payment->redirect .'"><b class="invoice-hilang"> Click to pay with '.strtoupper($shoppingcart->shoppingcart_payment->bank_name).' app</b></a>';
+            			$button = '<a class="btn btn-theme w-100" href="'. $shoppingcart->shoppingcart_payment->redirect .'"><b class="invoice-hilang"> Open '.strtoupper($shoppingcart->shoppingcart_payment->bank_name).' App</b></a>';
 
 						return '
 								<div class="card mb-1">

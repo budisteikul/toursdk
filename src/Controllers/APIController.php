@@ -2016,7 +2016,7 @@ class APIController extends Controller
         function showButton(deeplink,name)
         {
             $("#submitCheckout").slideUp("slow");
-            $("#paymentContainer").html(\'<a class="btn btn-lg btn-block btn-theme" style="height:47px" href="\'+ deeplink +\'"><strong>Click to pay with \'+ name +\'</strong></a>\');
+            $("#paymentContainer").html(\'<a class="btn btn-lg btn-block btn-theme" href="\'+ deeplink +\'"><strong>Click to pay with \'+ name +\'</strong></a>\');
         }
 
         ';

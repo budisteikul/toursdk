@@ -40,10 +40,14 @@ class WiseHelper {
     }    
 
 
-    public function getRate($sourceCurrency,$targetCurrency)
+    public static function getRate($sourceCurrency)
     {
-        $fx = json_decode($this->GET('/v1/rates?source='.$sourceCurrency.'&target='.$targetCurrency));
-        return $fx->$rate;
+        $value = Cache::remember('_wiseCurrency_'. $sourceCurrency,7200, function() use ($sourceCurrency)
+        {
+            $fx = json_decode($this->GET('/v1/rates?source='.$sourceCurrency.'&target=USD'));
+            return number_format($fx[0]->rate,6,'.',',');
+        });
+        return $value;
     }
 
     public function getAllCard(){

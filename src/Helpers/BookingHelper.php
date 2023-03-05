@@ -16,7 +16,7 @@ use budisteikul\toursdk\Helpers\DuitkuHelper;
 use budisteikul\toursdk\Helpers\FirebaseHelper;
 use budisteikul\toursdk\Helpers\GeneralHelper;
 use budisteikul\toursdk\Helpers\VoucherHelper;
-
+use budisteikul\toursdk\Helpers\WiseHelper;
 use budisteikul\toursdk\Helpers\TaskHelper;
 
 use budisteikul\toursdk\Models\Product;
@@ -2379,6 +2379,10 @@ class BookingHelper {
 	{
 		$rate_usd = BokunHelper::get_currency($from);
 		$rate_usd_reserve = BokunHelper::get_currency($to);
+		
+		//$rate_usd = WiseHelper::getRate($from);
+		//$rate_usd_reserve = WiseHelper::getRate($to);
+		
 		$rate = $rate_usd / $rate_usd_reserve;
 
 		if($markup!="")
@@ -2390,13 +2394,6 @@ class BookingHelper {
 		$value = ($amount * $rate);
 
 		$value = number_format((float)$value, 2, '.', '');
-
-		/*
-		if($to=="THB")
-		{
-			$value = round($value,0);
-		}
-		*/
 
 		return $value;
 	}

@@ -39,6 +39,13 @@ class WiseHelper {
         return $value;
     }    
 
+
+    public function getRate($sourceCurrency,$targetCurrency)
+    {
+        $fx = json_decode($this->GET('/v1/rates?source='.$sourceCurrency.'&target='.$targetCurrency));
+        return $fx->$rate;
+    }
+
     public function getAllCard(){
         return json_decode($this->GET('/v3/spend/profiles/'. $this->tw->profileId .'/cards'));
     }

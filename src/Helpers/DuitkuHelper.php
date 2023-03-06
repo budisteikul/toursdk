@@ -80,6 +80,11 @@ class DuitkuHelper {
         $data = new \stdClass();
         switch($bank)
         {
+            case "dana":
+                $data->bank_name = "dana";
+                $data->bank_code = "";
+                $data->bank_payment_type = "DA";
+            break;
             case "linkaja":
                 $data->bank_name = "linkaja";
                 $data->bank_code = "";
@@ -133,6 +138,16 @@ class DuitkuHelper {
             $data_json->payment_type = 'qrcode';
             $data_json->redirect = $data->transaction->finish_url;
             
+        }
+        else if($payment->bank_payment_type=="DA")
+        {   
+            $data1 = self::createSnap($data);
+            $data2 = self::getStatus($data1->paymentUrl);
+            $ticket = GeneralHelper::get_string_between($data2,'"ticket":"','"');
+            $data3 = self::createCharge($data1->reference,$payment,$ticket);
+
+            $data_json->payment_type = 'ewallet';
+            $data_json->redirect = $data3->paymentUrl;
         }
 		
         $data_json->authorization_id = $data1->reference;

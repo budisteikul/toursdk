@@ -376,7 +376,7 @@ class APIController extends Controller
                     //VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
                     BookingHelper::set_bookingStatus($sessionId,'PENDING');
                     BookingHelper::set_confirmationCode($sessionId);
-                    $response = BookingHelper::create_payment($sessionId,"xendit","dana");
+                    $response = BookingHelper::create_payment($sessionId,"duitku","dana");
                 break;
 
                 case 'permata':

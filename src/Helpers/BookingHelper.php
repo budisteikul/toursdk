@@ -16,7 +16,6 @@ use budisteikul\toursdk\Helpers\DuitkuHelper;
 use budisteikul\toursdk\Helpers\FirebaseHelper;
 use budisteikul\toursdk\Helpers\GeneralHelper;
 use budisteikul\toursdk\Helpers\VoucherHelper;
-use budisteikul\toursdk\Helpers\WiseHelper;
 use budisteikul\toursdk\Helpers\TaskHelper;
 
 use budisteikul\toursdk\Models\Product;
@@ -2380,9 +2379,10 @@ class BookingHelper {
 		$rate_usd = BokunHelper::get_currency($from);
 		$rate_usd_reserve = BokunHelper::get_currency($to);
 		
-		//$rate_usd = WiseHelper::getRate($from);
-		//$rate_usd_reserve = WiseHelper::getRate($to);
-		
+		//$tw = New WiseHelper();
+		//$rate_usd = $tw->getRate($from);
+		//$rate_usd_reserve = $tw->getRate($to);
+
 		$rate = $rate_usd / $rate_usd_reserve;
 
 		if($markup!="")

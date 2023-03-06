@@ -40,7 +40,7 @@ class WiseHelper {
     }    
 
 
-    public static function getRate($sourceCurrency)
+    public function getRate($sourceCurrency)
     {
         $value = Cache::remember('_wiseCurrency_'. $sourceCurrency,7200, function() use ($sourceCurrency)
         {

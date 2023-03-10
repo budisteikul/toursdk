@@ -293,10 +293,11 @@ class ContentHelper {
         $idr_total = BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'IDR');
         //$idr_total = $idr_total - ($idr_total * 10 / 100);
 
-        /*
+        
         $sgd_total = BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'SGD');
         //$sgd_total = $sgd_total - ($sgd_total * 10 / 100);
 
+        /*
         $aud_total = BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'AUD');
         //$aud_total = $aud_total - ($aud_total * 10 / 100);
 
@@ -312,9 +313,6 @@ class ContentHelper {
         
         //================================================
         
-        
-
-        /*
         $indonesia_list[] = [
                 'value' => 'qris', 'label' => 'QRIS', 'image' => self::env_appAssetUrl() .'/img/payment/qris.png', 'currency' => 'idr',
             ];
@@ -332,31 +330,18 @@ class ContentHelper {
                 'value' => 'ovo', 'label' => 'OVO', 'image' => self::env_appAssetUrl() .'/img/payment/ovo.png', 'currency' => 'idr',
             ];
 
-        
-        $indonesia_list[] = [
-                'value' => 'shopeepay', 'label' => 'ShopeePay', 'image' => self::env_appAssetUrl() .'/img/payment/shopeepay.png', 'currency' => 'idr',
-            ];
-
-        $indonesia_list[] = [
-                'value' => 'dana', 'label' => 'Dana', 'image' => self::env_appAssetUrl() .'/img/payment/dana.png', 'currency' => 'idr',
-            ];
-
-        $indonesia_list[] = [
-                'value' => 'ovo', 'label' => 'OVO', 'image' => self::env_appAssetUrl() .'/img/payment/ovo.png', 'currency' => 'idr',
-            ];
-        
         $grouped_payment[] = [
             'label' => 'INDONESIA',
             'options' => $indonesia_list
         ];
-
         
+        /*
         $singapore_list[] = [
             'value' => 'paynow', 'label' => 'PayNow QR', 'image' => self::env_appAssetUrl() .'/img/payment/paynow.png', 'currency' => 'sgd',
         ];
 
         $singapore_list[] = [
-            'value' => 'fast', 'label' => 'Bank Transfer', 'image' => self::env_appAssetUrl() .'/img/payment/fast.png', 'currency' => 'sgd',
+            'value' => 'fast', 'label' => 'Bank Transfer', 'image' => self::env_appAssetUrl() .'/img/payment/dbs.png', 'currency' => 'sgd',
         ];
 
         $grouped_payment[] = [
@@ -414,51 +399,7 @@ class ContentHelper {
         ];
         */
         
-        $bank_list[] = [
-                'value' => 'qris', 'label' => 'QRIS', 'image' => self::env_appAssetUrl() .'/img/payment/qris.png', 'currency' => 'idr',
-            ];
-
-        $bank_list[] = [
-                'value' => 'permata', 'label' => 'Bank Transfer', 'image' => self::env_appAssetUrl() .'/img/payment/bank_transfer.png', 'currency' => 'idr',
-            ];
-
-        /*
-        $bank_list[] = [
-                'value' => 'creditcard', 'label' => 'Credit Card', 'image' => self::env_appAssetUrl() .'/img/payment/creditcard.png', 'currency' => 'idr',
-            ];
-        */
-
-        $grouped_payment[] = [
-            'label' => 'FUND TRANSFERS',
-            'options' => $bank_list
-        ];
-
-        $ewallet_list[] = [
-                'value' => 'gopay', 'label' => 'GoPay', 'image' => self::env_appAssetUrl() .'/img/payment/gopay.png', 'currency' => 'idr',
-            ];
-
-        $ewallet_list[] = [
-                'value' => 'ovo', 'label' => 'OVO', 'image' => self::env_appAssetUrl() .'/img/payment/ovo.png', 'currency' => 'idr',
-            ];
-
-        /*
-        $ewallet_list[] = [
-                'value' => 'linkaja', 'label' => 'LinkAja', 'image' => self::env_appAssetUrl() .'/img/payment/linkaja.png', 'currency' => 'idr',
-            ];
-           
-        $ewallet_list[] = [
-                'value' => 'dana', 'label' => 'Dana', 'image' => self::env_appAssetUrl() .'/img/payment/dana.png', 'currency' => 'idr',
-            ];
-
-        $ewallet_list[] = [
-                'value' => 'shopeepay', 'label' => 'ShopeePay', 'image' => self::env_appAssetUrl() .'/img/payment/shopeepay.png', 'currency' => 'idr',
-            ];
-        */
-
-        $grouped_payment[] = [
-            'label' => 'E-WALLETS',
-            'options' => $ewallet_list
-        ];
+        
         
 
         
@@ -554,13 +495,15 @@ class ContentHelper {
                 'idr_currency' => 'IDR',
                 'idr_total' => GeneralHelper::numberFormat($idr_total,'IDR'),
                 'idr_rate' => BookingHelper::text_rate($shoppingcart,'IDR'),
+                'idr_text' => 'IDR '. GeneralHelper::numberFormat($idr_total,'IDR'),
 
-                /*
+                
                 'sgd_currency' => 'SGD',
                 'sgd_total' => GeneralHelper::numberFormat($sgd_total,'SGD'),
                 'sgd_rate' => BookingHelper::text_rate($shoppingcart,'SGD'),
+                'sgd_text' => 'SGD '. GeneralHelper::numberFormat($sgd_total,'SGD'),
 
-                
+                /*
                 'aud_currency' => 'AUD',
                 'aud_total' => GeneralHelper::numberFormat($aud_total,'AUD'),
                 'aud_rate' => BookingHelper::text_rate($shoppingcart,'AUD'),

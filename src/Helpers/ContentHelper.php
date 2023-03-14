@@ -320,7 +320,7 @@ class ContentHelper {
             ];
 
         $indonesia_list[] = [
-                'value' => 'mandiri', 'label' => 'Bank Transfer', 'image' => self::env_appAssetUrl() .'/img/payment/mandiri.png', 'currency' => 'idr',
+                'value' => 'permata', 'label' => 'Bank Transfer', 'image' => self::env_appAssetUrl() .'/img/payment/bank_transfer.png', 'currency' => 'idr',
             ];
 
 
@@ -329,6 +329,7 @@ class ContentHelper {
             'options' => $indonesia_list
         ];
 
+        /*
         $singapore_list[] = [
             'value' => 'paynow', 'label' => 'PayNow QR', 'image' => self::env_appAssetUrl() .'/img/payment/paynow.png', 'currency' => 'sgd',
         ];
@@ -337,20 +338,21 @@ class ContentHelper {
             'value' => 'fast', 'label' => 'Bank Transfer', 'image' => self::env_appAssetUrl() .'/img/payment/dbs.png', 'currency' => 'sgd',
         ];
 
+        
         $grouped_payment[] = [
             'label' => 'SINGAPORE',
             'options' => $singapore_list
         ];
-
+        */
         
         $australia_list[] = [
             'value' => 'npp', 'label' => 'NPP PayID', 'image' => self::env_appAssetUrl() .'/img/payment/payid.png', 'currency' => 'aud',
         ];
-
+        /*
         $australia_list[] = [
             'value' => 'poli', 'label' => 'POLi', 'image' => self::env_appAssetUrl() .'/img/payment/poli.png', 'currency' => 'aud',
         ];
-
+        */
         $grouped_payment[] = [
             'label' => 'AUSTRALIA',
             'options' => $australia_list
@@ -471,7 +473,7 @@ class ContentHelper {
 
                 // Local Payment Currency
                 
-                'localpayment_label' => '<strong class="mb-1">Domestic Payments</strong><br /><small>Indonesia, Singapore, and Australia</small>',
+                'localpayment_label' => '<strong class="mb-1">Domestic Payments</strong><br /><small>Indonesia, Singapore, and Australia</small><br /><span class="badge badge-danger" style="font-size:12px;">Automatic Discount 10%</span>',
                 
                 /*
                 'localpayment_label' => '<strong class="mb-1">QR Payment</strong>

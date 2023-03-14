@@ -387,7 +387,7 @@ class APIController extends Controller
                 break;
 
                 case 'permata':
-                    //VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
+                    VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
                     BookingHelper::set_bookingStatus($sessionId,'PENDING');
                     BookingHelper::set_confirmationCode($sessionId);
                     $response = BookingHelper::create_payment($sessionId,"midtrans","permata");

@@ -2012,6 +2012,24 @@ class BookingHelper {
 					$rate_to = 'THB';
 				}
 
+				if($data->transaction->bank=="npp")
+				{
+					$amount = self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'AUD');
+					$currency = 'AUD';
+					$rate = number_format((float)$shoppingcart->due_now / $amount, 2, '.', '');
+					$rate_from = $shoppingcart->currency;
+					$rate_to = 'AUD';
+				}
+
+				if($data->transaction->bank=="acct")
+				{
+					$amount = self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'AUD');
+					$currency = 'AUD';
+					$rate = number_format((float)$shoppingcart->due_now / $amount, 2, '.', '');
+					$rate_from = $shoppingcart->currency;
+					$rate_to = 'AUD';
+				}
+
 				$data->transaction->amount = $amount;
 				$data->transaction->currency = $currency;
 
@@ -2466,6 +2484,29 @@ class BookingHelper {
 				break;
 				case 4:
 					// =================================================================================
+					if($shoppingcart->shoppingcart_payment->payment_type=="other")
+            		{
+            			$amount_text = $shoppingcart->shoppingcart_payment->currency .' '. $shoppingcart->shoppingcart_payment->amount;
+            			return '
+								<div class="card mb-1">
+								<span class="badge badge-info invoice-color-info" style="font-size:18px; ">
+								Waiting for payment <br /><b id="payment_timer" class="text-white"  style="font-size:12px; font-weight: lighter;"><i class="fa fa-spinner fa-spin fa-fw"></i></b></span>
+								</div>
+								<div class="card mb-4">
+								<div class="card-body bg-light">
+
+								
+								<div>'. $shoppingcart->shoppingcart_payment->payment_description .'</div>
+								
+								
+								<div>Total Bill : </div>
+								<div class="mb-2"><b>'. $amount_text .'</b></div>
+
+								
+								</div>
+								</div>
+								';
+            		}
 					if($shoppingcart->shoppingcart_payment->payment_type=="bank_transfer")
             		{
             			$amount_text = null;

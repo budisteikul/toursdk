@@ -316,6 +316,13 @@ class APIController extends Controller
                 break;
                 */
 
+                case 'npp':
+                    VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
+                    BookingHelper::set_bookingStatus($sessionId,'PENDING');
+                    BookingHelper::set_confirmationCode($sessionId);
+                    $response = BookingHelper::create_payment($sessionId,"finmo","npp");
+                break;
+
                 case 'gopay':
                     //VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
                     BookingHelper::set_bookingStatus($sessionId,'PENDING');
@@ -338,7 +345,7 @@ class APIController extends Controller
                 break;
 
                 case 'qris':
-                    //VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
+                    VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
                     BookingHelper::set_bookingStatus($sessionId,'PENDING');
                     BookingHelper::set_confirmationCode($sessionId);
                     $response = BookingHelper::create_payment($sessionId,"midtrans","gopay_qris");
@@ -394,7 +401,7 @@ class APIController extends Controller
                 break;
 
                 case 'mandiri':
-                    //VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
+                    VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
                     BookingHelper::set_bookingStatus($sessionId,'PENDING');
                     BookingHelper::set_confirmationCode($sessionId);
                     $response = BookingHelper::create_payment($sessionId,"rapyd","mandiri");
@@ -457,7 +464,7 @@ class APIController extends Controller
                 break;
 
                 case 'paynow':
-                    //VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
+                    VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
                     BookingHelper::set_bookingStatus($sessionId,'PENDING');
                     BookingHelper::set_confirmationCode($sessionId);
                     $response = BookingHelper::create_payment($sessionId,"rapyd","paynow");
@@ -471,7 +478,7 @@ class APIController extends Controller
                 break;
 
                 case 'fast':
-                    //VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
+                    VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
                     BookingHelper::set_bookingStatus($sessionId,'PENDING');
                     BookingHelper::set_confirmationCode($sessionId);
                     $response = BookingHelper::create_payment($sessionId,"rapyd","fast");
@@ -1388,6 +1395,8 @@ class APIController extends Controller
             return response('SUCCESS', 200)->header('Content-Type', 'text/plain');
     }
 
+
+
     public function confirmpaymentduitku(Request $request)
     {
         if(!DuitkuHelper::checkSignature($request))
@@ -1440,6 +1449,29 @@ class APIController extends Controller
             BookingHelper::set_confirmationCode($sessionId);
             $response = BookingHelper::create_payment($sessionId,"stripe");
             return response()->json($response->data);
+    }
+
+    public function confirmpaymentfinmo(Request $request)
+    {
+        $data = $request->all();
+        if(isset($data['event_detail']['payin_id']))
+        {
+            $order_id = $data['event_detail']['payin_id'];
+            $shoppingcart_payment = ShoppingcartPayment::where('authorization_id',$order_id)->first();
+            if($shoppingcart_payment){
+                if(isset($data['event_detail']['status']))
+                {
+                    if($data['event_detail']['status']=="COMPLETED")
+                    {
+                        BookingHelper::confirm_payment($shoppingcart_payment->shoppingcart,"CONFIRMED");
+                        BookingHelper::shoppingcart_notif($shoppingcart_payment->shoppingcart);
+                        return response('SUCCESS', 200)->header('Content-Type', 'text/plain');
+                    }
+                }
+                
+            }
+        }
+        return response('ERROR', 200)->header('Content-Type', 'text/plain');
     }
 
     public function confirmpaymentxendit(Request $request)

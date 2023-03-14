@@ -45,6 +45,14 @@ class FinmoHelper {
                 $data->bank_provider = "finmo";
                 $data->bank_payment_method = "sg_bank_promptpaycash_thb";
             break;
+            case "npp":
+                $data->bank_name = "npp";
+                $data->bank_code = "";
+                $data->bank_country = "AU";
+                $data->bank_payment_type = "other";
+                $data->bank_provider = "finmo";
+                $data->bank_payment_method = "au_bank_npp";
+            break;
             default:
                 return response()->json([
                     "message" => 'Error'
@@ -67,8 +75,7 @@ class FinmoHelper {
 
         $payin = (new self)->createPayin($data,$payment);
 
-        print_r($payin);
-        exit();
+        
 
         if($payment->bank_payment_type=="qrcode")
         {
@@ -77,6 +84,20 @@ class FinmoHelper {
             $data_json->redirect = $data->transaction->finish_url;
         }
 
+        if($payment->bank_payment_type=="other")
+        {
+            $data_json->payment_type = 'other';
+            $data_json->payment_description = '
+            <input type="hidden" id="payId" value="'. $payin->data->pay_code->text .'">
+            <div>Your PayID for this transaction</div>
+            <div class="mb-2"><b>'. $payin->data->pay_code->text .'</b> <button onclick="copyToClipboard(\'#payId\')" id="payId_button" data-toggle="tooltip" data-placement="right" title="Copied" data-trigger="click" class="btn btn-light btn-sm invoice-hilang"><i class="far fa-copy"></i></button>
+            </div>
+            ';
+            $data_json->redirect = $data->transaction->finish_url;
+        }
+
+        $data_json->authorization_id = $payin->data->payin_id;
+        $data_json->order_id = $data->transaction->id;
         $data_json->bank_name = $payment->bank_name;
         $data_json->bank_code = $payment->bank_code;
             
@@ -97,8 +118,8 @@ class FinmoHelper {
         $body->amount = (float)$data->transaction->amount;
         $body->currency = $data->transaction->currency;
         $body->payin_method_name = $payment->bank_payment_method;
+        $body->webhook_url = env('APP_API_URL') .'/payment/finmo/confirm';
 
-        
         return json_decode($this->POST('/v1/payin',$body));
     }
 

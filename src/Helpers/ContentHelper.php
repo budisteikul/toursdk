@@ -291,15 +291,17 @@ class ContentHelper {
         $payment_enable = 'localpayment,stripe,paypal';
         
         $idr_total = BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'IDR');
-        //$idr_total = $idr_total - ($idr_total * 10 / 100);
+        $idr_discount = $idr_total - ($idr_total * 10 / 100);
 
         
-        //$sgd_total = BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'SGD');
-        //$sgd_total = $sgd_total - ($sgd_total * 10 / 100);
+        $sgd_total = BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'SGD');
+        $sgd_discount = $sgd_total - ($sgd_total * 10 / 100);
+
+        
+        $aud_total = BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'AUD');
+        $aud_discount = $aud_total - ($aud_total * 10 / 100);
 
         /*
-        $aud_total = BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'AUD');
-        //$aud_total = $aud_total - ($aud_total * 10 / 100);
 
         $krw_total = BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'KRW');
         //$krw_total = $krw_total - ($krw_total * 10 / 100);
@@ -313,36 +315,20 @@ class ContentHelper {
         
         //================================================
         
-        $transfer_list[] = [
+        $indonesia_list[] = [
                 'value' => 'qris', 'label' => 'QRIS', 'image' => self::env_appAssetUrl() .'/img/payment/qris.png', 'currency' => 'idr',
             ];
 
-        $transfer_list[] = [
-                'value' => 'permata', 'label' => 'Bank Transfer', 'image' => self::env_appAssetUrl() .'/img/payment/bank_transfer.png', 'currency' => 'idr',
+        $indonesia_list[] = [
+                'value' => 'mandiri', 'label' => 'Bank Transfer', 'image' => self::env_appAssetUrl() .'/img/payment/mandiri.png', 'currency' => 'idr',
             ];
 
-        
-        $ewallet_list[] = [
-                'value' => 'gopay', 'label' => 'GoPay', 'image' => self::env_appAssetUrl() .'/img/payment/gopay.png', 'currency' => 'idr',
-            ];
-
-        $ewallet_list[] = [
-                'value' => 'ovo', 'label' => 'OVO', 'image' => self::env_appAssetUrl() .'/img/payment/ovo.png', 'currency' => 'idr',
-            ];
 
         $grouped_payment[] = [
-            'label' => 'Fund Transfers',
-            'options' => $transfer_list
+            'label' => 'INDONESIA',
+            'options' => $indonesia_list
         ];
 
-        $grouped_payment[] = [
-            'label' => 'E-Wallets',
-            'options' => $ewallet_list
-        ];
-        
-
-
-        /*
         $singapore_list[] = [
             'value' => 'paynow', 'label' => 'PayNow QR', 'image' => self::env_appAssetUrl() .'/img/payment/paynow.png', 'currency' => 'sgd',
         ];
@@ -358,6 +344,10 @@ class ContentHelper {
 
         
         $australia_list[] = [
+            'value' => 'npp', 'label' => 'NPP PayID', 'image' => self::env_appAssetUrl() .'/img/payment/payid.png', 'currency' => 'aud',
+        ];
+
+        $australia_list[] = [
             'value' => 'poli', 'label' => 'POLi', 'image' => self::env_appAssetUrl() .'/img/payment/poli.png', 'currency' => 'aud',
         ];
 
@@ -366,9 +356,7 @@ class ContentHelper {
             'options' => $australia_list
         ];
 
-
-        
-
+        /*
 
         $southkorea_list[] = [
             'value' => 'tmoney', 'label' => 'TMoney', 'image' => self::env_appAssetUrl() .'/img/payment/tmoney.png', 'currency' => 'krw',
@@ -483,7 +471,7 @@ class ContentHelper {
 
                 // Local Payment Currency
                 
-                'localpayment_label' => '<strong class="mb-1">Domestic Payments</strong>',
+                'localpayment_label' => '<strong class="mb-1">Domestic Payments</strong><br /><small>Indonesia, Singapore, and Australia</small>',
                 
                 /*
                 'localpayment_label' => '<strong class="mb-1">QR Payment</strong>
@@ -497,20 +485,24 @@ class ContentHelper {
                 'idr_currency' => 'IDR',
                 'idr_total' => GeneralHelper::numberFormat($idr_total,'IDR'),
                 'idr_rate' => BookingHelper::text_rate($shoppingcart,'IDR'),
-                'idr_text' => 'IDR '. GeneralHelper::numberFormat($idr_total,'IDR'),
+                //'idr_text' => 'IDR '. GeneralHelper::numberFormat($idr_total,'IDR'),
+                'idr_text' => 'IDR <strike style="text-decoration-thickness: 2px; text-decoration-color: #ff0000aa;">'. GeneralHelper::numberFormat($idr_total,'IDR') .'</strike> '. GeneralHelper::numberFormat($idr_discount,'IDR'),
 
-                /*
+                
                 'sgd_currency' => 'SGD',
                 'sgd_total' => GeneralHelper::numberFormat($sgd_total,'SGD'),
                 'sgd_rate' => BookingHelper::text_rate($shoppingcart,'SGD'),
-                'sgd_text' => 'SGD '. GeneralHelper::numberFormat($sgd_total,'SGD'),
+                //'sgd_text' => 'SGD '. GeneralHelper::numberFormat($sgd_total,'SGD'),
+                'sgd_text' => 'SGD <strike style="text-decoration-thickness: 2px; text-decoration-color: #ff0000aa;">'. GeneralHelper::numberFormat($sgd_total,'SGD') .'</strike> '. GeneralHelper::numberFormat($sgd_discount,'SGD'),
 
-                
                 'aud_currency' => 'AUD',
                 'aud_total' => GeneralHelper::numberFormat($aud_total,'AUD'),
                 'aud_rate' => BookingHelper::text_rate($shoppingcart,'AUD'),
+                //'aud_text' => 'AUD '. GeneralHelper::numberFormat($aud_total,'AUD'),
+                'aud_text' => 'AUD <strike style="text-decoration-thickness: 2px; text-decoration-color: #ff0000aa;">'. GeneralHelper::numberFormat($aud_total,'AUD') .'</strike> '. GeneralHelper::numberFormat($aud_discount,'AUD'),
 
-                
+                /*
+
                 'krw_currency' => 'KRW',
                 'krw_total' => GeneralHelper::numberFormat($krw_total,'KRW'),
                 'krw_rate' => BookingHelper::text_rate($shoppingcart,'KRW'),

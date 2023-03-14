@@ -346,7 +346,7 @@ class ContentHelper {
         */
         
         $australia_list[] = [
-            'value' => 'npp', 'label' => 'NPP PayID', 'image' => self::env_appAssetUrl() .'/img/payment/payid.png', 'currency' => 'aud',
+            'value' => 'npp', 'label' => 'PayID', 'image' => self::env_appAssetUrl() .'/img/payment/payid.png', 'currency' => 'aud',
         ];
         /*
         $australia_list[] = [
@@ -473,7 +473,7 @@ class ContentHelper {
 
                 // Local Payment Currency
                 
-                'localpayment_label' => '<strong class="mb-1">Domestic Payments</strong><br /><span class="badge badge-danger" style="font-size:12px;">Automatic Discount 10%</span><br /><small>Indonesia and Australia</small>',
+                'localpayment_label' => '<strong class="mb-1">Domestic Payments</strong><br /><span class="badge badge-danger" style="font-size:10px;">Automatic Discount 10%</span><br /><small>Indonesia and Australia</small>',
                 
                 /*
                 'localpayment_label' => '<strong class="mb-1">QR Payment</strong>

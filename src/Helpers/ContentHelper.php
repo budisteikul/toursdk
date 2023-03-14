@@ -473,7 +473,7 @@ class ContentHelper {
 
                 // Local Payment Currency
                 
-                'localpayment_label' => '<strong class="mb-1">Domestic Payments</strong><br /><small>Indonesia, Singapore, and Australia</small><br /><span class="badge badge-danger" style="font-size:12px;">Automatic Discount 10%</span>',
+                'localpayment_label' => '<strong class="mb-1">Domestic Payments</strong><br /><span class="badge badge-danger" style="font-size:12px;">Automatic Discount 10%</span><br /><small>Indonesia and Australia</small>',
                 
                 /*
                 'localpayment_label' => '<strong class="mb-1">QR Payment</strong>

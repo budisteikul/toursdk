@@ -347,7 +347,7 @@ class ContentHelper {
         */
         
         $australia_list[] = [
-            'value' => 'npp', 'label' => 'PayID', 'image' => self::env_appAssetUrl() .'/img/payment/payid.png', 'currency' => 'aud',
+            'value' => 'npp', 'label' => 'NPP PayID', 'image' => self::env_appAssetUrl() .'/img/payment/payid.png', 'currency' => 'aud',
         ];
         /*
         $australia_list[] = [

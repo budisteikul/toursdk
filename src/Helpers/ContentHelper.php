@@ -610,6 +610,19 @@ class ContentHelper {
             }
         }
 
+        if($shoppingcart->shoppingcart_payment->payment_type=="other")
+        {
+            if(strtolower($shoppingcart->shoppingcart_payment->bank_name)=="npp")
+            {
+                $how_to_pay = '
+                    <div class="pl-2">
+                    1. Copy the PayID mentioned in this page. <br />
+                    2. Open your mobile banking App and select NPP funds transfer. <br />
+                    3. Transfer the funds to the PayID copied in step 1.<br />
+                    </div><br />';
+            }
+        }
+
         $payment_status_asText = BookingHelper::get_paymentStatus($shoppingcart);
         $booking_status_asText = BookingHelper::get_bookingStatus($shoppingcart);
         

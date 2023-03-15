@@ -1463,9 +1463,12 @@ class APIController extends Controller
                 {
                     if($data['event_detail']['status']=="COMPLETED")
                     {
-                        BookingHelper::confirm_payment($shoppingcart_payment->shoppingcart,"CONFIRMED");
-                        BookingHelper::shoppingcart_notif($shoppingcart_payment->shoppingcart);
-                        return response('SUCCESS', 200)->header('Content-Type', 'text/plain');
+                        //if($data['event_detail']['paid_amount']==$shoppingcart_payment->amount)
+                        //{
+                            BookingHelper::confirm_payment($shoppingcart_payment->shoppingcart,"CONFIRMED");
+                            BookingHelper::shoppingcart_notif($shoppingcart_payment->shoppingcart);
+                            return response('SUCCESS', 200)->header('Content-Type', 'text/plain');
+                        //}
                     }
                 }
                 

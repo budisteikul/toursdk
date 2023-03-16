@@ -73,6 +73,10 @@ class FinmoHelper {
         $data->transaction->mins_expired = 60;
         $data->transaction->date_expired = Carbon::parse($data->transaction->date_now)->addMinutes($data->transaction->mins_expired);
 
+        //$customer = (new self)->createCustomer($data,$payment);
+        //print_r($customer);
+        //exit();
+
         $payin = (new self)->createPayin($data,$payment);
         //print_r($payin);
         //exit();
@@ -110,6 +114,18 @@ class FinmoHelper {
         $response_json->data = $data_json;
         
         return $response_json;
+    }
+
+    public function createCustomer($data,$payment)
+    {
+        $body = new \stdClass();
+        $body->type = 'individual';
+        $body->individual = new \stdClass();
+        $body->individual->first_name = $data->contact->first_name;
+        $body->individual->last_name = $data->contact->last_name;
+        $body->individual->country_of_residence = $payment->bank_country;
+
+        return json_decode($this->POST('/v1/customer',$body));
     }
 
     public function createPayin($data,$payment)

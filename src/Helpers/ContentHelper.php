@@ -489,20 +489,20 @@ class ContentHelper {
                 'idr_total' => GeneralHelper::numberFormat($idr_total,'IDR'),
                 'idr_rate' => BookingHelper::text_rate($shoppingcart,'IDR'),
                 //'idr_text' => 'IDR '. GeneralHelper::numberFormat($idr_total,'IDR'),
-                'idr_text' => 'IDR <strike style="text-decoration-thickness: 2px; text-decoration-color: #ff0000aa;">'. GeneralHelper::numberFormat($idr_total,'IDR') .'</strike> '. GeneralHelper::numberFormat($idr_discount,'IDR'),
+                'idr_text' => 'IDR <strike style="text-decoration-thickness: 3px; text-decoration-color: #ff0000;">'. GeneralHelper::numberFormat($idr_total,'IDR') .'</strike> '. GeneralHelper::numberFormat($idr_discount,'IDR'),
 
                 
                 'sgd_currency' => 'SGD',
                 'sgd_total' => GeneralHelper::numberFormat($sgd_total,'SGD'),
                 'sgd_rate' => BookingHelper::text_rate($shoppingcart,'SGD'),
                 //'sgd_text' => 'SGD '. GeneralHelper::numberFormat($sgd_total,'SGD'),
-                'sgd_text' => 'SGD <strike style="text-decoration-thickness: 2px; text-decoration-color: #ff0000aa;">'. GeneralHelper::numberFormat($sgd_total,'SGD') .'</strike> '. GeneralHelper::numberFormat($sgd_discount,'SGD'),
+                'sgd_text' => 'SGD <strike style="text-decoration-thickness: 3px; text-decoration-color: #ff0000;">'. GeneralHelper::numberFormat($sgd_total,'SGD') .'</strike> '. GeneralHelper::numberFormat($sgd_discount,'SGD'),
 
                 'aud_currency' => 'AUD',
                 'aud_total' => GeneralHelper::numberFormat($aud_total,'AUD'),
                 'aud_rate' => BookingHelper::text_rate($shoppingcart,'AUD'),
                 //'aud_text' => 'AUD '. GeneralHelper::numberFormat($aud_total,'AUD'),
-                'aud_text' => 'AUD <strike style="text-decoration-thickness: 2px; text-decoration-color: #ff0000aa;">'. GeneralHelper::numberFormat($aud_total,'AUD') .'</strike> '. GeneralHelper::numberFormat($aud_discount,'AUD'),
+                'aud_text' => 'AUD <strike style="text-decoration-thickness: 3px; text-decoration-color: #ff0000;">'. GeneralHelper::numberFormat($aud_total,'AUD') .'</strike> '. GeneralHelper::numberFormat($aud_discount,'AUD'),
 
                 /*
 

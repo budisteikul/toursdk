@@ -288,7 +288,7 @@ class ContentHelper {
         $promo_code = $shoppingcart->promo_code;
         if($promo_code=="") $promo_code = null;
         
-        $payment_enable = 'localpayment,stripe,paypal';
+        $payment_enable = 'localpayment,stripe';
         
         $idr_total = BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'IDR');
         $idr_discount = $idr_total - ($idr_total * 10 / 100);
@@ -474,7 +474,7 @@ class ContentHelper {
 
                 // Local Payment Currency
                 
-                'localpayment_label' => '<strong class="mb-1">Domestic Payments</strong><br /><span class="badge badge-danger" style="font-size:10px;">Automatic Discount 10%</span><br /><small>Indonesia and Australia</small>',
+                'localpayment_label' => '<strong class="mb-1">Local Payments</strong> <span class="badge badge-danger" style="font-size:10px;">Discount 10%</span><br /><small>Indonesia and Australia</small>',
                 
                 /*
                 'localpayment_label' => '<strong class="mb-1">QR Payment</strong>

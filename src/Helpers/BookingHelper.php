@@ -2030,6 +2030,15 @@ class BookingHelper {
 					$rate_to = 'AUD';
 				}
 
+				if($data->transaction->bank=="paynow")
+				{
+					$amount = self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'SGD');
+					$currency = 'SGD';
+					$rate = number_format((float)$shoppingcart->due_now / $amount, 2, '.', '');
+					$rate_from = $shoppingcart->currency;
+					$rate_to = 'SGD';
+				}
+
 				$data->transaction->amount = $amount;
 				$data->transaction->currency = $currency;
 

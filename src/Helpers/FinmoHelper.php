@@ -43,7 +43,7 @@ class FinmoHelper {
                 $data->bank_country = "SG";
                 $data->bank_payment_type = "qrcode";
                 $data->bank_provider = "finmo";
-                $data->bank_payment_method = "sg_bank_promptpaycash_thb";
+                $data->bank_payment_method = "sg_bank_paynow_sqd";
             break;
             case "npp":
                 $data->bank_name = "npp";
@@ -74,8 +74,8 @@ class FinmoHelper {
         $data->transaction->date_expired = Carbon::parse($data->transaction->date_now)->addMinutes($data->transaction->mins_expired);
 
         $payin = (new self)->createPayin($data,$payment);
-
-        
+        //print_r($payin);
+        //exit();
 
         if($payment->bank_payment_type=="qrcode")
         {
@@ -89,7 +89,7 @@ class FinmoHelper {
             $data_json->payment_type = 'other';
             $data_json->payment_description = '
             <input type="hidden" id="payId" value="'. $payin->data->pay_code->text .'">
-            <div>Your PayID for this transaction</div>
+            <div>Your PayID for this transaction :</div>
             <div class="mb-2"><b>'. $payin->data->pay_code->text .'</b> <button onclick="copyToClipboard(\'#payId\')" id="payId_button" data-toggle="tooltip" data-placement="right" title="Copied" data-trigger="click" class="btn btn-light btn-sm invoice-hilang"><i class="far fa-copy"></i></button>
             </div>
             ';

@@ -317,7 +317,7 @@ class APIController extends Controller
                 */
 
                 case 'npp':
-                    VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
+                    //VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
                     BookingHelper::set_bookingStatus($sessionId,'PENDING');
                     BookingHelper::set_confirmationCode($sessionId);
                     $response = BookingHelper::create_payment($sessionId,"finmo","npp");
@@ -345,7 +345,7 @@ class APIController extends Controller
                 break;
 
                 case 'qris':
-                    VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
+                    //VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
                     BookingHelper::set_bookingStatus($sessionId,'PENDING');
                     BookingHelper::set_confirmationCode($sessionId);
                     $response = BookingHelper::create_payment($sessionId,"midtrans","gopay_qris");
@@ -387,7 +387,7 @@ class APIController extends Controller
                 break;
 
                 case 'permata':
-                    VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
+                    //VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
                     BookingHelper::set_bookingStatus($sessionId,'PENDING');
                     BookingHelper::set_confirmationCode($sessionId);
                     $response = BookingHelper::create_payment($sessionId,"midtrans","permata");
@@ -401,7 +401,7 @@ class APIController extends Controller
                 break;
 
                 case 'mandiri':
-                    VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
+                    //VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
                     BookingHelper::set_bookingStatus($sessionId,'PENDING');
                     BookingHelper::set_confirmationCode($sessionId);
                     $response = BookingHelper::create_payment($sessionId,"rapyd","mandiri");
@@ -478,7 +478,7 @@ class APIController extends Controller
                 break;
 
                 case 'fast':
-                    VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
+                    //VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
                     BookingHelper::set_bookingStatus($sessionId,'PENDING');
                     BookingHelper::set_confirmationCode($sessionId);
                     $response = BookingHelper::create_payment($sessionId,"rapyd","fast");

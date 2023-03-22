@@ -351,11 +351,11 @@ class APIController extends Controller
                     $response = BookingHelper::create_payment($sessionId,"midtrans","gopay_qris");
                 break;
 
-                case 'id_qr':
+                case 'xendit_qris':
                     //VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
                     BookingHelper::set_bookingStatus($sessionId,'PENDING');
                     BookingHelper::set_confirmationCode($sessionId);
-                    $response = BookingHelper::create_payment($sessionId,"midtrans","gopay_qris");
+                    $response = BookingHelper::create_payment($sessionId,"xendit","qris");
                 break;
 
                 case 'shopeepay_qris':
@@ -1575,7 +1575,6 @@ class APIController extends Controller
             $validator = Validator::make($request->all(), [
                 'sessionId' => ['required', 'string', 'max:255'],
                 'phoneNumber' => ['required', 'string', 'max:255'],
-                'paymentMethod' => ['required', 'string', 'max:255'],
             ]);
 
             if ($validator->fails()) {
@@ -1590,7 +1589,7 @@ class APIController extends Controller
             $shoppingcart = Cache::get('_'. $sessionId);
             
             // Xendit ========================================================================
-            /*
+            
             if(substr($phoneNumber,0,1)=="0")
             {
                 $phoneNumber = substr($phoneNumber,1);
@@ -1610,9 +1609,10 @@ class APIController extends Controller
                     "message" => "success",
                     "reference_id" => $response->reference_id
                 ]);
-            */
-            // ==============================================================================
             
+            // ==============================================================================
+            // Duitku ========================================================================
+            /*
             if(substr($phoneNumber,0,1)=="0")
             {
                 $phoneNumber = substr($phoneNumber,1);
@@ -1639,7 +1639,7 @@ class APIController extends Controller
                     "message" => "success",
                     "reference_id" => $reference_id
                 ]);
-
+            */
             // ==============================================================================
     }
 
@@ -1683,7 +1683,6 @@ class APIController extends Controller
                             $.ajax({
                                 data: {
                                     "sessionId": \''.$sessionId.'\',
-                                    "paymentMethod": "OV",
                                     "phoneNumber": phoneNumber,
                                 },
                                 type: \'POST\',

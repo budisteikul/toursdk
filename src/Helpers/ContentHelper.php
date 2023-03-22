@@ -301,7 +301,7 @@ class ContentHelper {
         //================================================
         
         $transfer_list[] = [
-                'value' => 'xendit_qris', 'label' => 'QRIS', 'image' => self::env_appAssetUrl() .'/img/payment/qris.png', 'currency' => 'idr',
+                'value' => 'qris', 'label' => 'QRIS', 'image' => self::env_appAssetUrl() .'/img/payment/qris.png', 'currency' => 'idr',
             ];
 
         
@@ -321,6 +321,10 @@ class ContentHelper {
         
         $ewallet_list[] = [
             'value' => 'ovo', 'label' => 'OVO', 'image' => self::env_appAssetUrl() .'/img/payment/ovo.png', 'currency' => 'idr',
+        ];
+
+        $ewallet_list[] = [
+            'value' => 'dana', 'label' => 'Dana', 'image' => self::env_appAssetUrl() .'/img/payment/dana.png', 'currency' => 'idr',
         ];
 
         $grouped_payment[] = [

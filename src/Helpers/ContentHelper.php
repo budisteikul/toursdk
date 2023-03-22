@@ -322,7 +322,7 @@ class ContentHelper {
         $ewallet_list[] = [
             'value' => 'ovo', 'label' => 'OVO', 'image' => self::env_appAssetUrl() .'/img/payment/ovo.png', 'currency' => 'idr',
         ];
-        
+
         $grouped_payment[] = [
             'label' => 'E-wallets',
             'options' => $ewallet_list

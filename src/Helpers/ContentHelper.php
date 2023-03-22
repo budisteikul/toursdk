@@ -284,7 +284,6 @@ class ContentHelper {
             
         }
 
-        
         $promo_code = $shoppingcart->promo_code;
         if($promo_code=="") $promo_code = null;
         
@@ -293,15 +292,12 @@ class ContentHelper {
         $idr_total = BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'IDR');
         //$idr_discount = $idr_total - ($idr_total * 10 / 100);
 
-        
         $sgd_total = BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'SGD');
         //$sgd_discount = $sgd_total - ($sgd_total * 10 / 100);
 
-        
         $aud_total = BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'AUD');
         //$aud_discount = $aud_total - ($aud_total * 10 / 100);
 
-        
         //================================================
         
         $transfer_list[] = [
@@ -332,8 +328,6 @@ class ContentHelper {
             'options' => $ewallet_list
         ];
 
-        
-
         if(env('PAYPAL_INTENT')=="CAPTURE")
         {
             $paypal_sdk = 'https://www.paypal.com/sdk/js?client-id='.self::env_paypalClientId().'&currency='. self::env_paypalCurrency().'&disable-funding=card';
@@ -343,8 +337,6 @@ class ContentHelper {
             $paypal_sdk = 'https://www.paypal.com/sdk/js?client-id='.self::env_paypalClientId().'&intent=authorize&currency='. self::env_paypalCurrency().'&disable-funding=card';
         }
         
-        
-
         $dataShoppingcart[] = array(
                 'id' => $shoppingcart->session_id,
                 'confirmation_code' => $shoppingcart->confirmation_code,

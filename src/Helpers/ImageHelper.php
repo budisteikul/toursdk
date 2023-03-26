@@ -14,11 +14,6 @@ class ImageHelper {
         return env('GOOGLE_CLOUD_STORAGE_BUCKET');
     }
 
-    public static function env_googleCloudStorageBucket()
-    {
-        return env('GOOGLE_CLOUD_STORAGE_BUCKET');
-    }
-
     public static function urlImageGoogle($public_id,$width=0,$height=0)
     {
         $url = 'https://storage.googleapis.com/'. self::env_googleCloudStorageBucket() .'/images/original/'. $public_id;

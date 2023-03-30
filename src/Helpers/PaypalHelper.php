@@ -67,7 +67,7 @@ class PaypalHelper {
 	public static function createPayment($data)
 	{
       	$value = number_format((float)$data->transaction->amount, 2, '.', '');
-      	$name = $data->transaction->id;
+      	$name = 'Invoice No : '. $data->transaction->confirmation_code;
      	$currency = $data->transaction->currency;
     	
       	$request = new OrdersCreateRequest();

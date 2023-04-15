@@ -775,14 +775,8 @@ class APIController extends Controller
 
                     $("#proses").remove();
 
-                    if ( window.widgetIframe != undefined ) { window.widgetIframe.autoResize(); }
-                    setTimeout(function() {
-                        if ( window.widgetIframe != undefined ) { window.widgetIframe.autoResize(); }
-                    }, 200);
+                    
 
-                    if (typeof onWidgetRender !== \'undefined\') {
-                        onWidgetRender();
-                    }
                 },
                 onAvailabilitySelected: function(selectedRate, selectedDate, selectedAvailability) {
                 },

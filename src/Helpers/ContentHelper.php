@@ -271,7 +271,7 @@ class ContentHelper {
             
             $collection = collect($dataQuestionParticipant)->sortBy('participant_number');
             $grouped = $collection->groupBy(function ($item, $key) {
-                    return 'Participant '.$item['participant_number'];
+                    return 'Traveller '.$item['participant_number'];
                 });
             
 

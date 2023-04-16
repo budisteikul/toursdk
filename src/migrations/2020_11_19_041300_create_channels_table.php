@@ -16,8 +16,6 @@ class CreateChannelsTable extends Migration
         Schema::create('channels', function (Blueprint $table) {
             $table->id();
 			$table->string('name')->nullable();
-			$table->float('fee',24,2)->default(0);
-            $table->boolean('is_percentage')->default(true);
             $table->timestamps(6);
         });
     }

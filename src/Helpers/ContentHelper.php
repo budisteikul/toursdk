@@ -320,12 +320,14 @@ class ContentHelper {
         ];
         
         $ewallet_list[] = [
+            'value' => 'dana', 'label' => 'Dana', 'image' => self::env_appAssetUrl() .'/img/payment/dana.png', 'currency' => 'idr',
+        ];
+        
+        $ewallet_list[] = [
             'value' => 'ovo', 'label' => 'OVO', 'image' => self::env_appAssetUrl() .'/img/payment/ovo.png', 'currency' => 'idr',
         ];
 
-        $ewallet_list[] = [
-            'value' => 'dana', 'label' => 'Dana', 'image' => self::env_appAssetUrl() .'/img/payment/dana.png', 'currency' => 'idr',
-        ];
+        
 
         $grouped_payment[] = [
             'label' => 'E-wallets',

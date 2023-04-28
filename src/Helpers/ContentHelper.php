@@ -389,7 +389,7 @@ class ContentHelper {
 
                 // Local Payment Currency
                 
-                'localpayment_label' => '<strong class="mb-1">Pay like a Local</strong> (IDR or SGD) <br /> <small>Tips : choose PayNow for Wise QR</small>',
+                'localpayment_label' => '<strong class="mb-1">Local Payments</strong> (IDR or SGD) <br /> <small>Tips : choose PayNow to pay with <img src="'. self::env_appAssetUrl() .'/img/payment/wise.png" style="max-height:10px" class="img-fluid" alt="Wise" /></small>',
                 
                 /*
                 'localpayment_label' => '<strong class="mb-1">QR Payment</strong>

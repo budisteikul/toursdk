@@ -295,7 +295,7 @@ class ContentHelper {
         $sgd_total = BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'SGD');
         //$sgd_discount = $sgd_total - ($sgd_total * 10 / 100);
 
-        $aud_total = BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'AUD');
+        //$aud_total = BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'AUD');
         //$aud_discount = $aud_total - ($aud_total * 10 / 100);
 
         //================================================
@@ -304,17 +304,22 @@ class ContentHelper {
                 'value' => 'qris', 'label' => 'QRIS', 'image' => self::env_appAssetUrl() .'/img/payment/qris.png', 'currency' => 'idr',
             ];
 
-        
+        $transfer_list[] = [
+                'value' => 'paynow', 'label' => 'PayNow QR', 'image' => self::env_appAssetUrl() .'/img/payment/paynow.png', 'currency' => 'sgd',
+            ];
+
+        /*
         $transfer_list[] = [
                 'value' => 'bss', 'label' => 'Bank Transfer', 'image' => self::env_appAssetUrl() .'/img/payment/bank_transfer.png', 'currency' => 'idr',
             ];
-        
+        */
 
         $grouped_payment[] = [
-            'label' => 'Fund Transfers',
+            'label' => 'QR Code Payments',
             'options' => $transfer_list
         ];
 
+        /*
         $ewallet_list[] = [
             'value' => 'gopay', 'label' => 'GoPay', 'image' => self::env_appAssetUrl() .'/img/payment/gopay.png', 'currency' => 'idr',
         ];
@@ -333,6 +338,7 @@ class ContentHelper {
             'label' => 'E-wallets',
             'options' => $ewallet_list
         ];
+        */
 
         if(env('PAYPAL_INTENT')=="CAPTURE")
         {
@@ -383,7 +389,7 @@ class ContentHelper {
 
                 // Local Payment Currency
                 
-                'localpayment_label' => '<strong class="mb-1">Local Payments</strong>',
+                'localpayment_label' => '<strong class="mb-1">Pay like a Local</strong> (IDR or SGD) <br /> <small>Tips : choose PayNow for Wise QR</small>',
                 
                 /*
                 'localpayment_label' => '<strong class="mb-1">QR Payment</strong>
@@ -407,10 +413,10 @@ class ContentHelper {
                 'sgd_text' => 'SGD '. GeneralHelper::numberFormat($sgd_total,'SGD'),
                 //'sgd_text' => 'SGD <strike style="text-decoration-thickness: 3px; text-decoration-color: #ff0000;">'. GeneralHelper::numberFormat($sgd_total,'SGD') .'</strike> '. GeneralHelper::numberFormat($sgd_discount,'SGD'),
 
-                'aud_currency' => 'AUD',
-                'aud_total' => GeneralHelper::numberFormat($aud_total,'AUD'),
-                'aud_rate' => BookingHelper::text_rate($shoppingcart,'AUD'),
-                'aud_text' => 'AUD '. GeneralHelper::numberFormat($aud_total,'AUD'),
+                //'aud_currency' => 'AUD',
+                //'aud_total' => GeneralHelper::numberFormat($aud_total,'AUD'),
+                //'aud_rate' => BookingHelper::text_rate($shoppingcart,'AUD'),
+                //'aud_text' => 'AUD '. GeneralHelper::numberFormat($aud_total,'AUD'),
                 //'aud_text' => 'AUD <strike style="text-decoration-thickness: 3px; text-decoration-color: #ff0000;">'. GeneralHelper::numberFormat($aud_total,'AUD') .'</strike> '. GeneralHelper::numberFormat($aud_discount,'AUD'),
 
                 /*

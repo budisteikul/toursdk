@@ -300,45 +300,31 @@ class ContentHelper {
 
         //================================================
         
-        $transfer_list[] = [
+        $qr_list[] = [
                 'value' => 'qris', 'label' => 'QRIS', 'image' => self::env_appAssetUrl() .'/img/payment/qris.png', 'currency' => 'idr',
             ];
 
-        $transfer_list[] = [
-                'value' => 'paynow', 'label' => 'PayNow QR', 'image' => self::env_appAssetUrl() .'/img/payment/paynow.png', 'currency' => 'sgd',
+        $qr_list[] = [
+                'value' => 'paynow', 'label' => 'SGQR', 'image' => self::env_appAssetUrl() .'/img/payment/paynow.png', 'currency' => 'sgd',
             ];
-
-        /*
-        $transfer_list[] = [
-                'value' => 'bss', 'label' => 'Bank Transfer', 'image' => self::env_appAssetUrl() .'/img/payment/bank_transfer.png', 'currency' => 'idr',
-            ];
-        */
 
         $grouped_payment[] = [
             'label' => 'QR Code Payments',
-            'options' => $transfer_list
+            'options' => $qr_list
         ];
 
-        /*
-        $ewallet_list[] = [
-            'value' => 'gopay', 'label' => 'GoPay', 'image' => self::env_appAssetUrl() .'/img/payment/gopay.png', 'currency' => 'idr',
-        ];
-        
-        $ewallet_list[] = [
-            'value' => 'dana', 'label' => 'Dana', 'image' => self::env_appAssetUrl() .'/img/payment/dana.png', 'currency' => 'idr',
-        ];
-        
-        $ewallet_list[] = [
-            'value' => 'ovo', 'label' => 'OVO', 'image' => self::env_appAssetUrl() .'/img/payment/ovo.png', 'currency' => 'idr',
-        ];
+        $transfer_list[] = [
+                'value' => 'bss', 'label' => 'BI-FAST Transfer', 'image' => self::env_appAssetUrl() .'/img/payment/bank_transfer.png', 'currency' => 'idr',
+            ];
 
-        
+        $transfer_list[] = [
+                'value' => 'fast', 'label' => 'FAST Transfer', 'image' => self::env_appAssetUrl() .'/img/payment/fast.png', 'currency' => 'sgd',
+            ];
 
         $grouped_payment[] = [
-            'label' => 'E-wallets',
-            'options' => $ewallet_list
+            'label' => 'Fund Transfers',
+            'options' => $transfer_list
         ];
-        */
 
         if(env('PAYPAL_INTENT')=="CAPTURE")
         {
@@ -499,7 +485,8 @@ class ContentHelper {
                 }
                 else
                 {
-                    $how_to_pay = 'Log in to bank and transfer funds to the provided '. strtoupper($shoppingcart->shoppingcart_payment->bank_name) .' account to complete the transaction. BI-FAST transfer not recommended, it may will cause payment failed';
+                    //$how_to_pay = 'Log in to bank and transfer funds to the provided '. strtoupper($shoppingcart->shoppingcart_payment->bank_name) .' account to complete the transaction. BI-FAST transfer not recommended, it may will cause payment failed';
+                    $how_to_pay = 'Log in to bank and transfer funds to the provided '. strtoupper($shoppingcart->shoppingcart_payment->bank_name) .' account to complete the transaction.';
                 }
                 
                 

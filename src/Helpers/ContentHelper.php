@@ -305,7 +305,7 @@ class ContentHelper {
             ];
 
         $qr_list[] = [
-                'value' => 'paynow', 'label' => 'SGQR', 'image' => self::env_appAssetUrl() .'/img/payment/paynow.png', 'currency' => 'sgd',
+                'value' => 'paynow', 'label' => 'PayNow QR', 'image' => self::env_appAssetUrl() .'/img/payment/paynow.png', 'currency' => 'sgd',
             ];
 
         $grouped_payment[] = [
@@ -313,18 +313,20 @@ class ContentHelper {
             'options' => $qr_list
         ];
 
+        /*
         $transfer_list[] = [
-                'value' => 'bss', 'label' => 'BI-FAST Transfer', 'image' => self::env_appAssetUrl() .'/img/payment/bank_transfer.png', 'currency' => 'idr',
+                'value' => 'mandiri', 'label' => 'Mandiri Bank', 'image' => self::env_appAssetUrl() .'/img/payment/mandiri.png', 'currency' => 'idr',
             ];
 
         $transfer_list[] = [
-                'value' => 'fast', 'label' => 'FAST Transfer', 'image' => self::env_appAssetUrl() .'/img/payment/fast.png', 'currency' => 'sgd',
+                'value' => 'fast', 'label' => 'DBS Bank', 'image' => self::env_appAssetUrl() .'/img/payment/dbs.png', 'currency' => 'sgd',
             ];
 
         $grouped_payment[] = [
-            'label' => 'Fund Transfers',
+            'label' => 'Bank Transfers',
             'options' => $transfer_list
         ];
+        */
 
         if(env('PAYPAL_INTENT')=="CAPTURE")
         {

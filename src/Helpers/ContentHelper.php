@@ -313,20 +313,20 @@ class ContentHelper {
             'options' => $qr_list
         ];
 
-        /*
+        
         $transfer_list[] = [
-                'value' => 'mandiri', 'label' => 'Mandiri Bank', 'image' => self::env_appAssetUrl() .'/img/payment/mandiri.png', 'currency' => 'idr',
+                'value' => 'mandiri', 'label' => 'Indonesia Bank', 'image' => self::env_appAssetUrl() .'/img/payment/mandiri.png', 'currency' => 'idr',
             ];
 
         $transfer_list[] = [
-                'value' => 'fast', 'label' => 'DBS Bank', 'image' => self::env_appAssetUrl() .'/img/payment/dbs.png', 'currency' => 'sgd',
+                'value' => 'fast', 'label' => 'Singapore Bank', 'image' => self::env_appAssetUrl() .'/img/payment/dbs.png', 'currency' => 'sgd',
             ];
 
         $grouped_payment[] = [
-            'label' => 'Bank Transfers',
+            'label' => 'Virtual Accounts',
             'options' => $transfer_list
         ];
-        */
+        
 
         if(env('PAYPAL_INTENT')=="CAPTURE")
         {

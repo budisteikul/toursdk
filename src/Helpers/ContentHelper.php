@@ -300,17 +300,17 @@ class ContentHelper {
 
         //================================================
         
-        $qr_list[] = [
+        $transfer_list[] = [
                 'value' => 'qris', 'label' => 'QRIS', 'image' => self::env_appAssetUrl() .'/img/payment/qris.png', 'currency' => 'idr',
             ];
 
-        $qr_list[] = [
-                'value' => 'paynow', 'label' => 'PayNow QR', 'image' => self::env_appAssetUrl() .'/img/payment/paynow.png', 'currency' => 'sgd',
+        $transfer_list[] = [
+                'value' => 'bss', 'label' => 'Bank Transfer', 'image' => self::env_appAssetUrl() .'/img/payment/bank_transfer.png', 'currency' => 'idr',
             ];
 
         $grouped_payment[] = [
-            'label' => 'QR Code Payments',
-            'options' => $qr_list
+            'label' => ' ',
+            'options' => $transfer_list
         ];
 
         /*
@@ -377,7 +377,7 @@ class ContentHelper {
 
                 // Local Payment Currency
                 
-                'localpayment_label' => '<strong class="mb-1">Local Payments</strong> (IDR or SGD)',
+                'localpayment_label' => '<strong class="mb-1">Local Payments</strong>',
                 
                 /*
                 'localpayment_label' => '<strong class="mb-1">QR Payment</strong>

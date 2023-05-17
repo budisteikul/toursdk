@@ -304,29 +304,16 @@ class ContentHelper {
                 'value' => 'qris', 'label' => 'QRIS', 'image' => self::env_appAssetUrl() .'/img/payment/qris.png', 'currency' => 'idr',
             ];
 
+        
+
         $transfer_list[] = [
-                'value' => 'bss', 'label' => 'Bank Transfer', 'image' => self::env_appAssetUrl() .'/img/payment/bank_transfer.png', 'currency' => 'idr',
+                'value' => 'paynow', 'label' => 'Wise QR', 'image' => self::env_appAssetUrl() .'/img/payment/wise-qr.png', 'currency' => 'sgd',
             ];
 
         $grouped_payment[] = [
             'label' => ' ',
             'options' => $transfer_list
         ];
-
-        /*
-        $transfer_list[] = [
-                'value' => 'mandiri', 'label' => 'Mandiri Bank', 'image' => self::env_appAssetUrl() .'/img/payment/mandiri.png', 'currency' => 'idr',
-            ];
-
-        $transfer_list[] = [
-                'value' => 'fast', 'label' => 'DBS Bank', 'image' => self::env_appAssetUrl() .'/img/payment/dbs.png', 'currency' => 'sgd',
-            ];
-
-        $grouped_payment[] = [
-            'label' => 'Bank Transfers',
-            'options' => $transfer_list
-        ];
-        */
 
         if(env('PAYPAL_INTENT')=="CAPTURE")
         {
@@ -462,7 +449,26 @@ class ContentHelper {
         {
             if($shoppingcart->shoppingcart_payment->payment_status==4)
             {
-                $how_to_pay = '
+                if($shoppingcart->shoppingcart_payment->bank_name=="paynow")
+                {
+                    $how_to_pay = '
+                    <div class="pl-2">
+                    1.  Open your <b>Wise</b> app. <br />
+                    2.  In your Card or Account tab, swipe the Card Carousell to the left to bring up Pay Like a Local
+                    <br />
+                    3.  Tap <b>Scan QR</b>. <br />
+                    4.  <b>Scan</b> the QR code shown on your monitor. <br />
+                    <img width="230" class="mt-2 mb-2" src="'. self::env_appAssetUrl() .'/img/payment/qr-instruction.png">
+                    <br />
+                    5.  Check your payment details in the <b>Wise</b> app, then tap <b>Pay</b>. <br />
+                    6.  Follow the steps to confirm your payment. <br />
+                    7.  Done. <br /><br />
+                    Alternatively, you can <b>download</b> or <b>screenshot QR code</b> from this site and <b>import</b> it to your <b>Wise</b> app.
+                    </div><br />';
+                }
+                else
+                {
+                    $how_to_pay = '
                     <div class="pl-2">
                     1.  Open your <b>E-wallet</b> or <b>Mobile Banking</b> apps. <br />
                     2.  <b>Scan</b> the QR code shown on your monitor. <br />
@@ -473,6 +479,8 @@ class ContentHelper {
                     5.  Your transaction is complete. <br /><br />
                     Alternatively, you can download or screenshot QR code from this site and upload it to your E-wallet or Mobile Banking apps.
                     </div><br />';
+                }
+                
             }
         }
 

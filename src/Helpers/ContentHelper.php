@@ -304,12 +304,10 @@ class ContentHelper {
                 'value' => 'qris', 'label' => 'QRIS', 'image' => self::env_appAssetUrl() .'/img/payment/qris.png', 'currency' => 'idr',
             ];
 
-        
-
         $transfer_list[] = [
-                'value' => 'paynow', 'label' => 'Wise QR', 'image' => self::env_appAssetUrl() .'/img/payment/wise-qr.png', 'currency' => 'sgd',
+                'value' => 'bss', 'label' => 'Bank Transfer', 'image' => self::env_appAssetUrl() .'/img/payment/bank_transfer.png', 'currency' => 'idr',
             ];
-
+        
         $grouped_payment[] = [
             'label' => ' ',
             'options' => $transfer_list

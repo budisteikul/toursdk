@@ -288,6 +288,12 @@ class ContentHelper {
         if($promo_code=="") $promo_code = null;
         
         $payment_enable = 'localpayment,stripe,paypal';
+
+        $paypal_label = '<strong class="mb-1"><img src="'. self::env_appAssetUrl() .'/img/payment/paypal.png" height="25" alt="Paypal" /></strong>';
+        
+        //$payment_enable = 'localpayment,paypal';
+        //$paypal_label = '<strong class="mb-1">Debit/Credit Card or Paypal</strong>';
+
         
         $idr_total = BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'IDR');
         //$idr_discount = $idr_total - ($idr_total * 10 / 100);
@@ -315,11 +321,13 @@ class ContentHelper {
 
         if(env('PAYPAL_INTENT')=="CAPTURE")
         {
-            $paypal_sdk = 'https://www.paypal.com/sdk/js?client-id='.self::env_paypalClientId().'&currency='. self::env_paypalCurrency().'&disable-funding=card';
+            //$paypal_sdk = 'https://www.paypal.com/sdk/js?client-id='.self::env_paypalClientId().'&currency='. self::env_paypalCurrency().'&disable-funding=card';
+            $paypal_sdk = 'https://www.paypal.com/sdk/js?client-id='.self::env_paypalClientId().'&currency='. self::env_paypalCurrency().'';
         }
         else
         {
-            $paypal_sdk = 'https://www.paypal.com/sdk/js?client-id='.self::env_paypalClientId().'&intent=authorize&currency='. self::env_paypalCurrency().'&disable-funding=card';
+            //$paypal_sdk = 'https://www.paypal.com/sdk/js?client-id='.self::env_paypalClientId().'&intent=authorize&currency='. self::env_paypalCurrency().'&disable-funding=card';
+            $paypal_sdk = 'https://www.paypal.com/sdk/js?client-id='.self::env_paypalClientId().'&intent=authorize&currency='. self::env_paypalCurrency().'';
         }
         
         $dataShoppingcart[] = array(
@@ -345,7 +353,7 @@ class ContentHelper {
                 'paypal_total' => GeneralHelper::numberFormat(BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,self::env_paypalCurrency(),"PAYPAL"),'USD'),
                 'paypal_rate' => BookingHelper::text_rate($shoppingcart,self::env_paypalCurrency(),"PAYPAL"),
                 'paypal_sdk' => $paypal_sdk,
-                'paypal_label' => '<strong class="mb-1"><img src="'. self::env_appAssetUrl() .'/img/payment/paypal.png" height="25" alt="Paypal" /></strong>',
+                'paypal_label' => $paypal_label,
 
                 // Stripe Currency
                 'stripe_currency' => 'USD',

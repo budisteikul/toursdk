@@ -34,6 +34,7 @@ class CreateShoppingcartProductDetailsTable extends Migration
             $table->float('discount',24,2)->default(0);
             $table->float('tax',24,2)->default(0);
             $table->float('fee',24,2)->default(0);
+            $table->float('admin',24,2)->default(0);
             $table->float('total',24,2)->default(0);
 
             $table->timestamps(6);

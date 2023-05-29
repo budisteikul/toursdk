@@ -321,13 +321,13 @@ class ContentHelper {
 
         if(env('PAYPAL_INTENT')=="CAPTURE")
         {
-            //$paypal_sdk = 'https://www.paypal.com/sdk/js?client-id='.self::env_paypalClientId().'&currency='. self::env_paypalCurrency().'&disable-funding=card';
-            $paypal_sdk = 'https://www.paypal.com/sdk/js?client-id='.self::env_paypalClientId().'&currency='. self::env_paypalCurrency().'';
+            $paypal_sdk = 'https://www.paypal.com/sdk/js?client-id='.self::env_paypalClientId().'&currency='. self::env_paypalCurrency().'&disable-funding=card';
+            //$paypal_sdk = 'https://www.paypal.com/sdk/js?client-id='.self::env_paypalClientId().'&currency='. self::env_paypalCurrency().'';
         }
         else
         {
-            //$paypal_sdk = 'https://www.paypal.com/sdk/js?client-id='.self::env_paypalClientId().'&intent=authorize&currency='. self::env_paypalCurrency().'&disable-funding=card';
-            $paypal_sdk = 'https://www.paypal.com/sdk/js?client-id='.self::env_paypalClientId().'&intent=authorize&currency='. self::env_paypalCurrency().'';
+            $paypal_sdk = 'https://www.paypal.com/sdk/js?client-id='.self::env_paypalClientId().'&intent=authorize&currency='. self::env_paypalCurrency().'&disable-funding=card';
+            //$paypal_sdk = 'https://www.paypal.com/sdk/js?client-id='.self::env_paypalClientId().'&intent=authorize&currency='. self::env_paypalCurrency().'';
         }
         
         $dataShoppingcart[] = array(
@@ -379,14 +379,12 @@ class ContentHelper {
                 <br />
                 <span class="badge badge-danger">Automatic get discount 10%</span>',
                 */
-
                 
                 'idr_currency' => 'IDR',
                 'idr_total' => GeneralHelper::numberFormat($idr_total,'IDR'),
                 'idr_rate' => BookingHelper::text_rate($shoppingcart,'IDR'),
                 'idr_text' => 'IDR '. GeneralHelper::numberFormat($idr_total,'IDR'),
                 //'idr_text' => 'IDR <strike style="text-decoration-thickness: 3px; text-decoration-color: #ff0000;">'. GeneralHelper::numberFormat($idr_total,'IDR') .'</strike> '. GeneralHelper::numberFormat($idr_discount,'IDR'),
-
                 
                 'sgd_currency' => 'SGD',
                 'sgd_total' => GeneralHelper::numberFormat($sgd_total,'SGD'),

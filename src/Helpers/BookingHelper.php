@@ -2344,27 +2344,11 @@ class BookingHelper {
 	{
 		VoucherHelper::remove_voucher($sessionId);
 		return '';
-		/*
-		$contents = BokunHelper::get_removepromocode($sessionId);
-        self::get_shoppingcart($sessionId,"update",$contents);
-        return $contents;
-        */
 	}
 
 	public static function apply_promocode($sessionId,$promocode)
 	{
 		$status = VoucherHelper::apply_voucher($sessionId,$promocode);
-
-		/*
-		$status = false;
-		$contents = BokunHelper::get_applypromocode($sessionId,$promocode);
-		
-		if(!isset($contents->message))
-		{
-			$status = true;
-			self::get_shoppingcart($sessionId,"update",$contents);
-		}
-		*/
 		return $status;
 	}
 

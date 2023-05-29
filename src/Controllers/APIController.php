@@ -985,6 +985,8 @@ class APIController extends Controller
             return array();
         }
         
+
+
         $dataShoppingcart = ContentHelper::view_shoppingcart($shoppingcart);
 
         //FirebaseHelper::connect('shoppingcart/'.$shoppingcart->session_id.'/shoppingcart',$dataShoppingcart,"PUT");
@@ -1014,7 +1016,7 @@ class APIController extends Controller
         $bookingId = $data['bookingId'];
          
         BookingHelper::remove_activity($sessionId,$bookingId);
-        
+
         return response()->json([
             "message" => "success"
         ]);

@@ -56,6 +56,8 @@ class ContentHelper {
     public static function view_shoppingcart($shoppingcart)
     {
         
+        $shoppingcart = BookingHelper::product_extend(10785,7424,$shoppingcart);
+        
         $dataShoppingcart = array();
         $dataProducts = array();
 
@@ -330,6 +332,8 @@ class ContentHelper {
             //$paypal_sdk = 'https://www.paypal.com/sdk/js?client-id='.self::env_paypalClientId().'&intent=authorize&currency='. self::env_paypalCurrency().'';
         }
         
+
+
         $dataShoppingcart[] = array(
                 'id' => $shoppingcart->session_id,
                 'confirmation_code' => $shoppingcart->confirmation_code,

@@ -1224,6 +1224,8 @@ class BookingHelper {
 		{
 			VoucherHelper::apply_voucher($shoppingcart->session_id,$shoppingcart->promo_code);
 		}
+
+
 			
 	}
 	
@@ -2335,6 +2337,7 @@ class BookingHelper {
 
 	public static function remove_activity($sessionId,$bookingId)
 	{
+
 		$contents = BokunHelper::get_removeactivity($sessionId,$bookingId);
 		self::get_shoppingcart($sessionId,"update",$contents);
 		return $sessionId;
@@ -2352,6 +2355,37 @@ class BookingHelper {
 		return $status;
 	}
 
+	public static function product_extend($product_id1=null,$product_id2=null,$shoppingcart)
+	{
+		$products = $shoppingcart->products;
+		foreach($products as $product)
+		{
+			if($product->product_id==$product_id1)
+			{
+				if(!self::product_extend_check($product_id2,$shoppingcart))
+				{
+					$contents = BokunHelper::get_removeactivity($shoppingcart->session_id,$product->booking_id);
+					$shoppingcart = self::get_shoppingcart($shoppingcart->session_id,"update",$contents);
+				}
+			}
+		}
+		return $shoppingcart;
+	}
+
+	public static function product_extend_check($product_id=null,$shoppingcart)
+	{
+		$status = false;
+		$products = $shoppingcart->products;
+		foreach($products as $product)
+		{
+			if($product->product_id==$product_id)
+			{
+				$status = true;
+			}
+
+		}
+		return $status;
+	}
 	
 	public static function text_rate($shoppingcart,$currency,$markup="")
 	{

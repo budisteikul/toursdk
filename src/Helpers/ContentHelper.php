@@ -322,7 +322,7 @@ class ContentHelper {
         ];
 
         $singapore_list[] = [
-                'value' => 'paynow', 'label' => 'Paynow QR', 'image' => self::env_appAssetUrl() .'/img/payment/paynow.png', 'currency' => 'sgd',
+                'value' => 'paynow', 'label' => 'PayNow QR', 'image' => self::env_appAssetUrl() .'/img/payment/paynow.png', 'currency' => 'sgd',
             ];
 
         $singapore_list[] = [

@@ -525,7 +525,7 @@ class ContentHelper {
             {   
                 if($shoppingcart->shoppingcart_payment->currency=="SGD")
                 {
-                    $how_to_pay = 'Please Transfer funds to the provided DBS BANK account using your Singapore based bank account via FAST';
+                    $how_to_pay = 'Please Transfer funds to the provided DBS BANK account using your Singapore based bank account via FAST Transfer';
                 }
                 else
                 {

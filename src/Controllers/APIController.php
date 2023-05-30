@@ -725,7 +725,7 @@ class APIController extends Controller
             {
                 if(!BookingHelper::product_extend_check(7424,$sessionId))
                 {
-                    $close_booking = '$(".start-times-container").empty();$(".start-times-container").append("<div class=\"no-start-times-container\"><div class=\"alert alert-warning\">You must add the \"Yogyakarta Night Walking and Food Tour\" to the shopping cart first.</div></div>");';
+                    $close_booking = '$(".start-times-container").empty();$(".start-times-container").append("<div class=\"no-start-times-container\"><div class=\"alert alert-warning\">You must add the <a href=\"/tour/yogyakarta-night-walking-and-food-tours\"><b>Yogyakarta Night Walking and Food Tour</b></a> to the shopping cart first.</div></div>");';
                 }
             }
 

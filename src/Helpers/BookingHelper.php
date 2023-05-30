@@ -2362,7 +2362,7 @@ class BookingHelper {
 		{
 			if($product->product_id==$product_id1)
 			{
-				if(!self::product_extend_check($product_id2,$shoppingcart))
+				if(!self::product_extend_check($product_id2,$shoppingcart->session_id))
 				{
 					$contents = BokunHelper::get_removeactivity($shoppingcart->session_id,$product->booking_id);
 					$shoppingcart = self::get_shoppingcart($shoppingcart->session_id,"update",$contents);
@@ -2372,18 +2372,21 @@ class BookingHelper {
 		return $shoppingcart;
 	}
 
-	public static function product_extend_check($product_id=null,$shoppingcart)
+	public static function product_extend_check($product_id=null,$session_id)
 	{
 		$status = false;
-		$products = $shoppingcart->products;
-		foreach($products as $product)
-		{
-			if($product->product_id==$product_id)
+		$shoppingcart = Cache::get('_'. $session_id, 'empty');
+        if($shoppingcart!='empty')
+        {
+        	$products = $shoppingcart->products;
+			foreach($products as $product)
 			{
-				$status = true;
+				if($product->product_id==$product_id)
+				{
+					$status = true;
+				}
 			}
-
-		}
+        }
 		return $status;
 	}
 	

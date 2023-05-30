@@ -719,6 +719,16 @@ class APIController extends Controller
             $year = date("Y",$microtime/1000);
 
             if($embedded=="") $embedded = "true";
+
+            $close_booking = '';
+            if($product->bokun_id==10785)
+            {
+                if(!BookingHelper::product_extend_check(7424,$sessionId))
+                {
+                    $close_booking = '$(".start-times-container").empty();$(".start-times-container").append("<div class=\"no-start-times-container\"><div class=\"alert alert-warning\">You must add the \"Yogyakarta Night Walking and Food Tour\" to the shopping cart first.</div></div>");';
+                }
+            }
+
             
             $jscript = ' 
             
@@ -772,11 +782,8 @@ class APIController extends Controller
                 onAfterRender: function() {
 
                     $(".PICK_UP").hide();
-
                     $("#proses").remove();
-
-                    
-
+                    '.$close_booking.'
                 },
                 onAvailabilitySelected: function(selectedRate, selectedDate, selectedAvailability) {
                 },

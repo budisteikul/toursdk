@@ -317,8 +317,21 @@ class ContentHelper {
             ];
         
         $grouped_payment[] = [
-            'label' => ' ',
+            'label' => 'INDONESIA',
             'options' => $transfer_list
+        ];
+
+        $singapore_list[] = [
+                'value' => 'paynow', 'label' => 'Paynow QR', 'image' => self::env_appAssetUrl() .'/img/payment/paynow.png', 'currency' => 'sgd',
+            ];
+
+        $singapore_list[] = [
+                'value' => 'fast', 'label' => 'FAST Transfer', 'image' => self::env_appAssetUrl() .'/img/payment/fast.png', 'currency' => 'sgd',
+            ];
+
+        $grouped_payment[] = [
+            'label' => 'SINGAPORE',
+            'options' => $singapore_list
         ];
 
         if(env('PAYPAL_INTENT')=="CAPTURE")
@@ -459,6 +472,7 @@ class ContentHelper {
             {
                 if($shoppingcart->shoppingcart_payment->bank_name=="paynow")
                 {
+                    /*
                     $how_to_pay = '
                     <div class="pl-2">
                     1.  Open your <b>Wise</b> app. <br />
@@ -472,6 +486,18 @@ class ContentHelper {
                     6.  Follow the steps to confirm your payment. <br />
                     7.  Done. <br /><br />
                     Alternatively, you can <b>download</b> or <b>screenshot QR code</b> from this site and <b>import</b> it to your <b>Wise</b> app.
+                    </div><br />';
+                    */
+                    $how_to_pay = '
+                    <div class="pl-2">
+                    1.  Open your <b>E-wallet</b> or <b>Mobile Banking</b> apps. <br />
+                    2.  <b>Scan</b> the QR code shown on your monitor. <br />
+                    <img width="230" class="mt-2 mb-2" src="'. self::env_appAssetUrl() .'/img/payment/qr-instruction.png">
+                    <br />
+                    3.  Check your payment details in the app, then tap <b>Pay</b>. <br />
+                    4.  Enter your <b>PIN</b>. <br />
+                    5.  Your transaction is complete. <br /><br />
+                    Alternatively, you can download or screenshot QR code from this site and upload it to your E-wallet or Mobile Banking apps.
                     </div><br />';
                 }
                 else

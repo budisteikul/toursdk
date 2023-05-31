@@ -721,7 +721,7 @@ class APIController extends Controller
             if($embedded=="") $embedded = "true";
 
             $close_booking = '';
-            if($product->bokun_id==10785)
+            if($product->bokun_id==10849)
             {
                 if(!BookingHelper::product_extend_check(7424,$sessionId))
                 {

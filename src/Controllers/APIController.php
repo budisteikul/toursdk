@@ -50,6 +50,8 @@ class APIController extends Controller
         $this->appAssetUrl = env("APP_ASSET_URL");
     }
 
+    
+
     public function navbar($sessionId)
     {
         $categories = Category::where('parent_id',0)->get();
@@ -1090,9 +1092,100 @@ class APIController extends Controller
         return response()->json($contents);
     }
 
+    public function dayplus($range=3)
+    {
+        $datenow = date('Y-m-d');
+        $date_rev[] = $datenow;
+        
+        for($i=1;$i<=$range;$i++)
+        {
+            $date = strtotime($datenow);
+            $date = strtotime("+".$i." day", $date);
+            $date = date('Y-m-d', $date);
+            $date_rev[] = $date;
+        }
+        
+        return $date_rev;
+    }
+
+
+    public function check_raillink()
+    {
+        $token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoiSUJPT0siLCJjcmVhdGVkb24iOiIyMDE5LTExLTE0IDEzOjA4OjQ2In0.usU2bJ0H4RiDTaFnl7eaCsHgd07sVleaoSTTpF0glvg';
+        $org = 'YK';
+        $des = 'YIA';
+        $date = '2023-06-02';
+
+        $value = Cache::remember('_raillink_'. $org .'_'. $des .'_'. $date,7200, function() use ($org,$des,$date,$token)
+        {
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_VERBOSE, true);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER,true);
+            curl_setopt($ch, CURLOPT_URL, "https://reservation.railink.co.id:8001/api/service/artsmidapp/middleware/schedule/arts_getschedule?org=".$org."&des=".$des."&date=".$date);
+
+            $headerArray[] = "Token: ". $token;
+
+            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET"); 
+            curl_setopt($ch, CURLOPT_HTTPHEADER, $headerArray);
+        
+            $response = curl_exec($ch);
+        
+            if($response === false){
+                echo 'Curl error: ' . curl_error($ch);
+            }
+            curl_close ($ch);
+            
+            return $response;
+        });
+
+        $response = json_decode($value);
+        foreach($response->response->availabilitydatalist as $a)
+        {
+            foreach($a->scheduleDatas as $b)
+            {
+                $departure  = substr($b->stopdeparture,0,2) .":". substr($b->stopdeparture,-2);
+                foreach($b->allocationDatas as $c)
+                {
+                    $dataKa[] = array(
+                        'org' => $org,
+                        'des' => $des,
+                        'departure' => $departure,
+                        'seat' => $c->seatavailable,
+                    );
+                }
+                
+            }
+        }
+        
+        print_r($dataKa);
+        exit();
+        return response()->json($value);
+    }
+
     public function snippetscalendar($activityId,$year,$month)
     {
         $contents = BookingHelper::get_calendar($activityId,$year,$month);
+        /*
+        $dayplus = self::dayplus();
+        foreach($contents->weeks as $week)
+        {
+
+            foreach($week->days as $day)
+            {
+                if (in_array($day->fullDate, $dayplus))
+                {
+                    $day->available = true;
+                }
+                else
+                {
+                    $day->available = false;
+                }
+                
+            }
+        }
+        
+
+        */
         return response()->json($contents);
     }
 

@@ -1009,7 +1009,7 @@ class APIController extends Controller
         return $seat;
     }
 
-    public function date_raillink($range=3)
+    public function date_raillink($range=6)
     {
 
         for($i=1;$i<=$range;$i++)

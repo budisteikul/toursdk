@@ -994,7 +994,7 @@ class APIController extends Controller
     public function check_seat($date,$time)
     {
         $seat = 0;
-        $aaa = self::raillink(6);
+        $aaa = self::raillink(3);
         foreach($aaa as $bbb)
         {
             if($bbb['date']==$date)
@@ -1009,7 +1009,7 @@ class APIController extends Controller
         return $seat;
     }
 
-    public function date_raillink($range=6)
+    public function date_raillink($range=3)
     {
 
         for($i=1;$i<=$range;$i++)

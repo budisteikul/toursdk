@@ -1110,7 +1110,7 @@ class APIController extends Controller
                 foreach($contents->firstAvailableDay->availabilities as $availability)
                 {
                     $seat = self::check_seat($contents->firstAvailableDay->fullDate,$availability->data->startTime);
-                    if($seat<10)
+                    if($seat<30)
                     {
                         unset($contents->firstAvailableDay->availabilities[$z]);
                     }
@@ -1130,7 +1130,7 @@ class APIController extends Controller
                     foreach($day->availabilities as $availability)
                     {
                         $seat = self::check_seat($day->fullDate,$availability->data->startTime);
-                        if($seat<10)
+                        if($seat<30)
                         {
                             unset($day->availabilities[$z]);
                         }
@@ -1174,7 +1174,7 @@ class APIController extends Controller
                 foreach($availability[0]['availabilities'] as $aaa)
                 {
                     $seat = self::check_seat($fullDate,$aaa->startTime);
-                    if($seat<10)
+                    if($seat<30)
                     {
                         unset($availability[0]['availabilities'][$z]);
                     }

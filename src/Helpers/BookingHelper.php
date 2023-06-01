@@ -1414,8 +1414,6 @@ class BookingHelper {
 			$count_availability = count($availability->firstAvailableDay->availabilities);
 			$dateObj = $availability->firstAvailableDay->dateObj;
 
-			
-
 			for($i=0;$i<$count_availability;$i++)
 			{
 				$value[] = $availability->firstAvailableDay->availabilities[$i]->activityAvailability;

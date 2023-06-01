@@ -705,116 +705,7 @@ class APIController extends Controller
 
     }
 
-    public function product_jscript($slug,$sessionId,Request $request)
-    {
-        $embedded = $request->input('embedded');
-        $product = Product::where('slug',$slug)->first();
-        if($product)
-        {
-            $content = BokunHelper::get_product($product->bokun_id);
-            $calendar = BokunHelper::get_calendar_new($content->id);
 
-            $availability = BookingHelper::get_firstAvailability($content->id,$calendar->year,$calendar->month);
-            
-            $microtime = $availability[0]['date'];
-            $month = date("n",$microtime/1000);
-            $year = date("Y",$microtime/1000);
-
-            if($embedded=="") $embedded = "true";
-
-            $close_booking = '';
-            if($product->bokun_id==10849)
-            {
-                if(!BookingHelper::product_extend_check(7424,$sessionId))
-                {
-                    $close_booking = '$(".start-times-container").empty();$(".start-times-container").append("<div class=\"no-start-times-container\"><div class=\"alert alert-warning\">You must add the <a href=\"/tour/yogyakarta-night-walking-and-food-tours\"><b>Yogyakarta Night Walking and Food Tour</b></a> to the shopping cart first.</div></div>");';
-                }
-            }
-
-            
-            $jscript = ' 
-            
-            window.priceFormatter = new WidgetUtils.PriceFormatter({
-                currency: \''. $this->currency .'\',
-                language: \''. $this->lang .'\',
-                decimalSeparator: \'.\',
-                groupingSeparator: \',\',
-                symbol: \''. $this->currency .' \'
-            });
-
-            window.i18nLang = \''. $this->lang .'\';
-
-            try { 
-                $("#titleProduct").append(\''. $product->name .'\');
-            } catch(err) {  
-            }
-
-            try { 
-                $("#titleBooking").html(\'Booking '. $product->name .'\');
-            } catch(err) {  
-            }
-
-            window.ActivityBookingWidgetConfig = {
-                currency: \''. $this->currency .'\',
-                language: \''. $this->lang .'\',
-                embedded: '.$embedded.',
-                priceFormatter: window.priceFormatter,
-                invoicePreviewUrl: \''.url('/api').'/activity/invoice-preview\',
-                addToCartUrl: \''.url('/api').'/widget/cart/session/'.$sessionId.'/activity\',
-                calendarUrl: \''.url('/api').'/activity/{id}/calendar/json/{year}/{month}\',
-                activities: [],
-                pickupPlaces: [],
-                dropoffPlaces: [],
-                showOnRequestMessage: false,
-                showCalendar: true,
-                showUpcoming: false,
-                displayOrder: \'Calendar\',
-                selectedTab: \'all\',
-                hideExtras: false,
-                showActivityList: false,
-                showFewLeftWarning: false,
-                warningThreshold: 10,
-                displayStartTimeSelectBox: false,
-                displayMessageAfterAddingToCart: false,
-                defaultCategoryMandatory: true,
-                defaultCategorySelected: true,
-                affiliateCodeFromQueryString: true,
-                affiliateParamName: \'trackingCode\',
-                affiliateCode: \'\',
-                onAfterRender: function() {
-
-                    $(".PICK_UP").hide();
-                    $("#proses").remove();
-                    '.$close_booking.'
-                },
-                onAvailabilitySelected: function(selectedRate, selectedDate, selectedAvailability) {
-                },
-                onAddedToCart: function(cart) {
-                    $(\'.btn-primary\').attr("disabled",true);
-                    $(\'.btn-primary\').html(\' <i class="fa fa-spinner fa-spin fa-fw"></i>  processing... \');
-                    window.openAppRoute(\'/booking/checkout\');    
-                },
-        
-                calendarMonth: '.$month.',
-                calendarYear: '.$year.',
-                loadingCalendar: true,
-        
-                activity: '.json_encode($content).',
-        
-                upcomingAvailabilities: [],
-        
-                firstDayAvailabilities: '.json_encode($availability).'
-            };
-           
-            ';   
-        }
-        else
-        {
-            $jscript = 'window.openAppRoute(\'/page/not/found\')'; 
-        }
-
-        return response($jscript)->header('Content-Type', 'application/javascript');
-    }
 
     public function review_jscript()
     {
@@ -1092,29 +983,72 @@ class APIController extends Controller
         return response()->json($contents);
     }
 
-    public function dayplus($range=3)
+    public function testaja()
     {
-        $datenow = date('Y-m-d');
-        $date_rev[] = $datenow;
-        
+        $mil = 1685750400000;
+        $seconds = $mil / 1000;
+        echo date("Y-m-d", $seconds);
+        //print_r($date);
+    }
+
+    public function check_seat($date,$time)
+    {
+        $seat = 0;
+        $aaa = self::raillink(6);
+        foreach($aaa as $bbb)
+        {
+            if($bbb['date']==$date)
+            {
+                if($bbb['departure']==$time)
+                {
+                    $seat = $bbb["seat"];
+                }
+                
+            }
+        }
+        return $seat;
+    }
+
+    public function date_raillink($range=6)
+    {
+
         for($i=1;$i<=$range;$i++)
         {
-            $date = strtotime($datenow);
+            $date = strtotime(date('Y-m-d'));
+            $date = strtotime("+".$i." day", $date);
+            $value[] = date('Y-m-d', $date);
+        }
+
+        return $value;
+    }
+
+    public function raillink($range)
+    {
+        for($i=1;$i<=$range;$i++)
+        {
+            $date = strtotime(date('Y-m-d'));
             $date = strtotime("+".$i." day", $date);
             $date = date('Y-m-d', $date);
-            $date_rev[] = $date;
+            
+            $raillink[] = self::check_raillink("YK","YIA",$date);
+            $raillink[] = self::check_raillink("YIA","YK",$date);
         }
         
-        return $date_rev;
+        foreach($raillink as $bbb)
+        {
+            foreach($bbb as $ccc)
+            {
+                $value[] = $ccc;
+            }
+        }
+        return $value;
     }
 
 
-    public function check_raillink()
+    public function check_raillink($org,$des,$date)
     {
         $token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoiSUJPT0siLCJjcmVhdGVkb24iOiIyMDE5LTExLTE0IDEzOjA4OjQ2In0.usU2bJ0H4RiDTaFnl7eaCsHgd07sVleaoSTTpF0glvg';
-        $org = 'YK';
-        $des = 'YIA';
-        $date = '2023-06-02';
+        
 
         $value = Cache::remember('_raillink_'. $org .'_'. $des .'_'. $date,7200, function() use ($org,$des,$date,$token)
         {
@@ -1139,6 +1073,7 @@ class APIController extends Controller
         });
 
         $response = json_decode($value);
+        
         foreach($response->response->availabilitydatalist as $a)
         {
             foreach($a->scheduleDatas as $b)
@@ -1149,6 +1084,7 @@ class APIController extends Controller
                     $dataKa[] = array(
                         'org' => $org,
                         'des' => $des,
+                        'date' => $date,
                         'departure' => $departure,
                         'seat' => $c->seatavailable,
                     );
@@ -1157,36 +1093,195 @@ class APIController extends Controller
             }
         }
         
-        print_r($dataKa);
-        exit();
-        return response()->json($value);
+        
+        return $dataKa;
     }
 
     public function snippetscalendar($activityId,$year,$month)
     {
         $contents = BookingHelper::get_calendar($activityId,$year,$month);
-        /*
-        $dayplus = self::dayplus();
+        
+        //=============================================================================
+        if($activityId==10849) {
+        $date_raillink = self::date_raillink();
+        if (in_array($contents->firstAvailableDay->fullDate, $date_raillink))
+        { 
+                $z = 0;
+                foreach($contents->firstAvailableDay->availabilities as $availability)
+                {
+                    $seat = self::check_seat($contents->firstAvailableDay->fullDate,$availability->data->startTime);
+                    if($seat<10)
+                    {
+                        unset($contents->firstAvailableDay->availabilities[$z]);
+                    }
+                    $z++;
+                }
+                $contents->firstAvailableDay->availabilities = array_values($contents->firstAvailableDay->availabilities);
+        }
+        //=============================================================================
+        
         foreach($contents->weeks as $week)
         {
-
             foreach($week->days as $day)
             {
-                if (in_array($day->fullDate, $dayplus))
+                if (in_array($day->fullDate, $date_raillink))
                 {
-                    $day->available = true;
+                    $z = 0;
+                    foreach($day->availabilities as $availability)
+                    {
+                        $seat = self::check_seat($day->fullDate,$availability->data->startTime);
+                        if($seat<10)
+                        {
+                            unset($day->availabilities[$z]);
+                        }
+                        $z++;
+                    }
+                    $day->availabilities = array_values($day->availabilities);
                 }
                 else
                 {
                     $day->available = false;
                 }
-                
             }
-        }
-        
+        }}
+        //=============================================================================
 
-        */
+        //exit();
         return response()->json($contents);
+    }
+
+    public function product_jscript($slug,$sessionId,Request $request)
+    {
+        $embedded = $request->input('embedded');
+        $product = Product::where('slug',$slug)->first();
+        if($product)
+        {
+            $content = BokunHelper::get_product($product->bokun_id);
+            $calendar = BokunHelper::get_calendar_new($content->id);
+
+            $availability = BookingHelper::get_firstAvailability($content->id,$calendar->year,$calendar->month);
+            
+            //=============================================================================
+            if($product->bokun_id==10849) {
+            $date_raillink = self::date_raillink();
+            $mil = $availability[0]['date'];
+            $seconds = $mil / 1000;
+            $fullDate = date("Y-m-d", $seconds);
+
+            if (in_array($fullDate, $date_raillink))
+            {
+                $z = 0;
+                foreach($availability[0]['availabilities'] as $aaa)
+                {
+                    $seat = self::check_seat($fullDate,$aaa->startTime);
+                    if($seat<10)
+                    {
+                        unset($availability[0]['availabilities'][$z]);
+                    }
+                    $z++;
+                }
+                $availability[0]['availabilities'] = array_values($availability[0]['availabilities']);
+            }}
+            //=============================================================================
+
+            $microtime = $availability[0]['date'];
+            $month = date("n",$microtime/1000);
+            $year = date("Y",$microtime/1000);
+
+            if($embedded=="") $embedded = "true";
+
+            $close_booking = '';
+            if($product->bokun_id==10849)
+            {
+                if(!BookingHelper::product_extend_check(7424,$sessionId))
+                {
+                    $close_booking = '$(".start-times-container").empty();$(".start-times-container").append("<div class=\"no-start-times-container\"><div class=\"alert alert-warning\">You must add the <a href=\"/tour/yogyakarta-night-walking-and-food-tours\"><b>Yogyakarta Night Walking and Food Tour</b></a> to the shopping cart first.</div></div>");';
+                }
+            }
+
+            
+            $jscript = ' 
+            
+            window.priceFormatter = new WidgetUtils.PriceFormatter({
+                currency: \''. $this->currency .'\',
+                language: \''. $this->lang .'\',
+                decimalSeparator: \'.\',
+                groupingSeparator: \',\',
+                symbol: \''. $this->currency .' \'
+            });
+
+            window.i18nLang = \''. $this->lang .'\';
+
+            try { 
+                $("#titleProduct").append(\''. $product->name .'\');
+            } catch(err) {  
+            }
+
+            try { 
+                $("#titleBooking").html(\'Booking '. $product->name .'\');
+            } catch(err) {  
+            }
+
+            window.ActivityBookingWidgetConfig = {
+                currency: \''. $this->currency .'\',
+                language: \''. $this->lang .'\',
+                embedded: '.$embedded.',
+                priceFormatter: window.priceFormatter,
+                invoicePreviewUrl: \''.url('/api').'/activity/invoice-preview\',
+                addToCartUrl: \''.url('/api').'/widget/cart/session/'.$sessionId.'/activity\',
+                calendarUrl: \''.url('/api').'/activity/{id}/calendar/json/{year}/{month}\',
+                activities: [],
+                pickupPlaces: [],
+                dropoffPlaces: [],
+                showOnRequestMessage: false,
+                showCalendar: true,
+                showUpcoming: false,
+                displayOrder: \'Calendar\',
+                selectedTab: \'all\',
+                hideExtras: false,
+                showActivityList: false,
+                showFewLeftWarning: false,
+                warningThreshold: 10,
+                displayStartTimeSelectBox: false,
+                displayMessageAfterAddingToCart: false,
+                defaultCategoryMandatory: true,
+                defaultCategorySelected: true,
+                affiliateCodeFromQueryString: true,
+                affiliateParamName: \'trackingCode\',
+                affiliateCode: \'\',
+                onAfterRender: function(selectedDate) {
+                    
+                    $(".PICK_UP").hide();
+                    $("#proses").remove();
+                    '.$close_booking.'
+                },
+                onAvailabilitySelected: function(selectedRate, selectedDate, selectedAvailability) {
+                },
+                onAddedToCart: function(cart) {
+                    $(\'.btn-primary\').attr("disabled",true);
+                    $(\'.btn-primary\').html(\' <i class="fa fa-spinner fa-spin fa-fw"></i>  processing... \');
+                    window.openAppRoute(\'/booking/checkout\');    
+                },
+        
+                calendarMonth: '.$month.',
+                calendarYear: '.$year.',
+                loadingCalendar: true,
+        
+                activity: '.json_encode($content).',
+        
+                upcomingAvailabilities: [],
+        
+                firstDayAvailabilities: '.json_encode($availability).'
+            };
+           
+            ';   
+        }
+        else
+        {
+            $jscript = 'window.openAppRoute(\'/page/not/found\')'; 
+        }
+
+        return response($jscript)->header('Content-Type', 'application/javascript');
     }
 
     public function last_order($sessionId)

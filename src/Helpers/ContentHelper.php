@@ -315,7 +315,7 @@ class ContentHelper {
         $transfer_list[] = [
                 'value' => 'bss', 'label' => 'Bank Transfer', 'image' => self::env_appAssetUrl() .'/img/payment/bank_transfer.png', 'currency' => 'idr',
             ];
-        
+
         $grouped_payment[] = [
             'label' => '',
             'options' => $transfer_list

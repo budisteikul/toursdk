@@ -993,7 +993,7 @@ class APIController extends Controller
 
     public function check_seat($date,$time)
     {
-        $seat = 0;
+        $seat = 9999;
         $aaa = self::raillink(3);
         foreach($aaa as $bbb)
         {
@@ -1129,11 +1129,13 @@ class APIController extends Controller
                     $z = 0;
                     foreach($day->availabilities as $availability)
                     {
+                        
                         $seat = self::check_seat($day->fullDate,$availability->data->startTime);
                         if($seat<30)
                         {
                             unset($day->availabilities[$z]);
                         }
+
                         $z++;
                     }
                     $day->availabilities = array_values($day->availabilities);

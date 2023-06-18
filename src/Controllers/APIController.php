@@ -1127,6 +1127,8 @@ class APIController extends Controller
             
             $jscript = ' 
             
+            console.log("Calender Start");
+
             window.priceFormatter = new WidgetUtils.PriceFormatter({
                 currency: \''. $this->currency .'\',
                 language: \''. $this->lang .'\',

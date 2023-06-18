@@ -1207,6 +1207,7 @@ class APIController extends Controller
             if($("#ActivityBookingWidget").parent().length==0)
             {
                 console.log("calendar failed");
+                window.reloadJscript();
             }
             else
             {

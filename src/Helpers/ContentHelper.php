@@ -56,8 +56,6 @@ class ContentHelper {
     public static function view_shoppingcart($shoppingcart)
     {
         
-        $shoppingcart = BookingHelper::product_extend(10849,7424,$shoppingcart);
-        
         $dataShoppingcart = array();
         $dataProducts = array();
 

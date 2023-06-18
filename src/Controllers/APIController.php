@@ -1101,54 +1101,7 @@ class APIController extends Controller
     {
         $contents = BookingHelper::get_calendar($activityId,$year,$month);
         
-        //=============================================================================
-        if($activityId==10849) {
-        $date_raillink = self::date_raillink();
-        if (in_array($contents->firstAvailableDay->fullDate, $date_raillink))
-        { 
-                $z = 0;
-                foreach($contents->firstAvailableDay->availabilities as $availability)
-                {
-                    $seat = self::check_seat($contents->firstAvailableDay->fullDate,$availability->data->startTime);
-                    if($seat<30)
-                    {
-                        unset($contents->firstAvailableDay->availabilities[$z]);
-                    }
-                    $z++;
-                }
-                $contents->firstAvailableDay->availabilities = array_values($contents->firstAvailableDay->availabilities);
-        }
-        //=============================================================================
         
-        foreach($contents->weeks as $week)
-        {
-            foreach($week->days as $day)
-            {
-                if (in_array($day->fullDate, $date_raillink))
-                {
-                    $z = 0;
-                    foreach($day->availabilities as $availability)
-                    {
-                        
-                        $seat = self::check_seat($day->fullDate,$availability->data->startTime);
-                        if($seat<30)
-                        {
-                            unset($day->availabilities[$z]);
-                        }
-
-                        $z++;
-                    }
-                    $day->availabilities = array_values($day->availabilities);
-                }
-                else
-                {
-                    $day->available = false;
-                }
-            }
-        }}
-        //=============================================================================
-
-        //exit();
         return response()->json($contents);
     }
 
@@ -1163,43 +1116,13 @@ class APIController extends Controller
 
             $availability = BookingHelper::get_firstAvailability($content->id,$calendar->year,$calendar->month);
             
-            //=============================================================================
-            if($product->bokun_id==10849) {
-            $date_raillink = self::date_raillink();
-            $mil = $availability[0]['date'];
-            $seconds = $mil / 1000;
-            $fullDate = date("Y-m-d", $seconds);
-
-            if (in_array($fullDate, $date_raillink))
-            {
-                $z = 0;
-                foreach($availability[0]['availabilities'] as $aaa)
-                {
-                    $seat = self::check_seat($fullDate,$aaa->startTime);
-                    if($seat<30)
-                    {
-                        unset($availability[0]['availabilities'][$z]);
-                    }
-                    $z++;
-                }
-                $availability[0]['availabilities'] = array_values($availability[0]['availabilities']);
-            }}
-            //=============================================================================
-
             $microtime = $availability[0]['date'];
             $month = date("n",$microtime/1000);
             $year = date("Y",$microtime/1000);
 
             if($embedded=="") $embedded = "true";
 
-            $close_booking = '';
-            if($product->bokun_id==10849)
-            {
-                if(!BookingHelper::product_extend_check(7424,$sessionId))
-                {
-                    $close_booking = '$(".start-times-container").empty();$(".start-times-container").append("<div class=\"no-start-times-container\"><div class=\"alert alert-warning\">You must add the <a href=\"/tour/yogyakarta-night-walking-and-food-tours\"><b>Yogyakarta Night Walking and Food Tour</b></a> to the shopping cart first.</div></div>");';
-                }
-            }
+            
 
             
             $jscript = ' 
@@ -1255,7 +1178,6 @@ class APIController extends Controller
                     
                     $(".PICK_UP").hide();
                     $("#proses").remove();
-                    '.$close_booking.'
                 },
                 onAvailabilitySelected: function(selectedRate, selectedDate, selectedAvailability) {
                 },

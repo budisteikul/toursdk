@@ -1127,7 +1127,7 @@ class APIController extends Controller
             
             $jscript = ' 
             
-            console.log("Calendar Start");
+            
 
             window.priceFormatter = new WidgetUtils.PriceFormatter({
                 currency: \''. $this->currency .'\',
@@ -1137,11 +1137,11 @@ class APIController extends Controller
                 symbol: \''. $this->currency .' \'
             });
 
-            console.log("Calendar PriceFormatter");
+            
 
             window.i18nLang = \''. $this->lang .'\';
 
-            console.log("Calendar Lang");
+            
 
             try { 
                 $("#titleProduct").append(\''. $product->name .'\');
@@ -1204,7 +1204,14 @@ class APIController extends Controller
                 firstDayAvailabilities: '.json_encode($availability).'
             };
             
-            console.log("Calendar Finish");
+            if($("#ActivityBookingWidget").parent().length==0)
+            {
+                console.log("calendar failed");
+            }
+            else
+            {
+                console.log("calendar success");
+            }
 
             ';   
         }

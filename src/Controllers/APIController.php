@@ -1206,13 +1206,9 @@ class APIController extends Controller
             
             if($("#ActivityBookingWidget").parent().length==0)
             {
-                console.log("calendar failed");
                 window.reloadJscript();
             }
-            else
-            {
-                console.log("calendar success");
-            }
+            
 
             ';   
         }
@@ -2304,7 +2300,7 @@ class APIController extends Controller
                                     $(\'#alert-payment\').fadeIn("slow");
                                 }
                             }).fail(function(error) {
-                                console.log(error);
+                                
                             });
 
                     });
@@ -2371,7 +2367,7 @@ class APIController extends Controller
                                     $(\'#alert-payment\').fadeIn("slow");
                                 }
                             }).fail(function(error) {
-                                console.log(error);
+                                
                             });
 
                     });

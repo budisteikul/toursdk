@@ -336,13 +336,13 @@ class ContentHelper {
 
         if(env('PAYPAL_INTENT')=="CAPTURE")
         {
-            $paypal_sdk = 'https://www.paypal.com/sdk/js?client-id='.self::env_paypalClientId().'&currency='. self::env_paypalCurrency().'&disable-funding=card';
-            //$paypal_sdk = 'https://www.paypal.com/sdk/js?client-id='.self::env_paypalClientId().'&currency='. self::env_paypalCurrency().'';
+            //$paypal_sdk = 'https://www.paypal.com/sdk/js?client-id='.self::env_paypalClientId().'&currency='. self::env_paypalCurrency().'&disable-funding=card';
+            $paypal_sdk = 'https://www.paypal.com/sdk/js?client-id='.self::env_paypalClientId().'&currency='. self::env_paypalCurrency().'';
         }
         else
         {
-            $paypal_sdk = 'https://www.paypal.com/sdk/js?client-id='.self::env_paypalClientId().'&intent=authorize&currency='. self::env_paypalCurrency().'&disable-funding=card';
-            //$paypal_sdk = 'https://www.paypal.com/sdk/js?client-id='.self::env_paypalClientId().'&intent=authorize&currency='. self::env_paypalCurrency().'';
+            //$paypal_sdk = 'https://www.paypal.com/sdk/js?client-id='.self::env_paypalClientId().'&intent=authorize&currency='. self::env_paypalCurrency().'&disable-funding=card';
+            $paypal_sdk = 'https://www.paypal.com/sdk/js?client-id='.self::env_paypalClientId().'&intent=authorize&currency='. self::env_paypalCurrency().'';
         }
         
 

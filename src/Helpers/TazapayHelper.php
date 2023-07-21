@@ -63,7 +63,6 @@ class TazapayHelper {
                 $data->bank_code = "";
                 $data->bank_country = "SG";
                 $data->bank_payment_type = "qrcode";
-                //$data->bank_provider = "rapyd";
                 $data->bank_provider = "reddotpay";
                 $data->bank_payment_method = "sg_paynow_bank";
                 $data->bank_payment_name = "PayNow QR";
@@ -189,7 +188,6 @@ class TazapayHelper {
         
         $response_json->status = $status_json;
         $response_json->data = $data_json;
-        
         
         return $response_json;
     }

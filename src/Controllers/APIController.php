@@ -469,14 +469,7 @@ class APIController extends Controller
                     //VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
                     BookingHelper::set_bookingStatus($sessionId,'PENDING');
                     BookingHelper::set_confirmationCode($sessionId);
-                    $response = BookingHelper::create_payment($sessionId,"rapyd","paynow");
-                break;
-
-                case 'sg_qr':
-                    //VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
-                    BookingHelper::set_bookingStatus($sessionId,'PENDING');
-                    BookingHelper::set_confirmationCode($sessionId);
-                    $response = BookingHelper::create_payment($sessionId,"rapyd","paynow");
+                    $response = BookingHelper::create_payment($sessionId,"tazapay","paynow");
                 break;
 
                 case 'fast':
@@ -522,13 +515,6 @@ class APIController extends Controller
                 break;
 
                 case 'promptpay':
-                    //VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
-                    BookingHelper::set_bookingStatus($sessionId,'PENDING');
-                    BookingHelper::set_confirmationCode($sessionId);
-                    $response = BookingHelper::create_payment($sessionId,"tazapay","promptpay");
-                break;
-
-                case 'th_qr':
                     //VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
                     BookingHelper::set_bookingStatus($sessionId,'PENDING');
                     BookingHelper::set_confirmationCode($sessionId);

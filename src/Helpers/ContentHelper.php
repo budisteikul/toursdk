@@ -301,8 +301,7 @@ class ContentHelper {
         $sgd_total = BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'SGD');
         //$sgd_discount = $sgd_total - ($sgd_total * 10 / 100);
 
-        //$aud_total = BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'AUD');
-        //$aud_discount = $aud_total - ($aud_total * 10 / 100);
+        $thb_total = BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'THB');
 
         //================================================
         
@@ -311,7 +310,11 @@ class ContentHelper {
             ];
 
         $transfer_list[] = [
-                'value' => 'permata', 'label' => 'Bank Transfer', 'image' => self::env_appAssetUrl() .'/img/payment/bank_transfer.png', 'currency' => 'idr',
+                'value' => 'paynow', 'label' => 'PayNow QR', 'image' => self::env_appAssetUrl() .'/img/payment/paynow.png', 'currency' => 'sgd',
+            ];
+
+        $transfer_list[] = [
+                'value' => 'promptpay', 'label' => 'PromptPay', 'image' => self::env_appAssetUrl() .'/img/payment/promptpay.png', 'currency' => 'thb',
             ];
 
         $grouped_payment[] = [
@@ -407,6 +410,12 @@ class ContentHelper {
                 'sgd_total' => GeneralHelper::numberFormat($sgd_total,'SGD'),
                 'sgd_rate' => BookingHelper::text_rate($shoppingcart,'SGD'),
                 'sgd_text' => 'SGD '. GeneralHelper::numberFormat($sgd_total,'SGD'),
+                //'sgd_text' => 'SGD <strike style="text-decoration-thickness: 3px; text-decoration-color: #ff0000;">'. GeneralHelper::numberFormat($sgd_total,'SGD') .'</strike> '. GeneralHelper::numberFormat($sgd_discount,'SGD'),
+
+                'thb_currency' => 'THB',
+                'thb_total' => GeneralHelper::numberFormat($thb_total,'THB'),
+                'thb_rate' => BookingHelper::text_rate($shoppingcart,'THB'),
+                'thb_text' => 'THB '. GeneralHelper::numberFormat($thb_total,'THB'),
                 //'sgd_text' => 'SGD <strike style="text-decoration-thickness: 3px; text-decoration-color: #ff0000;">'. GeneralHelper::numberFormat($sgd_total,'SGD') .'</strike> '. GeneralHelper::numberFormat($sgd_discount,'SGD'),
 
                 //'aud_currency' => 'AUD',

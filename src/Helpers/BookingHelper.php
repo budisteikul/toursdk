@@ -2698,9 +2698,10 @@ class BookingHelper {
 									<div class="row h-100">
    										<div class="col-12 text-center">
    											
+   											<img class="img-fluid border border-white mt-2" alt="PROMPTPAY LOGO" style="max-width:250px; height:45px; image-rendering: -webkit-optimize-contrast;" src="'.self::env_appAssetUrl().'/img/payment/paynow-logo.png">
    											<br />
-    										<img id="paynow-img" class="img-fluid border border-white" alt="PAYNOW" style="max-width:250px;" src="'. self::generate_qrcode($shoppingcart) .' ">
-    										<br /><br />
+    										<img id="paynow-img" class="img-fluid border border-white" alt="PAYNOW" style="width:194px; margin-bottom:10px;" src="'. self::generate_qrcode($shoppingcart) .' ">
+    										<br />
     										<span><strong>Amount :</strong> '. $shoppingcart->shoppingcart_payment->currency .' '. $shoppingcart->shoppingcart_payment->amount .'</span>
    										</div>
 
@@ -2726,10 +2727,10 @@ class BookingHelper {
 								<div class="card-img-overlay">
 									<div class="row h-100">
    										<div class="col-12 text-center">
-   											<br />
+   											
    											<img class="img-fluid border border-white mt-2" alt="PROMPTPAY LOGO" style="max-width:250px; height:45px; image-rendering: -webkit-optimize-contrast;" src="'.self::env_appAssetUrl().'/img/payment/promptpay-logo.png">
    											<br />
-    										<img id="promptpay-img" class="img-fluid border border-white" alt="PROMPTPAY" style="width:194px;" src="'. self::generate_qrcode($shoppingcart) .' ">
+    										<img id="promptpay-img" class="img-fluid border border-white" alt="PROMPTPAY" style="width:194px; margin-bottom:10px; margin-top:5px;" src="'. self::generate_qrcode($shoppingcart) .' ">
     										<br />
     										<span><strong>Amount :</strong> '. $shoppingcart->shoppingcart_payment->currency .' '. $shoppingcart->shoppingcart_payment->amount .'</span>
    										</div>
@@ -2897,10 +2898,11 @@ class BookingHelper {
 
 	public static function generate_qrcode($shoppingcart)
 	{
-		if($shoppingcart->shoppingcart_payment->bank_name=="qris")
-		{
+		//if($shoppingcart->shoppingcart_payment->bank_name=="qris")
+		//{
 			$qrcode = QrCode::errorCorrection('H')->format('png')->margin(0)->size(630)->generate($shoppingcart->shoppingcart_payment->qrcode);
 			return 'data:image/png;base64, '. base64_encode($qrcode);
+		/*
 		}
 		else if($shoppingcart->shoppingcart_payment->bank_name=="promptpay")
 		{
@@ -2910,7 +2912,7 @@ class BookingHelper {
 		{
 			return $shoppingcart->shoppingcart_payment->qrcode;
 		}
-		
+		*/
 	}
 
 	/*

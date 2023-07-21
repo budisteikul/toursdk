@@ -93,8 +93,7 @@ class TazapayHelper {
         $status_json = new \stdClass();
         $response_json = new \stdClass();
         
-        $data->transaction->mins_expired = 5;
-        $data->transaction->date_expired = Carbon::parse($data->transaction->date_now)->addMinutes($data->transaction->mins_expired);
+        
 
         $body = [
             'email' => $data->contact->email,
@@ -161,16 +160,20 @@ class TazapayHelper {
         
         if($payment->bank_payment_type=="qrcode")
         {
-            
+            $data->transaction->mins_expired = 60;
+
             if($data->transaction->bank=="paynow")
             {
                 $qrcode = $tazapay['data']['reddotpay']['sgqr_string'];
+                $data->transaction->mins_expired = 60;
+                
             }
             if($data->transaction->bank=="promptpay")
             {
                 $qrcode = $tazapay['data']['xendit']['payment_method']['qr_code']['channel_properties']['qr_string'];
+                $data->transaction->mins_expired = 5;
+                
             }
-
 
             $data_json->payment_type = 'qrcode';
             $data_json->qrcode = $qrcode;
@@ -179,8 +182,9 @@ class TazapayHelper {
 
         $data_json->bank_name = $payment->bank_name;
         $data_json->bank_code = $payment->bank_code;
-            
-        $data_json->expiration_date = $data->transaction->date_expired;
+        
+
+        $data_json->expiration_date = Carbon::parse($data->transaction->date_now)->addMinutes($data->transaction->mins_expired);
         $data_json->order_id = $txn_no;
 
         $status_json->id = '1';

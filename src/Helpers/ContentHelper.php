@@ -314,7 +314,7 @@ class ContentHelper {
             ];
 
         $transfer_list[] = [
-                'value' => 'promptpay', 'label' => 'PromptPay', 'image' => self::env_appAssetUrl() .'/img/payment/promptpay.png', 'currency' => 'thb',
+                'value' => 'promptpay', 'label' => 'PromptPay QR', 'image' => self::env_appAssetUrl() .'/img/payment/promptpay.png', 'currency' => 'thb',
             ];
 
         $grouped_payment[] = [
@@ -390,7 +390,7 @@ class ContentHelper {
 
                 // Local Payment Currency
                 
-                'localpayment_label' => '<strong class="mb-1">Local Payments</strong>',
+                'localpayment_label' => '<strong class="mb-1">QR Code Payments</strong>',
                 
                 /*
                 'localpayment_label' => '<strong class="mb-1">QR Payment</strong>

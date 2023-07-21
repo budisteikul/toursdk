@@ -68,23 +68,13 @@ class TazapayHelper {
                 $data->bank_payment_method = "sg_paynow_bank";
                 $data->bank_payment_name = "PayNow QR";
             break;
-            case "poli":
-                $data->bank_name = "poli";
-                $data->bank_code = "";
-                $data->bank_country = "AU";
-                $data->bank_payment_method = "au_bank_poli_aud";
-                $data->bank_payment_type = "bank_redirect";
-                $data->bank_provider = "finmo";
-            break;
             case "promptpay":
                 $data->bank_name = "promptpay";
                 $data->bank_code = "";
                 $data->bank_country = "TH";
                 $data->bank_payment_type = "qrcode";
-                //$data->bank_provider = "rapyd";
-                //$data->bank_payment_method = "th_thaipromptpayqr_bank";
-                $data->bank_provider = "finmo";
-                $data->bank_payment_method = "th_bank_promptpaycash_thb";
+                $data->bank_provider = "xendit";
+                $data->bank_payment_method = "PROMPTPAY";
                 $data->bank_payment_name = "PromptPay QR";
             break;
             default:
@@ -104,7 +94,7 @@ class TazapayHelper {
         $status_json = new \stdClass();
         $response_json = new \stdClass();
         
-        $data->transaction->mins_expired = 60;
+        $data->transaction->mins_expired = 5;
         $data->transaction->date_expired = Carbon::parse($data->transaction->date_now)->addMinutes($data->transaction->mins_expired);
 
         $body = [
@@ -117,8 +107,6 @@ class TazapayHelper {
 
         $tazapay = self::make_request('POST','/v1/user',$body);
         
-
-
         $body = [
             'txn_type' => 'service',
             'release_mechanism' => 'marketplace',
@@ -133,7 +121,6 @@ class TazapayHelper {
 
         $tazapay = self::make_request('POST','/v1/escrow/',$body);
         
-        //print_r($body);
         //print_r($tazapay);
 
         $txn_no = $tazapay['data']['txn_no'];
@@ -147,8 +134,9 @@ class TazapayHelper {
 
         $tazapay = self::make_request('POST','/v1/session/payment',$body);
         
+        $payment_link = $tazapay['data']['redirect_url'];
+
         //print_r($tazapay);
-        
 
         $redirect_url = $tazapay['data']['redirect_url'];
         $redirect_url_array = explode("/",$redirect_url);
@@ -161,34 +149,35 @@ class TazapayHelper {
         $body = [
                 'escrow_id' => $tazapay['data']['escrow_id'],
                 'payment_method' => $payment->bank_payment_method,
-                'redirect' => $redirect_url,
                 'provider' => $payment->bank_provider,
                 'currency' => $data->transaction->currency,
-                'document' => null,
-                'is_first_payment' => false,
-                'redirect' => self::env_appUrl() . $data->transaction->finish_url
+                'redirect' => self::env_appUrl() . $data->transaction->finish_url,
+                'payment_link' => $payment_link,
+                'abort_url' => self::env_appUrl() . $data->transaction->finish_url,
         ];
 
         $tazapay = self::make_request('POST','/v1/escrow/payment',$body,$tazapay['data']['session_token']);
         
         //print_r($tazapay);
         
-        
-
         if($payment->bank_payment_type=="qrcode")
         {
-            $qrcode = $tazapay['data']['qr_code'];
+            
+            if($data->transaction->bank=="paynow")
+            {
+                $qrcode = $tazapay['data']['reddotpay']['sgqr_string'];
+            }
+            if($data->transaction->bank=="promptpay")
+            {
+                $qrcode = $tazapay['data']['xendit']['payment_method']['qr_code']['channel_properties']['qr_string'];
+            }
+
+
             $data_json->payment_type = 'qrcode';
             $data_json->qrcode = $qrcode;
             $data_json->redirect = $data->transaction->finish_url;
         }
 
-        if($payment->bank_payment_type=="bank_redirect")
-        {
-            $data_json->payment_type = 'bank_redirect';
-            $data_json->redirect = $tazapay['data']['bank_redirect'];
-        }
-        
         $data_json->bank_name = $payment->bank_name;
         $data_json->bank_code = $payment->bank_code;
             
@@ -200,6 +189,7 @@ class TazapayHelper {
         
         $response_json->status = $status_json;
         $response_json->data = $data_json;
+        
         
         return $response_json;
     }

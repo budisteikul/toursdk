@@ -310,32 +310,33 @@ class ContentHelper {
             ];
 
         $transfer_list[] = [
-                'value' => 'paynow', 'label' => 'PayNow QR', 'image' => self::env_appAssetUrl() .'/img/payment/paynow.png', 'currency' => 'sgd',
-            ];
-
-        $transfer_list[] = [
-                'value' => 'promptpay', 'label' => 'PromptPay QR', 'image' => self::env_appAssetUrl() .'/img/payment/promptpay.png', 'currency' => 'thb',
+                'value' => 'permata', 'label' => 'Bank Transfer', 'image' => self::env_appAssetUrl() .'/img/payment/bank_transfer.png', 'currency' => 'idr',
             ];
 
         $grouped_payment[] = [
-            'label' => '',
+            'label' => 'INDONESIA',
             'options' => $transfer_list
         ];
 
-        /*
+        
         $singapore_list[] = [
                 'value' => 'paynow', 'label' => 'PayNow QR', 'image' => self::env_appAssetUrl() .'/img/payment/paynow.png', 'currency' => 'sgd',
-            ];
-
-        $singapore_list[] = [
-                'value' => 'fast', 'label' => 'FAST Transfer', 'image' => self::env_appAssetUrl() .'/img/payment/fast.png', 'currency' => 'sgd',
             ];
 
         $grouped_payment[] = [
             'label' => 'SINGAPORE',
             'options' => $singapore_list
         ];
-        */
+
+        $thailand_list[] = [
+                'value' => 'promptpay', 'label' => 'PromptPay QR', 'image' => self::env_appAssetUrl() .'/img/payment/promptpay.png', 'currency' => 'thb',
+            ];
+
+        $grouped_payment[] = [
+            'label' => 'THAILAND',
+            'options' => $thailand_list
+        ];
+        
 
         if(env('PAYPAL_INTENT')=="CAPTURE")
         {

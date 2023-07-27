@@ -160,19 +160,16 @@ class TazapayHelper {
         
         if($payment->bank_payment_type=="qrcode")
         {
-            $data->transaction->mins_expired = 60;
+            $data->transaction->mins_expired = 5;
 
             if($data->transaction->bank=="paynow")
             {
                 $qrcode = $tazapay['data']['reddotpay']['sgqr_string'];
-                $data->transaction->mins_expired = 60;
                 
             }
             if($data->transaction->bank=="promptpay")
             {
                 $qrcode = $tazapay['data']['xendit']['payment_method']['qr_code']['channel_properties']['qr_string'];
-                $data->transaction->mins_expired = 5;
-                
             }
 
             $data_json->payment_type = 'qrcode';

@@ -106,7 +106,7 @@ class MidtransHelper {
         $response_json = new \stdClass();
 
         $payment = self::bankCode($data->transaction->bank);
-        $data->transaction->mins_expired = 60;
+        $data->transaction->mins_expired = 5;
         $data->transaction->date_expired = Carbon::parse($data->transaction->date_now)->addMinutes($data->transaction->mins_expired);
 
         if($payment->bank_payment_type=="permata_va")

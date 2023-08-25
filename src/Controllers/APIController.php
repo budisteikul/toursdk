@@ -42,12 +42,13 @@ use Stripe;
 class APIController extends Controller
 {
     
-    public function __construct()
+    public function __construct(Request $request)
     {
         $this->currency = env("BOKUN_CURRENCY");
         $this->lang = env("BOKUN_LANG");
         $this->midtransServerKey = env("MIDTRANS_SERVER_KEY");
         $this->appAssetUrl = env("APP_ASSET_URL");
+        $this->referer = $request->header('referer');
     }
 
     
@@ -59,7 +60,8 @@ class APIController extends Controller
         return response()->json([
             'message' => 'success',
             'json_ld' => $json_ld,
-            'categories' => $categories
+            'categories' => $categories,
+            'referer' => $this->referer
         ], 200);
     }
 

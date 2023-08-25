@@ -644,14 +644,14 @@ class APIController extends Controller
     }
 
     
-
+    
 
  
     public function categories()
     {
-
-        $dataObj = ContentHelper::view_categories();
-
+        //$dataObj = ContentHelper::view_categories();
+        $category = Category::where('slug','jogja-food-tour')->firstOrFail();
+        $dataObj = ContentHelper::view_category($category);
         return response()->json([
             'message' => 'success',
             'categories' => $dataObj

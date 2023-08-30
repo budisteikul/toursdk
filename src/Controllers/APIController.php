@@ -999,7 +999,7 @@ class APIController extends Controller
     public function date_raillink($range=6)
     {
 
-        for($i=1;$i<=$range;$i++)
+        for($i=0;$i<=$range;$i++)
         {
             $date = strtotime(date('Y-m-d'));
             $date = strtotime("+".$i." day", $date);
@@ -1011,7 +1011,8 @@ class APIController extends Controller
 
     public function raillink($range)
     {
-        for($i=1;$i<=$range;$i++)
+        $raillink = [];
+        for($i=0;$i<=$range;$i++)
         {
             $date = strtotime(date('Y-m-d'));
             $date = strtotime("+".$i." day", $date);
@@ -1030,6 +1031,7 @@ class APIController extends Controller
 
         }
         
+        $value = [];
         foreach($raillink as $bbb)
         {
             foreach($bbb as $ccc)

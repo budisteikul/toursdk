@@ -1033,6 +1033,7 @@ class APIController extends Controller
             {
                 $raillink[] = $aaa;
             }
+
             $aaa = self::check_raillink("YIA","YK",$date);
             if($aaa!="")
             {
@@ -1057,27 +1058,22 @@ class APIController extends Controller
     {
         $token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoiSUJPT0siLCJjcmVhdGVkb24iOiIyMDE5LTExLTE0IDEzOjA4OjQ2In0.usU2bJ0H4RiDTaFnl7eaCsHgd07sVleaoSTTpF0glvg';
         
-        
 
         $value = Cache::remember('_raillink_'. $org .'_'. $des .'_'. $date,7200, function() use ($org,$des,$date,$token)
         {
             $ch = curl_init();
-            curl_setopt($ch, CURLOPT_VERBOSE, true);
+            
             curl_setopt($ch, CURLOPT_RETURNTRANSFER,true);
-            curl_setopt($ch, CURLOPT_URL, "https://103.54.225.110:8001/api/service/artsmidapp/middleware/schedule/arts_getschedule?org=".$org."&des=".$des."&date=".$date);
+            curl_setopt($ch, CURLOPT_URL, "https://reservation.railink.co.id:8001/api/service/artsmidapp/middleware/schedule/arts_getschedule?org=".$org."&des=".$des."&date=".$date);
 
             $headerArray[] = "Token: ". $token;
 
             curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET"); 
             curl_setopt($ch, CURLOPT_HTTPHEADER, $headerArray);
-        
+            curl_setopt($ch, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4 );
+            
             $response = curl_exec($ch);
             
-            
-
-            if($response === false){
-                echo 'Curl error: ' . curl_error($ch);
-            }
             curl_close ($ch);
             
             return $response;
@@ -1089,24 +1085,24 @@ class APIController extends Controller
         
         if($response->status!=10)
         {
-        foreach($response->response->availabilitydatalist as $a)
-        {
-            foreach($a->scheduleDatas as $b)
+            foreach($response->response->availabilitydatalist as $a)
             {
-                $departure  = substr($b->stopdeparture,0,2) .":". substr($b->stopdeparture,-2);
-                foreach($b->allocationDatas as $c)
+                foreach($a->scheduleDatas as $b)
                 {
-                    $dataKa[] = array(
-                        'org' => $org,
-                        'des' => $des,
-                        'date' => $date,
-                        'departure' => $departure,
-                        'seat' => $c->seatavailable,
-                    );
-                }
+                    $departure  = substr($b->stopdeparture,0,2) .":". substr($b->stopdeparture,-2);
+                    foreach($b->allocationDatas as $c)
+                    {
+                        $dataKa[] = array(
+                            'org' => $org,
+                            'des' => $des,
+                            'date' => $date,
+                            'departure' => $departure,
+                            'seat' => $c->seatavailable,
+                        );
+                    }
                 
+                }
             }
-        }
         }
         
         return $dataKa;
@@ -1223,7 +1219,6 @@ class APIController extends Controller
                         if($seat<1)
                         {
                             unset($availability[0]['availabilities'][$z]);
-                            
                         }
                         $z++;
                         $totalseat = $totalseat + $seat;

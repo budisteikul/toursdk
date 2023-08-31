@@ -1,7 +1,7 @@
 <?php
 
 	// API
-	Route::get('/api/home', 'budisteikul\toursdk\Controllers\APIController@categories');
+	Route::get('/api/home', 'budisteikul\toursdk\Controllers\APIController@home');
 	Route::get('/api/{sessionId}/navbar', 'budisteikul\toursdk\Controllers\APIController@navbar');
 	Route::get('/api/tawkto/{id}', 'budisteikul\toursdk\Controllers\APIController@tawkto');
 

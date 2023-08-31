@@ -1064,7 +1064,7 @@ class APIController extends Controller
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_VERBOSE, true);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER,true);
-            curl_setopt($ch, CURLOPT_URL, "https://reservation.railink.co.id:8001/api/service/artsmidapp/middleware/schedule/arts_getschedule?org=".$org."&des=".$des."&date=".$date);
+            curl_setopt($ch, CURLOPT_URL, "https://103.54.225.110:8001/api/service/artsmidapp/middleware/schedule/arts_getschedule?org=".$org."&des=".$des."&date=".$date);
 
             $headerArray[] = "Token: ". $token;
 

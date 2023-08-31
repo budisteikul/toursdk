@@ -1109,7 +1109,7 @@ class APIController extends Controller
         // Railink
         //=============================================================================
         if($activityId==10786) {
-
+        if(isset($contents->firstAvailableDay->fullDate)){
         $date_raillink = self::date_raillink();
         if (in_array($contents->firstAvailableDay->fullDate, $date_raillink))
         { 
@@ -1136,6 +1136,7 @@ class APIController extends Controller
 
                 $contents->firstAvailableDay->availabilities = array_values($contents->firstAvailableDay->availabilities);
         }
+
         //=============================================================================
         foreach($contents->weeks as $week)
         {
@@ -1172,7 +1173,7 @@ class APIController extends Controller
                     $day->available = false;
                 }
             }
-        }}
+        }}}
         //=============================================================================
         // Railink
 

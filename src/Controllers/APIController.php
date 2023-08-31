@@ -1070,8 +1070,9 @@ class APIController extends Controller
 
             curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET"); 
             curl_setopt($ch, CURLOPT_HTTPHEADER, $headerArray);
+            curl_setopt($ch,CURLOPT_SSL_VERIFYPEER, false);
             curl_setopt($ch, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4 );
-            
+
             $response = curl_exec($ch);
             
             curl_close ($ch);

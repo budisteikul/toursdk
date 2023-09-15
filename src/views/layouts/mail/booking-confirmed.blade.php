@@ -171,7 +171,7 @@ table.body .article {
                     <span class="apple-link" style="color: #999999; font-size: 12px; text-align: center;">
                       {{env('APP_NAME')}}<br>
                       
-                      Website : www.vertikaltrip.com<br>
+                      Website : www.jogjafoodtour.com<br>
                       Whatsapp : +6285743112112<br>
                       Email : guide@vertikaltrip.com<br>
                     </span>

@@ -23,6 +23,6 @@ The {{env('APP_NAME')}} team
 
 
 {{env('APP_NAME')}}
-Website : www.vertikaltrip.com
+Website : www.jogjafoodtour.com
 Whatsapp : +6285743112112
 Email : guide@vertikaltrip.com

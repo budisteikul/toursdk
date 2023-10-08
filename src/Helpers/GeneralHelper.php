@@ -3,6 +3,8 @@ namespace budisteikul\toursdk\Helpers;
 
 class GeneralHelper {
 
+    
+
     public static function get_string_between($string, $start, $end){
         $string = ' ' . $string;
         $ini = strpos($string, $start);

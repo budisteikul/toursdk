@@ -1307,7 +1307,7 @@ class APIController extends Controller
                 onAddedToCart: function(cart) {
                     $(\'.btn-primary\').attr("disabled",true);
                     $(\'.btn-primary\').html(\' <i class="fa fa-spinner fa-spin fa-fw"></i>  processing... \');
-                    window.openAppRoute(\'/booking/checkout\');    
+                    window.openAppRoute(\'/booking/checkout\');
                 },
         
                 calendarMonth: '.$month.',

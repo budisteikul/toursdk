@@ -1308,6 +1308,7 @@ class APIController extends Controller
                     $(\'.btn-primary\').attr("disabled",true);
                     $(\'.btn-primary\').html(\' <i class="fa fa-spinner fa-spin fa-fw"></i>  processing... \');
                     window.openAppRoute(\'/booking/checkout\');
+                    return;
                 },
         
                 calendarMonth: '.$month.',

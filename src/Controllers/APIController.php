@@ -1305,8 +1305,8 @@ class APIController extends Controller
                 onAvailabilitySelected: function(selectedRate, selectedDate, selectedAvailability) {
                 },
                 onAddedToCart: function(cart) {
-                    $(\'.btn-primary\').attr("disabled",true);
-                    $(\'.btn-primary\').html(\' <i class="fa fa-spinner fa-spin fa-fw"></i>  processing... \');
+                    // $(\'.btn-primary\').attr("disabled",true);
+                    // $(\'.btn-primary\').html(\' <i class="fa fa-spinner fa-spin fa-fw"></i>  processing... \');
                     window.openAppRoute(\'/booking/checkout\');
                 },
         

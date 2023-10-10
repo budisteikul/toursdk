@@ -122,10 +122,10 @@ class WiseHelper {
         $data->type = 'indonesian';
         $data->ownedByCustomer = true;
         
-        $data->details->legalType = 'BUSINESS';
+        $data->details->legalType = 'PRIVATE';
         $data->details->bankCode = $bankCode;
         $data->details->accountNumber = $accountNumber;
-        $data->details->email = 'corporate@vertikaltrip.com';
+        $data->details->email = '';
 
         $data->details->address->country = 'ID';
         $data->details->address->countryCode = 'ID';

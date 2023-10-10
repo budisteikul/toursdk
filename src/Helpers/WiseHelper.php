@@ -125,7 +125,7 @@ class WiseHelper {
         $data->details->legalType = 'BUSINESS';
         $data->details->bankCode = $bankCode;
         $data->details->accountNumber = $accountNumber;
-        $data->details->email = '';
+        $data->details->email = 'corporate@vertikaltrip.com';
 
         $data->details->address->country = 'ID';
         $data->details->address->countryCode = 'ID';

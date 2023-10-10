@@ -122,7 +122,7 @@ class WiseHelper {
         $data->type = 'indonesian';
         $data->ownedByCustomer = true;
         
-        $data->details->legalType = 'PRIVATE';
+        $data->details->legalType = 'BUSINESS';
         $data->details->bankCode = $bankCode;
         $data->details->accountNumber = $accountNumber;
         $data->details->email = '';

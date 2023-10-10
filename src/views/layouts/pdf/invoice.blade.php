@@ -218,7 +218,7 @@ footer {
                           <strong style="font-size:18px;">{{env('APP_NAME')}}</strong>
                         </div>
                         <div>Perum Guwosari Blok XII No.190</div>
-                        <div>Jalan Abiyoso VII</div>
+                        
                         <div>Bantul D.I Yogyakarta 55751 ID</div>
                         <div>Phone : +62 857 4311-2112</div>
                         <div>Email : guide@vertikaltrip.com</div>

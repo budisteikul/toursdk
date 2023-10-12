@@ -2,9 +2,8 @@
 namespace budisteikul\toursdk\Helpers;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\Exception\UnsatisfiedDependencyException;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Cache;
 use budisteikul\toursdk\Helpers\GeneralHelper;
+use Carbon\Carbon;
 
 class XenditHelper {
 
@@ -27,6 +26,9 @@ class XenditHelper {
         $data_json = new \stdClass();
         $status_json = new \stdClass();
         $response_json = new \stdClass();
+
+        $data->transaction->mins_expired = 5;
+        $data->transaction->date_expired = Carbon::parse($data->transaction->date_now)->addMinutes($data->transaction->mins_expired);
 
         if($data->transaction->bank=="dana")
         {
@@ -97,6 +99,8 @@ class XenditHelper {
                 $status_json->message = 'success';
             }
         }
+
+        $data_json->expiration_date = $data->transaction->date_expired;
         
         $response_json->status = $status_json;
         $response_json->data = $data_json;

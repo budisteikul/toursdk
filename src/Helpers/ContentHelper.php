@@ -306,12 +306,12 @@ class ContentHelper {
         //================================================
         
         $transfer_list[] = [
-                'value' => 'qris', 'label' => 'QRIS', 'image' => self::env_appAssetUrl() .'/img/payment/qris.png', 'currency' => 'idr',
+                'value' => 'xendit_qris', 'label' => 'QRIS', 'image' => self::env_appAssetUrl() .'/img/payment/qris.png', 'currency' => 'idr',
             ];
 
         
         $transfer_list[] = [
-                'value' => 'permata', 'label' => 'Bank Transfer', 'image' => self::env_appAssetUrl() .'/img/payment/bank_transfer.png', 'currency' => 'idr',
+                'value' => 'bss', 'label' => 'Bank Transfer', 'image' => self::env_appAssetUrl() .'/img/payment/bank_transfer.png', 'currency' => 'idr',
             ];
         
             

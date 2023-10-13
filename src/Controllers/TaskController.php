@@ -64,7 +64,17 @@ class TaskController extends Controller
 
                     $fund = $tw->postFundTransfer($transferwise->id);
                 }
-                  
+                else
+                {
+                    $quote = $tw->postCreateQuote($data->amount,'USD',null,'IDR');
+                    if(isset($quote->error))
+                    {
+                        return response('ERROR', 200)->header('Content-Type', 'text/plain');
+                    }
+                    $transferwise = $tw->postCreateTransfer($quote->id,$data->customerTransactionId);
+                    $fund = $tw->postFundTransfer($transferwise->id);
+                }
+
                 return response('OK', 200)->header('Content-Type', 'text/plain');
             }
             return response('ERROR', 200)->header('Content-Type', 'text/plain');

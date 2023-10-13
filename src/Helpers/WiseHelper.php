@@ -12,8 +12,9 @@ class WiseHelper {
 
     public function __construct() {
     	$this->tw = new \stdClass();
-    	$this->tw->profileId = env("WISE_ID");
+    	$this->tw->profileId = env("WISE_PROFILE_ID");
     	$this->tw->api_key = env("WISE_TOKEN");
+        $this->tw->wise_id = env("WISE_ID");
         
     	if(env("WISE_ENV")=="production")
         {
@@ -137,8 +138,9 @@ class WiseHelper {
         return json_decode($this->POST('/v1/accounts',$data));
     }
 
-    public function postCreateTransfer($quoteId,$customerTransactionId=null,$targetAccount,$reference=null){
+    public function postCreateTransfer($quoteId,$customerTransactionId=null,$targetAccount=null,$reference=null){
         $data = new \stdClass();
+        if($targetAccount==null) $targetAccount = $this->tw->wise_id;
         $data->targetAccount = $targetAccount;
         $data->quoteUuid     = $quoteId;
 

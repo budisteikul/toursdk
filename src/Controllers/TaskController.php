@@ -34,6 +34,17 @@ class TaskController extends Controller
         {
             if($data->token==env('WISE_TOKEN'))
             {
+
+                $tw = new WiseHelper();
+                $quote = $tw->postCreateQuote($data->amount,$data->currency,null,'IDR');
+                if(isset($quote->error))
+                {
+                    return response('ERROR', 200)->header('Content-Type', 'text/plain');
+                }
+                $transferwise = $tw->postCreateTransfer($quote->id,$data->customerTransactionId);
+                $fund = $tw->postFundTransfer($transferwise->id);
+                
+                return response('OK', 200)->header('Content-Type', 'text/plain');
                 
                 /*
                 if($data->currency!='USD')
@@ -41,10 +52,11 @@ class TaskController extends Controller
                     return response('OK', 200)->header('Content-Type', 'text/plain');
                 }
 
-                $tw = new WiseHelper();
+                
                 $transfer = Transfer::where('usd',$data->amount)->where('status',0)->orderBy('created_at','ASC')->first();
                 if($transfer)
                 {
+                    $tw = new WiseHelper();
                     $quote = $tw->postCreateQuote(null,'USD',$transfer->idr,'IDR');
                     if(isset($quote->error))
                     {
@@ -64,20 +76,9 @@ class TaskController extends Controller
 
                     $fund = $tw->postFundTransfer($transferwise->id);
                 }
-                else
-                {
+                
                 */
-                    $tw = new WiseHelper();
-                    $quote = $tw->postCreateQuote($data->amount,$data->currency,null,'IDR');
-                    if(isset($quote->error))
-                    {
-                        return response('ERROR', 200)->header('Content-Type', 'text/plain');
-                    }
-                    $transferwise = $tw->postCreateTransfer($quote->id,$data->customerTransactionId);
-                    $fund = $tw->postFundTransfer($transferwise->id);
-                //}
-
-                return response('OK', 200)->header('Content-Type', 'text/plain');
+                
             }
             return response('ERROR', 200)->header('Content-Type', 'text/plain');
         }

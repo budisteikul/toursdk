@@ -34,7 +34,7 @@ class TaskController extends Controller
         {
             if($data->token==env('WISE_TOKEN'))
             {
-
+                /*
                 $tw = new WiseHelper();
                 $quote = $tw->postCreateQuote($data->amount,$data->currency,null,'IDR');
                 if(isset($quote->error))
@@ -45,8 +45,10 @@ class TaskController extends Controller
                 $fund = $tw->postFundTransfer($transferwise->id);
                 
                 return response('OK', 200)->header('Content-Type', 'text/plain');
+                */
                 
                 /*
+                ====================================================================================
                 if($data->currency!='USD')
                 {
                     return response('OK', 200)->header('Content-Type', 'text/plain');

@@ -5,7 +5,6 @@ use Illuminate\Http\Request;
 
 use budisteikul\toursdk\Helpers\TaskHelper;
 use budisteikul\toursdk\Helpers\WiseHelper;
-use budisteikul\toursdk\Helpers\LogHelper;
 
 use budisteikul\toursdk\Models\Shoppingcart;
 
@@ -22,7 +21,7 @@ class TaskController extends Controller
 {
 	public function task(Request $request)
     {
-    	LogHelper::log_webhook($request->getContent());
+    	
         
         $json = $request->getContent();
         

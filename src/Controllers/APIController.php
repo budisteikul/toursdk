@@ -37,6 +37,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\URL;
 use Stripe;
 
+use budisteikul\toursdk\Helpers\WiseHelper;
 
 
 class APIController extends Controller
@@ -983,7 +984,9 @@ class APIController extends Controller
 
     public function testaja()
     {
-
+        $tw = new WiseHelper();
+        $test = $tw->simulateAddFund(12,'USD');
+        print_r($test);
     }
 
     public function check_seat($date,$time)

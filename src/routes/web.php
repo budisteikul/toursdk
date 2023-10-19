@@ -85,9 +85,9 @@
 	// TASK
 	Route::post('/task', 'budisteikul\toursdk\Controllers\TaskController@task');
 
-	// TASK
-	Route::get('/testaja', 'budisteikul\toursdk\Controllers\APIController@testaja');
-	Route::get('/raillink', 'budisteikul\toursdk\Controllers\APIController@check_raillink');
+	// TEST
+	//Route::get('/testaja', 'budisteikul\toursdk\Controllers\APIController@testaja');
+	//Route::get('/raillink', 'budisteikul\toursdk\Controllers\APIController@check_raillink');
 
 	
 

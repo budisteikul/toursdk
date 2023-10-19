@@ -95,9 +95,12 @@ class WiseHelper {
         return json_decode($this->POST('/v3/quotes/',$data));
     }
     
-    public function postCreateQuote($sourceAmount=null,$sourceCurrency=null,$targetAmount=null,$targetCurrency='IDR'){
+    public function postCreateQuote($sourceAmount=null,$sourceCurrency=null,$targetAmount=null,$targetCurrency='IDR',$profileId=null){
         $data = new \stdClass();
-        $data->profileId		= $this->tw->profileId;
+        
+        $data->profileId    = $this->tw->profileId;
+        if($profileId!=null) $data->profileId = $profileId;
+
         $data->sourceAmount     = $sourceAmount;
         $data->sourceCurrency	= $sourceCurrency;
         $data->targetAmount     = $targetAmount;

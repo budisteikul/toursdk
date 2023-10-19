@@ -8,6 +8,7 @@ use budisteikul\toursdk\Models\Shoppingcart;
 use budisteikul\toursdk\Helpers\WiseHelper;
 use budisteikul\toursdk\Helpers\TaskHelper;
 
+use budisteikul\toursdk\Helpers\LogHelper;
 
 
 class WebhookController extends Controller
@@ -25,7 +26,7 @@ class WebhookController extends Controller
     {
         if($webhook_app=="wise")
         {
-            //LogHelper::log_webhook($request->getContent());
+            LogHelper::log_webhook($request->getContent());
 
             $is_test = $request->header('X-Test-Notification');
             if($is_test)
@@ -44,6 +45,7 @@ class WebhookController extends Controller
                 $data = json_decode($json);
                 $amount = $data->data->amount;
                 $currency = $data->data->currency;
+                $profileId = $data->data->resource->profile_id;
                 $customerTransactionId = $delivery_id;
 
 
@@ -52,6 +54,7 @@ class WebhookController extends Controller
                 $payload->currency = $currency;
                 $payload->app = 'wise';
                 $payload->customerTransactionId = $customerTransactionId;
+                $payload->profileId = $profileId;
                 $payload->token = env('WISE_TOKEN');
 
 		        TaskHelper::create($payload);

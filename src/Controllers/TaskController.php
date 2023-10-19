@@ -35,7 +35,7 @@ class TaskController extends Controller
             {
                 
                 $tw = new WiseHelper();
-                $quote = $tw->postCreateQuote($data->amount,$data->currency,null,'IDR');
+                $quote = $tw->postCreateQuote($data->amount,$data->currency,null,'IDR',$data->profileId);
                 if(isset($quote->error))
                 {
                     return response('ERROR', 200)->header('Content-Type', 'text/plain');

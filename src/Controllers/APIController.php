@@ -982,13 +982,7 @@ class APIController extends Controller
         return response()->json($contents);
     }
 
-    public function testaja()
-    {
-        $tw = new WiseHelper();
-        $test = $tw->simulateAddFund(12,'USD');
-        print_r($test);
-    }
-
+    /*
     public function check_seat($date,$time)
     {
         $seat = 0;
@@ -1111,13 +1105,15 @@ class APIController extends Controller
         
         return $dataKa;
     }
-
+    */
+    
     public function snippetscalendar($activityId,$year,$month)
     {
         $contents = BookingHelper::get_calendar($activityId,$year,$month);
 
         // Railink
         //=============================================================================
+        /*
         if($activityId==10786) {
         if(isset($contents->firstAvailableDay->fullDate)){
         $date_raillink = self::date_raillink();
@@ -1148,6 +1144,7 @@ class APIController extends Controller
         }
 
         //=============================================================================
+        
         foreach($contents->weeks as $week)
         {
             foreach($week->days as $day)
@@ -1184,6 +1181,7 @@ class APIController extends Controller
                 }
             }
         }}}
+        */
         //=============================================================================
         // Railink
 
@@ -1203,6 +1201,7 @@ class APIController extends Controller
             
             // Railink
             //=============================================================================
+            /*
             if($product->bokun_id==10786) {
 
                 $date_raillink = self::date_raillink();
@@ -1233,6 +1232,7 @@ class APIController extends Controller
                     $availability[0]['availabilities'] = array_values($availability[0]['availabilities']);
                 }
             }
+            */
             //=============================================================================
             // Railink
 

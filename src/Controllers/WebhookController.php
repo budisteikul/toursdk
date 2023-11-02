@@ -26,7 +26,7 @@ class WebhookController extends Controller
     {
         if($webhook_app=="wise")
         {
-            LogHelper::log_webhook($request->getContent());
+            //LogHelper::log_webhook($request->getContent());
 
             $is_test = $request->header('X-Test-Notification');
             if($is_test)
@@ -69,14 +69,16 @@ class WebhookController extends Controller
 
         if($webhook_app=="bokun")
         {
-            //LogHelper::log_webhook($request->getContent());
+            LogHelper::log_webhook($request->getContent());
 
             $data = json_decode($request->getContent(), true);
+            $confirmation_code = $data['externalBookingReference'];
+            if($bookingChannel=="Viator.com") $confirmation_code = 'BR-'. $data['externalBookingReference'];
             
             switch($request->input('action'))
             {
             case 'BOOKING_CONFIRMED':
-                if(Shoppingcart::where('confirmation_code','BR-'.$data['externalBookingReference'])->count()==0)
+                if(Shoppingcart::where('confirmation_code',$confirmation_code)->count()==0)
                 {
                     $shoppingcart = BookingHelper::webhook_insert_shoppingcart($data);
                     BookingHelper::confirm_payment($shoppingcart,"CONFIRMED",true);
@@ -86,7 +88,7 @@ class WebhookController extends Controller
                 return response('OK', 200)->header('Content-Type', 'text/plain');
             break;
             case 'BOOKING_ITEM_CANCELLED':
-                $shoppingcart = Shoppingcart::where('confirmation_code','BR-'.$data['externalBookingReference'])->firstOrFail();
+                $shoppingcart = Shoppingcart::where('confirmation_code',$confirmation_code)->firstOrFail();
                 BookingHelper::confirm_payment($shoppingcart,"CANCELED",true);
                 BookingHelper::shoppingcart_notif($shoppingcart);
                 return response('OK', 200)->header('Content-Type', 'text/plain');

@@ -80,8 +80,7 @@ class BookingHelper {
 	{
 			$shoppingcart = new Shoppingcart();
 			$shoppingcart->booking_status = 'CONFIRMED';
-			//$shoppingcart->confirmation_code = $data['confirmationCode'];
-			$shoppingcart->confirmation_code = 'BR-'. $data['externalBookingReference'];
+			
 			if(isset($data['promoCode'])) $shoppingcart->promo_code = $data['promoCode']['code'];
 			$bookingChannel = '';
 			if(isset($data['affiliate']['title']))
@@ -93,6 +92,10 @@ class BookingHelper {
 				$bookingChannel = $data['seller']['title'];
 			}
 			$shoppingcart->booking_channel = $bookingChannel;
+
+			$confirmation_code = $data['externalBookingReference'];
+			if($bookingChannel=="Viator.com") $confirmation_code = 'BR-'. $data['externalBookingReference'];
+			$shoppingcart->confirmation_code = $confirmation_code;
 			$shoppingcart->session_id = Uuid::uuid4()->toString();
 			$shoppingcart->save();
 			

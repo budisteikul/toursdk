@@ -288,7 +288,7 @@ class ContentHelper {
         if($promo_code=="") $promo_code = null;
         
         $payment_enable = 'localpayment,stripe,paypal';
-        $payment_default = 'stripe';
+        $payment_default = 'localpayment';
 
         $paypal_label = '<strong class="mb-1"><img src="'. self::env_appAssetUrl() .'/img/payment/paypal.png" height="25" alt="Paypal" /></strong>';
         

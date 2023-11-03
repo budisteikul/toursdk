@@ -288,6 +288,7 @@ class ContentHelper {
         if($promo_code=="") $promo_code = null;
         
         $payment_enable = 'localpayment,stripe,paypal';
+        $payment_default = 'stripe';
 
         $paypal_label = '<strong class="mb-1"><img src="'. self::env_appAssetUrl() .'/img/payment/paypal.png" height="25" alt="Paypal" /></strong>';
         
@@ -369,19 +370,20 @@ class ContentHelper {
                 'paypal_client_id' => self::env_paypalClientId(),
                 
                 'payment_enable' => $payment_enable,
+                'payment_default' => $payment_default,
                 'localpayment_list' => $grouped_payment,
 
                 // Paypal Currency
                 'paypal_currency' => self::env_paypalCurrency(),
                 'paypal_total' => GeneralHelper::numberFormat(BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,self::env_paypalCurrency(),"PAYPAL"),'USD'),
-                'paypal_rate' => BookingHelper::text_rate($shoppingcart,self::env_paypalCurrency(),"PAYPAL"),
+                'paypal_rate' => 'Charge in USD, '. BookingHelper::text_rate($shoppingcart,self::env_paypalCurrency(),"PAYPAL"),
                 'paypal_sdk' => $paypal_sdk,
                 'paypal_label' => $paypal_label,
 
                 // Stripe Currency
                 'stripe_currency' => 'USD',
                 'stripe_total' => GeneralHelper::numberFormat(BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'USD'),'USD'),
-                'stripe_rate' => BookingHelper::text_rate($shoppingcart,'USD'),
+                'stripe_rate' => 'Charge in USD, '. BookingHelper::text_rate($shoppingcart,'USD'),
                 'stripe_label' => '
                 <strong class="mb-1">Card Payments 
                     <img class="ml-2" src="'. self::env_appAssetUrl() .'/img/payment/stripe.png" height="20" alt="Card Payment" />

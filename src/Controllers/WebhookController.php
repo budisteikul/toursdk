@@ -72,6 +72,16 @@ class WebhookController extends Controller
             LogHelper::log_webhook($request->getContent());
 
             $data = json_decode($request->getContent(), true);
+
+            $bookingChannel = '';
+            if(isset($data['affiliate']['title']))
+            {
+                $bookingChannel = $data['affiliate']['title'];
+            }
+            else
+            {
+                $bookingChannel = $data['seller']['title'];
+            }
             $confirmation_code = $data['externalBookingReference'];
             if($bookingChannel=="Viator.com") $confirmation_code = 'BR-'. $data['externalBookingReference'];
             

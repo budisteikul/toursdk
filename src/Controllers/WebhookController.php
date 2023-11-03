@@ -82,7 +82,16 @@ class WebhookController extends Controller
             {
                 $bookingChannel = $data['seller']['title'];
             }
-            $confirmation_code = $data['externalBookingReference'];
+
+            $confirmation_code = '';
+            if(isset($data['externalBookingReference']))
+            {
+                $confirmation_code = $data['externalBookingReference'];
+            }
+            else
+            {
+                $confirmation_code = $data['confirmationCode'];
+            }
             if($bookingChannel=="Viator.com") $confirmation_code = 'BR-'. $data['externalBookingReference'];
             
             switch($request->input('action'))

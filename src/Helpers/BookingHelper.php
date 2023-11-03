@@ -93,7 +93,15 @@ class BookingHelper {
 			}
 			$shoppingcart->booking_channel = $bookingChannel;
 
-			$confirmation_code = $data['externalBookingReference'];
+			$confirmation_code = '';
+            if(isset($data['externalBookingReference']))
+            {
+                $confirmation_code = $data['externalBookingReference'];
+            }
+            else
+            {
+                $confirmation_code = $data['confirmationCode'];
+            }
 			if($bookingChannel=="Viator.com") $confirmation_code = 'BR-'. $data['externalBookingReference'];
 			$shoppingcart->confirmation_code = $confirmation_code;
 			$shoppingcart->session_id = Uuid::uuid4()->toString();
@@ -162,14 +170,25 @@ class BookingHelper {
 				$total_discount = 0;
 				$total_product = 0;
 
-				$lineitems = $data['activityBookings'][$i]['sellerInvoice']['customLineItems'];
-
+				//==============================================================================
+				if(isset($data['activityBookings'][$i]['sellerInvoice']))
+				{
+					$lineitems = $data['activityBookings'][$i]['sellerInvoice']['customLineItems'];
+					$currency = $data['activityBookings'][$i]['sellerInvoice']['currency'];
+				}
+				else
+				{
+					$lineitems = $data['activityBookings'][$i]['invoice']['lineItems'];
+					$currency = $data['activityBookings'][$i]['invoice']['currency'];
+					
+				}
 				
 				for($j=0;$j<count($lineitems);$j++)
 				{
 						$s_quantity = $lineitems[$j]['quantity'];
 						$s_price = $lineitems[$j]['unitPrice'];
 						$s_discount = $lineitems[$j]['discount'];
+
 
 						$shoppingcart_product_detail = new ShoppingcartProductDetail();
 						$shoppingcart_product_detail->shoppingcart_product_id = $shoppingcart_product->id;
@@ -178,7 +197,16 @@ class BookingHelper {
 						$shoppingcart_product_detail->people = $data['activityBookings'][$i]['totalParticipants'];
 						$shoppingcart_product_detail->qty = $s_quantity;
 						$shoppingcart_product_detail->price = $s_price;
-						$shoppingcart_product_detail->unit_price = 'Price per booking';
+
+						if($s_quantity==1 && $data['activityBookings'][$i]['totalParticipants']!=1)
+						{
+							$shoppingcart_product_detail->unit_price = 'Price per booking';
+						}
+						else
+						{
+							$shoppingcart_product_detail->unit_price = $lineitems[$j]['title'];
+						}
+						
 
 						$subtotal = $s_price * $s_quantity;
 						$discount = $s_discount * $s_quantity;
@@ -194,17 +222,20 @@ class BookingHelper {
 						$total_discount += $discount;
 						$total_product += $total;
 				}
-				
+				//==============================================================================
+
+
 				//print_r($data['activityBookings'][$i]['notes'][0]['body']);
 				//exit();
 				ShoppingcartProduct::where('id',$shoppingcart_product->id)->update([
-					'currency'=>$data['activityBookings'][$i]['sellerInvoice']['currency'],
+					'currency'=>$currency,
 					'subtotal'=>$subtotal_product,
 					'discount'=>$total_discount,
 					'total'=>$total_product,
 					'due_now'=>$total_product
 				]);
 				
+
 				// activity question
 				if(isset($data['activityBookings'][$i]['answers']))
 				{

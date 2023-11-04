@@ -7,6 +7,7 @@ use budisteikul\toursdk\Helpers\BokunHelper;
 use budisteikul\toursdk\Helpers\ImageHelper;
 use budisteikul\toursdk\Helpers\ProductHelper;
 use budisteikul\toursdk\Helpers\BookingHelper;
+use budisteikul\toursdk\Helpers\GeneralHelper;
 use budisteikul\toursdk\Models\Category;
 use budisteikul\toursdk\Models\Product;
 use Html2Text\Html2Text;
@@ -839,21 +840,20 @@ class ContentHelper {
         if($content->privateActivity!="") $privateActivity = $content->privateActivity;
         if($content->description!="") $description = $content->description;
 
-        $data_voucher = [];
-        foreach($product->vouchers as $voucher)
+        $data_voucher = null;
+        $voucher = $product->vouchers->first();
+        if(isset($voucher))
         {
             if($voucher->is_percentage)
             {
-                $data_voucher[] = [ 'promotion' => '<li>Get Discount '. $voucher->amount .'% with Promotional Code <strong>'. $voucher->code .'</strong></li>' ];
+                $data_voucher = '<div class="alert alert-warning" role="alert">Get <strong>Discount '. $voucher->amount .'%</strong> with Promotional Code <strong>'. $voucher->code .'</strong></div>';
             }
             else
             {
-                $data_voucher[] = [ 'promotion' => '<li>Get Discount '. $voucher->amount .'% with Promotional Code <strong>'. $voucher->code  .'</strong></li>'];
+                $data_voucher = '<div class="alert alert-warning" role="alert">Get <strong>Discount IDR '. GeneralHelper::numberFormat($voucher->amount,"IDR") .'</strong> with Promotional Code <strong>'. $voucher->code  .'</strong></div>';
             }
-            
-            
         }
-
+       
 
         $dataObj[] = array(
                 'id' => $product->id,
@@ -872,7 +872,7 @@ class ContentHelper {
                 'productCategory' => $productCategory,
                 'guidanceTypes' => $dataObj4,
                 'agendaItems' => $dataObj5,
-                'dataVoucher' => $data_voucher,
+                'promotion' => $data_voucher,
                 'images' => $image,
             );
 

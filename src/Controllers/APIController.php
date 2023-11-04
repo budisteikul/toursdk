@@ -121,7 +121,7 @@ class APIController extends Controller
                 "@type": "Offer",
                 "url": "'.env("APP_URL").'/tour/yogyakarta-night-walking-and-food-tours",
                 "priceCurrency": "IDR",
-                "price": "500000",
+                "price": "575000",
                 "priceValidUntil": "2023-12-31",
                 "itemCondition": "https://schema.org/UsedCondition",
                 "availability": "https://schema.org/InStock",

@@ -8,6 +8,7 @@ use budisteikul\toursdk\Helpers\ImageHelper;
 use budisteikul\toursdk\Helpers\ProductHelper;
 use budisteikul\toursdk\Helpers\BookingHelper;
 use budisteikul\toursdk\Models\Category;
+use budisteikul\toursdk\Models\Product;
 use Html2Text\Html2Text;
 use Carbon\Carbon;
 
@@ -827,6 +828,7 @@ class ContentHelper {
         $durationText = null;
         $privateActivity = null;
         $description = null;
+        
 
         if($content->excerpt!="") $excerpt = $content->excerpt;
         if($content->included!="") $included = $content->included;
@@ -836,6 +838,22 @@ class ContentHelper {
         if($content->durationText!="") $durationText = $content->durationText;
         if($content->privateActivity!="") $privateActivity = $content->privateActivity;
         if($content->description!="") $description = $content->description;
+
+        $data_voucher = [];
+        foreach($product->vouchers as $voucher)
+        {
+            if($voucher->is_percentage)
+            {
+                $data_voucher[] = [ 'promotion' => '<li>Get Discount '. $voucher->amount .'% with Promotional Code <strong>'. $voucher->code .'</strong></li>' ];
+            }
+            else
+            {
+                $data_voucher[] = [ 'promotion' => '<li>Get Discount '. $voucher->amount .'% with Promotional Code <strong>'. $voucher->code  .'</strong></li>'];
+            }
+            
+            
+        }
+
 
         $dataObj[] = array(
                 'id' => $product->id,
@@ -854,6 +872,7 @@ class ContentHelper {
                 'productCategory' => $productCategory,
                 'guidanceTypes' => $dataObj4,
                 'agendaItems' => $dataObj5,
+                'dataVoucher' => $data_voucher,
                 'images' => $image,
             );
 

@@ -352,7 +352,8 @@ class ContentHelper {
             $paypal_sdk = 'https://www.paypal.com/sdk/js?client-id='.self::env_paypalClientId().'&intent=authorize&currency='. self::env_paypalCurrency().'';
         }
         
-
+        $rate_text = '';
+        if($shoppingcart->currency!="USD") $rate_text = 'Charge in USD, '. BookingHelper::text_rate($shoppingcart,self::env_paypalCurrency());
 
         $dataShoppingcart[] = array(
                 'id' => $shoppingcart->session_id,
@@ -375,15 +376,15 @@ class ContentHelper {
 
                 // Paypal Currency
                 'paypal_currency' => self::env_paypalCurrency(),
-                'paypal_total' => GeneralHelper::numberFormat(BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,self::env_paypalCurrency(),"PAYPAL"),'USD'),
-                'paypal_rate' => 'Charge in USD, '. BookingHelper::text_rate($shoppingcart,self::env_paypalCurrency(),"PAYPAL"),
+                'paypal_total' => GeneralHelper::numberFormat(BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,self::env_paypalCurrency()),'USD'),
+                'paypal_rate' => $rate_text,
                 'paypal_sdk' => $paypal_sdk,
                 'paypal_label' => $paypal_label,
 
                 // Stripe Currency
                 'stripe_currency' => 'USD',
                 'stripe_total' => GeneralHelper::numberFormat(BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'USD'),'USD'),
-                'stripe_rate' => 'Charge in USD, '. BookingHelper::text_rate($shoppingcart,'USD'),
+                'stripe_rate' => $rate_text,
                 'stripe_label' => '
                 <strong class="mb-1">Card Payments 
                     <img class="ml-2" src="'. self::env_appAssetUrl() .'/img/payment/stripe.png" height="20" alt="Card Payment" />

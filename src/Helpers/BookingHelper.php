@@ -2269,7 +2269,7 @@ class BookingHelper {
 			break;
 			case "paypal":
 				$payment_provider = 'paypal';
-				$amount = self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,self::env_paypalCurrency(),"PAYPAL");
+				$amount = self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,self::env_paypalCurrency());
 				$currency = self::env_paypalCurrency();
 				$rate = number_format((float)$shoppingcart->due_now / $amount, 2, '.', '');
 				$rate_from = $shoppingcart->currency;
@@ -2422,26 +2422,23 @@ class BookingHelper {
 		return $status;
 	}
 	
-	public static function text_rate($shoppingcart,$currency,$markup="")
+	public static function text_rate($shoppingcart,$currency)
 	{
-		if($markup=="")
-		{
-			//$value = '1 '. $currency .' = '. self::convert_currency(1,$currency,$shoppingcart->currency) .' '. $shoppingcart->currency;
-			$value = self::convert_currency(1,$currency,$shoppingcart->currency);
-			$value = number_format((float)$value, 2);
-			$value = '1 '. $currency .' = '. $value .' '. $shoppingcart->currency;
-		}
-		else
-		{
-			$check = self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'USD',$markup);
+		//if($markup=="")
+		//{
+			//$value = self::convert_currency(1,$currency,$shoppingcart->currency);
+			//$value = number_format((float)$value, 2);
+			//$value = '1 '. $currency .' = '. $value .' '. $shoppingcart->currency;
+		//}
+		//else
+		//{
+			$check = self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'USD');
 			$value = $shoppingcart->due_now / $check;
 			$value = number_format((float)$value, 2);
-			//number_format($exp, 0, ',',',')
-			//$value = '1 '. $currency .' = '. $value .' '. $shoppingcart->currency;
 			$value = '1 '. $currency .' = '. $value .' '. $shoppingcart->currency;
-		}
+		//}
 
-		$amount = $value .'<div class="mt-2"><span class="badge badge-success" style="font-size:12px;">Total : '. self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,$currency,$markup) .' '. $currency .'</span></div>';
+		$amount = $value .'<div class="mt-2"><span class="badge badge-success" style="font-size:12px;">Total : '. self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,$currency) .' '. $currency .'</span></div>';
 		
 		return $amount;
 	}
@@ -2454,22 +2451,20 @@ class BookingHelper {
 		return $value;
 	}
 
-	public static function convert_currency($amount,$from,$to,$markup="")
+	public static function convert_currency($amount,$from,$to)
 	{
 		$rate_usd = BokunHelper::get_currency($from);
 		$rate_usd_reserve = BokunHelper::get_currency($to);
 		
-		//$tw = New WiseHelper();
-		//$rate_usd = $tw->getRate($from);
-		//$rate_usd_reserve = $tw->getRate($to);
-
 		$rate = $rate_usd / $rate_usd_reserve;
 
+		/*
 		if($markup!="")
 		{
 			$markup = $rate * 4.4 / 100;
 			$rate = $rate + $markup;
 		}
+		*/
 
 		$value = ($amount * $rate);
 
@@ -2504,7 +2499,7 @@ class BookingHelper {
             }
 
             $text = '';
-			if($shoppingcart->shoppingcart_payment->currency!="IDR")
+			if($shoppingcart->shoppingcart_payment->rate_from!=$shoppingcart->shoppingcart_payment->rate_to)
 			{
 				$text .= '<b>Total :</b> '.$shoppingcart->shoppingcart_payment->currency.' '. $shoppingcart->shoppingcart_payment->amount .'<br />';
 				$text .= '<b>Rate :</b> '. self::get_rate($shoppingcart) .'<br />';

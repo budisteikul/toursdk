@@ -200,11 +200,11 @@ class BookingHelper {
 
 						if($s_quantity==1 && $data['activityBookings'][$i]['totalParticipants']!=1)
 						{
-							$shoppingcart_product_detail->unit_price = 'Price per booking';
+							$shoppingcart_product_detail->unit_price = $lineitems[$j]['title'];
 						}
 						else
 						{
-							$shoppingcart_product_detail->unit_price = $lineitems[$j]['title'];
+							$shoppingcart_product_detail->unit_price = 'Price per booking';
 						}
 						
 

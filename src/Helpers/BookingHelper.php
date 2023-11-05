@@ -198,13 +198,13 @@ class BookingHelper {
 						$shoppingcart_product_detail->qty = $s_quantity;
 						$shoppingcart_product_detail->price = $s_price;
 
-						if($s_quantity==1 && $data['activityBookings'][$i]['totalParticipants']!=1)
+						if($bookingChannel=="Viator.com")
 						{
-							$shoppingcart_product_detail->unit_price = $lineitems[$j]['title'];
+							$shoppingcart_product_detail->unit_price = 'Price per booking';
 						}
 						else
 						{
-							$shoppingcart_product_detail->unit_price = 'Price per booking';
+							$shoppingcart_product_detail->unit_price = $lineitems[$j]['title'];
 						}
 						
 

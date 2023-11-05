@@ -846,11 +846,11 @@ class ContentHelper {
         {
             if($voucher->is_percentage)
             {
-                $data_voucher = '<div class="alert alert-warning" role="alert">Get <strong>Discount '. $voucher->amount .'%</strong> with Promotional Code <strong>'. $voucher->code .'</strong></div>';
+                $data_voucher = '<div class="alert alert-warning" role="alert">Get <strong>Discount '. $voucher->amount .'%</strong> with promotional code <strong>'. $voucher->code .'</strong> on this activity</div>';
             }
             else
             {
-                $data_voucher = '<div class="alert alert-warning" role="alert">Get <strong>Discount IDR '. GeneralHelper::numberFormat($voucher->amount,"IDR") .'</strong> with Promotional Code <strong>'. $voucher->code  .'</strong></div>';
+                $data_voucher = '<div class="alert alert-warning" role="alert">Get <strong>Discount IDR '. GeneralHelper::numberFormat($voucher->amount,"IDR") .'</strong> with promotional code <strong>'. $voucher->code  .'</strong> on this activity</div>';
             }
         }
        

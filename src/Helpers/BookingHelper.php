@@ -1524,7 +1524,7 @@ class BookingHelper {
 		$group_shoppingcart_products = ShoppingcartProduct::with('shoppingcart')
 		->WhereHas('shoppingcart', function($query) {
                  //$query->where('booking_status','CONFIRMED');
-			    $query->where('booking_channel','WEBSITE');
+			    $query->where('booking_channel','WEBSITE')->orWhere('booking_channel','AIRBNB');
             })
 		->where('product_id',$activityId)->whereYear('date','=',$year)->whereMonth('date','=',$month)->whereDate('date', '>=', Carbon::now())->groupBy(['date'])->select('date')->get();
 
@@ -1535,7 +1535,7 @@ class BookingHelper {
             ->WhereHas('shoppingcart_product', function($query) use ($date,$activityId) {
             	$query->whereDate('date','=',$date)->where(['product_id'=>$activityId])->WhereHas('shoppingcart', function($query) {
               		//return $query->where('booking_status','CONFIRMED');
-              		return $query->where('booking_channel','WEBSITE');
+              		return $query->where('booking_channel','WEBSITE')->orWhere('booking_channel','AIRBNB');
             	});
             })->get()->sum('people');
 
@@ -1545,7 +1545,7 @@ class BookingHelper {
         	];
         }
 
-        
+
         if(count($bookings)>0)
         {
         	foreach($value as $firstDay)

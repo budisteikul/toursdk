@@ -1474,29 +1474,7 @@ class BookingHelper {
 
 	public static function get_calendar($activityId,$year,$month)
 	{
-		$bookings = array();
 		
-		$group_shoppingcart_products = ShoppingcartProduct::with('shoppingcart')
-		->WhereHas('shoppingcart', function($query) {
-              $query->where('booking_status','CONFIRMED');
-            })
-		->where('product_id',$activityId)->whereYear('date','=',$year)->whereMonth('date','=',$month)->whereDate('date', '>=', Carbon::now())->groupBy(['date'])->select('date')->get();
-
-		foreach($group_shoppingcart_products as $group_shoppingcart_product)
-        {
-        	$date = Carbon::parse($group_shoppingcart_product->date)->format('Y-m-d');
-            $people = ShoppingcartProductDetail::with('shoppingcart_product')
-            ->WhereHas('shoppingcart_product', function($query) use ($date,$activityId) {
-            	$query->whereDate('date','=',$date)->where(['product_id'=>$activityId])->WhereHas('shoppingcart', function($query) {
-              		return $query->where('booking_status','CONFIRMED');
-            	});
-            })->get()->sum('people');
-
-            $bookings[] = (object)[
-            	"date" => $date,
-            	"people" => $people,
-        	];
-        }
 
 
         $contents = BokunHelper::get_calendar($activityId,$year,$month);
@@ -1538,9 +1516,36 @@ class BookingHelper {
             }
         }
 
-        //exit();
+        
+        //=========================================================
         // Check booking full or not
+        $bookings = array();
+		
+		$group_shoppingcart_products = ShoppingcartProduct::with('shoppingcart')
+		->WhereHas('shoppingcart', function($query) {
+                 //$query->where('booking_status','CONFIRMED');
+			    $query->where('booking_channel','WEBSITE');
+            })
+		->where('product_id',$activityId)->whereYear('date','=',$year)->whereMonth('date','=',$month)->whereDate('date', '>=', Carbon::now())->groupBy(['date'])->select('date')->get();
 
+		foreach($group_shoppingcart_products as $group_shoppingcart_product)
+        {
+        	$date = Carbon::parse($group_shoppingcart_product->date)->format('Y-m-d');
+            $people = ShoppingcartProductDetail::with('shoppingcart_product')
+            ->WhereHas('shoppingcart_product', function($query) use ($date,$activityId) {
+            	$query->whereDate('date','=',$date)->where(['product_id'=>$activityId])->WhereHas('shoppingcart', function($query) {
+              		//return $query->where('booking_status','CONFIRMED');
+              		return $query->where('booking_channel','WEBSITE');
+            	});
+            })->get()->sum('people');
+
+            $bookings[] = (object)[
+            	"date" => $date,
+            	"people" => $people,
+        	];
+        }
+
+        
         if(count($bookings)>0)
         {
         	foreach($value as $firstDay)
@@ -1609,7 +1614,8 @@ class BookingHelper {
             }
         }
     	}
-
+		
+        //=========================================================
         return $contents;
 	}
 

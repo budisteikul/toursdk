@@ -171,7 +171,7 @@ class BookingHelper {
 				$total_product = 0;
 
 				//==============================================================================
-				if(isset($data['activityBookings'][$i]['sellerInvoice']))
+				if($bookingChannel=="Viator.com")
 				{
 					$lineitems = $data['activityBookings'][$i]['sellerInvoice']['customLineItems'];
 					$currency = $data['activityBookings'][$i]['sellerInvoice']['currency'];
@@ -183,8 +183,11 @@ class BookingHelper {
 					
 				}
 				
+				
+				
 				for($j=0;$j<count($lineitems);$j++)
 				{
+
 						$s_quantity = $lineitems[$j]['quantity'];
 						$s_price = $lineitems[$j]['unitPrice'];
 						$s_discount = $lineitems[$j]['discount'];
@@ -212,7 +215,7 @@ class BookingHelper {
 						$discount = $s_discount * $s_quantity;
 						$total = $subtotal - $discount;
 
-						$shoppingcart_product_detail->currency = $lineitems[$j]['totalAsMoney']['currency'];
+						$shoppingcart_product_detail->currency = $currency;
 						$shoppingcart_product_detail->discount = $discount;
 						$shoppingcart_product_detail->subtotal = $subtotal;
 						$shoppingcart_product_detail->total = $total;

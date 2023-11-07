@@ -102,6 +102,7 @@ class BookingHelper {
             {
                 $confirmation_code = $data['confirmationCode'];
             }
+            
 			if($bookingChannel=="Viator.com") $confirmation_code = 'BR-'. $data['externalBookingReference'];
 			$shoppingcart->confirmation_code = $confirmation_code;
 			$shoppingcart->session_id = Uuid::uuid4()->toString();
@@ -184,7 +185,7 @@ class BookingHelper {
 				}
 				
 				
-				
+
 				for($j=0;$j<count($lineitems);$j++)
 				{
 
@@ -285,7 +286,7 @@ class BookingHelper {
 			$grand_subtotal += $subtotal_product;
 			$grand_total += $total_product;
 			
-			$shoppingcart->currency = 'IDR';
+			$shoppingcart->currency = $data['currency'];
 			$shoppingcart->subtotal = $grand_subtotal;
 			$shoppingcart->discount = $grand_discount;
 			$shoppingcart->total = $grand_total;
@@ -299,7 +300,7 @@ class BookingHelper {
 			$shoppingcart_payment->rate = self::convert_currency(1,$data['currency'],$new_currency);
 			$shoppingcart_payment->rate_from = $data['currency'];
 			$shoppingcart_payment->rate_to = $new_currency;
-			$shoppingcart_payment->currency = $new_currency;
+			$shoppingcart_payment->currency = $data['currency'];
 			$shoppingcart_payment->payment_status = 2;
 			$shoppingcart_payment->shoppingcart_id = $shoppingcart->id;
 			$shoppingcart_payment->save();

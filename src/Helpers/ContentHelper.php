@@ -309,17 +309,17 @@ class ContentHelper {
         //================================================
         
         $transfer_list[] = [
-                'value' => 'xendit_qris', 'label' => 'QRIS', 'image' => self::env_appAssetUrl() .'/img/payment/qris.png', 'currency' => 'idr',
+                'value' => 'xendit_qris', 'label' => '', 'image' => self::env_appAssetUrl() .'/img/payment/qris.png', 'currency' => 'idr',
             ];
 
-        
+        /*
         $transfer_list[] = [
                 'value' => 'bss', 'label' => 'Bank Transfer', 'image' => self::env_appAssetUrl() .'/img/payment/bank_transfer.png', 'currency' => 'idr',
             ];
         
-            
+        */    
         $grouped_payment[] = [
-            'label' => 'INDONESIA',
+            'label' => '',
             'options' => $transfer_list
         ];
 
@@ -398,15 +398,15 @@ class ContentHelper {
 
                 // Local Payment Currency
                 
-                'localpayment_label' => '<strong class="mb-1">Local Payments</strong>',
+                //'localpayment_label' => '<strong class="mb-1">Scan to Pay</strong>',
                 
-                /*
-                'localpayment_label' => '<strong class="mb-1">QR Payment</strong>
+                
+                'localpayment_label' => '<strong class="mb-1">Scan to Pay</strong>
                 <br />
-                <small>(Indonesia, Singapore, Thailand)</small>
+                <small>ASEAN Cross Border Payment</small>
                 <br />
-                <span class="badge badge-danger">Automatic get discount 10%</span>',
-                */
+                ',
+                
                 
                 'idr_currency' => 'IDR',
                 'idr_total' => GeneralHelper::numberFormat($idr_total,'IDR'),

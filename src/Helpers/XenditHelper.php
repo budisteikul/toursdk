@@ -27,7 +27,7 @@ class XenditHelper {
         $status_json = new \stdClass();
         $response_json = new \stdClass();
 
-        $data->transaction->mins_expired = 10;
+        $data->transaction->mins_expired = 30;
         $data->transaction->date_expired = Carbon::parse($data->transaction->date_now)->addMinutes($data->transaction->mins_expired);
 
         if($data->transaction->bank=="dana")

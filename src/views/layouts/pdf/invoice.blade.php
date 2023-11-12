@@ -333,11 +333,15 @@ footer {
             <td>{{ $GeneralHelper->numberFormat($discount) }}</td>
           </tr>
           @endif
-          @if($shoppingcart->fee > 0)
+          @if($shoppingcart->fee != 0)
           <tr>
             <td colspan="2"></td>
             <td colspan="2">FEE</td>
-            <td>{{ $GeneralHelper->numberFormat($shoppingcart->fee) }}</td>
+            @php
+              $fee = $shoppingcart->fee;
+              if($fee<0) $fee = $fee * -1;
+            @endphp
+            <td>{{ $GeneralHelper->numberFormat($fee) }}</td>
           </tr>
           @endif
           <tr>

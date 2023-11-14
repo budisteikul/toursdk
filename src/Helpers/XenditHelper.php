@@ -139,7 +139,7 @@ class XenditHelper {
         $data = new \stdClass();
         $data->external_id = $confirmation_code;
         $data->amount = $amount;
-
+        $data->payment_methods = ['CREDIT_CARD'];
         return json_decode($this->POST('/v2/invoices',$data));
     }
 

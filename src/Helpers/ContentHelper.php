@@ -312,12 +312,6 @@ class ContentHelper {
                 'value' => 'xendit_qris', 'label' => '', 'image' => self::env_appAssetUrl() .'/img/payment/qris.png', 'currency' => 'idr',
             ];
 
-        
-        $transfer_list[] = [
-                'value' => 'invoice', 'label' => 'Credit / Debit Card', 'image' => self::env_appAssetUrl() .'/img/payment/bank_transfer.png', 'currency' => 'idr',
-            ];
-        
-         
         $grouped_payment[] = [
             'label' => '',
             'options' => $transfer_list

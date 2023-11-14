@@ -100,12 +100,44 @@ class XenditHelper {
             }
         }
 
+        if($data->transaction->bank=="invoice")
+        {
+            $amount = round($data->transaction->amount);
+            $confirmation_code = $data->transaction->confirmation_code;
+
+            $data1 = (new self)->createInvoice($confirmation_code,$amount);
+
+            if(isset($data1->error_code))
+            {
+                $status_json->id = '0';
+                $status_json->message = 'error';
+            }
+            else
+            {
+                
+                $data_json->payment_type = 'bank_redirect';
+                $data_json->redirect = $data1->invoice_url;
+
+                $status_json->id = '1';
+                $status_json->message = 'success';
+            }
+        }
+
         $data_json->expiration_date = $data->transaction->date_expired;
         
         $response_json->status = $status_json;
         $response_json->data = $data_json;
 
         return $response_json;
+    }
+
+    public function createInvoice($confirmation_code,$amount)
+    {
+        $data = new \stdClass();
+        $data->external_id = $confirmation_code;
+        $data->amount = $amount;
+
+        return json_decode($this->POST('/v2/invoices',$data));
     }
 
     public function createQrcode($amount,$expired_at)

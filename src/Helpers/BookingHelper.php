@@ -2265,6 +2265,14 @@ class BookingHelper {
 					$response = XenditHelper::createPayment($data);
 				}
 
+				if($data->transaction->bank == 'invoice')
+				{
+					$payment_provider = 'xendit';
+					$payment_status = 4;
+
+					$response = XenditHelper::createPayment($data);
+				}
+
 			break;
 			case "midtrans":
 				$amount = self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'IDR');

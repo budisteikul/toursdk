@@ -114,9 +114,12 @@ class XenditHelper {
             }
             else
             {
-                
                 $data_json->payment_type = 'bank_redirect';
                 $data_json->redirect = $data1->invoice_url;
+                $data_json->order_id = $data1->id;
+                $data_json->authorization_id = $data1->external_id;
+                $data_json->success_redirect_url = self::env_appUrl() . $data->transaction->finish_url;
+                $data_json->failure_redirect_url = self::env_appUrl() . $data->transaction->finish_url;
 
                 $status_json->id = '1';
                 $status_json->message = 'success';

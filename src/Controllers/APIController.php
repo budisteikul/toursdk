@@ -405,6 +405,13 @@ class APIController extends Controller
                     $response = BookingHelper::create_payment($sessionId,"xendit","bss");
                 break;
 
+                case 'invoice':
+                    //VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
+                    BookingHelper::set_bookingStatus($sessionId,'PENDING');
+                    BookingHelper::set_confirmationCode($sessionId);
+                    $response = BookingHelper::create_payment($sessionId,"xendit","invoice");
+                break;
+
                 case 'mandiri':
                     //VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
                     BookingHelper::set_bookingStatus($sessionId,'PENDING');

@@ -289,22 +289,14 @@ class ContentHelper {
         $promo_code = $shoppingcart->promo_code;
         if($promo_code=="") $promo_code = null;
         
-        $payment_enable = 'localpayment,stripe,paypal';
-        $payment_default = 'localpayment';
+        $payment_enable = 'qris,stripe,paypal';
+        $payment_default = 'qris';
 
         $paypal_label = '<strong class="mb-1"><img src="'. self::env_appAssetUrl() .'/img/payment/paypal.png" height="25" alt="Paypal" /></strong>';
-        
-        //$payment_enable = 'localpayment,paypal';
-        //$paypal_label = '<strong class="mb-1">Debit/Credit Card or Paypal</strong>';
 
-        
         $idr_total = BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'IDR');
-        //$idr_discount = $idr_total - ($idr_total * 10 / 100);
 
-        $sgd_total = BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'SGD');
-        //$sgd_discount = $sgd_total - ($sgd_total * 10 / 100);
-
-        $thb_total = BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'THB');
+        
 
         //================================================
         
@@ -317,25 +309,7 @@ class ContentHelper {
             'options' => $transfer_list
         ];
 
-        /*
-        $singapore_list[] = [
-                'value' => 'paynow', 'label' => 'PayNow QR', 'image' => self::env_appAssetUrl() .'/img/payment/paynow.png', 'currency' => 'sgd',
-            ];
-
-        $grouped_payment[] = [
-            'label' => 'SINGAPORE',
-            'options' => $singapore_list
-        ];
-
-        $thailand_list[] = [
-                'value' => 'promptpay', 'label' => 'PromptPay QR', 'image' => self::env_appAssetUrl() .'/img/payment/promptpay.png', 'currency' => 'thb',
-            ];
-
-        $grouped_payment[] = [
-            'label' => 'THAILAND',
-            'options' => $thailand_list
-        ];
-        */
+        
 
         if(env('PAYPAL_INTENT')=="CAPTURE")
         {
@@ -352,6 +326,7 @@ class ContentHelper {
         if($shoppingcart->currency!="USD") $rate_text = 'Charge in USD, '. BookingHelper::text_rate($shoppingcart,self::env_paypalCurrency());
 
         $dataShoppingcart[] = array(
+
                 'id' => $shoppingcart->session_id,
                 'confirmation_code' => $shoppingcart->confirmation_code,
                 'promo_code' => $shoppingcart->promo_code,
@@ -370,6 +345,19 @@ class ContentHelper {
                 'payment_default' => $payment_default,
                 'localpayment_list' => $grouped_payment,
 
+                //Qris
+                'qris_currency' => 'IDR',
+                'qris_total' =>  GeneralHelper::numberFormat(BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'IDR'),'IDR'),
+                'qris_rate' => '',
+                'qris_label' => '<strong>Scan to Pay</strong>
+                <br />
+                <small>ASEAN cross border payment supported</small>
+                <br />
+               
+                    <img src="'. self::env_appAssetUrl() .'/img/payment/qris.png" style="max-height:35px" class="img-fluid" alt="Payment Logo" />
+                    
+                ',
+
                 // Paypal Currency
                 'paypal_currency' => self::env_paypalCurrency(),
                 'paypal_total' => GeneralHelper::numberFormat(BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,self::env_paypalCurrency()),'USD'),
@@ -385,65 +373,11 @@ class ContentHelper {
                 <strong class="mb-1">Card Payments 
                     <img class="ml-2" src="'. self::env_appAssetUrl() .'/img/payment/stripe.png" height="20" alt="Card Payment" />
                 </strong>
-
                 <div class="ml-0 mb-1 mt-2">
                     <img src="'. self::env_appAssetUrl() .'/img/payment/card-payment.png" style="max-height:40px" class="img-fluid" alt="Payment Logo" />
                 </div>',
 
-                // Local Payment Currency
                 
-                //'localpayment_label' => '<strong class="mb-1">Scan to Pay</strong>',
-                
-                
-                'localpayment_label' => '<strong class="mb-1">Scan to Pay</strong>
-                <br />
-                <small>ASEAN Cross Border Payment</small>
-                <br />
-                ',
-                
-                
-                'idr_currency' => 'IDR',
-                'idr_total' => GeneralHelper::numberFormat($idr_total,'IDR'),
-                'idr_rate' => BookingHelper::text_rate($shoppingcart,'IDR'),
-                'idr_text' => 'IDR '. GeneralHelper::numberFormat($idr_total,'IDR'),
-                //'idr_text' => 'IDR <strike style="text-decoration-thickness: 3px; text-decoration-color: #ff0000;">'. GeneralHelper::numberFormat($idr_total,'IDR') .'</strike> '. GeneralHelper::numberFormat($idr_discount,'IDR'),
-                
-                'sgd_currency' => 'SGD',
-                'sgd_total' => GeneralHelper::numberFormat($sgd_total,'SGD'),
-                'sgd_rate' => BookingHelper::text_rate($shoppingcart,'SGD'),
-                'sgd_text' => 'SGD '. GeneralHelper::numberFormat($sgd_total,'SGD'),
-                //'sgd_text' => 'SGD <strike style="text-decoration-thickness: 3px; text-decoration-color: #ff0000;">'. GeneralHelper::numberFormat($sgd_total,'SGD') .'</strike> '. GeneralHelper::numberFormat($sgd_discount,'SGD'),
-
-                'thb_currency' => 'THB',
-                'thb_total' => GeneralHelper::numberFormat($thb_total,'THB'),
-                'thb_rate' => BookingHelper::text_rate($shoppingcart,'THB'),
-                'thb_text' => 'THB '. GeneralHelper::numberFormat($thb_total,'THB'),
-                //'sgd_text' => 'SGD <strike style="text-decoration-thickness: 3px; text-decoration-color: #ff0000;">'. GeneralHelper::numberFormat($sgd_total,'SGD') .'</strike> '. GeneralHelper::numberFormat($sgd_discount,'SGD'),
-
-                //'aud_currency' => 'AUD',
-                //'aud_total' => GeneralHelper::numberFormat($aud_total,'AUD'),
-                //'aud_rate' => BookingHelper::text_rate($shoppingcart,'AUD'),
-                //'aud_text' => 'AUD '. GeneralHelper::numberFormat($aud_total,'AUD'),
-                //'aud_text' => 'AUD <strike style="text-decoration-thickness: 3px; text-decoration-color: #ff0000;">'. GeneralHelper::numberFormat($aud_total,'AUD') .'</strike> '. GeneralHelper::numberFormat($aud_discount,'AUD'),
-
-                /*
-
-                'krw_currency' => 'KRW',
-                'krw_total' => GeneralHelper::numberFormat($krw_total,'KRW'),
-                'krw_rate' => BookingHelper::text_rate($shoppingcart,'KRW'),
-
-                
-                'php_currency' => 'PHP',
-                'php_total' => GeneralHelper::numberFormat($php_total,'PHP'),
-                'php_rate' => BookingHelper::text_rate($shoppingcart,'PHP'),
-
-                
-                'thb_currency' => 'THB',
-                'thb_total' => GeneralHelper::numberFormat($thb_total,'THB'),
-                'thb_rate' => BookingHelper::text_rate($shoppingcart,'THB'),
-                */
-
-
             );
 
         return $dataShoppingcart;

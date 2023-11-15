@@ -281,6 +281,14 @@ class APIController extends Controller
                     ]);
                 break;
 
+                case 'xendit':
+                    return response()->json([
+                        'message' => 'success',
+                        'payment' => 'xendit',
+                        'id' => 3
+                    ]);
+                break;
+
                 case 'ovo':
                     return response()->json([
                         'message' => 'success',
@@ -353,7 +361,7 @@ class APIController extends Controller
                     //VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
                     BookingHelper::set_bookingStatus($sessionId,'PENDING');
                     BookingHelper::set_confirmationCode($sessionId);
-                    $response = BookingHelper::create_payment($sessionId,"midtrans","gopay_qris");
+                    $response = BookingHelper::create_payment($sessionId,"midtrans","xendit_qris");
                 break;
 
                 case 'xendit_qris':
@@ -1970,7 +1978,42 @@ class APIController extends Controller
         return response($jscript)->header('Content-Type', 'application/javascript');
     }
 
+    public function xendit_jscript($sessionId)
+    {
+        $shoppingcart = Cache::get('_'. $sessionId);
+        $amount = BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'IDR');
+        
+        $jscript = '
 
+        $("#submitCheckout").slideUp("slow");
+        $("#paymentContainer").html(\'<form id="payment-form"><div class="card"><div class="card-header"><h2 class="h6 mb-0">Card Information</h2></div><div class="card-body  d-grid gap-3"><div><label for="cardNumberInput" class="label-required">Card Number</label><input type="text" class="form-control" id="cardNumberInput" value="4000000000001091" required=""></div><div class="row justify-content-start"><div class="col-4"><label for="expiryMonthInput" class="label-required">Expiry Month</label><input type="text" class="form-control" id="expiryMonthInput" value="12" required=""></div><div class="col-4"><label for="expiryYearInput" class="label-required">Expiry Year</label><input type="text" class="form-control" id="expiryYearInput" value="2040" required=""></div></div><div><label for="cardholderNameInput">Cardholder Name</label><input type="text" class="form-control" id="cardholderNameInput"></div><div><label for="cvvInput">CVV</label><input type="text" class="form-control" id="cvvInput" value="123"></div></div></div></form><div id=\"loader\" class=\"mb-4\"></div><div id=\"text-alert\" class=\"text-center\"></div>\');
+
+        Xendit.setPublishableKey("'. env("XENDIT_PUBLIC_KEY") .'");
+
+        Xendit.payment.createPaymentMethod(
+        {
+            type: "CARD",
+            card: {
+                currency: "IDR",
+                card_information: {
+                    card_number: cardNumber, 
+                    expiry_month: expiryMonth,
+                    expiry_year: expiryYear,
+                    cvv: cvvNumber,
+                },
+            },
+            "billing_information": {
+                "country": country,
+                "postal_code": postalCode
+            },
+            reusability: "ONE_TIME_USE",
+        }, (err, resp) => console.log(resp, "Here is the response sent by the server")
+        )
+
+
+        ';
+        return response($jscript)->header('Content-Type', 'application/javascript');
+    }
 
     public function stripe_jscript($sessionId)
     {

@@ -57,6 +57,9 @@
 	//Create Payment
 	Route::get('/api/payment/stripe/jscript/{sessionId}', 'budisteikul\toursdk\Controllers\APIController@stripe_jscript');
 	Route::post('/api/payment/stripe', 'budisteikul\toursdk\Controllers\APIController@createpaymentstripe');
+
+	Route::get('/api/payment/xendit/jscript/{sessionId}', 'budisteikul\toursdk\Controllers\APIController@xendit_jscript');
+	Route::post('/api/payment/xendit', 'budisteikul\toursdk\Controllers\APIController@createpaymentxendit');
 	
 	Route::get('/api/payment/paypal/jscript/{sessionId}', 'budisteikul\toursdk\Controllers\APIController@paypal_jscript');
 	Route::post('/api/payment/paypal', 'budisteikul\toursdk\Controllers\APIController@createpaymentpaypal');

@@ -351,7 +351,7 @@ class ContentHelper {
                 'qris_rate' => '',
                 'qris_label' => '<strong>Scan to Pay</strong>
                 <br />
-                <small>ASEAN cross border payment supported</small>
+                <small>QRIS, SGQR, THAIQR, QRPH, DuitNow QR supported</small>
                 <br />
                
                     <img src="'. self::env_appAssetUrl() .'/img/payment/qris.png" style="max-height:35px" class="img-fluid" alt="Payment Logo" />

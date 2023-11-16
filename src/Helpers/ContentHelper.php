@@ -289,8 +289,8 @@ class ContentHelper {
         $promo_code = $shoppingcart->promo_code;
         if($promo_code=="") $promo_code = null;
         
-        $payment_enable = 'qris,stripe,paypal';
-        $payment_default = 'qris';
+        $payment_enable = 'xendit,stripe,paypal';
+        $payment_default = 'xendit';
 
         //================================================
         
@@ -329,10 +329,10 @@ class ContentHelper {
                 'payment_default' => $payment_default,
 
                 //Qris
-                'qris_currency' => 'IDR',
-                'qris_total' =>  GeneralHelper::numberFormat(BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'IDR'),'IDR'),
-                'qris_rate' => '',
-                'qris_label' => '<strong>Scan to Pay</strong>
+                'xendit_currency' => 'IDR',
+                'xendit_total' =>  GeneralHelper::numberFormat(BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'IDR'),'IDR'),
+                'xendit_rate' => '',
+                'xendit_label' => '<strong>Scan to Pay</strong>
                 <br />
                 QRIS, SGQR, THAIQR, QRPH, DuitNow QR supported
                 ',

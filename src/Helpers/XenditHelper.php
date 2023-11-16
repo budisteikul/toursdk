@@ -126,12 +126,49 @@ class XenditHelper {
             }
         }
 
+        if($data->transaction->bank=="card")
+        {
+            $amount = round($data->transaction->amount);
+            $token_id = $data->transaction->order_id;
+            $external_id = $data->transaction->confirmation_code;
+
+            $data_json = new \stdClass();
+            $status_json = new \stdClass();
+            $response_json = new \stdClass();
+      
+            $data1 = (new self)->createChargeCard($token_id,$external_id,$amount);
+
+            if($data1->status=="CAPTURED")
+            {
+                 $status_json->id = '1';
+                 $status_json->message = $data1;
+                 $data_json->order_id = $data->transaction->order_id;
+                 $data_json->authorization_id = $external_id;
+                 $data_json->payment_status = 2;
+            }
+            else
+            {
+                 $status_json->id = '0';
+                 $status_json->message = $data1;
+            }
+
+        }
+
         $data_json->expiration_date = $data->transaction->date_expired;
         
         $response_json->status = $status_json;
         $response_json->data = $data_json;
 
         return $response_json;
+    }
+
+    public function createChargeCard($token_id,$external_id,$amount)
+    {
+        $data = new \stdClass();
+        $data->external_id = $external_id;
+        $data->amount = $amount;
+        $data->token_id = $token_id;
+        return json_decode($this->POST('/credit_card_charges',$data));
     }
 
     public function createInvoice($confirmation_code,$amount)

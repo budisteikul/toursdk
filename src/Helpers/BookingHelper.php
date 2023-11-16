@@ -2262,6 +2262,7 @@ class BookingHelper {
 					$bank_name = 'qris';
 					$payment_status = 4;
 
+
 					$response = XenditHelper::createPayment($data);
 				}
 
@@ -2272,6 +2273,26 @@ class BookingHelper {
 
 					$response = XenditHelper::createPayment($data);
 				}
+
+				if($data->transaction->bank == 'card')
+				{
+					$payment_provider = 'xendit';
+					$amount = self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'IDR');
+					$currency = 'IDR';
+					$rate = number_format((float)$shoppingcart->due_now / $amount, 2, '.', '');
+					$rate_from = $shoppingcart->currency;
+					$rate_to = 'IDR';
+
+					$data->transaction->order_id = $param1;
+					$data->transaction->amount = $amount;
+					$data->transaction->currency = $currency;
+
+					$payment_status = 0;
+
+					$response = XenditHelper::createPayment($data);
+				}
+
+
 
 			break;
 			case "midtrans":
@@ -2350,6 +2371,7 @@ class BookingHelper {
 		if(isset($response->data->authorization_id)) $authorization_id = $response->data->authorization_id;
 		if(isset($response->data->amount)) $amount = $response->data->amount;
 		if(isset($response->data->payment_description)) $payment_description = $response->data->payment_description;
+		if(isset($response->data->payment_status)) $payment_status = $response->data->payment_status;
 
 		$ShoppingcartPayment = (object) array(
 			'payment_provider' => $payment_provider,

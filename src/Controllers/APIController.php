@@ -1761,93 +1761,159 @@ class APIController extends Controller
         
         /*
         $("#paymentContainer").html(\'<form id="payment-form"><div class="row mt-4"><div class="col-md-12 mb-2"><strong>Card Information</strong></div><div class="col-md-12 mb-2"><input class="form-control" type="text" id="card-number" placeholder="Card number" value="" style="height: 47px;"></div></div><div class="row"><div class="col-md-6 mb-2"><input type="text" class="form-control" id="cc-expiration" placeholder="MM / YY" required="" style="height: 47px;"></div><div class="col-md-6 mb-2"><input type="text" class="form-control" id="cc-cvv" placeholder="CVV" required="" style="height: 47px;"></div><div class="col-md-12 mb-2"><strong>Billing Information</strong></div></div><div class="row"><div class="col-md-6 mb-2"><select class="custom-select d-block w-100" id="country" required="" style="height: 47px;"><option value="">Country</option><option>United States</option></select></div><div class="col-md-6 mb-2"><input type="text" class="form-control" id="cc-zipcode" placeholder="Zip code" required="" maxlength="5" style="height: 47px;"></div></div><button style="height:47px;" class="mt-2 btn btn-lg btn-block btn-theme" id="submit"><strong>Pay with card</strong></button></form><div id=\"loader\" class=\"mb-4\"></div><div id=\"text-alert\" class=\"text-center\"></div>\');
+        
+                Xendit.card.createToken({
+                    amount: '.$amount.',
+                    card_number: cardNumber,
+                    card_exp_month: expiryMonth,
+                    card_exp_year: expiryYear,
+                    card_cvn: cvvNumber,
+                    is_multiple_use: false,
+                    should_authenticate: true
+                }, xenditResponseHandler);
 
-        Xendit.payment.createPaymentMethod(
-        {
-            type: "CARD",
-            card: {
-                currency: "IDR",
-                card_information: {
-                    card_number: cardNumber, 
-                    expiry_month: expiryMonth,
-                    expiry_year: expiryYear,
-                    cvv: cvvNumber,
-                },
-            },
-            "billing_information": {
-                "country": country,
-                "postal_code": postalCode
-            },
-            reusability: "ONE_TIME_USE",
-        }, (err, resp) => console.log(resp, "Here is the response sent by the server")
-        )
+        
+
+                Xendit.payment.createPaymentMethod(
+                {
+                    type: "CARD",
+                    card: {
+                        currency: "IDR",
+                        card_information: {
+                            card_number: cardNumber, 
+                            expiry_month: expiryMonth,
+                            expiry_year: expiryYear,
+                            cvv: cvvNumber,
+                        },
+                    },
+                    billing_information: {
+                        country: country,
+                        postal_code: postalCode
+                    },
+                    reusability: "MULTIPLE_USE",
+                }, (err, resp) => console.log(resp, err))
         */
 
         $jscript = '
+        
 
         $("#submitCheckout").slideUp("slow");
 
-        $("#paymentContainer").html(\'<form id="payment-form" onSubmit="validateInputCard(); return false;"><div class="row mt-4"><div class="col-md-12 mb-2"><strong>Card Information</strong></div><div class="col-md-12 mb-2"><input class="form-control" type="text" id="card-number" placeholder="Card number" value="" style="height: 47px;"></div></div><div class="row"><div class="col-md-6 mb-2"><input type="text" class="form-control" id="cc-expiration" placeholder="MM / YY" required="" style="height: 47px;"></div><div class="col-md-6 mb-2"><input type="text" class="form-control" id="cc-cvv" placeholder="CVV" required="" style="height: 47px;"></div><div class="col-md-12 mb-2"><strong>Billing Information</strong></div></div><div class="row"><div class="col-md-6 mb-2"><select class="custom-select d-block w-100" id="country" required="" style="height: 47px;"><option value="">Country</option><option>United States</option></select></div><div class="col-md-6 mb-2"><input type="text" class="form-control" id="cc-zipcode" placeholder="Zip code" required="" maxlength="5" style="height: 47px;"></div></div><button style="height:47px;" class="mt-2 btn btn-lg btn-block btn-theme" id="submit"><strong>Pay with card</strong></button></form><div id=\"loader\" class=\"mb-4\"></div><div id=\"text-alert\" class=\"text-center\"></div>\');
+        $("#paymentContainer").html(\'<form id="payment-form"><div class="row mt-4"><div class="col-md-12 mb-2"><strong>Card Information</strong></div><div class="col-md-12 mb-2"><input class="form-control" type="text" id="card-number" placeholder="Card number" value="" style="height: 47px;"></div></div><div class="row"><div class="col-md-6 mb-2"><input type="text" class="form-control" id="cc-expiration" placeholder="MM / YY" required="" style="height: 47px;"></div><div class="col-md-6 mb-2"><input type="text" class="form-control" id="cc-cvv" placeholder="CVV" required="" style="height: 47px;"></div><div class="col-md-12 mb-2"><strong>Billing Information</strong></div></div><div class="row"><div class="col-md-6 mb-2"><select class="custom-select d-block w-100" id="country" required="" style="height: 47px;"><option value="">Country</option><option value="US">United States</option></select></div><div class="col-md-6 mb-2"><input type="text" class="form-control" id="cc-zipcode" placeholder="Zip code" required="" maxlength="5" style="height: 47px;"></div></div><button style="height:47px;" class="mt-2 btn btn-lg btn-block btn-theme" id="submit"><strong>Pay with card</strong></button></form><div id=\"loader\" class=\"mb-4\"></div><div id=\"text-alert\" class=\"text-center\"></div><div id="three-ds-container" class="modal" style="display: none; background-color: white;"></div>\');
 
         payform.cardNumberInput(document.getElementById("card-number"));
-        
         payform.expiryInput(document.getElementById("cc-expiration"));
         payform.cvcInput(document.getElementById("cc-cvv"));
 
-        Xendit.setPublishableKey("'. env("XENDIT_PUBLIC_KEY") .'");
-
         
-
-        function validateInputCard()
-        {
-            var cardNumber = $("#card-number").val();
-            
-            var expiry = $("#cc-expiration").val();
-            var expiryArray = expiry.split("/");
-            var expiryMonth = expiryArray[0].trim();
-            var expiryYear = expiryArray[1].trim();
-
-            if(expiryYear.length==2)
-            {
-                expiryYear = "20"+ expiryYear;
+        function xenditResponseHandler (err, creditCardToken) {
+            if (creditCardToken.status === "APPROVED" || creditCardToken.status === "VERIFIED") {
+                        $("#three-ds-container").modal("hide");
+                        console.log(creditCardToken);
+            } else if (creditCardToken.status === "IN_REVIEW") {
+                        $("#three-ds-container").html("<iframe class=\"iframeclass\" id=\"sample-inline-frame\" name=\"3ds-inline-frame\" scrolling=\"no\"></iframe>");
+                        window.open(creditCardToken.payer_authentication_url, "3ds-inline-frame");
+                        $("#three-ds-container").modal("show");
+            } else if (creditCardToken.status === "FRAUD") {
+                        $("#three-ds-container").modal("hide");
+                        $("#loader").hide();
+                            $("#loader").removeClass("loader");
+                            $("#payment-form").slideDown("slow");
+                            $("#submit").attr("disabled", false);
+                            $("#submit").html(\'<strong>Pay with card</strong>\');
+            } else if (creditCardToken.status === "FAILED") {
+                        $("#three-ds-container").modal("hide");
+                        $("#loader").hide();
+                            $("#loader").removeClass("loader");
+                            $("#payment-form").slideDown("slow");
+                            $("#submit").attr("disabled", false);
+                            $("#submit").html(\'<strong>Pay with card</strong>\');
             }
-
-            if(!payform.validateCardNumber(cardNumber))
-            {
-                console.log("wrong card number");
-                return false;
-            }
-
-            
-            if(!payform.validateCardExpiry(expiryMonth,expiryYear))
-            {
-                console.log("wrong expiry");
-                return false;
-            }
-
-            if(!payform.validateCardCVC(expiryMonth,expiryYear))
-            {
-                console.log("wrong expiry");
-                return false;
-            }
-
-            
-
-            
-            
-            
-
-            
-
-            console.log(expiryMonth);
-            console.log(expiryYear);
-
-           
-            
         }
-
+        
         
 
+        var form = document.getElementById(\'payment-form\');
+        form.addEventListener(\'submit\', function(ev) {
+
+                ev.preventDefault();
+                
+                $("#loader").show();
+                $("#alert-payment").slideUp("slow");
+                $("#submit").attr("disabled", true);
+                $("#submit").html(\' <i class="fa fa-spinner fa-spin fa-fw"></i>  processing... \');
+
+                Xendit.setPublishableKey("'. env("XENDIT_PUBLIC_KEY") .'");
+                
+                var cardNumber = $("#card-number").val();
+                var expiry = $("#cc-expiration").val();
+                var expiryArray = expiry.split("/");
+                var expiryMonth = expiryArray[0].trim();
+                var expiryYear = expiryArray[1].trim();
+                var cvvNumber = $("#cc-cvv").val();
+
+                var country = $("#country").val();
+                var postalCode = $("#cc-zipcode").val();
+
+
+                if(expiryYear.length==2)
+                {
+                    expiryYear = "'. substr(date('Y'),0,2) .'"+ expiryYear;
+                }
+
+                if(!payform.validateCardNumber(cardNumber))
+                {
+                    console.log("wrong card number");
+                    return false;
+                }
+            
+                if(!payform.validateCardExpiry(expiryMonth,expiryYear))
+                {
+                    console.log("wrong expiry");
+                    return false;
+                }
+
+                if(!payform.validateCardCVC(cvvNumber))
+                {
+                    console.log("wrong expiry");
+                    return false;
+                }
+
+                cardNumber = cardNumber.replace(/\s/g,"");
+                expiryMonth = expiryMonth.trim();
+                expiryYear = expiryYear.trim();
+                cvvNumber = cvvNumber.trim();
+                country = country.trim();
+                postalCode = postalCode.trim();
+
+                console.log(cardNumber);
+                console.log(expiryYear);
+                console.log(cvvNumber);
+
+                const billing_details = {
+                    address: {
+                       country:country,
+                       postal_code:postalCode 
+                    }
+                };
+
+                console.log(billing_details);
+
+                Xendit.card.createToken({
+                    amount: '.$amount.',
+                    card_number: cardNumber,
+                    card_exp_month: expiryMonth,
+                    card_exp_year: expiryYear,
+                    card_cvn: cvvNumber,
+                    billing_details: billing_details,
+                    is_multiple_use: false,
+                    should_authenticate: true
+                }, xenditResponseHandler);
+
+
+                return false;
+            });
+        
 
         ';
         return response($jscript)->header('Content-Type', 'application/javascript');

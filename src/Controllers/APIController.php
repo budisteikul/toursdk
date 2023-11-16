@@ -316,12 +316,6 @@ class APIController extends Controller
                     $response = BookingHelper::create_payment($sessionId,"xendit","bss");
                 break;
 
-                case 'invoice':
-                    BookingHelper::set_bookingStatus($sessionId,'PENDING');
-                    BookingHelper::set_confirmationCode($sessionId);
-                    $response = BookingHelper::create_payment($sessionId,"xendit","invoice");
-                break;
-
                 default:
                     BookingHelper::set_bookingStatus($sessionId,'PENDING');
                     BookingHelper::set_confirmationCode($sessionId);

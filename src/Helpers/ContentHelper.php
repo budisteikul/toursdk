@@ -354,6 +354,8 @@ class ContentHelper {
                 <small>QRIS, SGQR, THAIQR, QRPH, DuitNow QR supported</small>
                 ',
 
+                
+
                 // Paypal Currency
                 'paypal_currency' => self::env_paypalCurrency(),
                 'paypal_total' => GeneralHelper::numberFormat(BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,self::env_paypalCurrency()),'USD'),

@@ -292,23 +292,8 @@ class ContentHelper {
         $payment_enable = 'qris,stripe,paypal';
         $payment_default = 'qris';
 
-        $paypal_label = '<strong class="mb-1"><img src="'. self::env_appAssetUrl() .'/img/payment/paypal.png" height="25" alt="Paypal" /></strong>';
-
-        $idr_total = BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'IDR');
-
-        
-
         //================================================
         
-        $transfer_list[] = [
-                'value' => 'xendit_qris', 'label' => '', 'image' => self::env_appAssetUrl() .'/img/payment/qris.png', 'currency' => 'idr',
-            ];
-
-        $grouped_payment[] = [
-            'label' => '',
-            'options' => $transfer_list
-        ];
-
         
 
         if(env('PAYPAL_INTENT')=="CAPTURE")
@@ -343,7 +328,6 @@ class ContentHelper {
                 
                 'payment_enable' => $payment_enable,
                 'payment_default' => $payment_default,
-                'localpayment_list' => $grouped_payment,
 
                 //Qris
                 'qris_currency' => 'IDR',
@@ -351,17 +335,15 @@ class ContentHelper {
                 'qris_rate' => '',
                 'qris_label' => '<strong>Scan to Pay</strong>
                 <br />
-                <small>QRIS, SGQR, THAIQR, QRPH, DuitNow QR supported</small>
+                QRIS, SGQR, THAIQR, QRPH, DuitNow QR supported
                 ',
-
-                
 
                 // Paypal Currency
                 'paypal_currency' => self::env_paypalCurrency(),
                 'paypal_total' => GeneralHelper::numberFormat(BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,self::env_paypalCurrency()),'USD'),
                 'paypal_rate' => $rate_text,
                 'paypal_sdk' => $paypal_sdk,
-                'paypal_label' => $paypal_label,
+                'paypal_label' => '<strong class="mb-1"><img src="'. self::env_appAssetUrl() .'/img/payment/paypal.png" height="25" alt="Paypal" /></strong>',
 
                 // Stripe Currency
                 'stripe_currency' => 'USD',

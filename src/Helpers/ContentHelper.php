@@ -324,7 +324,6 @@ class ContentHelper {
                 'products' => $dataProducts,
                 'mainQuestions' => $dataMainQuestion,
                 'productQuestions' => $dataProductQuestion,
-                'paypal_client_id' => self::env_paypalClientId(),
                 
                 'payment_enable' => $payment_enable,
                 'payment_default' => $payment_default,

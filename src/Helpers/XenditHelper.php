@@ -137,7 +137,8 @@ class XenditHelper {
 
         if($data->transaction->bank=="card")
         {
-            $amount = round($data->transaction->amount);
+            $amount = $data->transaction->amount;
+            //$amount = 10059;
             $token_id = $data->transaction->order_id;
             $external_id = $data->transaction->confirmation_code;
 
@@ -158,7 +159,17 @@ class XenditHelper {
             else
             {
                  $status_json->id = '0';
-                 $status_json->message = $data1;
+                 $message = '';
+                 if($data1->failure_reason=="EXPIRED_CARD") $message = 'The card has expired.';
+                 if($data1->failure_reason=="ISSUER_SUSPECT_FRAUD") $message = 'The card has been declined by the issuing bank due to potential fraud suspicion.';
+                 if($data1->failure_reason=="DECLINED_BY_PROCESSOR") $message = 'The card has been declined by the processor.';
+                 if($data1->failure_reason=="INSUFFICIENT_BALANCE") $message = 'The card does not have enough balance.';
+                 if($data1->failure_reason=="STOLEN_CARD") $message = 'The card has been marked as stolen.';
+                 if($data1->failure_reason=="INACTIVE_OR_UNAUTHORIZED_CARD") $message = 'The card is inactive or unauthorized to perform the transaction.';
+                 if($data1->failure_reason=="PROCESSOR_ERROR") $message = 'The charge failed because there\'s an integration issue between the card processor and the bank.';
+                 if($data1->failure_reason=="INVALID_CVV") $message = 'The card is declined due to unmatched CVV / CVC';
+                 if($data1->failure_reason=="DECLINED_BY_ISSUER") $message = 'The card is declined by the issuing bank';
+                 $status_json->message = $message;
             }
 
         }

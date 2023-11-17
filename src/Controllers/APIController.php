@@ -1505,8 +1505,14 @@ class APIController extends Controller
                     "message" => "/booking/receipt/".$shoppingcart->session_id."/".$shoppingcart->confirmation_code
                 ]);
             }
+            else
+            {
+                return response()->json([
+                    "id" => "0",
+                    "message" => $response->status->message
+                ]);
+            }
             
-            return response()->json($response);
     }
 
     public function confirmpaymentfinmo(Request $request)
@@ -1863,6 +1869,18 @@ class APIController extends Controller
                                     $(\'#alert-payment\').html(\'<div id="alert-success" class="alert alert-primary text-center" role="alert"><h2 style="margin-bottom:10px; margin-top:10px;"><i class="far fa-smile"></i> Payment Successful!</h2></div>\');
                                     $(\'#alert-payment\').fadeIn("slow");
                                     window.openAppRoute(data.message); 
+                                }
+                                else
+                                {
+                                    $("#text-alert").hide();
+                                    $("#text-alert").empty();
+                                    $("#loader").hide();
+                                    $("#loader").removeClass("loader");
+                                    $("#payment-form").slideDown("slow");
+                                    $("#submit").attr("disabled", false);
+                                    $("#submit").html(\'<strong>Pay with card</strong>\');
+                                    $(\'#alert-payment\').html(\'<div id="alert-failed" class="alert alert-danger text-center mt-2" role="alert"><strong style="margin-bottom:10px; margin-top:10px;"><i class="far fa-frown"></i> \'+ data.message +\'</strong></div>\');
+                                    $(\'#alert-payment\').fadeIn("slow");
                                 }
                             });
             } else if (creditCardToken.status === "IN_REVIEW") {

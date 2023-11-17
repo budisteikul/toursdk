@@ -27,11 +27,13 @@ class XenditHelper {
         $status_json = new \stdClass();
         $response_json = new \stdClass();
 
-        $data->transaction->mins_expired = 30;
-        $data->transaction->date_expired = Carbon::parse($data->transaction->date_now)->addMinutes($data->transaction->mins_expired);
+        
 
         if($data->transaction->bank=="dana")
         {
+            $data->transaction->mins_expired = 30;
+            $data->transaction->date_expired = Carbon::parse($data->transaction->date_now)->addMinutes($data->transaction->mins_expired);
+
             $amount = round($data->transaction->amount);
             $success_redirect_url = self::env_appUrl().$data->transaction->finish_url;
             $data1 = (new self)->createEWalletDanaCharge($amount,$success_redirect_url);
@@ -55,6 +57,9 @@ class XenditHelper {
 
         if($data->transaction->bank=="qris")
         {
+            $data->transaction->mins_expired = 30;
+            $data->transaction->date_expired = Carbon::parse($data->transaction->date_now)->addMinutes($data->transaction->mins_expired);
+
             $amount = round($data->transaction->amount);
             $expired_at = GeneralHelper::dateFormat($data->transaction->date_expired,12);
             $data1 = (new self)->createQrcode($amount,$expired_at);
@@ -77,6 +82,9 @@ class XenditHelper {
 
         if($data->transaction->bank=="bss")
         {
+            $data->transaction->mins_expired = 30;
+            $data->transaction->date_expired = Carbon::parse($data->transaction->date_now)->addMinutes($data->transaction->mins_expired);
+
             $amount = round($data->transaction->amount);
             $expired_at = GeneralHelper::dateFormat($data->transaction->date_expired,12);
             $name = $data->contact->name;
@@ -102,6 +110,7 @@ class XenditHelper {
 
         if($data->transaction->bank=="invoice")
         {
+            
             $amount = round($data->transaction->amount);
             $confirmation_code = $data->transaction->confirmation_code;
 

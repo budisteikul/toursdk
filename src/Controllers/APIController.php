@@ -1812,6 +1812,16 @@ class APIController extends Controller
                     },
                     reusability: "MULTIPLE_USE",
                 }, (err, resp) => console.log(resp, err))
+
+                <style>
+    .iframeclass {
+    position: absolute;
+    top: 0; left: 0;
+    width:100%;
+    height:100%;
+    background-color: #FFFFFF;
+}
+</style>
         */
 
         $jscript = '
@@ -1819,7 +1829,10 @@ class APIController extends Controller
 
         $("#submitCheckout").slideUp("slow");
 
-        $("#paymentContainer").html(\'<form id="payment-form"><div class="row mt-4"><div class="col-md-12 mb-2"><input class="form-control" type="text" id="card-number" placeholder="Card Number" value="" style="height: 47px;"><div id="cardNumberFeddback" class="invalid-feedback">Card number invalid.</div></div></div><div class="row"><div class="col-md-6 mb-2"><input type="text" class="form-control" id="cc-expiration" placeholder="MM / YY" required="" style="height: 47px;"><div id="expirationFeddback" class="invalid-feedback">Expiration invalid.</div></div><div class="col-md-6 mb-2"><input type="text" class="form-control" id="cc-cvv" placeholder="3-4 digits CVV / CVN" required="" style="height: 47px;"><div id="cvvFeddback" class="invalid-feedback">CVV / CVN invalid.</div></div></div><button style="height:47px;" class="mt-2 btn btn-lg btn-block btn-theme" id="submit"><strong>Pay with card</strong></button></form><div id=\"loader\" class=\"mb-4\"></div><div id=\"text-alert\" class=\"text-center\"></div><div id="three-ds-container" class="modal" style="display: none; background-color: white;"></div>\');
+        $("#paymentContainer").html(\'<form id="payment-form"><div class="row mt-4"><div class="col-md-12 mb-2"><input class="form-control" type="text" id="card-number" placeholder="Card Number" value="" style="height: 47px;"><div id="cardNumberFeddback" class="invalid-feedback">Card number invalid.</div></div></div><div class="row"><div class="col-md-6 mb-2"><input type="text" class="form-control" id="cc-expiration" placeholder="MM / YY" required="" style="height: 47px;"><div id="expirationFeddback" class="invalid-feedback">Expiration invalid.</div></div><div class="col-md-6 mb-2"><input type="text" class="form-control" id="cc-cvv" placeholder="3-4 digits CVV / CVN" required="" style="height: 47px;"><div id="cvvFeddback" class="invalid-feedback">CVV / CVN invalid.</div></div></div><button style="height:47px;" class="mt-2 btn btn-lg btn-block btn-theme" id="submit"><strong>Pay with card</strong></button></form><div id=\"loader\" class=\"mb-4\"></div><div id=\"text-alert\" class=\"text-center\"></div><div id="three-ds-container" class="modal" style="display: none;"></div>\');
+
+        
+
 
         payform.cardNumberInput(document.getElementById("card-number"));
         payform.expiryInput(document.getElementById("cc-expiration"));
@@ -1853,7 +1866,13 @@ class APIController extends Controller
                                 }
                             });
             } else if (creditCardToken.status === "IN_REVIEW") {
-                            $("#three-ds-container").html("<iframe class=\"iframeclass\" id=\"sample-inline-frame\" name=\"3ds-inline-frame\" scrolling=\"no\"></iframe>");
+                            $("#three-ds-container").html("<iframe id=\"3ds-inline-frame\" name=\"3ds-inline-frame\" scrolling=\"no\"></iframe>");
+                            $("#3ds-inline-frame").css("background-color", "white");
+                            $("#3ds-inline-frame").css("top", "0px");
+                            $("#3ds-inline-frame").css("left", "0px");
+                            $("#3ds-inline-frame").css("width", "100%");
+                            $("#3ds-inline-frame").css("height", "100%");
+                            $("#3ds-inline-frame").css("position", "absolute");
                             window.open(creditCardToken.payer_authentication_url, "3ds-inline-frame");
                             $("#three-ds-container").modal("show");
             } else if (creditCardToken.status === "FRAUD") {

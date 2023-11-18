@@ -1832,6 +1832,8 @@ class APIController extends Controller
 
         $jscript = '
         
+        
+        
 
         $("#submitCheckout").slideUp("slow");
 
@@ -1865,7 +1867,10 @@ class APIController extends Controller
                                     $("#loader").removeClass("loader");
                                     $(\'#alert-payment\').html(\'<div id="alert-success" class="alert alert-primary text-center" role="alert"><h2 style="margin-bottom:10px; margin-top:10px;"><i class="far fa-smile"></i> Payment Successful!</h2></div>\');
                                     $(\'#alert-payment\').fadeIn("slow");
-                                    window.openAppRoute(data.message); 
+                                    setTimeout(function (){
+                                        window.openAppRoute(data.message); 
+                                    }, 1000);
+                                    
                                 }
                                 else
                                 {
@@ -2109,7 +2114,9 @@ class APIController extends Controller
                                     $("#loader").removeClass("loader");
                                     $(\'#alert-payment\').html(\'<div id="alert-success" class="alert alert-primary text-center" role="alert"><h2 style="margin-bottom:10px; margin-top:10px;"><i class="far fa-smile"></i> Payment Successful!</h2></div>\');
                                     $(\'#alert-payment\').fadeIn("slow");
-                                    window.openAppRoute(data.message); 
+                                    setTimeout(function (){
+                                        window.openAppRoute(data.message); 
+                                    }, 1000); 
                                 }
 
                                 }).fail(function(error) {
@@ -2199,7 +2206,9 @@ class APIController extends Controller
                                     $("#loader").removeClass("loader");
                                     $(\'#alert-payment\').html(\'<div id="alert-success" class="alert alert-primary text-center" role="alert"><h2 style="margin-bottom:10px; margin-top:10px;"><i class="far fa-smile"></i> Payment Successful!</h2></div>\');
                                     $(\'#alert-payment\').fadeIn("slow");
-                                    window.openAppRoute(data.message); 
+                                    setTimeout(function (){
+                                        window.openAppRoute(data.message); 
+                                    }, 1000); 
                                 }
 
                                 }).fail(function(error) {
@@ -2227,7 +2236,9 @@ class APIController extends Controller
                                     $("#loader").removeClass("loader");
                                     $(\'#alert-payment\').html(\'<div id="alert-success" class="alert alert-primary text-center" role="alert"><h2 style="margin-bottom:10px; margin-top:10px;"><i class="far fa-smile"></i> Payment Successful!</h2></div>\');
                                     $(\'#alert-payment\').fadeIn("slow");
-                                    window.openAppRoute(data.message); 
+                                    setTimeout(function (){
+                                        window.openAppRoute(data.message); 
+                                    }, 1000); 
                                 }
 
                                 }).fail(function(error) {
@@ -2246,6 +2257,11 @@ class APIController extends Controller
     {
         $jscript = '
         
+        function reloadThisPage()
+        {
+            window.location.reload();
+        }
+
         function clearFormAlert(data)
         {
             $.each(data, function( index, value ) {
@@ -2283,14 +2299,14 @@ class APIController extends Controller
             {
                 if(ewallet=="ovo")
                 {
-                                        $("#text-alert").hide();
-                                        $("#text-alert").html( "" );
+                    $("#text-alert").hide();
+                    $("#text-alert").html( "" );
 
-                                        $(\'#alert-payment\').html(\'<div id="alert-failed" class="alert alert-danger text-center mt-2" role="alert"><h2 style="margin-bottom:10px; margin-top:10px;"><i class="far fa-frown"></i> Transaction failed</h2></div>\');
-                                        $(\'#alert-payment\').fadeIn("slow");
-                                        $("#ovoPhoneNumber").attr("disabled", false);
-                                        $("#submit").attr("disabled", false);
-                                        $("#submit").html(\' <strong>Click to pay with <img class="ml-2 mr-2" src="'.$this->appAssetUrl.'/img/payment/ovo-light.png" height="30" /></strong> \');
+                    $(\'#alert-payment\').html(\'<div id="alert-failed" class="alert alert-danger text-center mt-2" role="alert"><h2 style="margin-bottom:10px; margin-top:10px;"><i class="far fa-frown"></i> Transaction failed</h2></div>\');
+                    $(\'#alert-payment\').fadeIn("slow");
+                    $("#ovoPhoneNumber").attr("disabled", false);
+                    $("#submit").attr("disabled", false);
+                    $("#submit").html(\' <strong>Click to pay with <img class="ml-2 mr-2" src="'.$this->appAssetUrl.'/img/payment/ovo-light.png" height="30" /></strong> \');
                 }
             }
 
@@ -2428,10 +2444,15 @@ class APIController extends Controller
                             }).done(function(data) {
                                 if(data.id=="1")
                                 {
+                                    $("#text-alert").hide();
+                                    $("#text-alert").empty();
                                     $("#loader").hide();
+                                    $("#loader").removeClass("loader");
                                     $(\'#alert-payment\').html(\'<div id="alert-success" class="alert alert-primary text-center" role="alert"><h2 style="margin-bottom:10px; margin-top:10px;"><i class="far fa-smile"></i> Payment Successful!</h2></div>\');
                                     $(\'#alert-payment\').fadeIn("slow");
-                                    window.openAppRoute(data.message); 
+                                    setTimeout(function (){
+                                        window.openAppRoute(data.message); 
+                                    }, 1000);
                                 }
                                 else
                                 {
@@ -2495,10 +2516,15 @@ class APIController extends Controller
                             }).done(function(data) {
                                 if(data.id=="1")
                                 {
+                                    $("#text-alert").hide();
+                                    $("#text-alert").empty();
                                     $("#loader").hide();
+                                    $("#loader").removeClass("loader");
                                     $(\'#alert-payment\').html(\'<div id="alert-success" class="alert alert-primary text-center" role="alert"><h2 style="margin-bottom:10px; margin-top:10px;"><i class="far fa-smile"></i> Payment Successful!</h2></div>\');
                                     $(\'#alert-payment\').fadeIn("slow");
-                                    window.openAppRoute(data.message); 
+                                    setTimeout(function (){
+                                        window.openAppRoute(data.message); 
+                                    }, 1000);
                                 }
                                 else
                                 {

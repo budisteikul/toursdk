@@ -289,7 +289,7 @@ class ContentHelper {
         $promo_code = $shoppingcart->promo_code;
         if($promo_code=="") $promo_code = null;
         
-        $payment_enable = 'xendit,stripe,paypal';
+        $payment_enable = 'xendit,paypal';
         $payment_default = 'xendit';
 
         //================================================
@@ -331,7 +331,7 @@ class ContentHelper {
                 //Qris
                 'xendit_currency' => 'IDR',
                 'xendit_total' =>  GeneralHelper::numberFormat(BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'IDR'),'IDR'),
-                'xendit_rate' => 'Charge in IDR',
+                'xendit_rate' => '',
                 'xendit_label' => '<strong class="mb-1">Card Payments</strong>
                 <div class="ml-0 mb-1 mt-2">
                     <img src="'. self::env_appAssetUrl() .'/img/payment/1567681554_48417.png" style="max-height:35px" class="img-fluid" alt="Payment Logo" />

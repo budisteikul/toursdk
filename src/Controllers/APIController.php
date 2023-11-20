@@ -385,7 +385,7 @@ class APIController extends Controller
             ], 200);
     }
 
-    public function product_remove(Request $request)
+    public function product_remove__(Request $request)
     {
         $data = json_decode($request->getContent(), true);
         Cache::forget('_bokunProductById_'. $this->currency .'_'. $this->lang .'_'.$data);
@@ -692,6 +692,27 @@ class APIController extends Controller
         ], 200);
     }
     
+    public function product_remove(Request $request)
+    {
+        $data = json_decode($request->getContent(), true);
+        Cache::forget('_bokunProductById_'. $this->currency .'_'. $this->lang .'_'.$data);
+
+        $sessionId = $data['sessionId'];
+        $shoppingcart = Cache::get('_'. $sessionId);
+
+        $dataShoppingcart = ContentHelper::view_shoppingcart($shoppingcart);
+
+        $data = array(
+                'shoppingcarts' => $dataShoppingcart,
+                'message' => 'success'
+            );
+        
+        FirebaseHelper::connect('shoppingcart/'.$shoppingcart->session_id,$data,"PUT");
+
+        return response()->json([
+                'message' => 'success'
+            ], 200);
+    }
 
     public function removebookingid(Request $request)
     {
@@ -711,7 +732,7 @@ class APIController extends Controller
         $bookingId = $data['bookingId'];
          
         BookingHelper::remove_activity($sessionId,$bookingId);
-
+        
         return response()->json([
             "message" => "success"
         ]);

@@ -2472,10 +2472,15 @@ class BookingHelper {
 		//}
 		//else
 		//{
+			$value = '';
 			$check = self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'USD');
-			$value = $shoppingcart->due_now / $check;
-			$value = number_format((float)$value, 2);
-			$value = '1 '. $currency .' = '. $value .' '. $shoppingcart->currency;
+			if($check>0)
+			{
+				$value = $shoppingcart->due_now / $check;
+				$value = number_format((float)$value, 2);
+				$value = '1 '. $currency .' = '. $value .' '. $shoppingcart->currency;
+			}
+			
 		//}
 
 		$amount = $value .'<div class="mt-2"><span class="badge badge-success" style="font-size:12px;">Total : '. self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,$currency) .' '. $currency .'</span></div>';

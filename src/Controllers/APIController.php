@@ -679,7 +679,12 @@ class APIController extends Controller
 
         $dataShoppingcart = ContentHelper::view_shoppingcart($shoppingcart);
 
-        //FirebaseHelper::connect('shoppingcart/'.$shoppingcart->session_id.'/shoppingcart',$dataShoppingcart,"PUT");
+        $data = array(
+                'receipt' => $dataShoppingcart,
+                'message' => 'success'
+            );
+        
+        FirebaseHelper::connect('shoppingcart/'.$shoppingcart->session_id,$data,"PUT");
 
         return response()->json([
             'message' => 'success',

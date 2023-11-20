@@ -385,14 +385,7 @@ class APIController extends Controller
             ], 200);
     }
 
-    public function product_remove__(Request $request)
-    {
-        $data = json_decode($request->getContent(), true);
-        Cache::forget('_bokunProductById_'. $this->currency .'_'. $this->lang .'_'.$data);
-        return response()->json([
-                'message' => 'success'
-            ], 200);
-    }
+    
 
     public function downloadQrcode($sessionId,$id)
     {
@@ -733,31 +726,20 @@ class APIController extends Controller
          
         BookingHelper::remove_activity($sessionId,$bookingId);
         
+        $shoppingcart = Cache::get('_'. $sessionId);
+
+        $dataShoppingcart = ContentHelper::view_shoppingcart($shoppingcart);
+
+        $data = array(
+                'shoppingcarts' => $dataShoppingcart,
+                'message' => 'success'
+            );
+        
+        FirebaseHelper::connect('shoppingcart/'.$shoppingcart->session_id,$data,"PUT");
+
         return response()->json([
             "message" => "success"
         ]);
-    }
-
-    public function removepromocode(Request $request)
-    {
-        $validator = Validator::make(json_decode($request->getContent(), true), [
-            'sessionId' => ['required', 'string', 'max:255'],
-        ]);
-
-        if ($validator->fails()) {
-            $errors = $validator->errors();
-            return response()->json($errors);
-        }
-        
-        $data = json_decode($request->getContent(), true);
-
-        $sessionId = $data['sessionId'];
-
-        BookingHelper::remove_promocode($sessionId);
-        
-        return response()->json([
-                'message' => 'success'
-            ], 200);
     }
 
     public function applypromocode(Request $request)
@@ -779,6 +761,17 @@ class APIController extends Controller
 
         $status = BookingHelper::apply_promocode($sessionId,$promocode);
 
+        $shoppingcart = Cache::get('_'. $sessionId);
+
+        $dataShoppingcart = ContentHelper::view_shoppingcart($shoppingcart);
+
+        $data = array(
+                'shoppingcarts' => $dataShoppingcart,
+                'message' => 'success'
+            );
+        
+        FirebaseHelper::connect('shoppingcart/'.$shoppingcart->session_id,$data,"PUT");
+
         if($status)
         {
             return response()->json([
@@ -792,6 +785,41 @@ class APIController extends Controller
             ], 200);
         }
     }
+
+    public function removepromocode(Request $request)
+    {
+        $validator = Validator::make(json_decode($request->getContent(), true), [
+            'sessionId' => ['required', 'string', 'max:255'],
+        ]);
+
+        if ($validator->fails()) {
+            $errors = $validator->errors();
+            return response()->json($errors);
+        }
+        
+        $data = json_decode($request->getContent(), true);
+
+        $sessionId = $data['sessionId'];
+
+        BookingHelper::remove_promocode($sessionId);
+        
+        $shoppingcart = Cache::get('_'. $sessionId);
+
+        $dataShoppingcart = ContentHelper::view_shoppingcart($shoppingcart);
+
+        $data = array(
+                'shoppingcarts' => $dataShoppingcart,
+                'message' => 'success'
+            );
+        
+        FirebaseHelper::connect('shoppingcart/'.$shoppingcart->session_id,$data,"PUT");
+        
+        return response()->json([
+                'message' => 'success'
+            ], 200);
+    }
+
+    
 
     public function snippetsinvoice(Request $request)
     {

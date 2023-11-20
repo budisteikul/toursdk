@@ -813,7 +813,7 @@ class APIController extends Controller
             );
         
         FirebaseHelper::connect('shoppingcart/'.$shoppingcart->session_id,$data,"PUT");
-        
+
         return response()->json([
                 'message' => 'success'
             ], 200);
@@ -1153,8 +1153,7 @@ class APIController extends Controller
                 onAvailabilitySelected: function(selectedRate, selectedDate, selectedAvailability) {
                 },
                 onAddedToCart: function(cart) {
-                    // $(\'.btn-primary\').attr("disabled",true);
-                    // $(\'.btn-primary\').html(\' <i class="fa fa-spinner fa-spin fa-fw"></i>  processing... \');
+                    
                     window.openAppRoute(\'/booking/checkout\');
                 },
         

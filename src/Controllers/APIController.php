@@ -680,7 +680,7 @@ class APIController extends Controller
         $dataShoppingcart = ContentHelper::view_shoppingcart($shoppingcart);
 
         $data = array(
-                'receipt' => $dataShoppingcart,
+                'shoppingcarts' => $dataShoppingcart,
                 'message' => 'success'
             );
         

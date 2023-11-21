@@ -108,9 +108,9 @@ class APIController extends Controller
                 '<a target="_blank" rel="noreferrer noopener" href="https://www.getyourguide.com/yogyakarta-l349/yogyakarta-night-walking-and-food-tour-t429708"><img height="30" class="mb-1 mt-2 mr-2 img-thumbnail" src="'.$this->appAssetUrl.'/img/footer/getyourguide-logo.png"} alt="GetYourGuide" /></a>',
             ],
             'paymentChannels' => [
-                '<img height="30" class="mt-2" src="'.$this->appAssetUrl.'/img/footer/line-1.png" alt="Payment Channels" /><br />',
-                '<img height="30" class="mt-2" src="'.$this->appAssetUrl.'/img/footer/line-2.png" alt="Payment Channels" /><br />',
-                '<img height="30" class="mt-2" src="'.$this->appAssetUrl.'/img/footer/line-4.png" alt="Payment Channels" /><br />',
+                '<img height="30" class="mt-2" src="'.$this->appAssetUrl.'/img/footer/payment-channel.png" alt="Payment Channels" /><br />',
+                //'<img height="30" class="mt-2" src="'.$this->appAssetUrl.'/img/footer/line-2.png" alt="Payment Channels" /><br />',
+                //'<img height="30" class="mt-2" src="'.$this->appAssetUrl.'/img/footer/line-4.png" alt="Payment Channels" /><br />',
             ]
         ], 200);
     }
@@ -1891,7 +1891,7 @@ class APIController extends Controller
 
         $("#submitCheckout").slideUp("slow");
 
-        $("#paymentContainer").html(\'<form id="payment-form"><div class="row mt-4"><div class="col-md-12 mb-2"><strong>Card Information</strong><br /><small>One time payment, we do not store your card details</small></div><div class="col-md-12 mb-2"><div class="input-group"><div class="input-group-append"><span class="input-group-text" id="inputGroupPrepend3"><i id="cardBrand" class="far fa-credit-card"></i></span></div><input class="form-control" type="text" id="card-number" placeholder="Card Number" value="" style="height: 47px;"><div id="cardNumberFeddback" class="invalid-feedback">Card number invalid.</div></div></div></div><div class="row"><div class="col-md-6 mb-2"><input type="text" class="form-control" id="cc-expiration" placeholder="MM / YY" required="" style="height: 47px;"><div id="expirationFeddback" class="invalid-feedback">Expiration invalid.</div></div><div class="col-md-6 mb-2"><input type="text" class="form-control" id="cc-cvv" placeholder="3-4 digits CVV / CVC" required="" style="height: 47px;"><div id="cvvFeddback" class="invalid-feedback">CVV / CVC invalid.</div></div></div><button style="height:47px;" class="mt-2 btn btn-lg btn-block btn-theme" id="submit"><strong>Pay with card</strong></button></form><div id=\"loader\" class=\"mb-4\"></div><div id=\"text-alert\" class=\"text-center\"></div><div id="three-ds-container" class="modal" style="display: none;"></div>\');
+        $("#paymentContainer").html(\'<form id="payment-form"><div class="row mt-4"><div class="col-md-12 mb-2"><strong>Card Information</strong></div><div class="col-md-12 mb-2"><div class="input-group"><div class="input-group-append"><span class="input-group-text" id="inputGroupPrepend3"><i id="cardBrand" class="far fa-credit-card"></i></span></div><input class="form-control" type="text" id="card-number" placeholder="Card Number" value="" style="height: 47px;"><div id="cardNumberFeddback" class="invalid-feedback">Card number invalid.</div></div></div></div><div class="row"><div class="col-md-6 mb-2"><input type="text" class="form-control" id="cc-expiration" placeholder="MM / YY" required="" style="height: 47px;"><div id="expirationFeddback" class="invalid-feedback">Expiration invalid.</div></div><div class="col-md-6 mb-2"><input type="text" class="form-control" id="cc-cvv" placeholder="3-4 digits CVV / CVC" required="" style="height: 47px;"><div id="cvvFeddback" class="invalid-feedback">CVV / CVC invalid.</div></div></div><button style="height:47px;" class="mt-2 btn btn-lg btn-block btn-theme" id="submit"><strong>Pay with card</strong></button></form><div id=\"loader\" class=\"mb-4\"></div><div id=\"text-alert\" class=\"text-center\"></div><div id="three-ds-container" class="modal" style="display: none;"></div>\');
 
         payform.cardNumberInput(document.getElementById("card-number"));
         payform.expiryInput(document.getElementById("cc-expiration"));
@@ -1915,16 +1915,6 @@ class APIController extends Controller
                 {
                     $("#cardBrand").removeClass();
                     $("#cardBrand").addClass(\'fab\').addClass(\'fa-cc-jcb\');
-                }
-                else if(card_brand=="discover")
-                {
-                    $("#cardBrand").removeClass();
-                    $("#cardBrand").addClass(\'fab\').addClass(\'fa-cc-discover\');
-                }
-                else if(card_brand=="amex")
-                {
-                    $("#cardBrand").removeClass();
-                    $("#cardBrand").addClass(\'fab\').addClass(\'fa-cc-amex\');
                 }
                 else
                 {

@@ -289,8 +289,8 @@ class ContentHelper {
         $promo_code = $shoppingcart->promo_code;
         if($promo_code=="") $promo_code = null;
         
-        $payment_enable = 'xendit,paypal';
-        $payment_default = 'xendit';
+        $payment_enable = 'stripe,paypal';
+        $payment_default = 'stripe';
 
         //================================================
         

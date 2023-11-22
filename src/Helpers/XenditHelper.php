@@ -4,6 +4,7 @@ use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\Exception\UnsatisfiedDependencyException;
 use budisteikul\toursdk\Helpers\GeneralHelper;
 use Carbon\Carbon;
+use budisteikul\toursdk\Helpers\LogHelper;
 
 class XenditHelper {
 
@@ -147,6 +148,7 @@ class XenditHelper {
             $response_json = new \stdClass();
       
             $data1 = (new self)->createChargeCard($token_id,$external_id,$amount);
+            LogHelper::log($data1,'xendit');
 
             if($data1->status=="CAPTURED")
             {

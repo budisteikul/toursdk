@@ -2060,8 +2060,7 @@ class APIController extends Controller
                     card_exp_month: expiryMonth,
                     card_exp_year: expiryYear,
                     card_cvn: cvvNumber,
-                    is_multiple_use: false,
-                    should_authenticate: true
+                    is_multiple_use: false
                 }, xenditResponseHandler);
 
 

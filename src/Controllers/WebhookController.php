@@ -26,7 +26,7 @@ class WebhookController extends Controller
     {
         if($webhook_app=="wise")
         {
-            //LogHelper::log_webhook($request->getContent());
+            
 
             $is_test = $request->header('X-Test-Notification');
             if($is_test)
@@ -69,7 +69,7 @@ class WebhookController extends Controller
 
         if($webhook_app=="bokun")
         {
-            LogHelper::log_webhook($request->getContent());
+            
 
             $data = json_decode($request->getContent(), true);
 

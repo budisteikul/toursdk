@@ -46,9 +46,9 @@ class XenditHelper {
             }
             else
             {
-                $data_json->order_id = $data1->id;
+                $data_json->authorization_id = $data1->id;
                 $data_json->redirect = $data1->actions->mobile_web_checkout_url;
-                $data_json->authorization_id = $data1->reference_id;
+                $data_json->order_id = $data1->reference_id;
 
                 $status_json->id = '1';
                 $status_json->message = 'success';
@@ -72,8 +72,8 @@ class XenditHelper {
             }
             else
             {
-                $data_json->order_id = $data1->id;
-                $data_json->authorization_id = $data1->reference_id;
+                $data_json->authorization_id = $data1->id;
+                $data_json->order_id = $data1->reference_id;
                 $data_json->qrcode = $data1->qr_string;
 
                 $status_json->id = '1';
@@ -100,9 +100,9 @@ class XenditHelper {
             }
             else
             {
-                $data_json->order_id = $data1->id;
+                $data_json->authorization_id = $data1->id;
                 $data_json->va_number = $data1->account_number;
-                $data_json->authorization_id = $data1->external_id;
+                $data_json->order_id = $data1->external_id;
 
                 $status_json->id = '1';
                 $status_json->message = 'success';
@@ -126,8 +126,8 @@ class XenditHelper {
             {
                 $data_json->payment_type = 'bank_redirect';
                 $data_json->redirect = $data1->invoice_url;
-                $data_json->order_id = $data1->id;
-                $data_json->authorization_id = $data1->external_id;
+                $data_json->authorization_id = $data1->id;
+                $data_json->order_id = $data1->external_id;
                 $data_json->success_redirect_url = self::env_appUrl() . $data->transaction->finish_url;
                 $data_json->failure_redirect_url = self::env_appUrl() . $data->transaction->finish_url;
 
@@ -154,8 +154,8 @@ class XenditHelper {
             {
                  $status_json->id = '1';
                  $status_json->message = $data1;
-                 $data_json->order_id = $data->transaction->order_id;
-                 $data_json->authorization_id = $external_id;
+                 $data_json->authorization_id = $data1->id;
+                 $data_json->order_id = $data1->external_id;
                  $data_json->payment_status = 2;
             }
             else
@@ -191,6 +191,17 @@ class XenditHelper {
         $data->amount = $amount;
         $data->token_id = $token_id;
         return json_decode($this->POST('/credit_card_charges',$data));
+    }
+
+    public function createRefund($payment_type,$amount,$external_id,$token_id)
+    {
+        if($payment_type=="card")
+        {
+            $data = new \stdClass();
+            $data->external_id = $external_id;
+            $data->amount = $amount;
+            return json_decode($this->POST('/credit_card_charges/'.$token_id.'/refunds',$data,['api-version: 2019-05-01','X-IDEMPOTENCY-KEY: '.$token_id]));
+        }
     }
 
     public function createInvoice($confirmation_code,$amount)

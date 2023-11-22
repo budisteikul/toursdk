@@ -43,6 +43,8 @@ use budisteikul\toursdk\Helpers\WiseHelper;
 class APIController extends Controller
 {
     
+    
+
     public function __construct(Request $request)
     {
         $this->currency = env("BOKUN_CURRENCY");
@@ -1661,7 +1663,7 @@ class APIController extends Controller
         if(isset($data['external_id']))
         {
             $external_id = $data['external_id'];
-            $shoppingcart_payment = ShoppingcartPayment::where('payment_provider','xendit')->where('authorization_id',$external_id)->first();
+            $shoppingcart_payment = ShoppingcartPayment::where('payment_provider','xendit')->where('order_id',$external_id)->first();
             if($shoppingcart_payment){
                 BookingHelper::confirm_payment($shoppingcart_payment->shoppingcart,"CONFIRMED");
                 BookingHelper::shoppingcart_notif($shoppingcart_payment->shoppingcart);
@@ -1716,7 +1718,7 @@ class APIController extends Controller
 
             if($channel_code=="ID_DANA")
             {
-                $shoppingcart_payment = ShoppingcartPayment::where('payment_provider','xendit')->where('authorization_id',$reference_id)->first();
+                $shoppingcart_payment = ShoppingcartPayment::where('payment_provider','xendit')->where('order_id',$reference_id)->first();
                 if($shoppingcart_payment){
                     BookingHelper::confirm_payment($shoppingcart_payment->shoppingcart,"CONFIRMED");
                     BookingHelper::shoppingcart_notif($shoppingcart_payment->shoppingcart);
@@ -1726,7 +1728,7 @@ class APIController extends Controller
 
         if($event=="qr.payment")
         {
-                $shoppingcart_payment = ShoppingcartPayment::where('payment_provider','xendit')->where('authorization_id',$reference_id)->first();
+                $shoppingcart_payment = ShoppingcartPayment::where('payment_provider','xendit')->where('order_id',$reference_id)->first();
                 if($shoppingcart_payment){
                     BookingHelper::confirm_payment($shoppingcart_payment->shoppingcart,"CONFIRMED");
                     BookingHelper::shoppingcart_notif($shoppingcart_payment->shoppingcart);

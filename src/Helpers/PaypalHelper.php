@@ -156,7 +156,7 @@ class PaypalHelper {
     	$request->body = self::buildRequestBodyCapture();
     	$client = self::client();
     	$response = $client->execute($request);
-	  	return $response->result->status;
+	  	return $response->result->id;
 	}
 	
 	public static function buildRequestBodyCapture()

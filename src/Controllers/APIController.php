@@ -103,9 +103,11 @@ class APIController extends Controller
             'privacyterms' => $dataPrivacyTerm,
             'footerTitle' => '&copy; 2018 - 2023 VERTIKAL TRIP. All Rights Reserved.',
             'partners' => [
-                '<a target="_blank" rel="noreferrer noopener" href="https://www.tripadvisor.com/AttractionProductReview-g14782503-d15646790-Small_Group_Walking_and_Food_Tour_by_Night_in_Yogyakarta-Yogyakarta_Yogyakarta_R.html"><img height="30" class="mb-1 mt-2 mr-2 img-thumbnail" src="'.$this->appAssetUrl.'/img/footer/tripadvisor-logo.png"} alt="Tripadvisor" /></a>',
-                '<a target="_blank" rel="noreferrer noopener" href="https://www.airbnb.com/experiences/434368"><img height="30" class="mb-1 mt-2 mr-2 img-thumbnail" src="'.$this->appAssetUrl.'/img/footer/airbnb-logo.png"} alt="Airbnb" /></a>',
                 '<a target="_blank" rel="noreferrer noopener" href="https://www.getyourguide.com/yogyakarta-l349/yogyakarta-night-walking-and-food-tour-t429708"><img height="30" class="mb-1 mt-2 mr-2 img-thumbnail" src="'.$this->appAssetUrl.'/img/footer/getyourguide-logo.png"} alt="GetYourGuide" /></a>',
+                '<a target="_blank" rel="noreferrer noopener" href="https://www.airbnb.com/experiences/434368"><img height="30" class="mb-1 mt-2 mr-2 img-thumbnail" src="'.$this->appAssetUrl.'/img/footer/airbnb-logo.png"} alt="Airbnb" /></a>',
+                '<a target="_blank" rel="noreferrer noopener" href="https://www.tripadvisor.com/AttractionProductReview-g14782503-d15646790-Small_Group_Walking_and_Food_Tour_by_Night_in_Yogyakarta-Yogyakarta_Yogyakarta_R.html"><img height="30" class="mb-1 mt-2 mr-2 img-thumbnail" src="'.$this->appAssetUrl.'/img/footer/tripadvisor-logo.png"} alt="Tripadvisor" /></a>',
+                
+                
             ],
             'paymentChannels' => [
                 '<img height="30" class="mt-2" src="'.$this->appAssetUrl.'/img/footer/payment-channel.png" alt="Payment Channels" /><br />',

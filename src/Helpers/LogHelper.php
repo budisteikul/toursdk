@@ -6,6 +6,11 @@ class LogHelper {
 
     public static function log($data,$identifier="")
     {
+        if(env("APP_ENV")=="local")
+        {
+            return "";
+        }
+        
         try
             {
                 Storage::disk('gcs')->put('log/log-'. $identifier .'-'. date('YmdHis') .'.txt', json_encode($data, JSON_PRETTY_PRINT));

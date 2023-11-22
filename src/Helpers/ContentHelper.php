@@ -331,7 +331,7 @@ class ContentHelper {
                 //Qris
                 'xendit_currency' => 'IDR',
                 'xendit_total' =>  GeneralHelper::numberFormat(BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'IDR'),'IDR'),
-                'xendit_rate' => 'One time payment, we do not store your card details',
+                'xendit_rate' => '',
                 'xendit_label' => '<strong class="mb-1">Card Payments</strong>
                 <div class="ml-0 mb-1 mt-2">
                     <img src="'. self::env_appAssetUrl() .'/img/payment/payment-channel-xendit.png" style="max-height:40px" class="img-fluid" alt="Payment Logo" />

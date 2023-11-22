@@ -2277,6 +2277,7 @@ class BookingHelper {
 				if($data->transaction->bank == 'card')
 				{
 					$payment_provider = 'xendit';
+					$payment_type = 'card';
 					$amount = self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'IDR');
 					$currency = 'IDR';
 					$rate = number_format((float)$shoppingcart->due_now / $amount, 2, '.', '');

@@ -89,7 +89,8 @@ class APIController extends Controller
             'type' => 'outsite'
         ];
 
-        $address = 'Perum. Guwosari Blok XII<br />
+        $address = '<strong>VERTIKAL TRIP</strong><br />
+                    Perum. Guwosari Blok XII<br />
                     Jalan Abiyoso VII No.190<br />
                     Bantul, D.I Yogyakarta 55751<br />
                     <i class="fas fa-envelope"></i> guide@vertikaltrip.com<br />

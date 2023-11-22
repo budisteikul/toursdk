@@ -29,19 +29,31 @@ class StripeHelper {
   			//'capture_method' => 'manual',
 		]);
 
-      $data_json = new \stdClass();
-      $status_json = new \stdClass();
-      $response_json = new \stdClass();
+        LogHelper::log($intent,'stripe');
+
+        $data_json = new \stdClass();
+        $status_json = new \stdClass();
+        $response_json = new \stdClass();
       
   		$data_json->intent = $intent;
   		$data_json->authorization_id = $intent->id;
 
-      $status_json->id = '1';
-      $status_json->message = 'success';
+        $status_json->id = '1';
+        $status_json->message = 'success';
         
-      $response_json->status = $status_json;
-      $response_json->data = $data_json;
+        $response_json->status = $status_json;
+        $response_json->data = $data_json;
 
 		return $response_json;
   	}
+
+    public function createRefund($id,$amount)
+    {
+        Stripe\Stripe::setApiKey(self::env_stripeSecretKey());
+        $refund = Stripe\Refund::create([
+            'amount' => $amount,
+            'payment_intent' => $id
+        ]);
+        return $refund;
+    }
 }

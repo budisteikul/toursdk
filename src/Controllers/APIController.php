@@ -16,6 +16,7 @@ use budisteikul\toursdk\Helpers\MidtransHelper;
 use budisteikul\toursdk\Helpers\DuitkuHelper;
 use budisteikul\toursdk\Helpers\XenditHelper;
 
+
 use budisteikul\toursdk\Models\Category;
 use budisteikul\toursdk\Models\Review;
 use budisteikul\toursdk\Models\Product;
@@ -1351,7 +1352,7 @@ class APIController extends Controller
             $shoppingcart = Cache::get('_'. $sessionId);
 
             $shoppingcart->payment->order_id = $orderID;
-            $shoppingcart->payment->authorization_id = $orderID;
+            $shoppingcart->payment->authorization_id = PaypalHelper::getCaptureId($orderID);;
             $shoppingcart->payment->payment_status = 2;
         
             Cache::forget('_'. $sessionId);

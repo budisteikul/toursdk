@@ -4,6 +4,7 @@ use PayPalCheckoutSdk\Core\PayPalHttpClient;
 use PayPalCheckoutSdk\Core\SandboxEnvironment;
 use PayPalCheckoutSdk\Core\ProductionEnvironment;
 use PayPalCheckoutSdk\Payments\AuthorizationsCaptureRequest;
+use PayPalCheckoutSdk\Payments\CapturesRefundRequest;
 use PayPalCheckoutSdk\Orders\OrdersGetRequest;
 use PayPalCheckoutSdk\Orders\OrdersCreateRequest;
 
@@ -57,12 +58,19 @@ class PaypalHelper {
   			}
   }
 	
-  public static function getOrder($id)
-  {
+  	public static function getOrder($id)
+  	{
 		  $client = self::client();
 		  $response = $client->execute(new OrdersGetRequest($id));
 		  return $response->result->purchase_units[0]->amount->value;
-  }
+  	}
+
+  	public static function getCaptureId($id)
+	{
+		$client = self::client();
+		$response = $client->execute(new OrdersGetRequest($id));
+		return $response->result->purchase_units[0]->payments->captures[0]->id;
+	}
 	
 	public static function createPayment($data)
 	{
@@ -76,6 +84,8 @@ class PaypalHelper {
     	$client = self::client();
     	$data_json = $client->execute($request);
 
+    	LogHelper::log($data_json,'paypal');
+
       	$status_json = new \stdClass();
       	$response_json = new \stdClass();
       
@@ -86,6 +96,26 @@ class PaypalHelper {
       	$response_json->data = $data_json;
 
 		return $response_json;
+	}
+
+
+
+	public function createRefund($captureId)
+	{
+		$data = array(
+            		'amount' =>
+                		array(
+                    		'value' => '26.4',
+                    		'currency_code' => 'USD'
+                		)
+        		);
+
+		$request = new CapturesRefundRequest($captureId);
+		$request->body = $data;
+		$client = self::client();
+        $response = $client->execute($request);
+
+        return $response;
 	}
 
 	public static function buildRequestBodyCreateOrder($value,$name,$currency)

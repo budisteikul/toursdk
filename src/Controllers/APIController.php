@@ -1971,6 +1971,7 @@ class APIController extends Controller
                                 }
                             });
             } else if (creditCardToken.status === "IN_REVIEW") {
+                            $("#three-ds-container").hide();
                             $("#three-ds-container").html("<iframe id=\"3ds-inline-frame\" name=\"3ds-inline-frame\" scrolling=\"no\"></iframe>");
                             $("#3ds-inline-frame").css("background-color", "white");
                             $("#3ds-inline-frame").css("top", "0px");
@@ -1979,7 +1980,7 @@ class APIController extends Controller
                             $("#3ds-inline-frame").css("height", "100%");
                             $("#3ds-inline-frame").css("position", "absolute");
                             window.open(creditCardToken.payer_authentication_url, "3ds-inline-frame");
-                            $("#three-ds-container").modal("show");
+                            $("#three-ds-container").fadeIn("show");
             } else if (creditCardToken.status === "FRAUD") {
                             enableButton();
             } else if (creditCardToken.status === "FAILED") {
@@ -1996,7 +1997,10 @@ class APIController extends Controller
 
         function enableButton()
         {
-            $("#three-ds-container").modal("hide");
+            $("#card-number").attr("disabled", false);
+            $("#cc-expiration").attr("disabled", false);
+            $("#cc-cvv").attr("disabled", false);
+            $("#three-ds-container").fadeOut("slow");
             $("#loader").hide();
             $("#loader").removeClass("loader");
             $("#payment-form").slideDown("slow");
@@ -2050,6 +2054,11 @@ class APIController extends Controller
                     enableButton();
                     return false;
                 }
+
+
+                $("#card-number").attr("disabled", true);
+                $("#cc-expiration").attr("disabled", true);
+                $("#cc-cvv").attr("disabled", true);
 
                 cardNumber = cardNumber.replace(/\s/g,"");
                 expiryMonth = expiryMonth.trim();

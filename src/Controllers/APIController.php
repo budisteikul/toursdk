@@ -1930,7 +1930,8 @@ class APIController extends Controller
 
         function xenditResponseHandler (err, creditCardToken) {
             if (creditCardToken.status === "APPROVED" || creditCardToken.status === "VERIFIED") {
-                            $("#three-ds-container").modal("hide");
+                            $("#three-ds-container").hide();
+                            $("#loader").show();
                             $("#payment-form").slideUp("slow");  
                             $("#proses").hide();
                             $("#loader").addClass("loader");
@@ -1964,8 +1965,7 @@ class APIController extends Controller
                                     $("#loader").hide();
                                     $("#loader").removeClass("loader");
                                     $("#payment-form").slideDown("slow");
-                                    $("#submit").attr("disabled", false);
-                                    $("#submit").html(\'<strong>Pay with card</strong>\');
+                                    enableButton();
                                     $(\'#alert-payment\').html(\'<div id="alert-failed" class="alert alert-danger text-center mt-2" role="alert"><strong style="margin-bottom:10px; margin-top:10px;"><i class="far fa-frown"></i> \'+ data.message +\'</strong></div>\');
                                     $(\'#alert-payment\').fadeIn("slow");
                                 }
@@ -1973,14 +1973,14 @@ class APIController extends Controller
             } else if (creditCardToken.status === "IN_REVIEW") {
                             $("#three-ds-container").hide();
                             $("#three-ds-container").html("<iframe id=\"3ds-inline-frame\" name=\"3ds-inline-frame\" scrolling=\"no\"></iframe>");
-                            $("#3ds-inline-frame").css("background-color", "white");
+                            $("#3ds-inline-frame").css("background-color", "#FFFFFF");
                             $("#3ds-inline-frame").css("top", "0px");
                             $("#3ds-inline-frame").css("left", "0px");
                             $("#3ds-inline-frame").css("width", "100%");
                             $("#3ds-inline-frame").css("height", "100%");
                             $("#3ds-inline-frame").css("position", "absolute");
                             window.open(creditCardToken.payer_authentication_url, "3ds-inline-frame");
-                            $("#three-ds-container").fadeIn("show");
+                            $("#three-ds-container").show();
             } else if (creditCardToken.status === "FRAUD") {
                             enableButton();
             } else if (creditCardToken.status === "FAILED") {
@@ -1997,10 +1997,10 @@ class APIController extends Controller
 
         function enableButton()
         {
+            $("#three-ds-container").hide();
             $("#card-number").attr("disabled", false);
             $("#cc-expiration").attr("disabled", false);
             $("#cc-cvv").attr("disabled", false);
-            $("#three-ds-container").fadeOut("slow");
             $("#loader").hide();
             $("#loader").removeClass("loader");
             $("#payment-form").slideDown("slow");
@@ -2014,7 +2014,7 @@ class APIController extends Controller
                 ev.preventDefault();
                 
                 cleanFeedback();
-                $("#loader").show();
+                
                 $("#alert-payment").slideUp("slow");
                 $("#submit").attr("disabled", true);
                 $("#submit").html(\' <i class="fa fa-spinner fa-spin fa-fw"></i>  processing... \');
@@ -2146,7 +2146,7 @@ class APIController extends Controller
                    
                     ev.preventDefault();
 
-                    $("#loader").show();
+                    
                     $("#alert-payment").slideUp("slow");
                     $("#submit").attr("disabled", true);
                     $("#submit").html(\' <i class="fa fa-spinner fa-spin fa-fw"></i>  processing... \');
@@ -2159,6 +2159,7 @@ class APIController extends Controller
                     url: \''. env('APP_API_URL') .'/payment/stripe\'
                 }).done(function( data ) {
                     
+                    $("#loader").show();
                     $("#payment-form").slideUp("slow");  
                     $("#proses").hide();
                     $("#loader").addClass("loader");

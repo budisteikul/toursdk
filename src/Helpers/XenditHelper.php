@@ -113,9 +113,8 @@ class XenditHelper {
         {
             
             $amount = round($data->transaction->amount);
-            $confirmation_code = $data->transaction->confirmation_code;
 
-            $data1 = (new self)->createInvoice($confirmation_code,$amount);
+            $data1 = (new self)->createInvoice($amount);
 
             if(isset($data1->error_code))
             {
@@ -141,7 +140,6 @@ class XenditHelper {
             $amount = $data->transaction->amount;
             //$amount = 10059;
             $token_id = $data->transaction->order_id;
-            $external_id = $data->transaction->confirmation_code;
 
             $data_json = new \stdClass();
             $status_json = new \stdClass();
@@ -204,10 +202,10 @@ class XenditHelper {
         }
     }
 
-    public function createInvoice($confirmation_code,$amount)
+    public function createInvoice($amount)
     {
         $data = new \stdClass();
-        $data->external_id = $confirmation_code;
+        $data->external_id = Uuid::uuid4()->toString();
         $data->amount = $amount;
         $data->payment_methods = ['CREDIT_CARD'];
         return json_decode($this->POST('/v2/invoices',$data));

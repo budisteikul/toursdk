@@ -47,8 +47,11 @@ class StripeHelper {
 		return $response_json;
   	}
 
-    public function createRefund($id,$amount)
+    public function createRefund($shoppingcart)
     {
+        $amount = $shoppingcart->shoppingcart_payment->amount * 100;
+        $id = $shoppingcart->shoppingcart_payment->authorization_id;
+
         Stripe\Stripe::setApiKey(self::env_stripeSecretKey());
         $refund = Stripe\Refund::create([
             'amount' => $amount,

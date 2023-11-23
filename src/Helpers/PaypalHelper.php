@@ -97,13 +97,17 @@ class PaypalHelper {
 
 
 
-	public function createRefund($captureId)
+	public function createRefund($shoppingcart)
 	{
+		$value = $shoppingcart->shoppingcart_payment->amount;
+		$currency = $shoppingcart->shoppingcart_payment->currency;
+		$captureId = $shoppingcart->shoppingcart_payment->authorization_id;
+
 		$data = array(
             		'amount' =>
                 		array(
-                    		'value' => '26.4',
-                    		'currency_code' => 'USD'
+                    		'value' => $value,
+                    		'currency_code' => $currency
                 		)
         		);
 

@@ -1351,7 +1351,7 @@ class APIController extends Controller
         
             $shoppingcart = Cache::get('_'. $sessionId);
 
-            $shoppingcart->payment->order_id = $orderID;
+            //$shoppingcart->payment->order_id = $orderID;
             $shoppingcart->payment->authorization_id = PaypalHelper::getCaptureId($orderID);;
             $shoppingcart->payment->payment_status = 2;
         
@@ -1399,7 +1399,7 @@ class APIController extends Controller
                     ]);
             }
         
-            $shoppingcart->payment->order_id = $orderID;
+            //$shoppingcart->payment->order_id = $orderID;
             $shoppingcart->payment->authorization_id = $authorizationID;
             $shoppingcart->payment->payment_status = 1;
         

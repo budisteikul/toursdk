@@ -7,6 +7,7 @@ use PayPalCheckoutSdk\Payments\AuthorizationsCaptureRequest;
 use PayPalCheckoutSdk\Payments\CapturesRefundRequest;
 use PayPalCheckoutSdk\Orders\OrdersGetRequest;
 use PayPalCheckoutSdk\Orders\OrdersCreateRequest;
+use Ramsey\Uuid\Uuid;
 
 class PaypalHelper {
 	
@@ -74,13 +75,9 @@ class PaypalHelper {
 	
 	public static function createPayment($data)
 	{
-      	$value = number_format((float)$data->transaction->amount, 2, '.', '');
-      	$name = 'Invoice No : '. $data->transaction->confirmation_code;
-     	$currency = $data->transaction->currency;
-    	
       	$request = new OrdersCreateRequest();
 		$request->prefer('return=representation');
-    	$request->body = self::buildRequestBodyCreateOrder($value,$name,$currency);
+    	$request->body = self::buildRequestBodyCreateOrder($data);
     	$client = self::client();
     	$data_json = $client->execute($request);
 
@@ -118,8 +115,13 @@ class PaypalHelper {
         return $response;
 	}
 
-	public static function buildRequestBodyCreateOrder($value,$name,$currency)
+	public static function buildRequestBodyCreateOrder($data)
     {
+    	$value = number_format((float)$data->transaction->amount, 2, '.', '');
+      	$name = 'Invoice No : #'. $data->transaction->confirmation_code;
+     	$currency = $data->transaction->currency;
+     	$reference_id = $data->transaction->id;
+
   		if(env('PAYPAL_INTENT')=="CAPTURE")
   		{
   			$intent = "CAPTURE";
@@ -140,7 +142,8 @@ class PaypalHelper {
                     0 =>
                         array(
 						'description' => $name,
-                            'amount' =>
+						'reference_id' => $reference_id,
+                        'amount' =>
                                 array(
                                     'currency_code' => $currency,
                                     'value' => $value

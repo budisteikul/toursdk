@@ -338,7 +338,7 @@ class ContentHelper {
                 //QRIS
                 'qris_currency' => 'IDR',
                 'qris_total' =>  GeneralHelper::numberFormat(BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'IDR'),'IDR'),
-                'qris_rate' => '<img src="'. self::env_appAssetUrl() .'/img/payment/qris.png" style="max-height:40px" class="img-fluid" alt="Payment Logo" />',
+                'qris_rate' => '<img src="'. self::env_appAssetUrl() .'/img/payment/QRIS_logo.png" style="max-height:30px" class="img-fluid" alt="Payment Logo" />',
                 'qris_label' => '<strong class="mb-1">Scan to Pay</strong>',
 
                 // Paypal Currency

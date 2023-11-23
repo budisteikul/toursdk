@@ -115,7 +115,7 @@ class APIController extends Controller
             ],
             'paymentChannels' => [
                 '<img height="30" class="mt-2" src="'.$this->appAssetUrl.'/img/footer/payment-channel.png" alt="Payment Channels" /><br />',
-                //'<img height="30" class="mt-2" src="'.$this->appAssetUrl.'/img/footer/line-2.png" alt="Payment Channels" /><br />',
+                '<img height="30" class="mt-2" src="'.$this->appAssetUrl.'/img/footer/line-2.png" alt="Payment Channels" /><br />',
                 //'<img height="30" class="mt-2" src="'.$this->appAssetUrl.'/img/footer/line-4.png" alt="Payment Channels" /><br />',
             ]
         ], 200);
@@ -1733,6 +1733,8 @@ class APIController extends Controller
                 if($shoppingcart_payment){
                     BookingHelper::confirm_payment($shoppingcart_payment->shoppingcart,"CONFIRMED");
                     BookingHelper::shoppingcart_notif($shoppingcart_payment->shoppingcart);
+                    $shoppingcart_payment->authorization_id = $data['data']['id'];
+                    $shoppingcart_payment->save();
                 }
         }
         

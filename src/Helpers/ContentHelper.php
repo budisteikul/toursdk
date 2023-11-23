@@ -289,8 +289,8 @@ class ContentHelper {
         $promo_code = $shoppingcart->promo_code;
         if($promo_code=="") $promo_code = null;
         
-        $payment_enable = 'xendit,paypal';
-        $payment_default = 'xendit';
+        $payment_enable = 'qris,xendit,paypal';
+        $payment_default = 'qris';
 
         //================================================
         
@@ -328,14 +328,18 @@ class ContentHelper {
                 'payment_enable' => $payment_enable,
                 'payment_default' => $payment_default,
 
-                //Qris
+                //Card
                 'xendit_currency' => 'IDR',
                 'xendit_total' =>  GeneralHelper::numberFormat(BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'IDR'),'IDR'),
-                'xendit_rate' => '',
-                'xendit_label' => '<strong class="mb-1">Card Payments</strong>
-                <div class="ml-0 mb-1 mt-2">
-                    <img src="'. self::env_appAssetUrl() .'/img/payment/payment-channel-xendit.png" style="max-height:40px" class="img-fluid" alt="Payment Logo" />
-                </div>',
+                'xendit_rate' => '
+                    <img src="'. self::env_appAssetUrl() .'/img/payment/payment-channel-xendit.png" style="max-height:40px" class="img-fluid" alt="Payment Logo" />',
+                'xendit_label' => '<strong class="mb-1">Card Payments</strong>',
+
+                //QRIS
+                'qris_currency' => 'IDR',
+                'qris_total' =>  GeneralHelper::numberFormat(BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'IDR'),'IDR'),
+                'qris_rate' => '<img src="'. self::env_appAssetUrl() .'/img/payment/qris.png" style="max-height:40px" class="img-fluid" alt="Payment Logo" />',
+                'qris_label' => '<strong class="mb-1">Scan to Pay</strong>',
 
                 // Paypal Currency
                 'paypal_currency' => self::env_paypalCurrency(),
@@ -349,7 +353,7 @@ class ContentHelper {
                 'stripe_total' => GeneralHelper::numberFormat(BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'USD'),'USD'),
                 'stripe_rate' => $rate_text,
                 'stripe_label' => '
-                <strong class="mb-1">Card Payments 
+                <strong class="mb-1">Alt Card Payments 
                     <img class="ml-2" src="'. self::env_appAssetUrl() .'/img/payment/stripe.png" height="20" alt="Card Payment" />
                 </strong>
                 <div class="ml-0 mb-1 mt-2">

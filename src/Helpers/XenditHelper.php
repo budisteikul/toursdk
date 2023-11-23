@@ -203,7 +203,14 @@ class XenditHelper {
             $data = new \stdClass();
             $data->external_id = $external_id;
             $data->amount = $amount;
-            return json_decode($this->POST('/credit_card_charges/'.$token_id.'/refunds',$data,['api-version: 2019-05-01','X-IDEMPOTENCY-KEY: '.$token_id]));
+            return json_decode($this->POST('/credit_card_charges/'.$token_id.'/refunds',$data,['api-version: 2019-05-01','X-IDEMPOTENCY-KEY: '.$external_id]));
+        }
+
+        if($payment_type=="qrcode")
+        {
+            $data = new \stdClass();
+            $data->amount = $amount;
+            return json_decode($this->POST('/qr_codes/payments/'.$token_id.'/refunds',$data,['api-version: 2019-05-01','X-IDEMPOTENCY-KEY: '.$external_id]));
         }
     }
 

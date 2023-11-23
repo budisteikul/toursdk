@@ -147,7 +147,7 @@ class XenditHelper {
             $status_json = new \stdClass();
             $response_json = new \stdClass();
       
-            $data1 = (new self)->createChargeCard($token_id,$external_id,$amount);
+            $data1 = (new self)->createChargeCard($token_id,$amount);
             LogHelper::log($data1,'xendit');
 
             if($data1->status=="CAPTURED")
@@ -184,10 +184,10 @@ class XenditHelper {
         return $response_json;
     }
 
-    public function createChargeCard($token_id,$external_id,$amount)
+    public function createChargeCard($token_id,$amount)
     {
         $data = new \stdClass();
-        $data->external_id = $external_id;
+        $data->external_id = Uuid::uuid4()->toString();
         $data->amount = $amount;
         $data->token_id = $token_id;
         return json_decode($this->POST('/credit_card_charges',$data));

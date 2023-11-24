@@ -4,7 +4,7 @@ use budisteikul\toursdk\Models\ShoppingcartProduct;
 
 class ReportHelper {
 
-    public static function traveller_per_year($product_id,$year)
+    public static function traveller_product_per_year($product_id,$year)
     {
         $total = 0;
         $products = ShoppingcartProduct::where('product_id',$product_id)->whereYear('date',$year)->whereMonth('date',$month)->get();
@@ -20,7 +20,23 @@ class ReportHelper {
         return $total;
     }
 
-    public static function traveller_per_month($product_id,$month,$year)
+    public static function traveller_per_day($day,$month,$year)
+    {
+        $total = 0;
+        $products = ShoppingcartProduct::whereYear('date',$year)->whereMonth('date',$month)->whereDay('date',$day)->get();
+        
+        foreach($products as $product)
+        {
+            foreach($product->shoppingcart_product_details as $shoppingcart_product_detail)
+            {
+                $people = $shoppingcart_product_detail->people;
+                $total += $people;
+            }
+        }
+        return $total;
+    }
+
+    public static function traveller_product_per_month($product_id,$month,$year)
     {
         $total = 0;
         $products = ShoppingcartProduct::where('product_id',$product_id)->whereYear('date',$year)->whereMonth('date',$month)->get();

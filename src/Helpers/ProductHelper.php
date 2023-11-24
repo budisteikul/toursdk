@@ -7,6 +7,12 @@ use Carbon\Carbon;
 
 class ProductHelper {
 
+    public static function product_name($product_id)
+    {
+        $product = Product::where('product_id',$product_id)->first();
+        return $product->name;
+    }
+
     public static function getProductByCategory($category_id)
     {
         $array_category = CategoryHelper::getChild($category_id);

@@ -7,9 +7,9 @@ use Carbon\Carbon;
 
 class ProductHelper {
 
-    public static function product_name($product_id)
+    public static function product_name_by_bokun_id($product_id)
     {
-        $product = Product::where('product_id',$product_id)->first();
+        $product = Product::where('bokun_id',$product_id)->first();
         return $product->name;
     }
 

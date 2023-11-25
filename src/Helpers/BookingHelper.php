@@ -1522,7 +1522,7 @@ class BookingHelper {
         $bookings = array();
 		
 		$group_shoppingcart_products = ShoppingcartProduct::with('shoppingcart')
-		->WhereHas('shoppingcart', function($query) {
+		->whereHas('shoppingcart', function($query) {
                  //$query->where('booking_status','CONFIRMED');
 			    $query->where('booking_channel','WEBSITE')->orWhere('booking_channel','AIRBNB');
             })

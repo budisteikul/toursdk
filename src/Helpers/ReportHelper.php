@@ -36,6 +36,22 @@ class ReportHelper {
         return $total;
     }
 
+    public static function traveller_per_month($month,$year)
+    {
+        $total = 0;
+        $products = ShoppingcartProduct::whereMonth('date',$month)->whereDay('date',$day)->get();
+        
+        foreach($products as $product)
+        {
+            foreach($product->shoppingcart_product_details as $shoppingcart_product_detail)
+            {
+                $people = $shoppingcart_product_detail->people;
+                $total += $people;
+            }
+        }
+        return $total;
+    }
+
     public static function traveller_product_per_month($product_id,$month,$year)
     {
         $total = 0;

@@ -520,7 +520,8 @@ class ContentHelper {
             'paymentProvider' => $shoppingcart->shoppingcart_payment->payment_provider,
             'pdf_url' => $how_to_pay,
             'how_to_pay' => $how_to_pay,
-            'due_date' => $due_date
+            'due_date' => $due_date,
+            'refund' => ''
         );
 
         return $dataObj;

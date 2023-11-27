@@ -2402,11 +2402,7 @@ class BookingHelper {
 		return $response;
 	}
 
-	public static function delete_shoppingcart($shoppingcart)
-	{
-		$shoppingcart->delete();
-		FirebaseHelper::delete($shoppingcart);
-	}
+	
 
 	public static function remove_activity($sessionId,$bookingId)
 	{

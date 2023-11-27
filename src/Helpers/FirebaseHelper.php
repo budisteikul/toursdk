@@ -3,6 +3,7 @@ namespace budisteikul\toursdk\Helpers;
 use budisteikul\toursdk\Helpers\BookingHelper;
 use budisteikul\toursdk\Helpers\ContentHelper;
 use budisteikul\toursdk\Models\Shoppingcart;
+use Illuminate\Support\Facades\Cache;
 
 class FirebaseHelper {
 
@@ -57,6 +58,17 @@ class FirebaseHelper {
         return $response;
     }
     
+    public static function shoppingcart($sessionId)
+    {
+            $shoppingcart = Cache::get('_'. $sessionId);
+            $dataShoppingcart = ContentHelper::view_shoppingcart($shoppingcart);
+            $dataFirebase = array(
+                'shoppingcarts' => $dataShoppingcart,
+                'message' => 'success'
+            );
+            self::connect('shoppingcart/'.$shoppingcart->session_id,$dataFirebase,"PUT");
+    }
+
 	public static function delete($shoppingcart)
 	{
             self::connect("receipt/".$shoppingcart->session_id .'/'. $shoppingcart->confirmation_code,"","DELETE");

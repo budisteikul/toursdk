@@ -316,6 +316,8 @@ class APIController extends Controller
             }
             $shoppingcart = BookingHelper::save_question_json($sessionId,$data);
             
+            FirebaseHelper::shoppingcart($sessionId);
+            
             $payment = $data['payment'];
 
             switch($payment)
@@ -702,13 +704,8 @@ class APIController extends Controller
             BookingHelper::get_shoppingcart($sessionId,"update",$contents);
         }
 
-        $shoppingcart = Cache::get('_'. $sessionId);
-        $dataShoppingcart = ContentHelper::view_shoppingcart($shoppingcart);
-        $data = array(
-                'shoppingcarts' => $dataShoppingcart,
-                'message' => 'success'
-            );
-        FirebaseHelper::connect('shoppingcart/'.$shoppingcart->session_id,$data,"PUT");
+        
+        FirebaseHelper::shoppingcart($sessionId);
 
         return response()->json($contents);
     }
@@ -735,12 +732,7 @@ class APIController extends Controller
 
         $dataShoppingcart = ContentHelper::view_shoppingcart($shoppingcart);
 
-        $data = array(
-                'shoppingcarts' => $dataShoppingcart,
-                'message' => 'success'
-            );
         
-        FirebaseHelper::connect('shoppingcart/'.$shoppingcart->session_id,$data,"PUT");
 
         return response()->json([
             'message' => 'success',
@@ -754,16 +746,8 @@ class APIController extends Controller
         Cache::forget('_bokunProductById_'. $this->currency .'_'. $this->lang .'_'.$data);
 
         $sessionId = $data['sessionId'];
-        $shoppingcart = Cache::get('_'. $sessionId);
-
-        $dataShoppingcart = ContentHelper::view_shoppingcart($shoppingcart);
-
-        $data = array(
-                'shoppingcarts' => $dataShoppingcart,
-                'message' => 'success'
-            );
         
-        FirebaseHelper::connect('shoppingcart/'.$shoppingcart->session_id,$data,"PUT");
+        FirebaseHelper::shoppingcart($sessionId);
 
         return response()->json([
                 'message' => 'success'
@@ -789,16 +773,7 @@ class APIController extends Controller
          
         BookingHelper::remove_activity($sessionId,$bookingId);
         
-        $shoppingcart = Cache::get('_'. $sessionId);
-
-        $dataShoppingcart = ContentHelper::view_shoppingcart($shoppingcart);
-
-        $data = array(
-                'shoppingcarts' => $dataShoppingcart,
-                'message' => 'success'
-            );
-        
-        FirebaseHelper::connect('shoppingcart/'.$shoppingcart->session_id,$data,"PUT");
+        FirebaseHelper::shoppingcart($sessionId);
 
         return response()->json([
             "message" => "success"
@@ -824,16 +799,7 @@ class APIController extends Controller
 
         $status = BookingHelper::apply_promocode($sessionId,$promocode);
 
-        $shoppingcart = Cache::get('_'. $sessionId);
-
-        $dataShoppingcart = ContentHelper::view_shoppingcart($shoppingcart);
-
-        $data = array(
-                'shoppingcarts' => $dataShoppingcart,
-                'message' => 'success'
-            );
-        
-        FirebaseHelper::connect('shoppingcart/'.$shoppingcart->session_id,$data,"PUT");
+        FirebaseHelper::shoppingcart($sessionId);
 
         if($status)
         {
@@ -866,16 +832,8 @@ class APIController extends Controller
 
         BookingHelper::remove_promocode($sessionId);
         
-        $shoppingcart = Cache::get('_'. $sessionId);
-
-        $dataShoppingcart = ContentHelper::view_shoppingcart($shoppingcart);
-
-        $data = array(
-                'shoppingcarts' => $dataShoppingcart,
-                'message' => 'success'
-            );
         
-        FirebaseHelper::connect('shoppingcart/'.$shoppingcart->session_id,$data,"PUT");
+        FirebaseHelper::shoppingcart($sessionId);
 
         return response()->json([
                 'message' => 'success'
@@ -1287,12 +1245,8 @@ class APIController extends Controller
 
         $dataObj = ContentHelper::view_receipt($shoppingcart);
 
-        $data = array(
-                'receipt' => $dataObj,
-                'message' => 'success'
-            );
-
-        FirebaseHelper::connect('receipt/'.$shoppingcart->session_id ."/". $shoppingcart->confirmation_code,$data,"PUT");
+        
+        FirebaseHelper::upload($sess);
         
         return response()->json([
                 'receipt' => $dataObj,
@@ -1489,35 +1443,7 @@ class APIController extends Controller
             $payment_type = null;
             if(isset($data['payment_type'])) $payment_type = $data['payment_type'];
 
-            /*
-            if($payment_type=="gopay" || $payment_type=="shopeepay")
-            {
-                if($order_id!=null)
-                {
-                    $reference_id = $order_id;
-                    $output = FirebaseHelper::read_payment($reference_id);
-                    if($output=="")
-                    {
-                        return response('ERROR', 200)->header('Content-Type', 'text/plain');
-                    }
-
-                    $sessionId = $output->session_id;
-
-                    if($data['transaction_status']=="settlement")
-                    {
-                        BookingHelper::set_bookingStatus($sessionId,'CONFIRMED');
-                        $shoppingcart = BookingHelper::confirm_booking($sessionId);
-                        BookingHelper::confirm_payment($shoppingcart,"CONFIRMED",true);
-                        FirebaseHelper::upload_payment('CONFIRMED',$reference_id,$sessionId,$payment_type,"/booking/receipt/".$shoppingcart->session_id."/".$shoppingcart->confirmation_code);
-                        BookingHelper::shoppingcart_notif($shoppingcart_payment->shoppingcart);
-                    }
-
-                    
-                }
-            }
-            else
-            {
-            */
+            
                 $shoppingcart_payment = ShoppingcartPayment::where('order_id',$order_id)->first();
                 if($shoppingcart_payment) {
 
@@ -1542,7 +1468,7 @@ class APIController extends Controller
                         }
                     }
                 }
-            //}
+            
 
             
                 

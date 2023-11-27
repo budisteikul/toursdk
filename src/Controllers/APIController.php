@@ -1245,8 +1245,7 @@ class APIController extends Controller
 
         $dataObj = ContentHelper::view_receipt($shoppingcart);
 
-        
-        FirebaseHelper::upload($sess);
+        FirebaseHelper::receipt($shoppingcart);
         
         return response()->json([
                 'receipt' => $dataObj,

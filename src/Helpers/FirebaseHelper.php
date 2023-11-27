@@ -69,6 +69,21 @@ class FirebaseHelper {
             self::connect('shoppingcart/'.$shoppingcart->session_id,$dataFirebase,"PUT");
     }
 
+    public static function receipt($shoppingcart)
+    {
+        if(!BookingHelper::have_payment($shoppingcart))
+        {
+            return "";
+        }
+        $dataObj = ContentHelper::view_receipt($shoppingcart); 
+        $data = array(
+                    'receipt' => $dataObj,
+                    'message' => 'success'
+                );
+        self::connect('receipt/'.$shoppingcart->session_id ."/". $shoppingcart->confirmation_code,$data,"PUT");
+    }
+
+
 	public static function delete($shoppingcart)
 	{
             self::connect("receipt/".$shoppingcart->session_id .'/'. $shoppingcart->confirmation_code,"","DELETE");

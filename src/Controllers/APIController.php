@@ -797,7 +797,7 @@ class APIController extends Controller
         $promocode = $data['promocode'];
         $sessionId = $data['sessionId'];
 
-        $status = BookingHelper::apply_promocode($sessionId,$promocode);
+        $status = BookingHelper::apply_promocode($sessionId,trim($promocode));
 
         FirebaseHelper::shoppingcart($sessionId);
 

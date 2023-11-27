@@ -332,7 +332,7 @@ class ContentHelper {
                 'xendit_currency' => 'IDR',
                 'xendit_total' =>  GeneralHelper::numberFormat(BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'IDR'),'IDR'),
                 'xendit_rate' => '
-                    <img src="'. self::env_appAssetUrl() .'/img/payment/payment-channel-xendit.png" style="max-height:40px" class="img-fluid" alt="Payment Logo" />',
+                    <img src="'. self::env_appAssetUrl() .'/img/payment/payment-channel-xendit.png" style="max-height:40px; image-rendering: -webkit-optimize-contrast;" alt="Payment Logo" />',
                 'xendit_label' => '<strong class="mb-1">Card Payments</strong>',
 
                 //QRIS

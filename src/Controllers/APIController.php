@@ -2402,17 +2402,41 @@ class APIController extends Controller
 
                     if(days>0)
                     {
-                        document.getElementById("payment_timer").innerHTML = days + " day " + hours + " hrs "
+                        try
+                        {
+                            document.getElementById("payment_timer").innerHTML = days + " day " + hours + " hrs "
       + minutes + " min " + seconds + " sec ";
+                        }
+                        catch(e)
+                        {
+
+                        }
+                        
                     }
                     else if(hours>0)
                     {
-                        document.getElementById("payment_timer").innerHTML = hours + " hrs "
+                        try
+                        {
+                            document.getElementById("payment_timer").innerHTML = hours + " hrs "
       + minutes + " min " + seconds + " sec ";
+                        }
+                        catch(e)
+                        {
+
+                        }
+                        
                     }
                     else
                     {
-                        document.getElementById("payment_timer").innerHTML = minutes + " min " + seconds + " sec ";
+                        try
+                        {
+                            document.getElementById("payment_timer").innerHTML = minutes + " min " + seconds + " sec ";
+                        }
+                        catch(e)
+                        {
+
+                        }
+                        
                     }
                     
 

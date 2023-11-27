@@ -702,6 +702,14 @@ class APIController extends Controller
             BookingHelper::get_shoppingcart($sessionId,"update",$contents);
         }
 
+        $shoppingcart = Cache::get('_'. $sessionId);
+        $dataShoppingcart = ContentHelper::view_shoppingcart($shoppingcart);
+        $data = array(
+                'shoppingcarts' => $dataShoppingcart,
+                'message' => 'success'
+            );
+        FirebaseHelper::connect('shoppingcart/'.$shoppingcart->session_id,$data,"PUT");
+
         return response()->json($contents);
     }
 

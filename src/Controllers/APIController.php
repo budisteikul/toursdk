@@ -1241,7 +1241,9 @@ class APIController extends Controller
 
     public function last_order($sessionId)
     {
-        $shoppingcarts = Shoppingcart::where('session_id', $sessionId)->orderBy('id','desc')->get();
+        $shoppingcarts = Shoppingcart::with('shoppingcart_products')->WhereHas('shoppingcart_products', function($query) {
+                 $query->where('date','>=',date('Y-m-d 00:00:00'));
+            })->where('session_id', $sessionId)->orderBy('id','desc')->get();
         
         if($shoppingcarts->isEmpty())
         {
@@ -1253,8 +1255,6 @@ class APIController extends Controller
         
         $booking = ContentHelper::view_last_order($shoppingcarts);
         
-        
-
         return response()->json([
                 'message' => 'success',
                 'booking' => $booking

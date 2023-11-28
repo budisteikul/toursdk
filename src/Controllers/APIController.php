@@ -9,6 +9,7 @@ use budisteikul\toursdk\Helpers\ContentHelper;
 use budisteikul\toursdk\Helpers\FirebaseHelper;
 use budisteikul\toursdk\Helpers\GeneralHelper;
 use budisteikul\toursdk\Helpers\VoucherHelper;
+use budisteikul\toursdk\Helpers\LogHelper;
 
 use budisteikul\toursdk\Helpers\PaypalHelper;
 use budisteikul\toursdk\Helpers\RapydHelper;
@@ -55,15 +56,33 @@ class APIController extends Controller
         $this->referer = $request->header('referer');
     }
 
+    public function index_jscript()
+    {
+        $jscripts = [
+            //['https://storage.googleapis.com/igneous-thunder-361818.appspot.com/assets/js/vertikaltrip.js', true],
+            ['https://js.stripe.com/v3/', true],
+            ['https://js.xendit.co/v1/xendit.min.js',false],
+            ['https://storage.googleapis.com/igneous-thunder-361818.appspot.com/assets/js/payform.min.js',true],
+        ];
+        $analytic = LogHelper::analytic();
+        return response()->json([
+            'message' => 'success',
+            'jscripts' => $jscripts,
+            'analytic' => $analytic
+        ], 200);
+    }
+
     public function navbar($sessionId)
     {
+        
+       
         $categories = Category::where('parent_id',0)->get();
         $json_ld = self::json_ld();
         return response()->json([
             'message' => 'success',
             'json_ld' => $json_ld,
             'categories' => $categories,
-            'analytic' => false
+            
         ], 200);
     }
 

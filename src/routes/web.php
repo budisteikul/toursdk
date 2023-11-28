@@ -2,6 +2,7 @@
 
 	// API
 	Route::get('/api/home', 'budisteikul\toursdk\Controllers\APIController@home');
+	Route::get('/api/index_jscript', 'budisteikul\toursdk\Controllers\APIController@index_jscript');
 	Route::get('/api/{sessionId}/navbar', 'budisteikul\toursdk\Controllers\APIController@navbar');
 	Route::get('/api/footer', 'budisteikul\toursdk\Controllers\APIController@footer');
 	Route::get('/api/tawkto/{id}', 'budisteikul\toursdk\Controllers\APIController@tawkto');

@@ -12,13 +12,22 @@ class LogHelper {
         }
         
         try
-            {
-                Storage::disk('gcs')->put('log/log-'. $identifier .'-'. date('YmdHis') .'.txt', json_encode($data, JSON_PRETTY_PRINT));
-            }
+        {
+            Storage::disk('gcs')->put('log/log-'. $identifier .'-'. date('YmdHis') .'.txt', json_encode($data, JSON_PRETTY_PRINT));
+        }
         catch(exception $e)
-            {
+        {
                 
-            }
+        }
+    }
+
+    public static function analytic()
+    {
+        if(env("APP_ENV")=="local")
+        {
+            return false;
+        }
+        return true;
     }
 
 }

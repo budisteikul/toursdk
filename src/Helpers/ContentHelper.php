@@ -289,7 +289,7 @@ class ContentHelper {
         $promo_code = $shoppingcart->promo_code;
         if($promo_code=="") $promo_code = null;
         
-        $payment_enable = 'qris,stripe,paypal';
+        $payment_enable = 'qris,xendit,paypal';
         $payment_default = 'qris';
 
         //================================================
@@ -308,7 +308,7 @@ class ContentHelper {
         }
         
         $rate_text = '';
-        if($shoppingcart->currency!="USD") $rate_text = 'Charge in USD, '. BookingHelper::text_rate($shoppingcart,self::env_paypalCurrency());
+        if($shoppingcart->currency!="USD") $rate_text = 'Charge in USD, '. BookingHelper::text_rate($shoppingcart,'USD');
 
         $dataShoppingcart[] = array(
 
@@ -331,15 +331,26 @@ class ContentHelper {
                 //Card
                 'xendit_currency' => 'IDR',
                 'xendit_total' =>  GeneralHelper::numberFormat(BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'IDR'),'IDR'),
-                'xendit_rate' => '
-                    <img src="'. self::env_appAssetUrl() .'/img/payment/payment-channel-xendit.png" style="max-height:40px; image-rendering: -webkit-optimize-contrast;" alt="Payment Logo" />',
-                'xendit_label' => '<strong class="mb-1">Card Payments</strong>',
+                'xendit_rate' => '',
+                'xendit_label' => '
+                <div class="mb-2">
+                    <strong class="mb-2">Card Payments</strong>
+                </div>
+                <div>
+                    <img src="'. self::env_appAssetUrl() .'/img/payment/payment-channel-xendit.png" style="max-height:40px; image-rendering: -webkit-optimize-contrast;" alt="Payment Logo" />
+                </div>',
 
                 //QRIS
                 'qris_currency' => 'IDR',
                 'qris_total' =>  GeneralHelper::numberFormat(BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'IDR'),'IDR'),
-                'qris_rate' => '<img src="'. self::env_appAssetUrl() .'/img/payment/QRIS_logo.png" style="max-height:30px" class="img-fluid" alt="Payment Logo" />',
-                'qris_label' => '<strong class="mb-1">Scan to Pay</strong>',
+                'qris_rate' => '',
+                'qris_label' => '
+                <div class="mb-2">
+                    <strong>Scan to Pay</strong>
+                </div>
+                <div>
+                    <img src="'. self::env_appAssetUrl() .'/img/payment/QRIS_logo.png" style="max-height:30px" class="img-fluid" alt="Payment Logo" />
+                </div>',
 
                 // Paypal Currency
                 'paypal_currency' => self::env_paypalCurrency(),

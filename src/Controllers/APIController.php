@@ -58,10 +58,20 @@ class APIController extends Controller
 
     public function index_jscript()
     {
+        if(env('PAYPAL_INTENT')=="CAPTURE")
+        {
+            $paypal_sdk = 'https://www.paypal.com/sdk/js?client-id='.env("PAYPAL_CLIENT_ID").'&currency='. env("PAYPAL_CURRENCY").'';
+        }
+        else
+        {
+            $paypal_sdk = 'https://www.paypal.com/sdk/js?client-id='.env("PAYPAL_CLIENT_ID").'&intent=authorize&currency='. self::env_paypalCurrency().'';
+        }
+
         $jscripts = [
+            [$paypal_sdk, true],
             ['https://js.stripe.com/v3/', true],
-            //['https://js.xendit.co/v1/xendit.min.js',false],
-            //['https://storage.googleapis.com/igneous-thunder-361818.appspot.com/assets/js/payform.min.js',true],
+            ['https://js.xendit.co/v1/xendit.min.js',false],
+            ['https://storage.googleapis.com/igneous-thunder-361818.appspot.com/assets/js/payform.min.js',true],
         ];
         $analytic = LogHelper::analytic();
         return response()->json([

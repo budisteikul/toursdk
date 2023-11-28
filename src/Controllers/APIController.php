@@ -63,7 +63,7 @@ class APIController extends Controller
             'message' => 'success',
             'json_ld' => $json_ld,
             'categories' => $categories,
-            'analytic' => true
+            'analytic' => false
         ], 200);
     }
 

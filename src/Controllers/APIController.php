@@ -69,11 +69,13 @@ class APIController extends Controller
 
         $jscripts = [
             [$paypal_sdk, true],
-            ['https://js.stripe.com/v3/', true],
+            //['https://js.stripe.com/v3/', true],
             ['https://js.xendit.co/v1/xendit.min.js',false],
             ['https://storage.googleapis.com/igneous-thunder-361818.appspot.com/assets/js/payform.min.js',true],
         ];
+
         $analytic = LogHelper::analytic();
+
         return response()->json([
             'message' => 'success',
             'jscripts' => $jscripts,

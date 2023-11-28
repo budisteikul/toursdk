@@ -64,7 +64,7 @@ class APIController extends Controller
         }
         else
         {
-            $paypal_sdk = 'https://www.paypal.com/sdk/js?client-id='.env("PAYPAL_CLIENT_ID").'&intent=authorize&currency='. self::env_paypalCurrency().'';
+            $paypal_sdk = 'https://www.paypal.com/sdk/js?client-id='.env("PAYPAL_CLIENT_ID").'&intent=authorize&currency='. env("PAYPAL_CURRENCY").'';
         }
 
         $jscripts = [

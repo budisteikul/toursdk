@@ -289,7 +289,7 @@ class ContentHelper {
         $promo_code = $shoppingcart->promo_code;
         if($promo_code=="") $promo_code = null;
         
-        $payment_enable = 'qris,xendit,paypal';
+        $payment_enable = 'qris,stripe,paypal';
         $payment_default = 'qris';
 
         //================================================
@@ -353,7 +353,7 @@ class ContentHelper {
                 'stripe_total' => GeneralHelper::numberFormat(BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'USD'),'USD'),
                 'stripe_rate' => $rate_text,
                 'stripe_label' => '
-                <strong class="mb-1">Alt Card Payments 
+                <strong class="mb-1">Card Payments 
                     <img class="ml-2" src="'. self::env_appAssetUrl() .'/img/payment/stripe.png" height="20" alt="Card Payment" />
                 </strong>
                 <div class="ml-0 mb-1 mt-2">

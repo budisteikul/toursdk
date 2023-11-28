@@ -60,7 +60,7 @@ class APIController extends Controller
     {
         $jscripts = [
             //['https://storage.googleapis.com/igneous-thunder-361818.appspot.com/assets/js/vertikaltrip.js', true],
-            ['https://js.stripe.com/v3/', true],
+            //['https://js.stripe.com/v3/', true],
             ['https://js.xendit.co/v1/xendit.min.js',false],
             ['https://storage.googleapis.com/igneous-thunder-361818.appspot.com/assets/js/payform.min.js',true],
         ];

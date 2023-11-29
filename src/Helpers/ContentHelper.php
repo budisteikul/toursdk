@@ -289,8 +289,8 @@ class ContentHelper {
         $promo_code = $shoppingcart->promo_code;
         if($promo_code=="") $promo_code = null;
         
-        $payment_enable = 'qris,xendit,paypal';
-        $payment_default = 'qris';
+        $payment_enable = 'xendit,stripe';
+        $payment_default = 'xendit';
 
         //================================================
         
@@ -331,7 +331,7 @@ class ContentHelper {
                 //Card
                 'xendit_currency' => 'IDR',
                 'xendit_total' =>  GeneralHelper::numberFormat(BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'IDR'),'IDR'),
-                'xendit_rate' => '',
+                'xendit_rate' => 'Charge in IDR',
                 'xendit_label' => '
                 <div class="mb-2">
                     <strong class="mb-2">Card Payments</strong>
@@ -514,6 +514,7 @@ class ContentHelper {
         $main_contact = BookingHelper::get_answer_contact($shoppingcart);
         $due_date = Carbon::createFromFormat('Y-m-d H:i:s', BookingHelper::due_date($shoppingcart,"database"));
         
+
         $dataObj = array(
             'vendor' => self::env_appName(),
             'booking_status' => $shoppingcart->booking_status,

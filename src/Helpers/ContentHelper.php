@@ -337,7 +337,7 @@ class ContentHelper {
                     <strong class="mb-2">Card Payments</strong>
                 </div>
                 <div>
-                    <img src="'. self::env_appAssetUrl() .'/img/payment/payment-channel-xendit.png" style="max-height:40px; image-rendering: -webkit-optimize-contrast;" alt="Payment Logo" />
+                    <img src="'. self::env_appAssetUrl() .'/img/payment/xendit-card-payment.png" style="max-height:40px" class="img-fluid" alt="Payment Logo" />
                 </div>',
 
                 //QRIS

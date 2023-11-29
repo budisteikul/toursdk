@@ -769,11 +769,11 @@ class ContentHelper {
         {
             if($voucher->is_percentage)
             {
-                $data_voucher = '<div class="alert alert-warning" role="alert"><i class="fas fa-tags"></i> Get a <strong>Discount '. $voucher->amount .'%</strong> with promotional code <strong>'. $voucher->code .'</strong> on this activity</div>';
+                $data_voucher = '<div class="alert alert-success" role="alert"><i class="fas fa-tags"></i> Get a <strong>Discount '. $voucher->amount .'%</strong> with promotional code <strong>'. $voucher->code .'</strong> on this activity</div>';
             }
             else
             {
-                $data_voucher = '<div class="alert alert-warning" role="alert"><i class="fas fa-tags"></i> Get a <strong>Discount IDR '. GeneralHelper::numberFormat($voucher->amount,"IDR") .'</strong> with promotional code <strong>'. $voucher->code  .'</strong> on this activity</div>';
+                $data_voucher = '<div class="alert alert-success" role="alert"><i class="fas fa-tags"></i> Get a <strong>Discount IDR '. GeneralHelper::numberFormat($voucher->amount,"IDR") .'</strong> with promotional code <strong>'. $voucher->code  .'</strong> on this activity</div>';
             }
         }
        

@@ -64,6 +64,7 @@ class FirebaseHelper {
             $dataShoppingcart = ContentHelper::view_shoppingcart($shoppingcart);
             $dataFirebase = array(
                 'shoppingcarts' => $dataShoppingcart,
+                'api_url' => env('APP_API_URL'),
                 'message' => 'success'
             );
             self::connect('shoppingcart/'.$shoppingcart->session_id,$dataFirebase,"PUT");
@@ -78,6 +79,7 @@ class FirebaseHelper {
         $dataObj = ContentHelper::view_receipt($shoppingcart); 
         $data = array(
                     'receipt' => $dataObj,
+                    'api_url' => env('APP_API_URL'),
                     'message' => 'success'
                 );
         self::connect('receipt/'.$shoppingcart->session_id ."/". $shoppingcart->confirmation_code,$data,"PUT");

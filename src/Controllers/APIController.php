@@ -105,7 +105,6 @@ class APIController extends Controller
 
         return response()->json([
             'message' => 'success',
-            'address' => '',
             'usefullLinks' => $usefullLink,
             'whatsapp' => '+6285743112112',
             'privacyterms' => $dataPrivacyTerm,

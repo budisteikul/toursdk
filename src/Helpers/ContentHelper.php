@@ -2,7 +2,7 @@
 namespace budisteikul\toursdk\Helpers;
 use Illuminate\Http\Request;
 
-
+use budisteikul\toursdk\Helpers\SettingHelper;
 use budisteikul\toursdk\Helpers\BokunHelper;
 use budisteikul\toursdk\Helpers\ImageHelper;
 use budisteikul\toursdk\Helpers\ProductHelper;
@@ -289,8 +289,8 @@ class ContentHelper {
         $promo_code = $shoppingcart->promo_code;
         if($promo_code=="") $promo_code = null;
         
-        $payment_enable = 'xendit,paypal';
-        $payment_default = 'xendit';
+        $payment_enable = SettingHelper::getSetting('payment_enable');
+        $payment_default = SettingHelper::getSetting('payment_default');
 
         //================================================
         

@@ -16,7 +16,7 @@ use budisteikul\toursdk\Helpers\RapydHelper;
 use budisteikul\toursdk\Helpers\MidtransHelper;
 use budisteikul\toursdk\Helpers\DuitkuHelper;
 use budisteikul\toursdk\Helpers\XenditHelper;
-
+use budisteikul\toursdk\Helpers\SettingHelper;
 
 use budisteikul\toursdk\Models\Category;
 use budisteikul\toursdk\Models\Review;
@@ -67,12 +67,16 @@ class APIController extends Controller
             $paypal_sdk = 'https://www.paypal.com/sdk/js?client-id='.env("PAYPAL_CLIENT_ID").'&intent=authorize&currency='. env("PAYPAL_CURRENCY").'';
         }
 
-        $jscripts = [
-            [$paypal_sdk, true],
-            //['https://js.stripe.com/v3/', true],
-            ['https://js.xendit.co/v1/xendit.min.js',false],
-            [ env('APP_ASSET_URL') .'/js/payform.min.js',true],
-        ];
+        $payment_enable = SettingHelper::getSetting('payment_enable');
+        $payment_array = explode(",",$payment_enable);
+        $jscripts = [];
+
+        if(in_array('paypal',$payment_array)) $jscripts[] = [$paypal_sdk, true];
+        if(in_array('xendit',$payment_array)) {
+            $jscripts[] = ['https://js.xendit.co/v1/xendit.min.js',false];
+            $jscripts[] = [ env('APP_ASSET_URL') .'/js/payform.min.js',true];
+        }
+        if(in_array('stripe',$payment_array)) $jscripts[] = ['https://js.stripe.com/v3/', true];
 
         $analytic = LogHelper::analytic();
 

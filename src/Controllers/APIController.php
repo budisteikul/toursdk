@@ -70,8 +70,6 @@ class APIController extends Controller
 
     public function navbar($sessionId)
     {
-        
-       
         $categories = Category::where('parent_id',0)->get();
         $json_ld = self::json_ld();
         return response()->json([
@@ -133,9 +131,9 @@ class APIController extends Controller
                 
             ],
             'paymentChannels' => [
-                '<img height="30" class="mt-2" src="'.$this->appAssetUrl.'/img/footer/payment-channel.png" alt="Payment Channels" /><br />',
+                '<img height="30" class="mt-2" src="'.$this->appAssetUrl.'/img/footer/line-1.png" alt="Payment Channels" /><br />',
                 '<img height="30" class="mt-2" src="'.$this->appAssetUrl.'/img/footer/line-2.png" alt="Payment Channels" /><br />',
-                //'<img height="30" class="mt-2" src="'.$this->appAssetUrl.'/img/footer/line-4.png" alt="Payment Channels" /><br />',
+                '<img height="30" class="mt-2" src="'.$this->appAssetUrl.'/img/footer/line-4.png" alt="Payment Channels" /><br />',
             ]
         ], 200);
     }

@@ -7,6 +7,7 @@ use budisteikul\toursdk\Helpers\BokunHelper;
 use budisteikul\toursdk\Helpers\ImageHelper;
 use budisteikul\toursdk\Helpers\ProductHelper;
 use budisteikul\toursdk\Helpers\BookingHelper;
+use budisteikul\toursdk\Helpers\PaymentHelper;
 use budisteikul\toursdk\Helpers\GeneralHelper;
 use budisteikul\toursdk\Models\Category;
 use budisteikul\toursdk\Models\Product;
@@ -380,7 +381,7 @@ class ContentHelper {
 
         }
         
-        $payment_status_asText = BookingHelper::get_paymentStatus($shoppingcart);
+        $payment_status_asText = PaymentHelper::get_paymentStatus($shoppingcart);
         $booking_status_asText = BookingHelper::get_bookingStatus($shoppingcart);
         
         $main_contact = BookingHelper::get_answer_contact($shoppingcart);

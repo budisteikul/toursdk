@@ -1,6 +1,7 @@
 <?php
 namespace budisteikul\toursdk\Helpers;
 use budisteikul\toursdk\Helpers\BookingHelper;
+use budisteikul\toursdk\Helpers\PaymentHelper;
 use budisteikul\toursdk\Helpers\ContentHelper;
 use budisteikul\toursdk\Models\Shoppingcart;
 use Illuminate\Support\Facades\Cache;
@@ -72,7 +73,7 @@ class FirebaseHelper {
 
     public static function receipt($shoppingcart)
     {
-        if(!BookingHelper::have_payment($shoppingcart))
+        if(!PaymentHelper::have_payment($shoppingcart))
         {
             return "";
         }

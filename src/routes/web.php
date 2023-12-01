@@ -29,13 +29,24 @@
     Route::get('/api/product/{slug}', 'budisteikul\toursdk\Controllers\APIController@product');
 	Route::get('/api/product/{slug}/{sessionId}/product_jscript', 'budisteikul\toursdk\Controllers\APIController@product_jscript');
 
+	//Create Payment
+	Route::post('/api/shoppingcart/checkout', 'budisteikul\toursdk\Controllers\PaymentController@checkout');
+	Route::post('/api/payment/checkout', 'budisteikul\toursdk\Controllers\PaymentController@checkout');
+	Route::get('/api/payment/stripe/jscript/{sessionId}', 'budisteikul\toursdk\Controllers\PaymentController@stripe_jscript');
+	Route::post('/api/payment/stripe', 'budisteikul\toursdk\Controllers\PaymentController@createpaymentstripe');
+	Route::get('/api/payment/xendit/jscript/{sessionId}', 'budisteikul\toursdk\Controllers\PaymentController@xendit_jscript');
+	Route::post('/api/payment/xendit', 'budisteikul\toursdk\Controllers\PaymentController@createpaymentxendit');
+	Route::get('/api/payment/paypal/jscript/{sessionId}', 'budisteikul\toursdk\Controllers\PaymentController@paypal_jscript');
+	Route::post('/api/payment/paypal', 'budisteikul\toursdk\Controllers\PaymentController@createpaymentpaypal');
+	Route::get('/api/payment/ovo/jscript/{sessionId}', 'budisteikul\toursdk\Controllers\PaymentController@ovo_jscript');
+	Route::post('/api/payment/ovo', 'budisteikul\toursdk\Controllers\PaymentController@createpaymentovo');
+
 	//Shoppingcart
 	Route::get('/api/activity/{activityId}/calendar/json/{year}/{month}', 'budisteikul\toursdk\Controllers\APIController@snippetscalendar');
 	Route::post('/api/activity/invoice-preview', 'budisteikul\toursdk\Controllers\APIController@snippetsinvoice');
 	Route::post('/api/activity/remove', 'budisteikul\toursdk\Controllers\APIController@removebookingid');
 	Route::post('/api/widget/cart/session/{id}/activity', 'budisteikul\toursdk\Controllers\APIController@addshoppingcart');
 	Route::post('/api/shoppingcart', 'budisteikul\toursdk\Controllers\APIController@shoppingcart');
-	Route::post('/api/shoppingcart/checkout', 'budisteikul\toursdk\Controllers\APIController@checkout');
 	Route::post('/api/promocode', 'budisteikul\toursdk\Controllers\APIController@applypromocode');
 	Route::post('/api/promocode/remove', 'budisteikul\toursdk\Controllers\APIController@removepromocode');
 
@@ -47,25 +58,9 @@
 	Route::get('/api/receipt/{sessionId}/{confirmationCode}', 'budisteikul\toursdk\Controllers\APIController@receipt');
 
 	//Callback Payment
-	Route::post('/api/payment/stripe/confirm', 'budisteikul\toursdk\Controllers\APIController@confirmpaymentstripe');
-	Route::post('/api/payment/paypal/confirm', 'budisteikul\toursdk\Controllers\APIController@confirmpaymentpaypal');
-	Route::post('/api/payment/xendit/confirm', 'budisteikul\toursdk\Controllers\APIController@confirmpaymentxendit');
-	
-
-	//Create Payment
-	Route::get('/api/payment/stripe/jscript/{sessionId}', 'budisteikul\toursdk\Controllers\APIController@stripe_jscript');
-	Route::post('/api/payment/stripe', 'budisteikul\toursdk\Controllers\APIController@createpaymentstripe');
-
-	Route::get('/api/payment/xendit/jscript/{sessionId}', 'budisteikul\toursdk\Controllers\APIController@xendit_jscript');
-	Route::post('/api/payment/xendit', 'budisteikul\toursdk\Controllers\APIController@createpaymentxendit');
-	
-	Route::get('/api/payment/paypal/jscript/{sessionId}', 'budisteikul\toursdk\Controllers\APIController@paypal_jscript');
-	Route::post('/api/payment/paypal', 'budisteikul\toursdk\Controllers\APIController@createpaymentpaypal');
-	
-	Route::get('/api/payment/ovo/jscript/{sessionId}', 'budisteikul\toursdk\Controllers\APIController@ovo_jscript');
-	Route::post('/api/payment/ovo', 'budisteikul\toursdk\Controllers\APIController@createpaymentovo');
-	
-	Route::post('/api/payment', 'budisteikul\toursdk\Controllers\APIController@createpayment');
+	Route::post('/api/payment/stripe/confirm', 'budisteikul\toursdk\Controllers\CallbackController@confirmpaymentstripe');
+	Route::post('/api/payment/paypal/confirm', 'budisteikul\toursdk\Controllers\CallbackController@confirmpaymentpaypal');
+	Route::post('/api/payment/xendit/confirm', 'budisteikul\toursdk\Controllers\CallbackController@confirmpaymentxendit');
 	
 	//PDF
 	Route::get('/api/pdf/manual/{sessionId}/Manual-{id}.pdf', 'budisteikul\toursdk\Controllers\APIController@manual');

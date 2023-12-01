@@ -1,6 +1,7 @@
 @inject('GeneralHelper', 'budisteikul\toursdk\Helpers\GeneralHelper')
 @inject('BookingHelper', 'budisteikul\toursdk\Helpers\BookingHelper')
 @inject('SettingHelper', 'budisteikul\toursdk\Helpers\SettingHelper')
+@inject('PaymentHelper', 'budisteikul\toursdk\Helpers\PaymentHelper')
 
 <!DOCTYPE html>
 <html lang="en">
@@ -358,7 +359,7 @@ footer {
 <div id="notices" style="margin-top: 10px;float:right;">
   
   <div style="font-size: 14px; color: #AAAAAA; line-height: 18px; font-weight: bold; ">PAYMENT STATUS</div>  
-  <div class="notice"><small>{!! $BookingHelper->get_paymentStatus($shoppingcart) !!}</small></div>
+  <div class="notice"><small>{!! $PaymentHelper->get_paymentStatus($shoppingcart) !!}</small></div>
   
 </div>
 @endif

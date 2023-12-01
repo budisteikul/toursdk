@@ -3,6 +3,7 @@ namespace budisteikul\toursdk\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use budisteikul\toursdk\Helpers\BookingHelper;
+use budisteikul\toursdk\Helpers\PaymentHelper;
 use budisteikul\toursdk\Models\Shoppingcart;
 use budisteikul\toursdk\Helpers\WiseHelper;
 use budisteikul\toursdk\Helpers\TaskHelper;
@@ -94,14 +95,14 @@ class WebhookController extends Controller
                 if(Shoppingcart::where('confirmation_code',$confirmation_code)->count()==0)
                 {
                     $shoppingcart = BookingHelper::webhook_insert_shoppingcart($data);
-                    BookingHelper::confirm_payment($shoppingcart,"CONFIRMED",true);
+                    PaymentHelper::confirm_payment($shoppingcart,"CONFIRMED",true);
                     BookingHelper::shoppingcart_notif($shoppingcart);
                 }
                 return response('OK', 200)->header('Content-Type', 'text/plain');
             break;
             case 'BOOKING_ITEM_CANCELLED':
                 $shoppingcart = Shoppingcart::where('confirmation_code',$confirmation_code)->firstOrFail();
-                BookingHelper::confirm_payment($shoppingcart,"CANCELED",true);
+                PaymentHelper::confirm_payment($shoppingcart,"CANCELED",true);
                 BookingHelper::shoppingcart_notif($shoppingcart);
                 return response('OK', 200)->header('Content-Type', 'text/plain');
             break;

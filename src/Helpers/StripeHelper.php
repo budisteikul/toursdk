@@ -1,6 +1,5 @@
 <?php
 namespace budisteikul\toursdk\Helpers;
-
 use Stripe;
 
 class StripeHelper {

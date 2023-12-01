@@ -15,46 +15,6 @@ use Carbon\Carbon;
 
 class ContentHelper {
 
-	public static function env_paypalCurrency()
-    {
-        return env("PAYPAL_CURRENCY");
-    }
-
-    public static function env_appUrl()
-    {
-        return env("APP_URL");
-    }
-
-    public static function env_appApiUrl()
-    {
-        return env("APP_API_URL");
-    }
-
-    public static function env_appName()
-    {
-        return env("APP_NAME");
-    }
-
-    public static function env_paypalClientId()
-    {
-        return env("PAYPAL_CLIENT_ID");
-    }
-
-    public static function env_midtransClientKey()
-    {
-        return env("MIDTRANS_CLIENT_KEY");
-    }
-
-    public static function env_midtransEnv()
-    {
-        return env("MIDTRANS_ENV");
-    }
-
-    public static function env_appAssetUrl()
-    {
-        return env("APP_ASSET_URL");
-    }
-
     public static function view_shoppingcart($shoppingcart)
     {
         
@@ -294,19 +254,6 @@ class ContentHelper {
 
         //================================================
         
-        
-
-        if(env('PAYPAL_INTENT')=="CAPTURE")
-        {
-            //$paypal_sdk = 'https://www.paypal.com/sdk/js?client-id='.self::env_paypalClientId().'&currency='. self::env_paypalCurrency().'&disable-funding=card';
-            $paypal_sdk = 'https://www.paypal.com/sdk/js?client-id='.self::env_paypalClientId().'&currency='. self::env_paypalCurrency().'';
-        }
-        else
-        {
-            //$paypal_sdk = 'https://www.paypal.com/sdk/js?client-id='.self::env_paypalClientId().'&intent=authorize&currency='. self::env_paypalCurrency().'&disable-funding=card';
-            $paypal_sdk = 'https://www.paypal.com/sdk/js?client-id='.self::env_paypalClientId().'&intent=authorize&currency='. self::env_paypalCurrency().'';
-        }
-        
         $rate_text = '';
         if($shoppingcart->currency!="USD") $rate_text = 'Charge in USD, '. BookingHelper::text_rate($shoppingcart,'USD');
 
@@ -328,7 +275,7 @@ class ContentHelper {
                 'payment_enable' => $payment_enable,
                 'payment_default' => $payment_default,
 
-                //Card
+                //XENDIT 
                 'xendit_currency' => 'IDR',
                 'xendit_total' =>  GeneralHelper::numberFormat(BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'IDR'),'IDR'),
                 'xendit_rate' => 'Charge in IDR',
@@ -337,7 +284,7 @@ class ContentHelper {
                     <strong class="mb-2">Card Payments</strong>
                 </div>
                 <div>
-                    <img src="'. self::env_appAssetUrl() .'/img/payment/xendit-card-payment.png" style="max-height:40px" class="img-fluid" alt="Payment Logo" />
+                    <img src="'. env("APP_ASSET_URL") .'/img/payment/xendit-card-payment.png" style="max-height:40px" class="img-fluid" alt="Payment Logo" />
                 </div>',
 
                 //QRIS
@@ -349,26 +296,25 @@ class ContentHelper {
                     <strong>Scan to Pay</strong>
                 </div>
                 <div>
-                    <img src="'. self::env_appAssetUrl() .'/img/payment/QRIS_logo.png" style="max-height:30px" class="img-fluid" alt="Payment Logo" />
+                    <img src="'. env("APP_ASSET_URL") .'/img/payment/QRIS_logo.png" style="max-height:30px" class="img-fluid" alt="Payment Logo" />
                 </div>',
 
-                // Paypal Currency
-                'paypal_currency' => self::env_paypalCurrency(),
-                'paypal_total' => GeneralHelper::numberFormat(BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,self::env_paypalCurrency()),'USD'),
+                //PAYPAL
+                'paypal_currency' => env("PAYPAL_CURRENCY"),
+                'paypal_total' => GeneralHelper::numberFormat(BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,env("PAYPAL_CURRENCY")),'USD'),
                 'paypal_rate' => $rate_text,
-                'paypal_sdk' => $paypal_sdk,
-                'paypal_label' => '<strong class="mb-1"><img src="'. self::env_appAssetUrl() .'/img/payment/paypal.png" height="25" alt="Paypal" /></strong>',
+                'paypal_label' => '<strong class="mb-1"><img src="'. env("APP_ASSET_URL") .'/img/payment/paypal.png" height="25" alt="Paypal" /></strong>',
 
-                // Stripe Currency
+                //STRIPE
                 'stripe_currency' => 'USD',
                 'stripe_total' => GeneralHelper::numberFormat(BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'USD'),'USD'),
                 'stripe_rate' => $rate_text,
                 'stripe_label' => '
                 <strong class="mb-1">Card Payments 
-                    <img class="ml-2" src="'. self::env_appAssetUrl() .'/img/payment/stripe.png" height="20" alt="Card Payment" />
+                    <img class="ml-2" src="'. env("APP_ASSET_URL") .'/img/payment/stripe.png" height="20" alt="Card Payment" />
                 </strong>
                 <div class="ml-0 mb-1 mt-2">
-                    <img src="'. self::env_appAssetUrl() .'/img/payment/card-payment.png" style="max-height:40px" class="img-fluid" alt="Payment Logo" />
+                    <img src="'. env("APP_ASSET_URL") .'/img/payment/card-payment.png" style="max-height:40px" class="img-fluid" alt="Payment Logo" />
                 </div>',
 
                 
@@ -409,51 +355,17 @@ class ContentHelper {
         {
             if($shoppingcart->shoppingcart_payment->payment_status==4)
             {
-                if($shoppingcart->shoppingcart_payment->bank_name=="paynow")
-                {
-                    /*
-                    $how_to_pay = '
-                    <div class="pl-2">
-                    1.  Open your <b>Wise</b> app. <br />
-                    2.  In your Card or Account tab, swipe the Card Carousell to the left to bring up Pay Like a Local
-                    <br />
-                    3.  Tap <b>Scan QR</b>. <br />
-                    4.  <b>Scan</b> the QR code shown on your monitor. <br />
-                    <img width="230" class="mt-2 mb-2" src="'. self::env_appAssetUrl() .'/img/payment/qr-instruction.png">
-                    <br />
-                    5.  Check your payment details in the <b>Wise</b> app, then tap <b>Pay</b>. <br />
-                    6.  Follow the steps to confirm your payment. <br />
-                    7.  Done. <br /><br />
-                    Alternatively, you can <b>download</b> or <b>screenshot QR code</b> from this site and <b>import</b> it to your <b>Wise</b> app.
-                    </div><br />';
-                    */
-                    $how_to_pay = '
+                $how_to_pay = '
                     <div class="pl-2">
                     1.  Open your <b>E-wallet</b> or <b>Mobile Banking</b> apps. <br />
                     2.  <b>Scan</b> the QR code shown on your monitor. <br />
-                    <img width="230" class="mt-2 mb-2" src="'. self::env_appAssetUrl() .'/img/payment/qr-instruction.png">
+                    <img width="230" class="mt-2 mb-2" src="'. env("APP_ASSET_URL") .'/img/payment/qr-instruction.png">
                     <br />
                     3.  Check your payment details in the app, then tap <b>Pay</b>. <br />
                     4.  Enter your <b>PIN</b>. <br />
                     5.  Your transaction is complete. <br /><br />
                     Alternatively, you can download or screenshot QR code from this site and import it to your E-wallet or Mobile Banking apps.
                     </div><br />';
-                }
-                else
-                {
-                    $how_to_pay = '
-                    <div class="pl-2">
-                    1.  Open your <b>E-wallet</b> or <b>Mobile Banking</b> apps. <br />
-                    2.  <b>Scan</b> the QR code shown on your monitor. <br />
-                    <img width="230" class="mt-2 mb-2" src="'. self::env_appAssetUrl() .'/img/payment/qr-instruction.png">
-                    <br />
-                    3.  Check your payment details in the app, then tap <b>Pay</b>. <br />
-                    4.  Enter your <b>PIN</b>. <br />
-                    5.  Your transaction is complete. <br /><br />
-                    Alternatively, you can download or screenshot QR code from this site and import it to your E-wallet or Mobile Banking apps.
-                    </div><br />';
-                }
-                
             }
         }
 
@@ -462,52 +374,12 @@ class ContentHelper {
         {
             if($shoppingcart->shoppingcart_payment->payment_status==4)
             {   
-                if($shoppingcart->shoppingcart_payment->currency=="SGD")
-                {
-                    $how_to_pay = 'Please Transfer funds to the provided DBS BANK account using your Singapore based bank account via FAST Transfer';
-                }
-                else
-                {
-                    //$how_to_pay = 'Log in to bank and transfer funds to the provided '. strtoupper($shoppingcart->shoppingcart_payment->bank_name) .' account to complete the transaction. BI-FAST transfer not recommended, it may will cause payment failed';
-                    $how_to_pay = 'Log in to bank and transfer funds to the provided '. strtoupper($shoppingcart->shoppingcart_payment->bank_name) .' account to complete the transaction.';
-                }
-                
-                
+                $how_to_pay = 'Log in to bank and transfer funds to the provided '. strtoupper($shoppingcart->shoppingcart_payment->bank_name) .' account to complete the transaction.';
             } 
 
 
         }
         
-        if($shoppingcart->shoppingcart_payment->payment_type=="cash")
-        {
-            if(strtolower($shoppingcart->shoppingcart_payment->bank_name)=="alfamart")
-            {
-                if($shoppingcart->shoppingcart_payment->payment_status==4)
-                {
-                $how_to_pay = '
-                    <div class="pl-2">
-                    1. Take a screenshot this screen and go to your nearest <b>Alfamart</b> store. <br />
-                    2. Tell the cashier that you wish to make a <b>'. strtoupper($shoppingcart->shoppingcart_payment->payment_provider) .' VIA DOKU</b> payment. <br />
-                    3. Show the screenshot to the cashier.<br />
-                    <small>Additional small fee may be applicable per transaction.</small>
-                    </div><br />';
-                }
-            }
-        }
-
-        if($shoppingcart->shoppingcart_payment->payment_type=="other")
-        {
-            if(strtolower($shoppingcart->shoppingcart_payment->bank_name)=="npp")
-            {
-                $how_to_pay = '
-                    <div class="pl-2">
-                    1. Copy the PayID mentioned in this page. <br />
-                    2. Open your mobile banking App and select NPP funds transfer. <br />
-                    3. Transfer the funds to the PayID copied in step 1.<br />
-                    </div><br />';
-            }
-        }
-
         $payment_status_asText = BookingHelper::get_paymentStatus($shoppingcart);
         $booking_status_asText = BookingHelper::get_bookingStatus($shoppingcart);
         
@@ -516,7 +388,7 @@ class ContentHelper {
         
 
         $dataObj = array(
-            'vendor' => self::env_appName(),
+            'vendor' => env("APP_NAME"),
             'booking_status' => $shoppingcart->booking_status,
             'booking_status_asText' => $booking_status_asText,
             'confirmation_code' => $shoppingcart->confirmation_code,

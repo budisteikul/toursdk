@@ -7,12 +7,7 @@ use budisteikul\toursdk\Helpers\BokunHelper;
 use budisteikul\toursdk\Helpers\ImageHelper;
 use budisteikul\toursdk\Helpers\ProductHelper;
 use budisteikul\toursdk\Helpers\PaypalHelper;
-use budisteikul\toursdk\Helpers\MidtransHelper;
-use budisteikul\toursdk\Helpers\RapydHelper;
 use budisteikul\toursdk\Helpers\XenditHelper;
-use budisteikul\toursdk\Helpers\TazapayHelper;
-use budisteikul\toursdk\Helpers\FinmoHelper;
-use budisteikul\toursdk\Helpers\DuitkuHelper;
 use budisteikul\toursdk\Helpers\FirebaseHelper;
 use budisteikul\toursdk\Helpers\GeneralHelper;
 use budisteikul\toursdk\Helpers\VoucherHelper;
@@ -2017,204 +2012,7 @@ class BookingHelper {
 
 		switch($payment_provider)
 		{
-			case "duitku":
-				$amount = self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'IDR');
-
-				$currency = 'IDR';
-				$rate = number_format((float)$shoppingcart->due_now / $amount, 2, '.', '');
-				$payment_status = 4;
-
-				$data->transaction->amount = $amount;
-				$data->transaction->currency = $currency;
-
-				if($data->transaction->bank == 'ovo')
-				{
-					$payment_provider = 'duitku';
-					$payment_type = 'ewallet';
-					$bank_name = 'ovo';
-					$payment_status = 2;
-
-					$response = new \stdClass();
-					$response->status = new \stdClass();
-					$response->status->id = 1;
-				}
-				else
-				{
-					$response = DuitkuHelper::createPayment($data);
-				}
-				
-			break;
-			case "finmo":
-				$payment_provider = 'finmo';
-				
-				if($data->transaction->bank=="promptpay")
-				{
-					$amount = self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'THB');
-					$currency = 'THB';
-					$rate = number_format((float)$shoppingcart->due_now / $amount, 2, '.', '');
-					$rate_from = $shoppingcart->currency;
-					$rate_to = 'THB';
-				}
-
-				if($data->transaction->bank=="npp")
-				{
-					$amount = self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'AUD');
-					$currency = 'AUD';
-					$rate = number_format((float)$shoppingcart->due_now / $amount, 2, '.', '');
-					$rate_from = $shoppingcart->currency;
-					$rate_to = 'AUD';
-				}
-
-				if($data->transaction->bank=="acct")
-				{
-					$amount = self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'AUD');
-					$currency = 'AUD';
-					$rate = number_format((float)$shoppingcart->due_now / $amount, 2, '.', '');
-					$rate_from = $shoppingcart->currency;
-					$rate_to = 'AUD';
-				}
-
-				if($data->transaction->bank=="paynow")
-				{
-					$amount = self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'SGD');
-					$currency = 'SGD';
-					$rate = number_format((float)$shoppingcart->due_now / $amount, 2, '.', '');
-					$rate_from = $shoppingcart->currency;
-					$rate_to = 'SGD';
-				}
-
-				$data->transaction->amount = $amount;
-				$data->transaction->currency = $currency;
-
-				$payment_status = 4;
-
-				$response = FinmoHelper::createPayment($data);
-
-			break;
-			case "tazapay":
-				$payment_provider = 'tazapay';
-				
-				if($data->transaction->bank=="paynow")
-				{
-					$amount = self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'SGD');
-					$currency = 'SGD';
-					$rate = number_format((float)$shoppingcart->due_now / $amount, 2, '.', '');
-					$rate_from = $shoppingcart->currency;
-					$rate_to = 'SGD';
-				}
-
-				else if($data->transaction->bank=="poli")
-				{
-					$amount = self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'AUD');
-					$currency = 'AUD';
-					$rate = number_format((float)$shoppingcart->due_now / $amount, 2, '.', '');
-					$rate_from = $shoppingcart->currency;
-					$rate_to = 'AUD';
-				}
-
-				else if($data->transaction->bank=="promptpay")
-				{
-					$amount = self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'THB');
-					$currency = 'THB';
-					$rate = number_format((float)$shoppingcart->due_now / $amount, 2, '.', '');
-					$rate_from = $shoppingcart->currency;
-					$rate_to = 'THB';
-				}
-
-				else
-				{
-					$amount = self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'USD');
-					$currency = 'USD';
-					$rate = number_format((float)$shoppingcart->due_now / $amount, 2, '.', '');
-					$rate_from = $shoppingcart->currency;
-					$rate_to = 'USD';
-				}
-
-				$data->transaction->amount = $amount;
-				$data->transaction->currency = $currency;
-
-				$payment_status = 4;
-
-				$response = TazapayHelper::createPayment($data);
-
-			break;
-			case "rapyd":
-				$payment_provider = 'rapyd';
-				if($data->transaction->bank=="paynow" || $data->transaction->bank=="fast")
-				{
-					$amount = self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'SGD');
-					$currency = 'SGD';
-					$rate = number_format((float)$shoppingcart->due_now / $amount, 2, '.', '');
-					$rate_from = $shoppingcart->currency;
-					$rate_to = 'SGD';
-				}
-				else if($data->transaction->bank=="promptpay")
-				{
-					$amount = self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'THB');
-					$currency = 'THB';
-					$rate = number_format((float)$shoppingcart->due_now / $amount, 2, '.', '');
-					$rate_from = $shoppingcart->currency;
-					$rate_to = 'THB';
-				}
-				else if($data->transaction->bank=="poli")
-				{
-					$amount = self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'AUD');
-					$currency = 'AUD';
-					$rate = number_format((float)$shoppingcart->due_now / $amount, 2, '.', '');
-					$rate_from = $shoppingcart->currency;
-					$rate_to = 'AUD';
-				}
-				else if($data->transaction->bank=="grabpay")
-				{
-					$amount = self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'PHP');
-					$currency = 'PHP';
-					$rate = number_format((float)$shoppingcart->due_now / $amount, 2, '.', '');
-					$rate_from = $shoppingcart->currency;
-					$rate_to = 'PHP';
-				}
-				else if($data->transaction->bank=="tmoney")
-				{
-					$amount = self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'KRW');
-					$currency = 'KRW';
-					$rate = number_format((float)$shoppingcart->due_now / $amount, 2, '.', '');
-					$rate_from = $shoppingcart->currency;
-					$rate_to = 'KRW';
-				}
-				else if($data->transaction->bank=="gcash")
-				{
-					$amount = self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'PHP');
-					$currency = 'PHP';
-					$rate = number_format((float)$shoppingcart->due_now / $amount, 2, '.', '');
-					$rate_from = $shoppingcart->currency;
-					$rate_to = 'PHP';
-				}
-				else if($data->transaction->bank=="bancnet")
-				{
-					$amount = self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'PHP');
-					$currency = 'PHP';
-					$rate = number_format((float)$shoppingcart->due_now / $amount, 2, '.', '');
-					$rate_from = $shoppingcart->currency;
-					$rate_to = 'PHP';
-				}
-				else
-				{
-					$amount = self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'IDR');
-					$currency = 'IDR';
-					$rate = number_format((float)$shoppingcart->due_now / $amount, 2, '.', '');
-					$rate_from = $shoppingcart->currency;
-					$rate_to = 'IDR';
-				}
-
-				$data->transaction->amount = $amount;
-				$data->transaction->currency = $currency;
-
-				$payment_status = 4;
-
-				$response = RapydHelper::createPayment($data);
-
-			break;
 			case "xendit":
-
 				$amount = self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'IDR');
 				$currency = 'IDR';
 				$rate = number_format((float)$shoppingcart->due_now / $amount, 2, '.', '');
@@ -2295,17 +2093,6 @@ class BookingHelper {
 
 
 
-			break;
-			case "midtrans":
-				$amount = self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'IDR');
-				$currency = 'IDR';
-				$rate = number_format((float)$shoppingcart->due_now / $amount, 2, '.', '');
-				$payment_status = 4;
-
-				$data->transaction->amount = $amount;
-				$data->transaction->currency = $currency;
-
-				$response = MidtransHelper::createPayment($data);
 			break;
 			case "paypal":
 				$payment_provider = 'paypal';
@@ -2583,43 +2370,12 @@ class BookingHelper {
 				break;
 				case 4:
 					// =================================================================================
-					if($shoppingcart->shoppingcart_payment->payment_type=="other")
-            		{
-            			$amount_text = $shoppingcart->shoppingcart_payment->currency .' '. $shoppingcart->shoppingcart_payment->amount;
-            			return '
-								<div class="card mb-1">
-								<span class="badge badge-info invoice-color-info" style="font-size:18px; ">
-								Waiting for payment <br /><b id="payment_timer" class="text-white"  style="font-size:12px; font-weight: lighter;"><i class="fa fa-spinner fa-spin fa-fw"></i></b></span>
-								</div>
-								<div class="card mb-4">
-								<div class="card-body bg-light">
-
-								
-								<div>'. $shoppingcart->shoppingcart_payment->payment_description .'</div>
-								
-								
-								<div>Total Bill : </div>
-								<div class="mb-2"><b>'. $amount_text .'</b></div>
-
-								
-								</div>
-								</div>
-								';
-            		}
+					
 					if($shoppingcart->shoppingcart_payment->payment_type=="bank_transfer")
             		{
-            			$amount_text = null;
-						if($shoppingcart->shoppingcart_payment->currency=="IDR")
-						{
-							$amount_text = GeneralHelper::formatRupiah($shoppingcart->shoppingcart_payment->amount);
-							$account_number_text = 'Account Number';
-						}
-						else
-						{
-							$amount_text = $shoppingcart->shoppingcart_payment->currency .' '. $shoppingcart->shoppingcart_payment->amount;
-							$account_number_text = 'Account Number';
-						}
-
+            			$amount_text = GeneralHelper::formatRupiah($shoppingcart->shoppingcart_payment->amount);
+						$account_number_text = 'Account Number';
+						
 						return '
 								<div class="card mb-1">
 								<span class="badge badge-info invoice-color-info" style="font-size:18px; ">
@@ -2677,47 +2433,6 @@ class BookingHelper {
 								
 								<div class="card-body bg-light">
 									'.$button.'
-									<!-- Please wait while we are processing your payment. -->
-								
-								</div>
-								</div>
-								';
-            		}
-            		// =================================================================================
-            		if($shoppingcart->shoppingcart_payment->payment_type=="cash")
-            		{
-            			$amount_text = null;
-						if($shoppingcart->shoppingcart_payment->currency=="IDR")
-						{
-							$amount_text = GeneralHelper::formatRupiah($shoppingcart->shoppingcart_payment->amount);
-						}
-						else
-						{
-							$amount_text = $shoppingcart->shoppingcart_payment->currency .' '. $shoppingcart->shoppingcart_payment->amount;
-						}
-
-						return '
-								<div class="card mb-1">
-								<span class="badge badge-info invoice-color-info" style="font-size:18px; ">
-								Waiting for payment <br /><b id="payment_timer" class="text-white"  style="font-size:12px; font-weight: lighter;"><i class="fa fa-spinner fa-spin fa-fw"></i></b></span>
-								</div>
-								<div class="card mb-4">
-
-								<input type="hidden" id="va_number" value="'. $shoppingcart->shoppingcart_payment->va_number .'">
-								<input type="hidden" id="va_total" value="'. $shoppingcart->shoppingcart_payment->amount .'">
-								<div class="card-body bg-light text-center">
-								<div>
-								<img id="alfamart-img" class="img-fluid border border-white" alt="Alfamart" style="height:40px;" src="'.self::env_appAssetUrl().'/img/payment/alfamart.png">
-								</div>
-
-									<div class="d-flex justify-content-center mt-2">
-								'. DNS1D::getBarcodeHTML($shoppingcart->shoppingcart_payment->va_number, 'C128',2.5,73,'black', 18) .'
-									</div>
-								
-								<div class="mt-2 mb-2"><b>'. strtoupper($shoppingcart->shoppingcart_payment->payment_provider) .' VIA DOKU</b></div>
-								<div class="mt-2 mb-2">Total Bill : <b>'. $amount_text .'</b></div>
-
-								
 								</div>
 								</div>
 								';
@@ -2725,9 +2440,6 @@ class BookingHelper {
             		// =================================================================================
             		if($shoppingcart->shoppingcart_payment->payment_type=="qrcode")
             		{
-            			if($shoppingcart->shoppingcart_payment->bank_name=="qris")
-						{
-							//$data_qris = self::get_qris_content($shoppingcart);
 							return '
 								<div class="card mb-1">
 								<span class="badge badge-info invoice-color-info" style="font-size:18px; ">
@@ -2753,68 +2465,6 @@ class BookingHelper {
 								<a href="'. self::env_appApiUrl() .'/qrcode/'.$shoppingcart->session_id.'/'. $shoppingcart->confirmation_code .'" type="button" class="invoice-hilang btn btn-success invoice-hilang ">or Download QRCODE <i class="fas fa-download"></i> </a>
 								</div>
 								';
-							
-						}
-						
-						if($shoppingcart->shoppingcart_payment->bank_name=="paynow")
-						{
-							return '
-								<div class="card mb-1">
-								<span class="badge badge-info invoice-color-info" style="font-size:18px; ">
-								Waiting for payment <br /><b id="payment_timer" class="text-white"  style="font-size:12px; font-weight: lighter;"><i class="fa fa-spinner fa-spin fa-fw"></i></b></span>
-								</div>
-								<div class="card mb-1 img-fluid invoice-hilang"  style="min-height:350px; max-width:505px;">
-								
-								<div class="card-img-overlay">
-									<div class="row h-100">
-   										<div class="col-12 text-center">
-   											
-   											<img class="img-fluid border border-white mt-2" alt="PROMPTPAY LOGO" style="max-width:250px; height:45px; image-rendering: -webkit-optimize-contrast;" src="'.self::env_appAssetUrl().'/img/payment/paynow-logo.png">
-   											<br />
-    										<img id="paynow-img" class="img-fluid border border-white" alt="PAYNOW" style="width:194px; margin-bottom:10px;" src="'. self::generate_qrcode($shoppingcart) .' ">
-    										<br />
-    										<span><strong>Amount :</strong> '. $shoppingcart->shoppingcart_payment->currency .' '. $shoppingcart->shoppingcart_payment->amount .'</span>
-   										</div>
-
-									</div>
-  								</div>
-								
-								</div>
-								<div class="card mb-4">
-								<a href="'. self::env_appApiUrl() .'/qrcode/'.$shoppingcart->session_id.'/'. $shoppingcart->confirmation_code .'" type="button" class="invoice-hilang btn btn-success invoice-hilang ">or Download QRCODE <i class="fas fa-download"></i> </a>
-								</div>
-								';
-						}
-
-						if($shoppingcart->shoppingcart_payment->bank_name=="promptpay")
-						{
-							return '
-								<div class="card mb-1">
-								<span class="badge badge-info invoice-color-info" style="font-size:18px; ">
-								Waiting for payment <br /><b id="payment_timer" class="text-white"  style="font-size:12px; font-weight: lighter;"><i class="fa fa-spinner fa-spin fa-fw"></i></b></span>
-								</div>
-								<div class="card mb-1 img-fluid invoice-hilang"  style="min-height:350px; max-width:505px;">
-								
-								<div class="card-img-overlay">
-									<div class="row h-100">
-   										<div class="col-12 text-center">
-   											
-   											<img class="img-fluid border border-white mt-2" alt="PROMPTPAY LOGO" style="max-width:250px; height:45px; image-rendering: -webkit-optimize-contrast;" src="'.self::env_appAssetUrl().'/img/payment/promptpay-logo.png">
-   											<br />
-    										<img id="promptpay-img" class="img-fluid border border-white" alt="PROMPTPAY" style="width:194px; margin-bottom:10px; margin-top:5px;" src="'. self::generate_qrcode($shoppingcart) .' ">
-    										<br />
-    										<span><strong>Amount :</strong> '. $shoppingcart->shoppingcart_payment->currency .' '. $shoppingcart->shoppingcart_payment->amount .'</span>
-   										</div>
-
-									</div>
-  								</div>
-								
-								</div>
-								<div class="card mb-4">
-								<a href="'. self::env_appApiUrl() .'/qrcode/'.$shoppingcart->session_id.'/'. $shoppingcart->confirmation_code .'" type="button" class="invoice-hilang btn btn-success invoice-hilang ">or Download QRCODE <i class="fas fa-download"></i> </a>
-								</div>
-								';
-						}
             		}
 				break;
 				default:

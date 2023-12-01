@@ -126,17 +126,8 @@ class PaypalHelper {
      	$currency = $data->transaction->currency;
      	$reference_id = $data->transaction->id;
 
-  		if(env('PAYPAL_INTENT')=="CAPTURE")
-  		{
-  			$intent = "CAPTURE";
-  		}
-  		else
-  		{
-  			$intent = "AUTHORIZE";
-  		}
-
         return array(
-            'intent' => $intent,
+            'intent' => 'CAPTURE',
             'application_context' =>
                 array(
                     'shipping_preference' => 'NO_SHIPPING'

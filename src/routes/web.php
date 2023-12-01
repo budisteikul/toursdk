@@ -47,14 +47,10 @@
 	Route::get('/api/receipt/{sessionId}/{confirmationCode}', 'budisteikul\toursdk\Controllers\APIController@receipt');
 
 	//Callback Payment
-	Route::post('/api/payment/rapyd/confirm', 'budisteikul\toursdk\Controllers\APIController@confirmpaymentrapyd');
 	Route::post('/api/payment/stripe/confirm', 'budisteikul\toursdk\Controllers\APIController@confirmpaymentstripe');
-	Route::post('/api/payment/tazapay/confirm', 'budisteikul\toursdk\Controllers\APIController@confirmpaymenttazapay');
 	Route::post('/api/payment/paypal/confirm', 'budisteikul\toursdk\Controllers\APIController@confirmpaymentpaypal');
-	Route::post('/api/payment/midtrans/confirm', 'budisteikul\toursdk\Controllers\APIController@confirmpaymentmidtrans');
 	Route::post('/api/payment/xendit/confirm', 'budisteikul\toursdk\Controllers\APIController@confirmpaymentxendit');
-	Route::post('/api/payment/duitku/confirm', 'budisteikul\toursdk\Controllers\APIController@confirmpaymentduitku');
-	Route::post('/api/payment/finmo/confirm', 'budisteikul\toursdk\Controllers\APIController@confirmpaymentfinmo');
+	
 
 	//Create Payment
 	Route::get('/api/payment/stripe/jscript/{sessionId}', 'budisteikul\toursdk\Controllers\APIController@stripe_jscript');
@@ -90,11 +86,3 @@
 	// TASK
 	Route::post('/task', 'budisteikul\toursdk\Controllers\TaskController@task');
 
-	// TEST
-	//Route::get('/testaja', 'budisteikul\toursdk\Controllers\APIController@testaja');
-	//Route::get('/raillink', 'budisteikul\toursdk\Controllers\APIController@check_raillink');
-
-	
-
-
-	

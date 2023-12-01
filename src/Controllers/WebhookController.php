@@ -4,12 +4,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use budisteikul\toursdk\Helpers\BookingHelper;
 use budisteikul\toursdk\Models\Shoppingcart;
-
 use budisteikul\toursdk\Helpers\WiseHelper;
 use budisteikul\toursdk\Helpers\TaskHelper;
-
-use budisteikul\toursdk\Helpers\LogHelper;
-
 
 class WebhookController extends Controller
 {
@@ -19,9 +15,7 @@ class WebhookController extends Controller
     {
         
     }
-
     
-
     public function webhook($webhook_app,Request $request)
     {
         if($webhook_app=="wise")

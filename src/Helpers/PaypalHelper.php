@@ -81,8 +81,6 @@ class PaypalHelper {
     	$client = self::client();
     	$data_json = $client->execute($request);
 
-    	LogHelper::log($data_json,'paypal');
-
       	$status_json = new \stdClass();
       	$response_json = new \stdClass();
       

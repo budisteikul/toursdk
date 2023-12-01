@@ -37,8 +37,6 @@ use Illuminate\Support\Facades\URL;
 class APIController extends Controller
 {
     
-    
-
     public function __construct(Request $request)
     {
         $this->currency = env("BOKUN_CURRENCY");

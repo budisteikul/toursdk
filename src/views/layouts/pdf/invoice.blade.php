@@ -1,5 +1,6 @@
 @inject('GeneralHelper', 'budisteikul\toursdk\Helpers\GeneralHelper')
 @inject('BookingHelper', 'budisteikul\toursdk\Helpers\BookingHelper')
+@inject('SettingHelper', 'budisteikul\toursdk\Helpers\SettingHelper')
 
 <!DOCTYPE html>
 <html lang="en">
@@ -214,22 +215,7 @@ footer {
          <tr>
           <td style="background-color:#FFFFFF; text-align:left; padding-left:0px; line-height: 18px; font-size:14px; color:#777777">
 
-                        <div style="margin-top:3px;">
-                          <strong style="font-size:18px;">{{env('APP_NAME')}}</strong>
-                        </div>
-                        <div>Perum Guwosari Blok XII No.190</div>
-                        
-                        <div>Bantul D.I Yogyakarta 55751 ID</div>
-                        <div>Phone : +62 857 4311-2112</div>
-                        <div>Email : guide@vertikaltrip.com</div>
-
-                        <!-- div style="margin-top:3px; margin-bottom:2px;">
-                          <strong style="font-size:18px;">VERTIKAL TRIP LLC</strong>
-                        </div>
-                        <div>530 Harkle Road, SUITE 100</div>
-                        <div>Santa Fe, NM 87505, US</div>
-                        <div>Phone : +1 505 585-2112</div>
-                        <div>Email : corporate@vertikaltrip.com</div -->
+                        {!! $SettingHelper->getSetting('company') !!}
                   
            </td>
            <td style="background-color:#FFFFFF; text-align:right; padding-right:0px; line-height: 18px; font-size:14px; color:#777777">
@@ -247,7 +233,7 @@ footer {
            <td valign="top" width="50%" style="background-color:#FFFFFF; text-align:left; padding-left:0px; padding-top:0px; ">
            
          <div id="client">
-          <div class="to" style="font-size: 14px; color: #0087C3; line-height: 18px; ">INVOICE TO</div>
+          <div class="to" style="font-size: 14px; color: #0087C3; line-height: 18px; ">BILLED TO</div>
 
           @if($shoppingcart->booking_channel=="WEBSITE")
           @php

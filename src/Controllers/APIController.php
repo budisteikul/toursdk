@@ -133,13 +133,17 @@ class APIController extends Controller
                     <i class="fas fa-envelope"></i> guide@vertikaltrip.com<br />
                     <i class="fas fa-phone-square-alt"></i> +62 857 4311 2112<br />';
 
+        $company = SettingHelper::getSetting('company');
+        $footerTitle = SettingHelper::getSetting('footer');
+
         return response()->json([
             'message' => 'success',
             'address' => $address,
             'usefullLinks' => $usefullLink,
             'whatsapp' => '+6285743112112',
             'privacyterms' => $dataPrivacyTerm,
-            'footerTitle' => '&copy; 2018 - 2023 VERTIKAL TRIP. All Rights Reserved.',
+            'company' => $company,
+            'footerTitle' => $footerTitle,
             'partners' => [
                 '<a target="_blank" rel="noreferrer noopener" href="https://www.getyourguide.com/yogyakarta-l349/yogyakarta-night-walking-and-food-tour-t429708"><img height="30" class="mb-1 mt-2 mr-2 img-thumbnail" src="'.$this->appAssetUrl.'/img/footer/getyourguide-logo.png"} alt="GetYourGuide" /></a>',
                 '<a target="_blank" rel="noreferrer noopener" href="https://www.airbnb.com/experiences/434368"><img height="30" class="mb-1 mt-2 mr-2 img-thumbnail" src="'.$this->appAssetUrl.'/img/footer/airbnb-logo.png"} alt="Airbnb" /></a>',

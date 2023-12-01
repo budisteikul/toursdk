@@ -40,8 +40,9 @@ class APIController extends Controller
         $this->referer = $request->header('referer');
     }
 
-    public function index_jscript()
+    public function index_jscript(Request $request)
     {
+        $version = $request->input('ver');
         $paypal_sdk = 'https://www.paypal.com/sdk/js?client-id='.env("PAYPAL_CLIENT_ID").'&currency='. env("PAYPAL_CURRENCY").'';
         $payment_enable = SettingHelper::getSetting('payment_enable');
         $payment_array = explode(",",$payment_enable);
@@ -58,6 +59,7 @@ class APIController extends Controller
 
         return response()->json([
             'message' => 'success',
+            'version' => $version,
             'jscripts' => $jscripts,
             'analytic' => $analytic
         ], 200);

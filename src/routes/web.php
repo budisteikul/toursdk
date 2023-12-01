@@ -30,7 +30,9 @@
 	Route::get('/api/product/{slug}/{sessionId}/product_jscript', 'budisteikul\toursdk\Controllers\APIController@product_jscript');
 
 	//Create Payment
+	
 	Route::post('/api/shoppingcart/checkout', 'budisteikul\toursdk\Controllers\PaymentController@checkout');
+
 	Route::post('/api/payment/checkout', 'budisteikul\toursdk\Controllers\PaymentController@checkout');
 	Route::get('/api/payment/stripe/jscript/{sessionId}', 'budisteikul\toursdk\Controllers\PaymentController@stripe_jscript');
 	Route::post('/api/payment/stripe', 'budisteikul\toursdk\Controllers\PaymentController@createpaymentstripe');

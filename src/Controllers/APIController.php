@@ -68,8 +68,8 @@ class APIController extends Controller
         }
 
         $jscripts = [
-            //[$paypal_sdk, true],
-            ['https://js.stripe.com/v3/', true],
+            [$paypal_sdk, true],
+            //['https://js.stripe.com/v3/', true],
             ['https://js.xendit.co/v1/xendit.min.js',false],
             [ env('APP_ASSET_URL') .'/js/payform.min.js',true],
         ];

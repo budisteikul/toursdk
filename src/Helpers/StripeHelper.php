@@ -28,8 +28,6 @@ class StripeHelper {
   			//'capture_method' => 'manual',
 		]);
 
-        LogHelper::log($intent,'stripe');
-
         $data_json = new \stdClass();
         $status_json = new \stdClass();
         $response_json = new \stdClass();

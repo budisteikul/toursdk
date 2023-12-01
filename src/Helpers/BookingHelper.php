@@ -8,7 +8,6 @@ use budisteikul\toursdk\Helpers\ImageHelper;
 use budisteikul\toursdk\Helpers\ProductHelper;
 use budisteikul\toursdk\Helpers\PaypalHelper;
 use budisteikul\toursdk\Helpers\XenditHelper;
-use budisteikul\toursdk\Helpers\FirebaseHelper;
 use budisteikul\toursdk\Helpers\GeneralHelper;
 use budisteikul\toursdk\Helpers\VoucherHelper;
 use budisteikul\toursdk\Helpers\TaskHelper;
@@ -32,44 +31,9 @@ use Carbon\Carbon;
 use Barryvdh\DomPDF\Facade as PDF;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Illuminate\Support\Facades\Storage;
-use Milon\Barcode\DNS1D;
 
 class BookingHelper {
-	
-	public static function env_paypalCurrency()
-    {
-        return env("PAYPAL_CURRENCY");
-    }
 
-    public static function env_mailgunDomain()
-    {
-        return env("MAILGUN_DOMAIN");
-    }
-
-    public static function env_bokunCurrency()
-    {
-        return env("BOKUN_CURRENCY");
-    }
-
-    public static function env_appApiUrl()
-    {
-        return env("APP_API_URL");
-    }
-
-    public static function env_appAssetUrl()
-    {
-        return env("APP_ASSET_URL");
-    }
-
-    public static function env_appUrl()
-    {
-        return env("APP_URL");
-    }
-
-    public static function env_appName()
-    {
-        return env("APP_NAME");
-    }
 
 	public static function webhook_insert_shoppingcart($data)
 	{
@@ -1736,7 +1700,7 @@ class BookingHelper {
 	public static function set_maskingEmail($shoppingcart)
 	{
 		$front_email = str_replace("-",".",$shoppingcart->confirmation_code);
-		$email = strtolower($front_email.'@'.self::env_mailgunDomain());
+		$email = strtolower($front_email.'@'.env("MAILGUN_DOMAIN"));
 		return $email;
 	}
 
@@ -2096,11 +2060,11 @@ class BookingHelper {
 			break;
 			case "paypal":
 				$payment_provider = 'paypal';
-				$amount = self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,self::env_paypalCurrency());
-				$currency = self::env_paypalCurrency();
+				$amount = self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,env("PAYPAL_CURRENCY"));
+				$currency = env("PAYPAL_CURRENCY");
 				$rate = number_format((float)$shoppingcart->due_now / $amount, 2, '.', '');
 				$rate_from = $shoppingcart->currency;
-				$rate_to = self::env_paypalCurrency();
+				$rate_to = env("PAYPAL_CURRENCY");
 
 				$data->transaction->amount = $amount;
 				$data->transaction->currency = $currency;
@@ -2451,7 +2415,7 @@ class BookingHelper {
 									<div class="row h-100">
    										<div class="col-12 text-center">
 
-    										<img class="img-fluid border border-white mt-2" alt="QRIS LOGO" style="max-width:250px; height:30px; image-rendering: -webkit-optimize-contrast;" src="'.self::env_appAssetUrl().'/img/payment/qris-logo.png">
+    										<img class="img-fluid border border-white mt-2" alt="QRIS LOGO" style="max-width:250px; height:30px; image-rendering: -webkit-optimize-contrast;" src="'.env("APP_ASSET_URL").'/img/payment/qris-logo.png">
     										<br />
     										<img class="img-fluid border border-white mt-2" alt="QRIS" style="max-width:250px; image-rendering: -webkit-optimize-contrast;" src="'. self::generate_qrcode($shoppingcart) .' ">
     										<br />
@@ -2462,7 +2426,7 @@ class BookingHelper {
 								
 								</div>
 								<div class="card mb-4">
-								<a href="'. self::env_appApiUrl() .'/qrcode/'.$shoppingcart->session_id.'/'. $shoppingcart->confirmation_code .'" type="button" class="invoice-hilang btn btn-success invoice-hilang ">or Download QRCODE <i class="fas fa-download"></i> </a>
+								<a href="'. env("APP_API_URL") .'/qrcode/'.$shoppingcart->session_id.'/'. $shoppingcart->confirmation_code .'" type="button" class="invoice-hilang btn btn-success invoice-hilang ">or Download QRCODE <i class="fas fa-download"></i> </a>
 								</div>
 								';
             		}
@@ -2619,80 +2583,9 @@ class BookingHelper {
 
 	public static function generate_qrcode($shoppingcart)
 	{
-		//if($shoppingcart->shoppingcart_payment->bank_name=="qris")
-		//{
 			$qrcode = QrCode::errorCorrection('H')->format('png')->margin(0)->size(630)->generate($shoppingcart->shoppingcart_payment->qrcode);
 			return 'data:image/png;base64, '. base64_encode($qrcode);
-		/*
-		}
-		else if($shoppingcart->shoppingcart_payment->bank_name=="promptpay")
-		{
-			return 'data:image/png;base64, '. $shoppingcart->shoppingcart_payment->qrcode;
-		}
-		else
-		{
-			return $shoppingcart->shoppingcart_payment->qrcode;
-		}
-		*/
 	}
-
-	/*
-	public static function disassembly_qris($new_string)
-	{
-		$dataObj = new \stdClass();
-		while($new_string!="")
-        {
-            $new_object = substr($new_string,0,2);
-            $lenght = (int)substr($new_string,2,2);
-            $value = '';
-            try
-            {
-                $value = @substr($new_string,4,$lenght);
-            }
-            catch(exception $e)
-            {
-                $value ='';
-            }
-            
-            $aaa = $new_object . $lenght . $value;
-            $new_string = str_replace($aaa, "", $new_string);
-            if($new_object==26 || $new_object==51)
-            {
-                $dataObj1 = new \stdClass();
-                $new_string1 = $value;
-                while($new_string1!="")
-                {
-                    $new_object1 = substr($new_string1,0,2);
-                    $lenght1 = substr($new_string1,2,2);
-                    $value1 = @substr($new_string1,4,$lenght1);
-                    $aaa1 = $new_object1 . $lenght1 . $value1;
-                    $new_string1 = str_replace($aaa1, "", $new_string1);
-                    $dataObj1->$new_object1 = $value1;
-                }
-                $dataObj->$new_object = $dataObj1;
-            }
-            else
-            {
-                $dataObj->$new_object = $value;
-            }
-        }
-        return $dataObj;
-	}
-
-	public static function get_qris_content($shoppingcart)
-	{
-		$nmid = "ID1022165253777";
-		$merchant = self::env_appName();
-		$dataObj = self::disassembly_qris($shoppingcart->shoppingcart_payment->qrcode);
-		if(isset($dataObj->{'51'}->{'02'})) $nmid = $dataObj->{'51'}->{'02'};
-		if(isset($dataObj->{'59'})) $merchant = $dataObj->{'59'};
-
-		$dataObj1 = new \stdClass();
-		$dataObj1->merchant = strtoupper($merchant);
-		$dataObj1->nmid = 'NMID : '. $nmid;
-		return $dataObj1;
-	}
-	*/
 
 	public static function create_manual_pdf($shoppingcart)
 	{
@@ -2702,9 +2595,9 @@ class BookingHelper {
 
 	public static function create_invoice_pdf($shoppingcart)
 	{
-		$path = self::env_appAssetUrl() .'/img/pdf/qrcode-logo.png';
+		$path = env("APP_ASSET_URL") .'/img/pdf/qrcode-logo.png';
 		//$path = Storage::disk('gcs')->get('assets/img/pdf/qrcode-logo.png');
-		$qrcode = base64_encode(QrCode::errorCorrection('H')->format('png')->merge($path,.5,false)->size(1024)->margin(0)->generate( self::env_appUrl() .'/booking/receipt/'.$shoppingcart->session_id.'/'.$shoppingcart->confirmation_code  ));
+		$qrcode = base64_encode(QrCode::errorCorrection('H')->format('png')->merge($path,.5,false)->size(1024)->margin(0)->generate(env("APP_URL") .'/booking/receipt/'.$shoppingcart->session_id.'/'.$shoppingcart->confirmation_code  ));
         $pdf = PDF::setOptions(['tempDir' =>  storage_path(),'fontDir' => storage_path(),'fontCache' => storage_path(),'isRemoteEnabled' => true])->loadView('toursdk::layouts.pdf.invoice', compact('shoppingcart','qrcode'))->setPaper('a4', 'portrait');
         return $pdf;
 	}
@@ -2719,9 +2612,9 @@ class BookingHelper {
 	public static function create_ticket_pdf($shoppingcart_product)
 	{
 		$customPaper = array(0,0,300,540);
-		$path = self::env_appAssetUrl() .'/img/pdf/qrcode-logo.png';
+		$path = env("APP_ASSET_URL") .'/img/pdf/qrcode-logo.png';
         //$path = Storage::disk('gcs')->get('assets/img/pdf/qrcode-logo.png');
-        $qrcode = base64_encode(QrCode::errorCorrection('H')->format('png')->merge($path,.5,false)->size(1024)->margin(0)->generate( self::env_appUrl() .'/booking/receipt/'.$shoppingcart_product->shoppingcart->session_id.'/'.$shoppingcart_product->shoppingcart->confirmation_code  ));
+        $qrcode = base64_encode(QrCode::errorCorrection('H')->format('png')->merge($path,.5,false)->size(1024)->margin(0)->generate(env("APP_URL") .'/booking/receipt/'.$shoppingcart_product->shoppingcart->session_id.'/'.$shoppingcart_product->shoppingcart->confirmation_code  ));
         $pdf = PDF::setOptions(['tempDir' => storage_path(),'fontDir' => storage_path(),'fontCache' => storage_path(),'isRemoteEnabled' => true])->loadView('toursdk::layouts.pdf.ticket', compact('shoppingcart_product','qrcode'))->setPaper($customPaper);
         return $pdf;
 	}

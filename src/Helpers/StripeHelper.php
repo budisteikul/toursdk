@@ -52,7 +52,8 @@ class StripeHelper {
         Stripe\Stripe::setApiKey(self::env_stripeSecretKey());
         $refund = Stripe\Refund::create([
             'amount' => $amount,
-            'payment_intent' => $id
+            'payment_intent' => $id,
+            'reason' => 'requested_by_customer'
         ]);
         return $refund;
     }

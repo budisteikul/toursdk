@@ -42,7 +42,7 @@ class APIController extends Controller
 
     public function index_jscript(Request $request)
     {
-        $version = $request->input('ver');
+        $version = '1.3.4';
         $paypal_sdk = 'https://www.paypal.com/sdk/js?client-id='.env("PAYPAL_CLIENT_ID").'&currency='. env("PAYPAL_CURRENCY").'';
         $payment_enable = SettingHelper::getSetting('payment_enable');
         $payment_array = explode(",",$payment_enable);
@@ -59,6 +59,7 @@ class APIController extends Controller
 
         return response()->json([
             'message' => 'success',
+            'home' => env('APP_URL'),
             'version' => $version,
             'jscripts' => $jscripts,
             'analytic' => $analytic

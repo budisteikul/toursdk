@@ -43,16 +43,18 @@ class APIController extends Controller
     public function index_jscript(Request $request)
     {
         $paypal_sdk = 'https://www.paypal.com/sdk/js?client-id='.env("PAYPAL_CLIENT_ID").'&currency='. env("PAYPAL_CURRENCY").'';
+        
         $payment_enable = SettingHelper::getSetting('payment_enable');
         $payment_array = explode(",",$payment_enable);
+        
         $jscripts = [];
 
-        if(in_array('paypal',$payment_array)) $jscripts[] = [$paypal_sdk, true];
         if(in_array('xendit',$payment_array)) {
             $jscripts[] = ['https://js.xendit.co/v1/xendit.min.js',false];
             $jscripts[] = [ env('APP_ASSET_URL') .'/js/payform.min.js',true];
         }
         if(in_array('stripe',$payment_array)) $jscripts[] = ['https://js.stripe.com/v3/', true];
+        if(in_array('paypal',$payment_array)) $jscripts[] = [$paypal_sdk, true];
 
         $analytic = LogHelper::analytic();
 

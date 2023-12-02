@@ -132,7 +132,6 @@ class PaymentController extends Controller
                 $redirect_type = 4;
             }
 
-
             return response()->json([
                 "message" => "success",
                 "id" => $redirect_type,
@@ -235,10 +234,6 @@ class PaymentController extends Controller
         $jscript = '
             $("#submitCheckout").slideUp("slow");
             $("#paymentContainer").html(\'<div class="form mb-2 mt-2"><strong>Please input your OVO number :</strong></div><div class="form-row mb-4 mt-2"><div class="col-xs-2"><input type="text" style="height:47px; width:50px;" class="form-control  disabled" value="+62" disabled></div><div class="col"><input id="ovoPhoneNumber" type="text" style="height:47px;" class="form-control" placeholder="85743112112"></div></div><div id=\"text-alert\" class=\"text-center mb-4 mt-2\"></div><button id="submit" onClick="createpaymentovo()" class="btn btn-lg btn-block btn-theme" style="height:47px"><strong>Click to pay with <img class="ml-2 mr-2" src="'.env("APP_ASSET_URL").'/img/payment/ovo-light.png" height="30" /></strong></button>\');
-
-            
-
-            
 
             function createpaymentovo()
             {
@@ -513,13 +508,10 @@ class PaymentController extends Controller
             $("#submitCheckout").slideUp("slow");
             $("#paymentContainer").html(\'<form id="payment-form"><div id="stripe-wallet" class="pt-2 pb-2 justify-content-center"><h2>Pay with</h2><div id="payment-request-button"></div><div class="mt-2 mb-2" style="width: 100%; height: 12px; border-bottom: 1px solid #D0D0D0; text-align: center"><span style="color: #D0D0D0; font-size: 12px; background-color: #FFFFFF; padding: 0 10px;">or pay with card</span></div></div><div class="form-control mt-2 mb-2" style="height:47px;" id="card-element"></div><div id="card-errors" role="alert"></div><button style="height:47px;" class="btn btn-lg btn-block btn-theme" id="submit"><strong>Pay with card</strong></button></form><div id=\"loader\" class=\"mb-4\"></div><div id=\"text-alert\" class=\"text-center\"></div>\');
 
-            
-
                  var stripe = Stripe(\''. env("STRIPE_PUBLISHABLE_KEY") .'\', {
                     apiVersion: "2020-08-27",
                  });
 
-                 
                  var paymentRequest = stripe.paymentRequest({
                     country: \'US\',
                     currency: \'usd\',
@@ -531,10 +523,8 @@ class PaymentController extends Controller
                     requestPayerEmail: true,
                  });
                  
-
                  var elements = stripe.elements();
 
-                 
                  var prButton = elements.create(\'paymentRequestButton\', {
                     paymentRequest: paymentRequest,
                  });
@@ -547,7 +537,6 @@ class PaymentController extends Controller
                     }
                  });
                  
-
                  var style = {
                     base: {
                         color: "#32325d",
@@ -564,7 +553,6 @@ class PaymentController extends Controller
                    
                     ev.preventDefault();
 
-                    
                     $("#alert-payment").slideUp("slow");
                     $("#submit").attr("disabled", true);
                     $("#submit").html(\' <i class="fa fa-spinner fa-spin fa-fw"></i>  processing... \');
@@ -590,8 +578,6 @@ class PaymentController extends Controller
                         }
                     }).then(function(result) {
 
-                       
-
                         if (result.error) {
 
                             $("#text-alert").hide();
@@ -608,8 +594,6 @@ class PaymentController extends Controller
                             
                             if (result.paymentIntent.status === \'succeeded\' || result.paymentIntent.status === \'requires_capture\') {
                                 
-                                    
-
                                 $.ajax({
                                 data: {
                                     "authorizationID": result.paymentIntent.id,
@@ -635,11 +619,6 @@ class PaymentController extends Controller
                                     
                                 });
 
-
-
-
-
-                                
                             }
                         }
                     });
@@ -681,8 +660,6 @@ class PaymentController extends Controller
                     }
 
                     e.complete("success");
-
-
 
                     if(paymentIntent.status == "requires_action")
                     {

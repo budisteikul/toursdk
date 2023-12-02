@@ -350,6 +350,7 @@ class PaymentController extends Controller
                             $("#loader").addClass("loader");
                             $("#text-alert").show();
                             $("#text-alert").prepend( "Please wait and do not close the browser or refresh the page" );
+                            
                             $.ajax({
                                 beforeSend: function(request) {
                                     request.setRequestHeader(\'sessionId\', \''. $shoppingcart->session_id .'\');

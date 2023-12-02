@@ -526,7 +526,12 @@ class ContentHelper {
             $active = '';
             if($i==0) $active = 'active';
 
-            $carouselInners .= '<div class="carousel-item '.$active.'"><img class="d-block w-100" src="'.ImageHelper::urlImageGoogle($image->public_id,600,400).'" alt="'.$product->name.'"  /></div>';
+            $carouselInners .= '
+            <div class="carousel-item '.$active.'">
+                <a href="'.ImageHelper::urlImageGoogle($image->public_id,600,400).'" data-fancybox="gallery">
+                    <img class="d-block w-100" src="'.ImageHelper::urlImageGoogle($image->public_id,600,400).'" alt="'.$product->name.'"  />
+                </a>
+            </div>';
 
             $carouselExampleIndicators .= '<li data-target="#carouselExampleIndicators" data-slide-to="'.$i.'"></li>';
 

@@ -49,12 +49,15 @@ class APIController extends Controller
         
         $jscripts = [];
 
+        $jscripts[] = [ env('APP_ASSET_URL') .'/js/jquery.fancybox.min.js',true];
+        
         if(in_array('xendit',$payment_array)) {
             $jscripts[] = ['https://js.xendit.co/v1/xendit.min.js',false];
             $jscripts[] = [ env('APP_ASSET_URL') .'/js/payform.min.js',true];
         }
         if(in_array('stripe',$payment_array)) $jscripts[] = ['https://js.stripe.com/v3/', true];
         if(in_array('paypal',$payment_array)) $jscripts[] = [$paypal_sdk, true];
+        
 
         $analytic = LogHelper::analytic();
 

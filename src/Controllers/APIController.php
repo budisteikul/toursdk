@@ -286,7 +286,7 @@ class APIController extends Controller
 
         $rate = $rating/$rate_count;
         if ( strpos( $rate, "." ) !== false ) {
-            $rate = number_format((float)$rate, 1, '.', '');
+            $rate = number_format((float)$rate, 2, '.', '');
         }
 
         return response()->json([

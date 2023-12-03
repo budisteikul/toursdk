@@ -103,10 +103,13 @@ class CallbackController extends Controller
         {
                 $shoppingcart_payment = ShoppingcartPayment::where('payment_provider','xendit')->where('order_id',$reference_id)->first();
                 if($shoppingcart_payment){
-                    PaymentHelper::confirm_payment($shoppingcart_payment->shoppingcart,"CONFIRMED");
-                    BookingHelper::shoppingcart_notif($shoppingcart_payment->shoppingcart);
-                    $shoppingcart_payment->authorization_id = $data['data']['id'];
-                    $shoppingcart_payment->save();
+                    if($data['data']['status']=="SUCCEEDED")
+                    {
+                        PaymentHelper::confirm_payment($shoppingcart_payment->shoppingcart,"CONFIRMED");
+                        BookingHelper::shoppingcart_notif($shoppingcart_payment->shoppingcart);
+                        $shoppingcart_payment->authorization_id = $data['data']['id'];
+                        $shoppingcart_payment->save();
+                    }
                 }
         }
         

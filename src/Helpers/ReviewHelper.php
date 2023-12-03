@@ -1,7 +1,26 @@
 <?php
 namespace budisteikul\toursdk\Helpers;
-
+use budisteikul\toursdk\Models\Review;
 class ReviewHelper {
+
+	public static function review_count()
+    {
+        $count = Review::count();
+        return $count;
+    }
+
+	public static function review_rate()
+    {
+        $rating = Review::sum('rating');
+        $count = Review::count();
+        if($count==0) $count = 1;
+
+        $rate = $rating/$count;
+        if ( strpos( $rate, "." ) !== false ) {
+            $rate = number_format((float)$rate, 2, '.', '');
+        }
+        return $rate;
+    }
 
 	public static function star($rating){
 			switch($rating)

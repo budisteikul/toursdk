@@ -538,7 +538,6 @@ class APIController extends Controller
     {
         $contents = BokunHelper::get_addshoppingcart($id,json_decode($request->getContent(), true));
 
-
         $sessionId = $id;
         
         $value = Cache::get('_'. $id, 'empty');
@@ -551,7 +550,6 @@ class APIController extends Controller
             BookingHelper::get_shoppingcart($sessionId,"update",$contents);
         }
 
-        
         FirebaseHelper::shoppingcart($sessionId);
 
         return response()->json($contents);
@@ -575,12 +573,9 @@ class APIController extends Controller
             return array();
         }
         
-
-
         $dataShoppingcart = ContentHelper::view_shoppingcart($shoppingcart);
         FirebaseHelper::shoppingcart($sessionId);
         
-
         return response()->json([
             'message' => 'success',
             'shoppingcarts' => $dataShoppingcart,
@@ -679,7 +674,6 @@ class APIController extends Controller
 
         BookingHelper::remove_promocode($sessionId);
         
-        
         FirebaseHelper::shoppingcart($sessionId);
 
         return response()->json([
@@ -695,209 +689,9 @@ class APIController extends Controller
         return response()->json($contents);
     }
 
-    /*
-    public function check_seat($date,$time)
-    {
-        $seat = 0;
-        $aaa = self::raillink(6);
-        
-        foreach($aaa as $bbb)
-        {
-            if($bbb['date']==$date)
-            {
-                if($bbb['departure']==$time)
-                {
-                    $seat = $bbb["seat"];
-                }
-                
-            }
-        }
-        
-        return $seat;
-    }
-
-    public function date_raillink($range=6)
-    {
-
-        for($i=0;$i<=$range;$i++)
-        {
-            $date = strtotime(date('Y-m-d'));
-            $date = strtotime("+".$i." day", $date);
-            $value[] = date('Y-m-d', $date);
-        }
-
-        return $value;
-    }
-
-    public function raillink($range)
-    {
-        $raillink = [];
-        for($i=0;$i<=$range;$i++)
-        {
-            $date = strtotime(date('Y-m-d'));
-            $date = strtotime("+".$i." day", $date);
-            $date = date('Y-m-d', $date);
-            
-            $aaa = self::check_raillink("YK","YIA",$date);
-            if($aaa!="")
-            {
-                $raillink[] = $aaa;
-            }
-
-            $aaa = self::check_raillink("YIA","YK",$date);
-            if($aaa!="")
-            {
-                $raillink[] = $aaa;
-            }
-
-        }
-        
-        $value = [];
-        foreach($raillink as $bbb)
-        {
-            foreach($bbb as $ccc)
-            {
-                $value[] = $ccc;
-            }
-        }
-        return $value;
-    }
-
-
-    public function check_raillink($org,$des,$date)
-    {
-        $token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoiSUJPT0siLCJjcmVhdGVkb24iOiIyMDE5LTExLTE0IDEzOjA4OjQ2In0.usU2bJ0H4RiDTaFnl7eaCsHgd07sVleaoSTTpF0glvg';
-        
-
-        $value = Cache::remember('_raillink_'. $org .'_'. $des .'_'. $date,7200, function() use ($org,$des,$date,$token)
-        {
-            $ch = curl_init();
-            
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER,true);
-            curl_setopt($ch, CURLOPT_URL, "https://reservation.railink.co.id:8001/api/service/artsmidapp/middleware/schedule/arts_getschedule?org=".$org."&des=".$des."&date=".$date);
-
-            $headerArray[] = "Token: ". $token;
-
-            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET"); 
-            curl_setopt($ch, CURLOPT_HTTPHEADER, $headerArray);
-            curl_setopt($ch,CURLOPT_SSL_VERIFYPEER, false);
-            curl_setopt($ch, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4 );
-
-            $response = curl_exec($ch);
-            
-            curl_close ($ch);
-            
-            return $response;
-        });
-
-        $response = json_decode($value);
-
-        $dataKa = null;
-        
-        if($response->status!=10)
-        {
-            foreach($response->response->availabilitydatalist as $a)
-            {
-                foreach($a->scheduleDatas as $b)
-                {
-                    $departure  = substr($b->stopdeparture,0,2) .":". substr($b->stopdeparture,-2);
-                    foreach($b->allocationDatas as $c)
-                    {
-                        $dataKa[] = array(
-                            'org' => $org,
-                            'des' => $des,
-                            'date' => $date,
-                            'departure' => $departure,
-                            'seat' => $c->seatavailable,
-                        );
-                    }
-                
-                }
-            }
-        }
-        
-        return $dataKa;
-    }
-    */
-    
     public function snippetscalendar($activityId,$year,$month)
     {
         $contents = BookingHelper::get_calendar($activityId,$year,$month);
-
-        // Railink
-        //=============================================================================
-        /*
-        if($activityId==10786) {
-        if(isset($contents->firstAvailableDay->fullDate)){
-        $date_raillink = self::date_raillink();
-        if (in_array($contents->firstAvailableDay->fullDate, $date_raillink))
-        { 
-                
-                $z = 0;
-                $totalseat = 0;
-                foreach($contents->firstAvailableDay->availabilities as $availability)
-                {
-                    $seat = self::check_seat($contents->firstAvailableDay->fullDate,$availability->data->startTime);
-
-                    
-                    $contents->firstAvailableDay->availabilities[$z]->data->startTimeLabel = $contents->firstAvailableDay->availabilities[$z]->data->startTimeLabel. ' (' . $seat .' Seat)';
-                    $contents->firstAvailableDay->availabilities[$z]->activityAvailability->startTimeLabel = $contents->firstAvailableDay->availabilities[$z]->activityAvailability->startTimeLabel. ' (' . $seat .' Seat)';
-
-                    if($seat<1)
-                    {
-                        unset($contents->firstAvailableDay->availabilities[$z]);
-                        
-                    }
-                    $z++;
-                    $totalseat = $totalseat + $seat;
-                }
-                if($totalseat==0) $contents->firstAvailableDay->available = false;
-
-                $contents->firstAvailableDay->availabilities = array_values($contents->firstAvailableDay->availabilities);
-        }
-
-        //=============================================================================
-        
-        foreach($contents->weeks as $week)
-        {
-            foreach($week->days as $day)
-            {
-                if (in_array($day->fullDate, $date_raillink))
-                {
-                    
-                    $z = 0;
-                    $totalseat = 0;
-                    foreach($day->availabilities as $availability)
-                    {
-
-                        $seat = self::check_seat($day->fullDate,$availability->data->startTime);
-
-                        $day->availabilities[$z]->data->startTimeLabel = $day->availabilities[$z]->data->startTimeLabel. ' (' . $seat .' Seat)';
-                        $day->availabilities[$z]->activityAvailability->startTimeLabel = $day->availabilities[$z]->activityAvailability->startTimeLabel. ' (' . $seat .' Seat)';
-
-                        if($seat<1)
-                        {
-                            unset($day->availabilities[$z]);
-                            
-                        }
-
-                        $z++;
-                        $totalseat = $totalseat + $seat;
-                    }
-                    if($totalseat==0) $day->available = false;
-
-                    $day->availabilities = array_values($day->availabilities);
-                }
-                else
-                {
-                    $day->available = false;
-                }
-            }
-        }}}
-        */
-        //=============================================================================
-        // Railink
-
         return response()->json($contents);
     }
 
@@ -912,43 +706,6 @@ class APIController extends Controller
 
             $availability = BookingHelper::get_firstAvailability($content->id,$calendar->year,$calendar->month);
             
-            // Railink
-            //=============================================================================
-            /*
-            if($product->bokun_id==10786) {
-
-                $date_raillink = self::date_raillink();
-                $mil = $availability[0]['date'];
-                $seconds = $mil / 1000;
-                $fullDate = date("Y-m-d", $seconds);
-
-                if (in_array($fullDate, $date_raillink))
-                {
-                    
-                    $z = 0;
-                    $totalseat = 0;
-                    foreach($availability[0]['availabilities'] as $aaa)
-                    {
-                        $seat = self::check_seat($fullDate,$aaa->startTime);
-                        $aaa->startTimeLabel = $aaa->startTimeLabel . ' (' . $seat .' Seat)';
-
-                        if($seat<1)
-                        {
-                            unset($availability[0]['availabilities'][$z]);
-                        }
-                        $z++;
-                        $totalseat = $totalseat + $seat;
-                    }
-                    
-                    if($totalseat==0) $availability[0]['available'] = false;
-
-                    $availability[0]['availabilities'] = array_values($availability[0]['availabilities']);
-                }
-            }
-            */
-            //=============================================================================
-            // Railink
-
             $microtime = $availability[0]['date'];
             $month = date("n",$microtime/1000);
             $year = date("Y",$microtime/1000);

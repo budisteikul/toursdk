@@ -256,7 +256,7 @@ class ContentHelper {
         //================================================
         
         $rate_text = '';
-        if($shoppingcart->currency!="USD") $rate_text = 'Charge in USD, '. BookingHelper::text_rate($shoppingcart,'USD');
+        if($shoppingcart->currency!="USD") $rate_text = 'Rate '. BookingHelper::text_rate($shoppingcart,'USD');
 
         $dataShoppingcart[] = array(
 
@@ -279,13 +279,13 @@ class ContentHelper {
                 //XENDIT 
                 'xendit_currency' => 'IDR',
                 'xendit_total' =>  GeneralHelper::numberFormat(BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'IDR'),'IDR'),
-                'xendit_rate' => 'Charge in IDR',
+                'xendit_rate' => '',
                 'xendit_label' => '
                 <div class="mb-2">
-                    <strong class="mb-2">Card Payments</strong>
+                    <strong class="mb-2">Charge in IDR</strong>
                 </div>
                 <div>
-                    <img src="'. env("APP_ASSET_URL") .'/img/payment/333.png" style="max-height:30px" class="img-fluid" alt="Payment Logo" />
+                    <img src="'. env("APP_ASSET_URL") .'/img/payment/xendit-card-payment.png" style="max-height:40px" class="img-fluid" alt="Payment Logo" />
                 </div>',
 
                 //QRIS
@@ -311,7 +311,7 @@ class ContentHelper {
                 'stripe_total' => GeneralHelper::numberFormat(BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'USD'),'USD'),
                 'stripe_rate' => $rate_text,
                 'stripe_label' => '
-                <strong class="mb-1">Card Payments 
+                <strong class="mb-1">Charge in USD 
                     <img class="ml-2" src="'. env("APP_ASSET_URL") .'/img/payment/stripe.png" height="20" alt="Card Payment" />
                 </strong>
                 <div class="ml-0 mb-1 mt-2">

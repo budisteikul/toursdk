@@ -271,6 +271,24 @@ class PaymentHelper {
         return '';
     }
 
+    public static function create_refund($shoppingcart)
+    {
+        if($shoppingcart->shoppingcart_payment->payment_provider=="xendit")
+        {
+            XenditHelper::create_refund($shoppingcart);
+        }
+
+        if($shoppingcart->shoppingcart_payment->payment_provider=="stripe")
+        {
+            StripeHelper::create_refund($shoppingcart);
+        }
+
+        if($shoppingcart->shoppingcart_payment->payment_provider=="paypal")
+        {
+            PaypalHelper::create_refund($shoppingcart);
+        }
+    }
+
     public static function create_payment($sessionId,$payment_provider="none",$bank="",$param1="")
     {
         $shoppingcart = Cache::get('_'. $sessionId);

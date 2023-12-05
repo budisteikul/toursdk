@@ -44,7 +44,7 @@ class StripeHelper {
 		return $response_json;
   	}
 
-    public function createRefund($shoppingcart)
+    public static  function createRefund($shoppingcart)
     {
         $amount = $shoppingcart->shoppingcart_payment->amount * 100;
         $id = $shoppingcart->shoppingcart_payment->authorization_id;

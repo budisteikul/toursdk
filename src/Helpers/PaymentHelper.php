@@ -160,6 +160,7 @@ class PaymentHelper {
                                 <span class="badge badge-danger invoice-color-danger" style="font-size:20px;"><i class="fa fa-info-circle" aria-hidden="true"></i>
  REFUNDED </span>
                                 '. $text .'
+                                
                                 </div>';
                 break;
                 case 4:

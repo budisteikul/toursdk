@@ -35,10 +35,7 @@ class APIController extends Controller
     
     public function __construct(Request $request)
     {
-        $this->currency = env("BOKUN_CURRENCY");
-        $this->lang = env("BOKUN_LANG");
-        $this->appAssetUrl = env("APP_ASSET_URL");
-        $this->referer = $request->header('referer');
+        
     }
 
     public function index_jscript(Request $request)
@@ -115,16 +112,16 @@ class APIController extends Controller
             'company' => $company,
             'footerTitle' => $footerTitle,
             'partners' => [
-                '<a target="_blank" rel="noreferrer noopener" href="https://www.getyourguide.com/yogyakarta-l349/yogyakarta-night-walking-and-food-tour-t429708"><img height="30" class="mb-1 mt-2 mr-2 img-thumbnail" src="'.$this->appAssetUrl.'/img/footer/getyourguide-logo.png"} alt="GetYourGuide" /></a>',
-                '<a target="_blank" rel="noreferrer noopener" href="https://www.airbnb.com/experiences/434368"><img height="30" class="mb-1 mt-2 mr-2 img-thumbnail" src="'.$this->appAssetUrl.'/img/footer/airbnb-logo.png"} alt="Airbnb" /></a>',
-                '<a target="_blank" rel="noreferrer noopener" href="https://www.tripadvisor.com/AttractionProductReview-g14782503-d15646790-Small_Group_Walking_and_Food_Tour_by_Night_in_Yogyakarta-Yogyakarta_Yogyakarta_R.html"><img height="30" class="mb-1 mt-2 mr-2 img-thumbnail" src="'.$this->appAssetUrl.'/img/footer/tripadvisor-logo.png"} alt="Tripadvisor" /></a>',
+                '<a target="_blank" rel="noreferrer noopener" href="https://www.getyourguide.com/yogyakarta-l349/yogyakarta-night-walking-and-food-tour-t429708"><img height="30" class="mb-1 mt-2 mr-2 img-thumbnail" src="'.env("APP_ASSET_URL").'/img/footer/getyourguide-logo.png"} alt="GetYourGuide" /></a>',
+                '<a target="_blank" rel="noreferrer noopener" href="https://www.airbnb.com/experiences/434368"><img height="30" class="mb-1 mt-2 mr-2 img-thumbnail" src="'.env("APP_ASSET_URL").'/img/footer/airbnb-logo.png"} alt="Airbnb" /></a>',
+                '<a target="_blank" rel="noreferrer noopener" href="https://www.tripadvisor.com/AttractionProductReview-g14782503-d15646790-Small_Group_Walking_and_Food_Tour_by_Night_in_Yogyakarta-Yogyakarta_Yogyakarta_R.html"><img height="30" class="mb-1 mt-2 mr-2 img-thumbnail" src="'.env("APP_ASSET_URL").'/img/footer/tripadvisor-logo.png"} alt="Tripadvisor" /></a>',
                 
                 
             ],
             'paymentChannels' => [
-                '<img height="30" class="mt-2" src="'.$this->appAssetUrl.'/img/footer/line-1.png" alt="Payment Channels" /><br />',
-                '<img height="30" class="mt-2" src="'.$this->appAssetUrl.'/img/footer/line-2.png" alt="Payment Channels" /><br />',
-                '<img height="30" class="mt-2" src="'.$this->appAssetUrl.'/img/footer/line-4.png" alt="Payment Channels" /><br />',
+                '<img height="30" class="mt-2" src="'.env("APP_ASSET_URL").'/img/footer/line-1.png" alt="Payment Channels" /><br />',
+                '<img height="30" class="mt-2" src="'.env("APP_ASSET_URL").'/img/footer/line-2.png" alt="Payment Channels" /><br />',
+                '<img height="30" class="mt-2" src="'.env("APP_ASSET_URL").'/img/footer/line-4.png" alt="Payment Channels" /><br />',
             ]
         ], 200);
     }
@@ -273,23 +270,15 @@ class APIController extends Controller
         ->toJson();
     }
 
-    
-
-    
-
-    
-    
     public function product_add(Request $request)
     {
         $data = json_decode($request->getContent(), true);
-        Cache::forget('_bokunProductById_'. $this->currency .'_'. $this->lang .'_'.$data);
+        Cache::forget('_bokunProductById_'. env("BOKUN_CURRENCY") .'_'. env("BOKUN_LANG") .'_'.$data);
         BokunHelper::get_product($data);
         return response()->json([
                 'message' => 'success'
             ], 200);
     }
-
-    
 
     public function downloadQrcode($sessionId,$id)
     {
@@ -332,7 +321,6 @@ class APIController extends Controller
         return $pdf->download('Ticket-'. $shoppingcart_product->product_confirmation_code .'.pdf');
     }
 
-    
     public function home()
     {
         //$dataObj = ContentHelper::view_categories();
@@ -345,7 +333,6 @@ class APIController extends Controller
         
     }
 
- 
     public function categories()
     {
         $dataObj = ContentHelper::view_categories();
@@ -391,8 +378,6 @@ class APIController extends Controller
         ], 200);
 
     }
-
-
 
     public function review_jscript()
     {
@@ -450,8 +435,6 @@ class APIController extends Controller
                 }
             });
             
-            
-
             table.on("page.dt", function(o){
                 var oldStart = 0;
                 if ( o._iDisplayStart != oldStart ) {
@@ -585,7 +568,7 @@ class APIController extends Controller
     public function product_remove(Request $request)
     {
         $data = json_decode($request->getContent(), true);
-        Cache::forget('_bokunProductById_'. $this->currency .'_'. $this->lang .'_'.$data);
+        Cache::forget('_bokunProductById_'. env("BOKUN_CURRENCY") .'_'. env("BOKUN_LANG") .'_'.$data);
 
         $sessionId = $data['sessionId'];
         
@@ -681,8 +664,6 @@ class APIController extends Controller
             ], 200);
     }
 
-    
-
     public function snippetsinvoice(Request $request)
     {
         $contents = BokunHelper::get_invoice(json_decode($request->getContent(), true));
@@ -712,26 +693,17 @@ class APIController extends Controller
 
             if($embedded=="") $embedded = "true";
 
-            
-
-            
             $jscript = ' 
             
-            
-
             window.priceFormatter = new WidgetUtils.PriceFormatter({
-                currency: \''. $this->currency .'\',
-                language: \''. $this->lang .'\',
+                currency: \''. env("BOKUN_CURRENCY") .'\',
+                language: \''. env("BOKUN_LANG") .'\',
                 decimalSeparator: \'.\',
                 groupingSeparator: \',\',
-                symbol: \''. $this->currency .' \'
+                symbol: \''. env("BOKUN_CURRENCY") .' \'
             });
 
-            
-
-            window.i18nLang = \''. $this->lang .'\';
-
-            
+            window.i18nLang = \''. env("BOKUN_LANG") .'\';
 
             try { 
                 $("#titleProduct").append(\''. $product->name .'\');
@@ -744,8 +716,8 @@ class APIController extends Controller
             }
 
             window.ActivityBookingWidgetConfig = {
-                currency: \''. $this->currency .'\',
-                language: \''. $this->lang .'\',
+                currency: \''. env("BOKUN_CURRENCY") .'\',
+                language: \''. env("BOKUN_LANG") .'\',
                 embedded: '.$embedded.',
                 priceFormatter: window.priceFormatter,
                 invoicePreviewUrl: \''.url('/api').'/activity/invoice-preview\',
@@ -798,7 +770,6 @@ class APIController extends Controller
                 window.reloadJscript();
             }
             
-
             ';   
         }
         else
@@ -857,18 +828,6 @@ class APIController extends Controller
             ], 200);
     }
     
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
     public function checkout_jscript()
     {
         $jscript = '
@@ -922,7 +881,7 @@ class APIController extends Controller
                     $(\'#alert-payment\').fadeIn("slow");
                     $("#ovoPhoneNumber").attr("disabled", false);
                     $("#submit").attr("disabled", false);
-                    $("#submit").html(\' <strong>Click to pay with <img class="ml-2 mr-2" src="'.$this->appAssetUrl.'/img/payment/ovo-light.png" height="30" /></strong> \');
+                    $("#submit").html(\' <strong>Click to pay with <img class="ml-2 mr-2" src="'.env("APP_ASSET_URL").'/img/payment/ovo-light.png" height="30" /></strong> \');
                 }
             }
 
@@ -1038,10 +997,4 @@ class APIController extends Controller
         return response($jscript)->header('Content-Type', 'application/javascript');
     }
 
-    
-
-    
-
-    
-    
 }

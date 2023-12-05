@@ -6,8 +6,13 @@ class SettingHelper {
 
     public static function getSetting($name)
     {
+        $value = '';
         $setting = Setting::where('name',$name)->first();
-        return $setting->value;
+        if($setting)
+        {
+            return $setting->value;
+        }
+        return $value;
     }
 
     

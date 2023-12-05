@@ -157,7 +157,7 @@ class PaymentHelper {
                 case 5:
                     return '
                                 <div class="card mb-4">
-                                <span class="badge badge-danger invoice-color-danger" style="font-size:20px;"><i class="fa fa-info-circle" aria-hidden="true"></i>
+                                <span class="badge badge-danger invoice-color-danger" style="font-size:20px;"><i class="fas fa-sync-alt"></i>
  REFUNDED </span>
                                 '. $text .'
                                 

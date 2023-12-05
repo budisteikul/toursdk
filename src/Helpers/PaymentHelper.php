@@ -275,17 +275,17 @@ class PaymentHelper {
     {
         if($shoppingcart->shoppingcart_payment->payment_provider=="xendit")
         {
-            XenditHelper::create_refund($shoppingcart);
+            XenditHelper::createRefund($shoppingcart);
         }
 
         if($shoppingcart->shoppingcart_payment->payment_provider=="stripe")
         {
-            StripeHelper::create_refund($shoppingcart);
+            StripeHelper::createRefund($shoppingcart);
         }
 
         if($shoppingcart->shoppingcart_payment->payment_provider=="paypal")
         {
-            PaypalHelper::create_refund($shoppingcart);
+            PaypalHelper::createRefund($shoppingcart);
         }
     }
 

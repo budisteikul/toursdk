@@ -95,7 +95,7 @@ class PaypalHelper {
 
 
 
-	public static  function createRefund($shoppingcart)
+	public function createRefund($shoppingcart)
 	{
 		$value = $shoppingcart->shoppingcart_payment->amount;
 		$currency = $shoppingcart->shoppingcart_payment->currency;

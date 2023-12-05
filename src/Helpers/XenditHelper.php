@@ -191,7 +191,7 @@ class XenditHelper {
         return json_decode($this->POST('/credit_card_charges',$data));
     }
 
-    public static function createRefund($shoppingcart)
+    public function createRefund($shoppingcart)
     {
         $payment_type = $shoppingcart->shoppingcart_payment->payment_type;
         $amount = $shoppingcart->shoppingcart_payment->amount;

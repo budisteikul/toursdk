@@ -157,7 +157,7 @@ class PaymentHelper {
                 case 5:
                     return '
                                 <div class="card mb-4">
-                                <span class="badge badge-warning invoice-color-warning" style="font-size:20px;"><i class="fa fa-info-circle" aria-hidden="true"></i>
+                                <span class="badge badge-danger invoice-color-danger" style="font-size:20px;"><i class="fa fa-info-circle" aria-hidden="true"></i>
  REFUNDED </span>
                                 '. $text .'
                                 </div>';
@@ -273,19 +273,23 @@ class PaymentHelper {
 
     public static function create_refund($shoppingcart)
     {
+        
         if($shoppingcart->shoppingcart_payment->payment_provider=="xendit")
         {
-            XenditHelper::createRefund($shoppingcart);
+            $payment = new XenditHelper;
+            $payment->createRefund($shoppingcart);
         }
 
         if($shoppingcart->shoppingcart_payment->payment_provider=="stripe")
         {
-            StripeHelper::createRefund($shoppingcart);
+            $payment = new StripeHelper;
+            $payment->createRefund($shoppingcart);
         }
 
         if($shoppingcart->shoppingcart_payment->payment_provider=="paypal")
         {
-            PaypalHelper::createRefund($shoppingcart);
+            $payment = new PaypalHelper;
+            $payment->createRefund($shoppingcart);
         }
     }
 

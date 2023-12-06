@@ -457,7 +457,7 @@ class PaymentHelper {
                     $rate_from = $shoppingcart->currency;
                     $rate_to = 'IDR';
 
-                    $data->transaction->order_id = $param1;
+                    $data->transaction->authorization_id = $param1;
                     $data->transaction->amount = $amount;
                     $data->transaction->currency = $currency;
 

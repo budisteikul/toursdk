@@ -139,7 +139,7 @@ class XenditHelper {
         {
             $amount = $data->transaction->amount;
             //$amount = 10059;
-            $token_id = $data->transaction->order_id;
+            $token_id = $data->transaction->authorization_id;
 
             $data_json = new \stdClass();
             $status_json = new \stdClass();

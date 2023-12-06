@@ -406,6 +406,7 @@ class ContentHelper {
             'pdf_url' => $how_to_pay,
             'how_to_pay' => $how_to_pay,
             'due_date' => $due_date,
+            'header' => 'Thank you for your booking with <strong>'.env("APP_NAME").'</strong>.',
             'refund' => ''
         );
 

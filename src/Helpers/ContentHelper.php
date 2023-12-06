@@ -518,7 +518,6 @@ class ContentHelper {
         
         $content = BokunHelper::get_product($product->bokun_id);
 
-        
         $i = 0;
         $carouselExampleIndicators = '';
         $carouselInners = '';
@@ -655,6 +654,11 @@ class ContentHelper {
             }
         }
        
+        $cancellationPolicy = '';
+        if($content->cancellationPolicy->policyType=="FULL_REFUND")
+        {
+            $cancellationPolicy = '<h3>Cancellation Policy</h3><strong>Fully refundable</strong> (Bookings are fully refundable up to the time of the event)';
+        }
 
         $dataObj[] = array(
                 'id' => $product->id,
@@ -672,6 +676,7 @@ class ContentHelper {
                 'pickupPlaces' => $dataObj3,
                 'productCategory' => $productCategory,
                 'guidanceTypes' => $dataObj4,
+                'cancellationPolicy' => $cancellationPolicy,
                 'agendaItems' => $dataObj5,
                 'promotion' => $data_voucher,
                 'images' => $image,

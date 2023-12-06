@@ -285,7 +285,7 @@ class ContentHelper {
                     <strong class="mb-2">Charge in IDR</strong>
                 </div>
                 <div>
-                    <img src="'. env("APP_ASSET_URL") .'/img/payment/xendit-card-payment.png" style="max-height:40px" class="img-fluid" alt="Payment Logo" />
+                    <img src="'. env("APP_ASSET_URL") .'/img/payment/xendit-card-payment.png" style="max-height:35px" class="img-fluid" alt="Payment Logo" />
                 </div>',
 
                 //QRIS
@@ -315,7 +315,7 @@ class ContentHelper {
                     <img class="ml-2" src="'. env("APP_ASSET_URL") .'/img/payment/stripe.png" height="20" alt="Card Payment" />
                 </strong>
                 <div class="ml-0 mb-1 mt-2">
-                    <img src="'. env("APP_ASSET_URL") .'/img/payment/card-payment.png" style="max-height:40px" class="img-fluid" alt="Payment Logo" />
+                    <img src="'. env("APP_ASSET_URL") .'/img/payment/card-payment.png" style="max-height:35px" class="img-fluid" alt="Payment Logo" />
                 </div>',
 
                 

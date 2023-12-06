@@ -657,7 +657,11 @@ class ContentHelper {
         $cancellationPolicy = '';
         if($content->cancellationPolicy->policyType=="FULL_REFUND")
         {
-            $cancellationPolicy = '<h3>Cancellation Policy</h3><strong>Fully refundable</strong> (Bookings are fully refundable up to the time of the event)';
+            $cancellationPolicy = '
+            <div class="mb-4">
+                <h3 class="mb-3">Cancellation Policy</h3>
+                <li>Bookings are fully refundable up to the time of the event</li>
+            </div>';
         }
 
         $dataObj[] = array(

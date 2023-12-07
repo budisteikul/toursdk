@@ -26,4 +26,9 @@ class Shoppingcart extends Model
         return $this->hasOne(ShoppingcartPayment::class,'shoppingcart_id','id');
     }
 
+    public function shoppingcart_cancellation()
+    {
+        return $this->hasOne(ShoppingcartCancellation::class,'shoppingcart_id','id');
+    }
+
 }

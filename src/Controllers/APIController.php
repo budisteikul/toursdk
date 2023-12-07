@@ -120,7 +120,6 @@ class APIController extends Controller
             ],
             'paymentChannels' => [
                 '<img height="30" class="mt-2" src="'.env("APP_ASSET_URL").'/img/footer/line-1.png" alt="Payment Channels" /><br />',
-                '<img height="30" class="mt-2" src="'.env("APP_ASSET_URL").'/img/footer/line-2.png" alt="Payment Channels" /><br />',
                 '<img height="30" class="mt-2" src="'.env("APP_ASSET_URL").'/img/footer/line-4.png" alt="Payment Channels" /><br />',
             ]
         ], 200);

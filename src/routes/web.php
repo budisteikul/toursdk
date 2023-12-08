@@ -56,6 +56,9 @@
 	Route::get('/api/receipt/jscript', 'budisteikul\toursdk\Controllers\APIController@receipt_jscript');
 	Route::get('/api/receipt/{sessionId}/{confirmationCode}', 'budisteikul\toursdk\Controllers\APIController@receipt');
 
+	//Cancellation
+	Route::post('/api/cancel/{sessionId}/{confirmationCode}', 'budisteikul\toursdk\Controllers\APIController@cancellation');
+
 	//Callback Payment
 	Route::post('/api/payment/stripe/confirm', 'budisteikul\toursdk\Controllers\CallbackController@confirmpaymentstripe');
 	Route::post('/api/payment/paypal/confirm', 'budisteikul\toursdk\Controllers\CallbackController@confirmpaymentpaypal');

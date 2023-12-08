@@ -20,6 +20,7 @@ use budisteikul\toursdk\Models\Channel;
 use budisteikul\toursdk\Models\Page;
 use budisteikul\toursdk\Models\Shoppingcart;
 use budisteikul\toursdk\Models\ShoppingcartProduct;
+use budisteikul\toursdk\Models\ShoppingcartCancellation;
 
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
@@ -36,6 +37,19 @@ class APIController extends Controller
     public function __construct(Request $request)
     {
         
+    }
+
+    public function cancellation($sessionId,$confirmationCode)
+    {
+        $shoppingcart = Shoppingcart::where('session_id',$sessionId)->where('confirmation_code',$confirmationCode)->first();
+        if($shoppingcart)
+        {
+            $shoppingcart_cancellation = new ShoppingcartCancellation();
+            $shoppingcart_cancellation->status = 1;
+            $shoppingcart_cancellation->shoppingcart_id = $shoppingcart->id;
+            $shoppingcart_cancellation->amount = 100;
+            $shoppingcart_cancellation->save();
+        }
     }
 
     public function index_jscript(Request $request)

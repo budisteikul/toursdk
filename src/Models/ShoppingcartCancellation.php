@@ -5,7 +5,7 @@ namespace budisteikul\toursdk\Models;
 use Illuminate\Database\Eloquent\Model;
 use budisteikul\toursdk\Helpers\FirebaseHelper;
 
-class ShoppingcartPayment extends Model
+class ShoppingcartCancellation extends Model
 {
     protected $table = 'shoppingcart_cancellations';
 	protected $keyType = 'string';

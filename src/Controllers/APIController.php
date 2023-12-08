@@ -44,11 +44,15 @@ class APIController extends Controller
         $shoppingcart = Shoppingcart::where('session_id',$sessionId)->where('confirmation_code',$confirmationCode)->first();
         if($shoppingcart)
         {
-            $shoppingcart_cancellation = new ShoppingcartCancellation();
-            $shoppingcart_cancellation->status = 1;
-            $shoppingcart_cancellation->shoppingcart_id = $shoppingcart->id;
-            $shoppingcart_cancellation->amount = 100;
-            $shoppingcart_cancellation->save();
+            $check = ShoppingcartCancellation::where('shoppingcart_id', $shoppingcart->id)->first();
+            if(!$check)
+            {
+                $shoppingcart_cancellation = new ShoppingcartCancellation();
+                $shoppingcart_cancellation->status = 1;
+                $shoppingcart_cancellation->shoppingcart_id = $shoppingcart->id;
+                $shoppingcart_cancellation->amount = 100;
+                $shoppingcart_cancellation->save();
+            }
         }
     }
 

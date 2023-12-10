@@ -21,8 +21,6 @@ class WebhookController extends Controller
     {
         if($webhook_app=="wise")
         {
-            
-
             $is_test = $request->header('X-Test-Notification');
             if($is_test)
             {

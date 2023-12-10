@@ -14,7 +14,7 @@ class WiseHelper {
     	$this->tw = new \stdClass();
     	$this->tw->profileId = env("WISE_PROFILE_ID");
     	$this->tw->api_key = env("WISE_TOKEN");
-        $this->tw->wise_id = env("WISE_ID");
+        $this->tw->bankId = env("WISE_BANK_ID");
         
     	if(env("WISE_ENV")=="production")
         {
@@ -143,8 +143,10 @@ class WiseHelper {
 
     public function postCreateTransfer($quoteId,$customerTransactionId=null,$targetAccount=null,$reference=null){
         $data = new \stdClass();
-        if($targetAccount==null) $targetAccount = $this->tw->wise_id;
+        
+        if($targetAccount==null) $targetAccount = $this->tw->bankId;
         $data->targetAccount = $targetAccount;
+
         $data->quoteUuid     = $quoteId;
 
         $data->customerTransactionId    = Uuid::uuid4()->toString();

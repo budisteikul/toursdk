@@ -12,10 +12,7 @@ use Illuminate\Support\Facades\Mail;
 use budisteikul\toursdk\Mail\BookingConfirmedMail;
 
 use budisteikul\toursdk\Helpers\ProductHelper;
-use budisteikul\toursdk\Helpers\ContentHelper;
 use budisteikul\toursdk\Helpers\BookingHelper;
-use budisteikul\toursdk\Models\Recipient;
-use budisteikul\toursdk\Models\Transfer;
 
 class TaskController extends Controller
 {
@@ -44,42 +41,7 @@ class TaskController extends Controller
                 $fund = $tw->postFundTransfer($transferwise->id);
                 
                 return response('OK', 200)->header('Content-Type', 'text/plain');
-                
-                
-                /*
-                ====================================================================================
-                if($data->currency!='USD')
-                {
-                    return response('OK', 200)->header('Content-Type', 'text/plain');
-                }
 
-                
-                $transfer = Transfer::where('usd',$data->amount)->where('status',0)->orderBy('created_at','ASC')->first();
-                if($transfer)
-                {
-                    $tw = new WiseHelper();
-                    $quote = $tw->postCreateQuote(null,'USD',$transfer->idr,'IDR');
-                    if(isset($quote->error))
-                    {
-                        return response('ERROR', 200)->header('Content-Type', 'text/plain');
-                    }
-                    
-
-                    $transferwise = $tw->postCreateTransfer($quote->id,$data->customerTransactionId,$transfer->wise_id);
-                    $transfer->transaction_id = $transferwise->id;
-                    $transfer->status = 1;
-                    $transfer->save();
-
-                    if(isset($transferwise->error))
-                    {
-                        return response('ERROR', 200)->header('Content-Type', 'text/plain');
-                    }
-
-                    $fund = $tw->postFundTransfer($transferwise->id);
-                }
-                
-                */
-                
             }
             return response('ERROR', 200)->header('Content-Type', 'text/plain');
         }

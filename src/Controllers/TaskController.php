@@ -30,7 +30,11 @@ class TaskController extends Controller
         {
             if($data->token==env('WISE_TOKEN'))
             {
-                
+                if($data->profileId!=env('WISE_PROFILE_ID'))
+                {
+                    return response('OK', 200)->header('Content-Type', 'text/plain');
+                }
+
                 $tw = new WiseHelper();
                 $quote = $tw->postCreateQuote($data->amount,$data->currency,null,'IDR',$data->profileId);
                 if(isset($quote->error))

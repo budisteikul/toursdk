@@ -1469,8 +1469,8 @@ class BookingHelper {
 		
 		$group_shoppingcart_products = ShoppingcartProduct::with('shoppingcart')
 		->whereHas('shoppingcart', function($query) {
-                 //$query->where('booking_status','CONFIRMED');
-			    $query->where('booking_channel','WEBSITE')->orWhere('booking_channel','AIRBNB');
+                $query->where('booking_status','CONFIRMED');
+			    //$query->where('booking_channel','WEBSITE')->orWhere('booking_channel','AIRBNB');
             })
 		->where('product_id',$activityId)->whereYear('date','=',$year)->whereMonth('date','=',$month)->whereDate('date', '>=', Carbon::now())->groupBy(['date'])->select('date')->get();
 
@@ -1480,8 +1480,8 @@ class BookingHelper {
             $people = ShoppingcartProductDetail::with('shoppingcart_product')
             ->WhereHas('shoppingcart_product', function($query) use ($date,$activityId) {
             	$query->whereDate('date','=',$date)->where(['product_id'=>$activityId])->WhereHas('shoppingcart', function($query) {
-              		//return $query->where('booking_status','CONFIRMED');
-              		return $query->where('booking_channel','WEBSITE')->orWhere('booking_channel','AIRBNB');
+              		return $query->where('booking_status','CONFIRMED');
+              		//return $query->where('booking_channel','WEBSITE')->orWhere('booking_channel','AIRBNB');
             	});
             })->get()->sum('people');
 

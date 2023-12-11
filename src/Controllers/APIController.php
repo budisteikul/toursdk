@@ -58,7 +58,7 @@ class APIController extends Controller
 
     public function index_jscript(Request $request)
     {
-        $paypal_sdk = 'https://www.paypal.com/sdk/js?client-id='.env("PAYPAL_CLIENT_ID").'&currency='. env("PAYPAL_CURRENCY").'';
+        $paypal_sdk = 'https://www.paypal.com/sdk/js?client-id='.env("PAYPAL_CLIENT_ID").'&currency='. env("PAYPAL_CURRENCY").'&disable-funding=credit,card';
         
         $payment_enable = SettingHelper::getSetting('payment_enable');
         $payment_array = explode(",",$payment_enable);

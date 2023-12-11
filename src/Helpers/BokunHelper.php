@@ -3,7 +3,7 @@ namespace budisteikul\toursdk\Helpers;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Cache;
 use GuzzleHttp\Cookie\CookieJar;
-
+use budisteikul\toursdk\Helpers\SettingHelper;
 
 class BokunHelper {
 
@@ -14,7 +14,7 @@ class BokunHelper {
     }
     public static function env_bokunCurrency()
     {
-   		return env("BOKUN_CURRENCY");
+   		return SettingHelper::getSetting('currency_default');
     }
     public static function env_bokunLang()
     {
@@ -33,54 +33,6 @@ class BokunHelper {
    		return env("BOKUN_SECRET_KEY");
     }
 
-    public static function cookie_test()
-    {
-    	//https://vertikaltrip.bokuntest.com/bookings/activity-json?id=7424&lang=en
-    }
-
-    public static function get_cookie()
-    {
-    	
-		$subdomain = 'vertikaltrip';
-    	$cookieJar = Cache::remember('_bokunCookie3_'. $subdomain ,7776000, function() 
-		{
-			$subdomain = 'vertikaltrip';
-			$headers = [
-                'content-type' => 'application/json',
-            ];
-
-        	$client = new \GuzzleHttp\Client(['cookies' => true, 'headers' => $headers,'http_errors' => false]);
-        	$response = $client->request('POST','https://'.$subdomain.'.bokuntest.com/extranet/login',
-            [   
-                'timeout' => 30,
-                'form_params' => [
-                    'email' => env('BOKUN_EMAIL'),
-                    'password' => env('BOKUN_PASSWORD'),
-                    'mfaCode' => null,
-                    'from' => null
-                ]
-            ]);
-
-            
-        	$cookieJar = $client->getConfig('cookies');
-        	return $cookieJar;
-		});
-
-    	$sessionid = $cookieJar->getCookieByName('PLAY_SESSION')->getValue();
-    	
-    	$headers = [
-                'content-type' => 'application/json',
-                'X-Bokun-Currency' => 'IDR',
-                'X-Bokun-Productlang' => 'en',
-                'cookie' => 'PLAY_SESSION=eyJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7InVzZXJuYW1lIjoiZ3VpZGVAdmVydGlrYWx0cmlwLmNvbSIsImJva3VuLWNvbnRleHQiOiJFWFRSQU5FVCIsInZlbmRvcklkIjoiMTEwNyIsImNvdW50ZXIiOiIxNTgiLCJzYWx0IjoiJDJhJDEwJDBGWmI4TVJVcVZvMmlqcTRxRS43bmUifSwiZXhwIjoxNjc4MDkwMDc4LCJuYmYiOjE2NzAzMTQwNzgsImlhdCI6MTY3MDMxNDA3OH0.tu5zStxj1vtg_RYn1Qy75miYVacgCSbexSvUSzZvVhA'
-            ];
-
-		$client = new \GuzzleHttp\Client(['headers' => $headers]);
-    	$response = $client->request('GET', 'https://'.$subdomain.'.bokuntest.com/bookings/activity-json?id=7424&lang=en');
-		$contents = $response->getBody()->getContents();
-		return $contents;
-		
-    }
 
     public static function bokunAPI_connect($path, $method = 'GET', $data = "")
     {

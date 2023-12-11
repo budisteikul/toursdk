@@ -36,7 +36,7 @@ class APIController extends Controller
     
     public function __construct(Request $request)
     {
-        
+        $this->currency_default = SettingHelper::getSetting('currency_default');
     }
 
     public function cancellation($sessionId,$confirmationCode)
@@ -290,7 +290,7 @@ class APIController extends Controller
     public function product_add(Request $request)
     {
         $data = json_decode($request->getContent(), true);
-        Cache::forget('_bokunProductById_'. env("BOKUN_CURRENCY") .'_'. env("BOKUN_LANG") .'_'.$data);
+        Cache::forget('_bokunProductById_'. $this->currency_default .'_'. env("BOKUN_LANG") .'_'.$data);
         BokunHelper::get_product($data);
         return response()->json([
                 'message' => 'success'
@@ -585,7 +585,7 @@ class APIController extends Controller
     public function product_remove(Request $request)
     {
         $data = json_decode($request->getContent(), true);
-        Cache::forget('_bokunProductById_'. env("BOKUN_CURRENCY") .'_'. env("BOKUN_LANG") .'_'.$data);
+        Cache::forget('_bokunProductById_'. $this->currency_default .'_'. env("BOKUN_LANG") .'_'.$data);
 
         $sessionId = $data['sessionId'];
         
@@ -713,11 +713,11 @@ class APIController extends Controller
             $jscript = ' 
             
             window.priceFormatter = new WidgetUtils.PriceFormatter({
-                currency: \''. env("BOKUN_CURRENCY") .'\',
+                currency: \''. $this->currency_default .'\',
                 language: \''. env("BOKUN_LANG") .'\',
                 decimalSeparator: \'.\',
                 groupingSeparator: \',\',
-                symbol: \''. env("BOKUN_CURRENCY") .' \'
+                symbol: \''. $this->currency_default .' \'
             });
 
             window.i18nLang = \''. env("BOKUN_LANG") .'\';
@@ -733,7 +733,7 @@ class APIController extends Controller
             }
 
             window.ActivityBookingWidgetConfig = {
-                currency: \''. env("BOKUN_CURRENCY") .'\',
+                currency: \''. $this->currency_default .'\',
                 language: \''. env("BOKUN_LANG") .'\',
                 embedded: '.$embedded.',
                 priceFormatter: window.priceFormatter,

@@ -311,7 +311,7 @@ class ContentHelper {
                 'stripe_total' => GeneralHelper::numberFormat(BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'USD'),'USD'),
                 'stripe_rate' => $rate_text,
                 'stripe_label' => '
-                <strong class="mb-1">Charge in USD 
+                <strong class="mb-1">Card Payments 
                     <img class="ml-2" src="'. env("APP_ASSET_URL") .'/img/payment/stripe.png" height="20" alt="Card Payment" />
                 </strong>
                 <div class="ml-0 mb-1 mt-2">

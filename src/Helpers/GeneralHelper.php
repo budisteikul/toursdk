@@ -4,9 +4,9 @@ use budisteikul\toursdk\Helpers\SettingHelper;
 
 class GeneralHelper {
 
-    public static function currency_default()
+    public static function currency()
     {
-        return SettingHelper::getSetting('currency_default');
+        return SettingHelper::getSetting('currency');
     }
 
     public static function get_string_between($string, $start, $end){
@@ -76,7 +76,7 @@ class GeneralHelper {
 
     public static function numberFormat($exp,$currency="")
     {
-        if($currency=="") $currency = self::currency_default();
+        if($currency=="") $currency = self::currency();
 
         if($currency=="IDR")
         {

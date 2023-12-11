@@ -14,7 +14,7 @@ class BokunHelper {
     }
     public static function env_bokunCurrency()
     {
-   		return SettingHelper::getSetting('currency_default');
+   		return SettingHelper::getSetting('currency');
     }
     public static function env_bokunLang()
     {

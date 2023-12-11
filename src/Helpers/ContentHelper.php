@@ -279,10 +279,10 @@ class ContentHelper {
                 //XENDIT 
                 'xendit_currency' => 'IDR',
                 'xendit_total' =>  GeneralHelper::numberFormat(BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'IDR'),'IDR'),
-                'xendit_rate' => '',
+                'xendit_rate' => 'Charge in IDR',
                 'xendit_label' => '
                 <div class="mb-2">
-                    <strong class="mb-2">Charge in IDR</strong>
+                    <strong class="mb-2">Card Payments</strong>
                 </div>
                 <div>
                     <img src="'. env("APP_ASSET_URL") .'/img/payment/xendit-card-payment.png" style="max-height:35px" class="img-fluid" alt="Payment Logo" />

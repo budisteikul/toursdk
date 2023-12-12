@@ -35,9 +35,8 @@ class XenditHelper {
             $data->transaction->mins_expired = 30;
             $data->transaction->date_expired = Carbon::parse($data->transaction->date_now)->addMinutes($data->transaction->mins_expired);
 
-            $amount = round($data->transaction->amount);
             $success_redirect_url = self::env_appUrl().$data->transaction->finish_url;
-            $data1 = (new self)->createEWalletDanaCharge($amount,$success_redirect_url);
+            $data1 = (new self)->createEWalletDanaCharge($data->transaction->amount,$success_redirect_url);
             
             if(isset($data1->error_code))
             {
@@ -61,9 +60,8 @@ class XenditHelper {
             $data->transaction->mins_expired = 30;
             $data->transaction->date_expired = Carbon::parse($data->transaction->date_now)->addMinutes($data->transaction->mins_expired);
 
-            $amount = round($data->transaction->amount);
             $expired_at = GeneralHelper::dateFormat($data->transaction->date_expired,12);
-            $data1 = (new self)->createQrcode($amount,$expired_at);
+            $data1 = (new self)->createQrcode($data->transaction->amount,$expired_at);
 
             if(isset($data1->error_code))
             {
@@ -86,12 +84,11 @@ class XenditHelper {
             $data->transaction->mins_expired = 30;
             $data->transaction->date_expired = Carbon::parse($data->transaction->date_now)->addMinutes($data->transaction->mins_expired);
 
-            $amount = round($data->transaction->amount);
             $expired_at = GeneralHelper::dateFormat($data->transaction->date_expired,12);
             $name = $data->contact->name;
             $bank_code = 'SAHABAT_SAMPOERNA';
 
-            $data1 = (new self)->createVirtualAccount($bank_code,$amount,$name,$expired_at);
+            $data1 = (new self)->createVirtualAccount($bank_code,$data->transaction->amount,$name,$expired_at);
 
             if(isset($data1->error_code))
             {
@@ -112,9 +109,7 @@ class XenditHelper {
         if($data->transaction->bank=="invoice")
         {
             
-            $amount = round($data->transaction->amount);
-
-            $data1 = (new self)->createInvoice($amount);
+            $data1 = (new self)->createInvoice($data->transaction->amount);
 
             if(isset($data1->error_code))
             {
@@ -123,7 +118,6 @@ class XenditHelper {
             }
             else
             {
-                $data_json->payment_type = 'bank_redirect';
                 $data_json->redirect = $data1->invoice_url;
                 $data_json->authorization_id = $data1->id;
                 $data_json->order_id = $data1->external_id;
@@ -137,15 +131,11 @@ class XenditHelper {
 
         if($data->transaction->bank=="card")
         {
-            $amount = $data->transaction->amount;
-            //$amount = 10059;
-            $token_id = $data->transaction->authorization_id;
-
             $data_json = new \stdClass();
             $status_json = new \stdClass();
             $response_json = new \stdClass();
       
-            $data1 = (new self)->createChargeCard($token_id,$amount);
+            $data1 = (new self)->createChargeCard($data->transaction->authorization_id,$data->transaction->amount);
             LogHelper::log($data1,'xendit');
 
             if($data1->status=="CAPTURED")

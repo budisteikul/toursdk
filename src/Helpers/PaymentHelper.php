@@ -121,10 +121,11 @@ class PaymentHelper {
                 
             }
 
+
             $text = '';
             if($shoppingcart->shoppingcart_payment->rate_from!=$shoppingcart->shoppingcart_payment->rate_to)
             {
-                $text .= '<b>Total :</b> '.$shoppingcart->shoppingcart_payment->currency.' '. $shoppingcart->shoppingcart_payment->amount .'<br />';
+                $text .= '<b>Total :</b> '.$shoppingcart->shoppingcart_payment->currency.' '. GeneralHelper::numberFormat($shoppingcart->shoppingcart_payment->amount,$shoppingcart->shoppingcart_payment->currency) .'<br />';
                 $text .= '<b>Rate :</b> '. BookingHelper::get_rate($shoppingcart) .'<br />';
                 $text = '<div class="card-body bg-light">'. $text .'</div>';
             }
@@ -388,16 +389,21 @@ class PaymentHelper {
         switch($payment_provider)
         {
             case "xendit":
-                $amount = BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'IDR');
+
+                $payment_provider = 'xendit';
                 $currency = 'IDR';
+
+                $amount = BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,$currency);
                 $rate = number_format((float)$shoppingcart->due_now / $amount, 2, '.', '');
+                $rate_from = $shoppingcart->currency;
+                $rate_to = $currency;
                 
-                $data->transaction->amount = $amount;
+                $data->transaction->authorization_id = $param1;
+                $data->transaction->amount = round($amount);
                 $data->transaction->currency = $currency;
 
                 if($data->transaction->bank == 'ovo')
                 {
-                    $payment_provider = 'xendit';
                     $payment_type = 'ewallet';
                     $bank_name = 'ovo';
                     $payment_status = 2;
@@ -409,60 +415,40 @@ class PaymentHelper {
                 
                 if($data->transaction->bank == 'dana')
                 {
-                    $payment_provider = 'xendit';
                     $payment_type = 'ewallet';
                     $bank_name = 'dana';
                     $payment_status = 4;
-
                     $response = XenditHelper::createPayment($data);
                 }
 
                 if($data->transaction->bank == 'bss')
                 {
-                    $payment_provider = 'xendit';
                     $payment_type = 'bank_transfer';
                     $bank_name = 'Bank Sahabat Sampoerna';
                     $bank_code = '523';
                     $payment_status = 4;
-
                     $response = XenditHelper::createPayment($data);
                 }
 
                 if($data->transaction->bank == 'qris')
                 {
-                    $payment_provider = 'xendit';
                     $payment_type = 'qrcode';
                     $bank_name = 'qris';
                     $payment_status = 4;
-
-
                     $response = XenditHelper::createPayment($data);
                 }
 
                 if($data->transaction->bank == 'invoice')
                 {
-                    $payment_provider = 'xendit';
+                    $payment_type = 'bank_redirect';
                     $payment_status = 4;
-
                     $response = XenditHelper::createPayment($data);
                 }
 
                 if($data->transaction->bank == 'card')
                 {
-                    $payment_provider = 'xendit';
                     $payment_type = 'card';
-                    $amount = BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'IDR');
-                    $currency = 'IDR';
-                    $rate = number_format((float)$shoppingcart->due_now / $amount, 2, '.', '');
-                    $rate_from = $shoppingcart->currency;
-                    $rate_to = 'IDR';
-
-                    $data->transaction->authorization_id = $param1;
-                    $data->transaction->amount = $amount;
-                    $data->transaction->currency = $currency;
-
                     $payment_status = 0;
-
                     $response = XenditHelper::createPayment($data);
                 }
 
@@ -471,11 +457,12 @@ class PaymentHelper {
             break;
             case "paypal":
                 $payment_provider = 'paypal';
-                $amount = BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,env("PAYPAL_CURRENCY"));
                 $currency = env("PAYPAL_CURRENCY");
+
+                $amount = BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,$currency);
                 $rate = number_format((float)$shoppingcart->due_now / $amount, 2, '.', '');
                 $rate_from = $shoppingcart->currency;
-                $rate_to = env("PAYPAL_CURRENCY");
+                $rate_to = $currency;
 
                 $data->transaction->amount = $amount;
                 $data->transaction->currency = $currency;
@@ -487,11 +474,12 @@ class PaymentHelper {
             break;
             case "stripe":
                 $payment_provider = 'stripe';
-                $amount = BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'USD');
                 $currency = 'USD';
+
+                $amount = BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,$currency);
                 $rate = number_format((float)$shoppingcart->due_now / $amount, 2, '.', '');
                 $rate_from = $shoppingcart->currency;
-                $rate_to = 'USD';
+                $rate_to = $currency;
 
                 $data->transaction->amount = $amount;
                 $data->transaction->currency = $currency;

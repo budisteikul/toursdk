@@ -1862,7 +1862,7 @@ class BookingHelper {
 	public static function text_rate($shoppingcart,$currency)
 	{
 			$value = '';
-			$check = self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'USD');
+			$check = self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,$currency);
 			if($check>0)
 			{
 				$value = $shoppingcart->due_now / $check;
@@ -1878,7 +1878,7 @@ class BookingHelper {
 
 	public static function get_rate($shoppingcart)
 	{
-		$amount = number_format((float)$shoppingcart->shoppingcart_payment->rate, 2);
+		$amount = $shoppingcart->due_now / $shoppingcart->shoppingcart_payment->amount;
 		$value = '1 '. $shoppingcart->shoppingcart_payment->rate_to .' = '. $amount .' '. $shoppingcart->shoppingcart_payment->rate_from;
 		return $value;
 	}
@@ -1889,10 +1889,21 @@ class BookingHelper {
 		$rate_usd_reserve = BokunHelper::get_currency($to);
 		
 		$rate = $rate_usd / $rate_usd_reserve;
-
 		$value = ($amount * $rate);
 
 		$value = number_format((float)$value, 2, '.', '');
+
+		//agar IDR tidak receh
+		if($to=="IDR" && $from!="IDR")
+		{
+			$value=ceil($value);
+			if (substr($value,-3)>499){
+				$value=round($value,-3);
+			} else {
+				$value=round($value,-3)+1000;
+			} 
+            $value = number_format((float)$value, 2, '.', '');
+		}
 
 		return $value;
 	}

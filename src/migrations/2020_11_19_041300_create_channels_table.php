@@ -16,6 +16,8 @@ class CreateChannelsTable extends Migration
         Schema::create('channels', function (Blueprint $table) {
             $table->id();
 			$table->string('name')->nullable();
+            $table->string('company')->nullable();
+            $table->longText('address')->nullable();
             $table->timestamps(6);
         });
     }

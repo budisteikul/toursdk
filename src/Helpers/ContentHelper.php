@@ -282,7 +282,7 @@ class ContentHelper {
                 'xendit_rate' => 'Charge in IDR',
                 'xendit_label' => '
                 <div class="mb-2">
-                    <strong class="mb-2">Card Payments</strong>
+                    <strong class="mb-2">Local Card Payments</strong>
                 </div>
                 <div>
                     <img src="'. env("APP_ASSET_URL") .'/img/payment/xendit-card-payment.png" style="max-height:35px" class="img-fluid" alt="Payment Logo" />

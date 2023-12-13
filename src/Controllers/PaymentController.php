@@ -756,9 +756,9 @@ class PaymentController extends Controller
             paypal.Buttons({
                 style: {
                     layout: "horizontal",
-                    color: "silver",
+                    color: "gold",
                     label: "pay",
-                    tagline: true
+                    tagline: false
                 },
                 createOrder: function() {
                     return fetch(\''. url('/api') .'/payment/paypal\', {

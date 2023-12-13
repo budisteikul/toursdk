@@ -109,8 +109,13 @@ class PaymentHelper {
                     
                     case 2:
                         return '<div class="card mb-4">
-                            <span class="badge badge-success invoice-color-success" style="font-size:20px;"><i class="fa fa-check-circle" aria-hidden="true"></i> INVOICED</span>
-                            </div>';
+                                <span class="badge badge-success invoice-color-success" style="font-size:20px;"><i class="fa fa-check-circle" aria-hidden="true"></i> PAID </span>
+                                </div>';
+                    case 4:
+                        return '<div class="card mb-4">
+                                <span class="badge badge-info invoice-color-info" style="font-size:20px; ">
+                                Waiting for payment</span>
+                                </div>';
                     default:
                         return '<div class="card mb-4">
                             <span class="badge badge-danger invoice-color-danger" style="font-size:20px;"><i class="fa fa-times-circle" aria-hidden="true"></i>

@@ -9,7 +9,7 @@ class Channel extends Model
     protected $table = 'channels';
 	protected $keyType = 'string';
     protected $dateFormat = 'Y-m-d H:i:s.u';
-    protected $fillable = ['name'];
+    protected $fillable = ['name','description'];
 
     public function reviews()
     {

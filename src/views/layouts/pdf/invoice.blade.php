@@ -2,6 +2,7 @@
 @inject('BookingHelper', 'budisteikul\toursdk\Helpers\BookingHelper')
 @inject('SettingHelper', 'budisteikul\toursdk\Helpers\SettingHelper')
 @inject('PaymentHelper', 'budisteikul\toursdk\Helpers\PaymentHelper')
+@inject('ChannelHelper', 'budisteikul\toursdk\Helpers\ChannelHelper')
 
 <!DOCTYPE html>
 <html lang="en">
@@ -206,6 +207,11 @@ footer {
   font-weight: bold;
 }
 
+.description p
+{
+   margin-top: 5px;
+   font-size:16px;
+}
 </style>
 </head>
 <body>
@@ -246,7 +252,7 @@ footer {
           <div class="email" style=" line-height: 18px; font-size:14px;">{{ $main_contact->email }}</div>
           @else
           
-          <h2 class="name" style=" line-height: 18px; font-size:16px;">{{ $shoppingcart->booking_channel }}</h2>
+          <div class="description">{!! $ChannelHelper->getDescription($shoppingcart->booking_channel);  !!}</div>
           
           @endif
 
@@ -364,8 +370,10 @@ footer {
 </div>
 @endif
 
-
-
+@if($shoppingcart->shoppingcart_payment->payment_provider=="none")
+<strong>Transfer ke Bank BCA (Bank Central Asia)</strong><br />
+<strong>1690423860 a.n VERTIKAL TRIP INDONESIA</strong><br />
+@endif
 <div style="clear: both;"></div>
 <footer>
 	Invoice was created on a computer and is valid without the signature and seal.

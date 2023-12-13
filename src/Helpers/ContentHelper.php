@@ -326,13 +326,14 @@ class ContentHelper {
 
 	public static function view_receipt($shoppingcart)
 	{
-		$invoice = 'Invoiced to '.$shoppingcart->booking_channel;
+		$invoice = '';
+        //$invoice = 'Invoiced to :<br />'. ChannelHelper::getDescription($shoppingcart->booking_channel);
         try {
-            if($shoppingcart->booking_channel=="WEBSITE") {
+            //if($shoppingcart->booking_channel=="WEBSITE") {
                 if($shoppingcart->shoppingcart_payment->payment_status>0) {
                     $invoice = '<a target="_blank" class="text-theme" href="'.url('/api').'/pdf/invoice/'. $shoppingcart->session_id .'/Invoice-'. $shoppingcart->confirmation_code .'.pdf"><i class="fas fa-file-invoice"></i> Invoice-'. $shoppingcart->confirmation_code .'.pdf</a><br />';
                 }
-            }
+            //}
         } catch (Exception $e) {
 
         }

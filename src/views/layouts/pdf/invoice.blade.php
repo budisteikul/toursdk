@@ -371,12 +371,13 @@ footer {
 @endif
 
 @if($shoppingcart->shoppingcart_payment->payment_provider=="none")
-<strong>Transfer ke Bank BCA (Bank Central Asia)</strong><br />
-<strong>1690423860 a.n VERTIKAL TRIP INDONESIA</strong><br />
+<strong>Bank : </strong>Bank BCA (Bank Central Asia)<br />
+<strong>Account Name : </strong>VERTIKAL TRIP INDONESIA<br />
+<strong>Account Number : </strong>1690423860<br />
 @endif
 <div style="clear: both;"></div>
 <footer>
-	Invoice was created on a computer and is valid without the signature and seal.
+	Invoice was generated on a server and is valid without the signature and seal. Scan qrcode to validation.
 </footer>
 </body>
 </html>

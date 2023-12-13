@@ -4,10 +4,11 @@ use budisteikul\toursdk\Models\Channel;
 
 class ChannelHelper {
 
-    public static function getDescription($name)
+    public static function getDescription($shoppingcart)
     {
-        $channel = Channel::where('name',$name)->first();
-        $description = $channel->description;
+        $description = $shoppingcart->booking_channel;
+        $channel = Channel::where('name',$shoppingcart->booking_channel)->first();
+        if($channel) $description = $channel->description;
         if($description=="") $description = $channel->name;
         return $description;
     }

@@ -252,7 +252,7 @@ footer {
           <div class="email" style=" line-height: 18px; font-size:14px;">{{ $main_contact->email }}</div>
           @else
           
-          <div class="description">{!! $ChannelHelper->getDescription($shoppingcart->booking_channel);  !!}</div>
+          <div class="description">{!! $ChannelHelper->getDescription($shoppingcart);  !!}</div>
           
           @endif
 

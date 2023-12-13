@@ -327,7 +327,6 @@ class ContentHelper {
 	public static function view_receipt($shoppingcart)
 	{
 		$invoice = '';
-        //$invoice = 'Invoiced to :<br />'. ChannelHelper::getDescription($shoppingcart->booking_channel);
         try {
             //if($shoppingcart->booking_channel=="WEBSITE") {
                 if($shoppingcart->shoppingcart_payment->payment_status>0) {

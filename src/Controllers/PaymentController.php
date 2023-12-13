@@ -751,16 +751,15 @@ class PaymentController extends Controller
         jQuery(document).ready(function($) {
 
             $("#submitCheckout").slideUp("slow");  
-            $("#paymentContainer").html(\'<div id="proses"><h2 class="mt-0">Pay with</h2><div id="paypal-button-container"></div></div><div id=\"loader\" class=\"mb-4\"></div><div id=\"text-alert\" class=\"text-center\"></div>\');
+            $("#paymentContainer").html(\'<div id="proses"><div id="paypal-button-container"></div></div><div id=\"loader\" class=\"mb-4\"></div><div id=\"text-alert\" class=\"text-center\"></div>\');
            
             paypal.Buttons({
                 style: {
-                    layout:  \'horizontal\',
-                    color:   \'gold\',
-                    label: \'paypal\',
-                    tagline:   true
-                    }
-                },{
+                    layout: "horizontal",
+                    color: "silver",
+                    label: "pay",
+                    tagline: true
+                },
                 createOrder: function() {
                     return fetch(\''. url('/api') .'/payment/paypal\', {
                         method: \'POST\',

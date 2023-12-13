@@ -371,7 +371,9 @@ footer {
 @endif
 
 @if($shoppingcart->shoppingcart_payment->payment_provider=="none")
-<strong>Bank : </strong>Bank BCA (Bank Central Asia)<br />
+<h2 style="margin-bottom:3px;">Payment Details</h2>
+<strong>Bank : </strong>BCA (Bank Central Asia)<br />
+<strong>Bank Swift : </strong>CENAIDJA<br />
 <strong>Account Name : </strong>VERTIKAL TRIP INDONESIA<br />
 <strong>Account Number : </strong>1690423860<br />
 @endif

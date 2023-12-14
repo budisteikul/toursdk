@@ -63,7 +63,7 @@ class APIController extends Controller
         $payment_enable = SettingHelper::getSetting('payment_enable');
         $payment_array = explode(",",$payment_enable);
         
-        $jscripts = [];
+        $jscripts[] = [ env('APP_ASSET_URL') .'/js/widget-utils.js',false];
 
         if(in_array('xendit',$payment_array)) {
             $jscripts[] = ['https://js.xendit.co/v1/xendit.min.js',false];
@@ -213,7 +213,7 @@ class APIController extends Controller
     {
         $jscript = '
         jQuery(document).ready(function($) {
-            $.fn.dataTable.ext.errMode = \'none\';  
+            $.fn.dataTableExt.sErrMode = \'throw\';
             var table = $("#dataTables-example").DataTable(
             {
                 "processing": true,

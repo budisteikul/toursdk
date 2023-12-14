@@ -1,6 +1,7 @@
 <?php
 namespace budisteikul\toursdk\Helpers;
 use budisteikul\toursdk\Models\Setting;
+use Illuminate\Support\Facades\Cache;
 
 class SettingHelper {
 

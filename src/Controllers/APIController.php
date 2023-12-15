@@ -84,12 +84,14 @@ class APIController extends Controller
 
     public function navbar($sessionId)
     {
+        
         $categories = Category::where('parent_id',0)->get();
         $json_ld = self::json_ld();
         return response()->json([
             'message' => 'success',
             'json_ld' => $json_ld,
             'categories' => $categories,
+            'url' => GeneralHelper::url()
         ], 200);
     }
 

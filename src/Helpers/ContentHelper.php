@@ -255,8 +255,10 @@ class ContentHelper {
 
         //================================================
         
-        $rate_text = '';
-        if($shoppingcart->currency!="USD") $rate_text = 'Rate '. BookingHelper::text_rate($shoppingcart,'USD');
+        $usd_rate_text = '';
+        $idr_rate_text = '';
+        if($shoppingcart->currency!="USD") $usd_rate_text = 'Rate '. BookingHelper::text_rate($shoppingcart,'USD');
+        if($shoppingcart->currency!="IDR") $idr_rate_text = 'Rate '. BookingHelper::text_rate($shoppingcart,'IDR');
 
         $dataShoppingcart[] = array(
 
@@ -279,19 +281,19 @@ class ContentHelper {
                 //XENDIT 
                 'xendit_currency' => 'IDR',
                 'xendit_total' =>  GeneralHelper::numberFormat(BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'IDR'),'IDR'),
-                'xendit_rate' => 'Charge in IDR',
+                'xendit_rate' => '',
                 'xendit_label' => '
-                <div class="mb-2">
-                    <strong class="mb-2">Local Card Payments</strong>
-                </div>
-                <div>
+                <strong class="mb-1">Card Payments 
+                    <img class="ml-2" src="'. env("APP_ASSET_URL") .'/img/payment/powered-by-xendit.png" height="24" alt="Card Payment" />
+                </strong>
+                <div class="ml-0 mb-1 mt-2">
                     <img src="'. env("APP_ASSET_URL") .'/img/payment/xendit-card-payment.png" style="max-height:35px" class="img-fluid" alt="Payment Logo" />
                 </div>',
 
                 //QRIS
                 'qris_currency' => 'IDR',
                 'qris_total' =>  GeneralHelper::numberFormat(BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'IDR'),'IDR'),
-                'qris_rate' => '',
+                'qris_rate' => $idr_rate_text,
                 'qris_label' => '
                 <div class="mb-2">
                     <strong>Scan to Pay</strong>
@@ -303,13 +305,13 @@ class ContentHelper {
                 //PAYPAL
                 'paypal_currency' => env("PAYPAL_CURRENCY"),
                 'paypal_total' => GeneralHelper::numberFormat(BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,env("PAYPAL_CURRENCY")),'USD'),
-                'paypal_rate' => $rate_text,
+                'paypal_rate' => $usd_rate_text,
                 'paypal_label' => '<strong class="mb-1"><img src="'. env("APP_ASSET_URL") .'/img/payment/paypal.png" height="25" alt="Paypal" /></strong>',
 
                 //STRIPE
                 'stripe_currency' => 'USD',
                 'stripe_total' => GeneralHelper::numberFormat(BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'USD'),'USD'),
-                'stripe_rate' => $rate_text,
+                'stripe_rate' => $usd_rate_text,
                 'stripe_label' => '
                 <strong class="mb-1">Card Payments 
                     <img class="ml-2" src="'. env("APP_ASSET_URL") .'/img/payment/stripe.png" height="20" alt="Card Payment" />

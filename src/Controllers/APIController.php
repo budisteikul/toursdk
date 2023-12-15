@@ -90,7 +90,6 @@ class APIController extends Controller
             'message' => 'success',
             'json_ld' => $json_ld,
             'categories' => $categories,
-            
         ], 200);
     }
 
@@ -194,7 +193,7 @@ class APIController extends Controller
             },
             "offers": {
                 "@type": "Offer",
-                "url": "'.env("APP_URL").'/tour/yogyakarta-night-walking-and-food-tours",
+                "url": "'.GeneralHelper::url().'/tour/yogyakarta-night-walking-and-food-tours",
                 "priceCurrency": "IDR",
                 "price": "575000",
                 "priceValidUntil": "2023-12-31",

@@ -743,6 +743,7 @@ class BookingHelper {
 			'due_on_arrival' => $grand_due_on_arrival,
 			'products' => $ShoppingcartProducts,
 			'questions' => $ShoppingcartQuestions,
+			'url' => GeneralHelper::url()
 		];
 		
 		Cache::add('_'. $id, $ShoppingCart, 172800);
@@ -1162,7 +1163,7 @@ class BookingHelper {
 		}
 
 		$shoppingcart->questions = $ShoppingcartQuestions;
-		
+		$shoppingcart->url = GeneralHelper::url();
 		//===========================================
 		Cache::forget('_'. $id);
 		Cache::add('_'. $id, $shoppingcart, 172800);
@@ -1581,6 +1582,7 @@ class BookingHelper {
 		$shoppingcart->total = $shoppingcart_json->total;
 		$shoppingcart->due_now = $shoppingcart_json->due_now;
 		$shoppingcart->due_on_arrival = $shoppingcart_json->due_on_arrival;
+		$shoppingcart->url = $shoppingcart_json->url;
 		$shoppingcart->save();
 
 		foreach($shoppingcart_json->products as $product)
@@ -2042,7 +2044,7 @@ class BookingHelper {
 	public static function create_invoice_pdf($shoppingcart)
 	{
 		$path = env("APP_ASSET_URL") .'/img/pdf/qrcode-logo.png';
-		$qrcode = base64_encode(QrCode::errorCorrection('H')->format('png')->merge($path,.5,false)->size(1024)->margin(0)->generate(env("APP_URL") .'/booking/receipt/'.$shoppingcart->session_id.'/'.$shoppingcart->confirmation_code  ));
+		$qrcode = base64_encode(QrCode::errorCorrection('H')->format('png')->merge($path,.5,false)->size(1024)->margin(0)->generate($shoppingcart->url .'/booking/receipt/'.$shoppingcart->session_id.'/'.$shoppingcart->confirmation_code  ));
         $pdf = PDF::setOptions(['tempDir' =>  storage_path(),'fontDir' => storage_path(),'fontCache' => storage_path(),'isRemoteEnabled' => true])->loadView('toursdk::layouts.pdf.invoice', compact('shoppingcart','qrcode'))->setPaper('a4', 'portrait');
         return $pdf;
 	}
@@ -2058,7 +2060,7 @@ class BookingHelper {
 	{
 		$customPaper = array(0,0,300,540);
 		$path = env("APP_ASSET_URL") .'/img/pdf/qrcode-logo.png';
-        $qrcode = base64_encode(QrCode::errorCorrection('H')->format('png')->merge($path,.5,false)->size(1024)->margin(0)->generate(env("APP_URL") .'/booking/receipt/'.$shoppingcart_product->shoppingcart->session_id.'/'.$shoppingcart_product->shoppingcart->confirmation_code  ));
+        $qrcode = base64_encode(QrCode::errorCorrection('H')->format('png')->merge($path,.5,false)->size(1024)->margin(0)->generate($shoppingcart_product->shoppingcart->url .'/booking/receipt/'.$shoppingcart_product->shoppingcart->session_id.'/'.$shoppingcart_product->shoppingcart->confirmation_code  ));
         $pdf = PDF::setOptions(['tempDir' => storage_path(),'fontDir' => storage_path(),'fontCache' => storage_path(),'isRemoteEnabled' => true])->loadView('toursdk::layouts.pdf.ticket', compact('shoppingcart_product','qrcode'))->setPaper($customPaper);
         return $pdf;
 	}

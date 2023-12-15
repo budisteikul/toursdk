@@ -21,6 +21,7 @@ return new class extends Migration
                     ->references('id')->on('shoppingcarts')
                     ->onDelete('cascade')->onUpdate('cascade');
             $table->float('amount',24,2)->default(0);
+            $table->longText('reason')->nullable();
             $table->tinyText('status')->default(0);
             $table->timestamps(6);
         });

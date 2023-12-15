@@ -33,6 +33,9 @@ class CreateShoppingcartsTable extends Migration
 
             $table->float('due_now',24,2)->default(0);
             $table->float('due_on_arrival',24,2)->default(0);
+
+            $table->string('url')->nullable();
+            $table->string('referer')->nullable();
             
             $table->timestamps(6);
         });

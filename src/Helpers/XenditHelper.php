@@ -17,11 +17,6 @@ class XenditHelper {
         $this->xendit->endpoint = 'https://api.xendit.co';
     }
 
-    public static function env_appUrl()
-    {
-        return env("APP_URL");
-    }
-
     public static function createPayment($data)
     {
         $data_json = new \stdClass();
@@ -35,7 +30,7 @@ class XenditHelper {
             $data->transaction->mins_expired = 30;
             $data->transaction->date_expired = Carbon::parse($data->transaction->date_now)->addMinutes($data->transaction->mins_expired);
 
-            $success_redirect_url = self::env_appUrl().$data->transaction->finish_url;
+            $success_redirect_url = $data->transaction->finish_url_full;
             $data1 = (new self)->createEWalletDanaCharge($data->transaction->amount,$success_redirect_url);
             
             if(isset($data1->error_code))
@@ -121,8 +116,8 @@ class XenditHelper {
                 $data_json->redirect = $data1->invoice_url;
                 $data_json->authorization_id = $data1->id;
                 $data_json->order_id = $data1->external_id;
-                $data_json->success_redirect_url = self::env_appUrl() . $data->transaction->finish_url;
-                $data_json->failure_redirect_url = self::env_appUrl() . $data->transaction->finish_url;
+                $data_json->success_redirect_url = $data->transaction->finish_url_full;
+                $data_json->failure_redirect_url = $data->transaction->finish_url_full;
 
                 $status_json->id = '1';
                 $status_json->message = 'success';

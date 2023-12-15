@@ -137,5 +137,10 @@ class GeneralHelper {
         return $value;
     }
 
+    public static function url()
+    {
+        return rtrim(request()->headers->get('referer'), "/");
+    }
+
 }
 ?>

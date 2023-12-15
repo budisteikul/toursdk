@@ -360,6 +360,7 @@ class PaymentHelper {
         $transaction->date_expired = $date_expired;
         $transaction->date_now = $date_now;
         $transaction->finish_url = $redirect;
+        $transaction->finish_url_full = $shoppingcart->url . $redirect;
 
         //============================================
         $products = array();

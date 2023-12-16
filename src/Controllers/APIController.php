@@ -78,7 +78,8 @@ class APIController extends Controller
         return response()->json([
             'message' => 'success',
             'jscripts' => $jscripts,
-            'analytic' => $analytic
+            'analytic' => $analytic,
+            'assets' => env('APP_ASSET_URL')
         ], 200);
     }
 

@@ -79,6 +79,7 @@ class APIController extends Controller
             'message' => 'success',
             'jscripts' => $jscripts,
             'analytic' => $analytic,
+            'assets' => env('APP_ASSET_URL')
         ], 200);
     }
 

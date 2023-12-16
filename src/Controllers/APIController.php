@@ -63,7 +63,8 @@ class APIController extends Controller
         $payment_enable = SettingHelper::getSetting('payment_enable');
         $payment_array = explode(",",$payment_enable);
         
-        $jscripts[] = [ env('APP_ASSET_URL') .'/js/widget-utils.js',false];
+        //$jscripts[] = [ env('APP_ASSET_URL') .'/js/widget-utils.js',false];
+        //$jscripts[] = '';
 
         if(in_array('xendit',$payment_array)) {
             $jscripts[] = ['https://js.xendit.co/v1/xendit.min.js',false];
@@ -714,6 +715,50 @@ class APIController extends Controller
 
             $jscript = ' 
             
+            var WidgetUtils = this.WidgetUtils = {};
+
+    WidgetUtils.PriceFormatter = function(attributes) {
+        $.extend(this, {
+            currency: \''. $this->currency .'\',
+            language: \''. env("BOKUN_LANG") .'\',
+            decimalSeparator: \'.\',
+            groupingSeparator: \',\',
+            symbol: \''. $this->currency .' \'
+        }, attributes);
+
+        var instance = this;
+
+        this.setCurrency = function(currency, symbol) {
+            this.currency = currency;
+            this.symbol = symbol;
+        };
+
+        this.format = function(amt) {
+            if ( amt != null ) {
+                return amt.toString().replace(/\B(?=(\d{3})+(?!\d))/g, instance.groupingSeparator);
+            } else {
+                return \'-\';
+            }
+        };
+
+        this.symbolAndFormat = function(amt) {
+            return (instance.symbol.length > 1 ? instance.symbol + " " : instance.symbol) + instance.format(amt);
+        };
+
+        this.formatHtml = function(amt) {
+            return \'<span class="price"><span class="symbol">\' + (instance.symbol.length > 1 ? instance.symbol + " " : instance.symbol) + \'</span><span class="amount">\' + instance.format(amt) + \'</span></span>\';
+        };
+
+        this.formatHtmlSimple = function(amt) {
+            return \'<span class="symbol">\' + (instance.symbol.length > 1 ? instance.symbol + " " : instance.symbol) + \'</span><span class="amount">\' + instance.format(amt) + \'</span>\';
+        };
+
+        this.formatHtmlStrikeThrough = function(amt) {
+            return \'<span style="font-size: 14px">\' + (instance.symbol.length > 1 ? instance.symbol + " " : instance.symbol) + \'</span><span style="font-size: 14px">\' + instance.format(amt) + \'</span>\';
+        }
+
+    };
+
             window.priceFormatter = new WidgetUtils.PriceFormatter({
                 currency: \''. $this->currency .'\',
                 language: \''. env("BOKUN_LANG") .'\',

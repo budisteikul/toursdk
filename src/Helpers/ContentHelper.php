@@ -2,7 +2,7 @@
 namespace budisteikul\toursdk\Helpers;
 use Illuminate\Http\Request;
 
-use budisteikul\toursdk\Helpers\SettingHelper;
+
 use budisteikul\toursdk\Helpers\BokunHelper;
 use budisteikul\toursdk\Helpers\ImageHelper;
 use budisteikul\toursdk\Helpers\ProductHelper;
@@ -250,9 +250,9 @@ class ContentHelper {
         $promo_code = $shoppingcart->promo_code;
         if($promo_code=="") $promo_code = null;
         
-        $payment_enable = SettingHelper::getSetting('payment_enable');
-        $payment_default = SettingHelper::getSetting('payment_default');
-        $assets = SettingHelper::getSetting('assets');
+        $payment_enable = config('site.payment_enable');
+        $payment_default = config('site.payment_default');
+        
         
         //================================================
         
@@ -285,10 +285,10 @@ class ContentHelper {
                 'xendit_rate' => '',
                 'xendit_label' => '
                 <strong class="mb-1">Card Payments 
-                    <img class="ml-2" src="'. $assets .'/img/payment/powered-by-xendit.png" height="24" alt="Card Payment" />
+                    <img class="ml-2" src="'. config('site.assets') .'/img/payment/powered-by-xendit.png" height="24" alt="Card Payment" />
                 </strong>
                 <div class="ml-0 mb-1 mt-2">
-                    <img src="'. $assets .'/img/payment/xendit-card-payment.png" style="max-height:35px" class="img-fluid" alt="Payment Logo" />
+                    <img src="'. config('site.assets') .'/img/payment/xendit-card-payment.png" style="max-height:35px" class="img-fluid" alt="Payment Logo" />
                 </div>',
 
                 //QRIS
@@ -300,14 +300,14 @@ class ContentHelper {
                     <strong>Scan to Pay</strong>
                 </div>
                 <div>
-                    <img src="'. $assets .'/img/payment/QRIS_logo.png" style="max-height:30px" class="img-fluid" alt="Payment Logo" />
+                    <img src="'. config('site.assets') .'/img/payment/QRIS_logo.png" style="max-height:30px" class="img-fluid" alt="Payment Logo" />
                 </div>',
 
                 //PAYPAL
                 'paypal_currency' => env("PAYPAL_CURRENCY"),
                 'paypal_total' => GeneralHelper::numberFormat(BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,env("PAYPAL_CURRENCY")),'USD'),
                 'paypal_rate' => $usd_rate_text,
-                'paypal_label' => '<strong class="mb-1"><img src="'. $assets .'/img/payment/paypal.png" height="25" alt="Paypal" /></strong>',
+                'paypal_label' => '<strong class="mb-1"><img src="'. config('site.assets') .'/img/payment/paypal.png" height="25" alt="Paypal" /></strong>',
 
                 //STRIPE
                 'stripe_currency' => 'USD',
@@ -315,10 +315,10 @@ class ContentHelper {
                 'stripe_rate' => $usd_rate_text,
                 'stripe_label' => '
                 <strong class="mb-1">Card Payments 
-                    <img class="ml-2" src="'. $assets .'/img/payment/stripe.png" height="20" alt="Card Payment" />
+                    <img class="ml-2" src="'. config('site.assets') .'/img/payment/stripe.png" height="20" alt="Card Payment" />
                 </strong>
                 <div class="ml-0 mb-1 mt-2">
-                    <img src="'. $assets .'/img/payment/card-payment.png" style="max-height:35px" class="img-fluid" alt="Payment Logo" />
+                    <img src="'. config('site.assets') .'/img/payment/card-payment.png" style="max-height:35px" class="img-fluid" alt="Payment Logo" />
                 </div>',
 
                 
@@ -363,7 +363,7 @@ class ContentHelper {
                     <div class="pl-2">
                     1.  Open your <b>E-wallet</b> or <b>Mobile Banking</b> apps. <br />
                     2.  <b>Scan</b> the QR code shown on your monitor. <br />
-                    <img width="230" class="mt-2 mb-2" src="'. $assets .'/img/payment/qr-instruction.png">
+                    <img width="230" class="mt-2 mb-2" src="'. config('site.assets') .'/img/payment/qr-instruction.png">
                     <br />
                     3.  Check your payment details in the app, then tap <b>Pay</b>. <br />
                     4.  Enter your <b>PIN</b>. <br />

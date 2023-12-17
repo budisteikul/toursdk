@@ -1,13 +1,10 @@
 <?php
 namespace budisteikul\toursdk\Helpers;
-use budisteikul\toursdk\Helpers\SettingHelper;
+
 
 class GeneralHelper {
 
-    public static function currency()
-    {
-        return SettingHelper::getSetting('currency');
-    }
+    
 
     public static function get_string_between($string, $start, $end){
         $string = ' ' . $string;
@@ -76,7 +73,7 @@ class GeneralHelper {
 
     public static function numberFormat($exp,$currency="")
     {
-        if($currency=="") $currency = self::currency();
+        if($currency=="") $currency = config('site.currency');
 
         if($currency=="IDR")
         {

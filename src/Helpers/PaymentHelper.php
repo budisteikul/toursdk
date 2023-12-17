@@ -6,7 +6,6 @@ use budisteikul\toursdk\Helpers\XenditHelper;
 use budisteikul\toursdk\Helpers\StripeHelper;
 use budisteikul\toursdk\Helpers\BookingHelper;
 use budisteikul\toursdk\Helpers\GeneralHelper;
-use budisteikul\toursdk\Helpers\SettingHelper;
 use Ramsey\Uuid\Uuid;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
@@ -100,7 +99,7 @@ class PaymentHelper {
     {
         if(self::have_payment($shoppingcart))
         {
-            $asset = SettingHelper::getSetting('assets');
+            
 
             if($shoppingcart->shoppingcart_payment->payment_provider=="none")
             {

@@ -8,7 +8,7 @@ use budisteikul\toursdk\Helpers\PaymentHelper;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Cache;
 use budisteikul\toursdk\Helpers\FirebaseHelper;
-use budisteikul\toursdk\Helpers\SettingHelper;
+
 
 class PaymentController extends Controller
 {
@@ -16,7 +16,7 @@ class PaymentController extends Controller
 	
     public function __construct()
     {
-        $this->assets = SettingHelper::getSetting('assets');
+        
     }
     
     public function checkout(Request $request)
@@ -234,7 +234,7 @@ class PaymentController extends Controller
         $shoppingcart = Cache::get('_'. $sessionId);
         $jscript = '
             $("#submitCheckout").slideUp("slow");
-            $("#paymentContainer").html(\'<div class="form mb-2 mt-2"><strong>Please input your OVO number :</strong></div><div class="form-row mb-4 mt-2"><div class="col-xs-2"><input type="text" style="height:47px; width:50px;" class="form-control  disabled" value="+62" disabled></div><div class="col"><input id="ovoPhoneNumber" type="text" style="height:47px;" class="form-control" placeholder="85743112112"></div></div><div id=\"text-alert\" class=\"text-center mb-4 mt-2\"></div><button id="submit" onClick="createpaymentovo()" class="btn btn-lg btn-block btn-theme" style="height:47px"><strong>Click to pay with <img class="ml-2 mr-2" src="'.$this->assets.'/img/payment/ovo-light.png" height="30" /></strong></button>\');
+            $("#paymentContainer").html(\'<div class="form mb-2 mt-2"><strong>Please input your OVO number :</strong></div><div class="form-row mb-4 mt-2"><div class="col-xs-2"><input type="text" style="height:47px; width:50px;" class="form-control  disabled" value="+62" disabled></div><div class="col"><input id="ovoPhoneNumber" type="text" style="height:47px;" class="form-control" placeholder="85743112112"></div></div><div id=\"text-alert\" class=\"text-center mb-4 mt-2\"></div><button id="submit" onClick="createpaymentovo()" class="btn btn-lg btn-block btn-theme" style="height:47px"><strong>Click to pay with <img class="ml-2 mr-2" src="'.config('site.assets').'/img/payment/ovo-light.png" height="30" /></strong></button>\');
 
             function createpaymentovo()
             {
@@ -257,7 +257,7 @@ class PaymentController extends Controller
                                 $("#text-alert").html( "" );
                                 $("#ovoPhoneNumber").attr("disabled", false);
                                 $("#submit").attr("disabled", false);
-                                $("#submit").html(\' <strong>Click to pay with <img class="ml-2 mr-2" src="'.$this->assets.'/img/payment/ovo-light.png" height="30" /></strong> \');
+                                $("#submit").html(\' <strong>Click to pay with <img class="ml-2 mr-2" src="'.config('site.assets').'/img/payment/ovo-light.png" height="30" /></strong> \');
                                 return false;
                             }
 

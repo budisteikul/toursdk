@@ -3,7 +3,7 @@ namespace budisteikul\toursdk\Helpers;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Cache;
 use GuzzleHttp\Cookie\CookieJar;
-use budisteikul\toursdk\Helpers\SettingHelper;
+
 
 class BokunHelper {
 
@@ -14,7 +14,7 @@ class BokunHelper {
     }
     public static function env_bokunCurrency()
     {
-   		return SettingHelper::getSetting('currency');
+   		return config('site.currency');
     }
     public static function env_bokunLang()
     {

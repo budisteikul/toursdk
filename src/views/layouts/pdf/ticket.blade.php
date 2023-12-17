@@ -1,6 +1,5 @@
 @inject('ProductHelper', 'budisteikul\toursdk\Helpers\ProductHelper')
 @inject('BookingHelper', 'budisteikul\toursdk\Helpers\BookingHelper')
-@inject('Setting', 'budisteikul\toursdk\Helpers\SettingHelper')
 @php
   $main_contact = $BookingHelper->get_answer_contact($shoppingcart_product->shoppingcart);
 @endphp
@@ -106,10 +105,10 @@ body {
 <div class="card aa-theme">
         <div class="card_heading">
         			<div class="card_logo">
-						<img src="{{ $Setting->getSetting('assets') }}/img/pdf/logo-blue.jpg" height="35" style="max-width:200px;" />
+						<img src="{{ config('site.assets') }}/img/pdf/logo-blue.jpg" height="35" style="max-width:200px;" />
 					</div>
           @php
-          $image = $Setting->getSetting('assets') .'/img/pdf/blank-300.jpg';
+          $image = config('site.assets') .'/img/pdf/blank-300.jpg';
           if($shoppingcart_product->image!="")
           {
             $image = str_ireplace("w=80","w=300",$shoppingcart_product->image);

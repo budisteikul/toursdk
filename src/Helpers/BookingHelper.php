@@ -9,7 +9,7 @@ use budisteikul\toursdk\Helpers\GeneralHelper;
 use budisteikul\toursdk\Helpers\VoucherHelper;
 use budisteikul\toursdk\Helpers\TaskHelper;
 use budisteikul\toursdk\Helpers\PaymentHelper;
-use budisteikul\toursdk\Helpers\SettingHelper;
+
 
 use budisteikul\toursdk\Models\Product;
 use budisteikul\toursdk\Models\Shoppingcart;
@@ -2043,7 +2043,7 @@ class BookingHelper {
 
 	public static function create_invoice_pdf($shoppingcart)
 	{
-		$path = SettingHelper::getSetting('assets') .'/img/pdf/qrcode-logo.png';
+		$path = config('site.assets') .'/img/pdf/qrcode-logo.png';
 		$qrcode = base64_encode(QrCode::errorCorrection('H')->format('png')->merge($path,.5,false)->size(1024)->margin(0)->generate($shoppingcart->url .'/booking/receipt/'.$shoppingcart->session_id.'/'.$shoppingcart->confirmation_code  ));
         $pdf = PDF::setOptions(['tempDir' =>  storage_path(),'fontDir' => storage_path(),'fontCache' => storage_path(),'isRemoteEnabled' => true])->loadView('toursdk::layouts.pdf.invoice', compact('shoppingcart','qrcode'))->setPaper('a4', 'portrait');
         return $pdf;
@@ -2059,7 +2059,7 @@ class BookingHelper {
 	public static function create_ticket_pdf($shoppingcart_product)
 	{
 		$customPaper = array(0,0,300,540);
-		$path = SettingHelper::getSetting('assets') .'/img/pdf/qrcode-logo.png';
+		$path = config('site.assets') .'/img/pdf/qrcode-logo.png';
         $qrcode = base64_encode(QrCode::errorCorrection('H')->format('png')->merge($path,.5,false)->size(1024)->margin(0)->generate($shoppingcart_product->shoppingcart->url .'/booking/receipt/'.$shoppingcart_product->shoppingcart->session_id.'/'.$shoppingcart_product->shoppingcart->confirmation_code  ));
         $pdf = PDF::setOptions(['tempDir' => storage_path(),'fontDir' => storage_path(),'fontCache' => storage_path(),'isRemoteEnabled' => true])->loadView('toursdk::layouts.pdf.ticket', compact('shoppingcart_product','qrcode'))->setPaper($customPaper);
         return $pdf;

@@ -1,6 +1,5 @@
 @inject('GeneralHelper', 'budisteikul\toursdk\Helpers\GeneralHelper')
 @inject('BookingHelper', 'budisteikul\toursdk\Helpers\BookingHelper')
-@inject('SettingHelper', 'budisteikul\toursdk\Helpers\SettingHelper')
 @inject('PaymentHelper', 'budisteikul\toursdk\Helpers\PaymentHelper')
 @inject('ChannelHelper', 'budisteikul\toursdk\Helpers\ChannelHelper')
 
@@ -222,7 +221,7 @@ footer {
          <tr>
           <td style="background-color:#FFFFFF; text-align:left; padding-left:0px; line-height: 18px; font-size:14px; color:#777777">
 
-                        {!! $SettingHelper->getSetting('company') !!}
+                        {!! config('site.company') !!}
                   
            </td>
            <td style="background-color:#FFFFFF; text-align:right; padding-right:0px; line-height: 18px; font-size:14px; color:#777777">

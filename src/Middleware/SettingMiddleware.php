@@ -26,6 +26,7 @@ class SettingMiddleware
             if($setting->name=="payment_default") $payment_default = $setting->value;
             if($setting->name=="company") $company = $setting->value;
             if($setting->name=="footer") $footer = $setting->value;
+            if($setting->name=="image") $image = $setting->value;
         }
         
 
@@ -35,6 +36,7 @@ class SettingMiddleware
         config(['site.payment_default' => $payment_default]);
         config(['site.company' => $company]);
         config(['site.footer' => $footer]);
+        config(['site.image' => $image]);
         
         return $next($request);
     }

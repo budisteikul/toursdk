@@ -24,7 +24,8 @@ class TourSDKServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->app['router']->aliasMiddleware('SettingMiddleware', \budisteikul\toursdk\Middleware\SettingMiddleware::class);
+        
+        //$this->app['router']->aliasMiddleware('SettingMiddleware', \budisteikul\toursdk\Middleware\SettingMiddleware::class);
         $this->registerConfig();
         $this->loadViewsFrom(__DIR__.'/views', 'toursdk');
         $this->loadMigrationsFrom(__DIR__.'/migrations/2020_11_17_133006_create_categories_table.php');

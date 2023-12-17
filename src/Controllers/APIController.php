@@ -37,6 +37,7 @@ class APIController extends Controller
     public function __construct(Request $request)
     {
         $this->currency = SettingHelper::getSetting('currency');
+        $this->assets = SettingHelper::getSetting('assets');
     }
 
     public function cancellation($sessionId,$confirmationCode)
@@ -63,12 +64,11 @@ class APIController extends Controller
         $payment_enable = SettingHelper::getSetting('payment_enable');
         $payment_array = explode(",",$payment_enable);
         
-        //$jscripts[] = [ env('APP_ASSET_URL') .'/js/widget-utils.js',false];
-        //$jscripts[] = '';
+        
 
         if(in_array('xendit',$payment_array)) {
             $jscripts[] = ['https://js.xendit.co/v1/xendit.min.js',false];
-            $jscripts[] = [ env('APP_ASSET_URL') .'/js/payform.min.js',true];
+            $jscripts[] = [ $this->assets .'/js/payform.min.js',true];
         }
         if(in_array('stripe',$payment_array)) $jscripts[] = ['https://js.stripe.com/v3/', true];
         if(in_array('paypal',$payment_array)) $jscripts[] = [$paypal_sdk, true];
@@ -80,7 +80,7 @@ class APIController extends Controller
             'message' => 'success',
             'jscripts' => $jscripts,
             'analytic' => $analytic,
-            'assets' => env('APP_ASSET_URL')
+            'assets' => $this->assets
         ], 200);
     }
 
@@ -133,15 +133,15 @@ class APIController extends Controller
             'company' => $company,
             'footerTitle' => $footerTitle,
             'partners' => [
-                '<a target="_blank" rel="noreferrer noopener" href="https://www.getyourguide.com/yogyakarta-l349/yogyakarta-night-walking-and-food-tour-t429708"><img height="30" class="mb-1 mt-2 mr-2 img-thumbnail" src="'.env("APP_ASSET_URL").'/img/footer/getyourguide-logo.png"} alt="GetYourGuide" /></a>',
-                '<a target="_blank" rel="noreferrer noopener" href="https://www.airbnb.com/experiences/434368"><img height="30" class="mb-1 mt-2 mr-2 img-thumbnail" src="'.env("APP_ASSET_URL").'/img/footer/airbnb-logo.png"} alt="Airbnb" /></a>',
-                '<a target="_blank" rel="noreferrer noopener" href="https://www.tripadvisor.com/AttractionProductReview-g14782503-d15646790-Small_Group_Walking_and_Food_Tour_by_Night_in_Yogyakarta-Yogyakarta_Yogyakarta_R.html"><img height="30" class="mb-1 mt-2 mr-2 img-thumbnail" src="'.env("APP_ASSET_URL").'/img/footer/tripadvisor-logo.png"} alt="Tripadvisor" /></a>',
+                '<a target="_blank" rel="noreferrer noopener" href="https://www.getyourguide.com/yogyakarta-l349/yogyakarta-night-walking-and-food-tour-t429708"><img height="30" class="mb-1 mt-2 mr-2 img-thumbnail" src="'.$this->assets.'/img/footer/getyourguide-logo.png"} alt="GetYourGuide" /></a>',
+                '<a target="_blank" rel="noreferrer noopener" href="https://www.airbnb.com/experiences/434368"><img height="30" class="mb-1 mt-2 mr-2 img-thumbnail" src="'.$this->assets.'/img/footer/airbnb-logo.png"} alt="Airbnb" /></a>',
+                '<a target="_blank" rel="noreferrer noopener" href="https://www.tripadvisor.com/AttractionProductReview-g14782503-d15646790-Small_Group_Walking_and_Food_Tour_by_Night_in_Yogyakarta-Yogyakarta_Yogyakarta_R.html"><img height="30" class="mb-1 mt-2 mr-2 img-thumbnail" src="'.$this->assets.'/img/footer/tripadvisor-logo.png"} alt="Tripadvisor" /></a>',
                 
                 
             ],
             'paymentChannels' => [
-                '<img height="30" class="mt-2" src="'.env("APP_ASSET_URL").'/img/footer/line-1.png" alt="Payment Channels" /><br />',
-                '<img height="30" class="mt-2" src="'.env("APP_ASSET_URL").'/img/footer/line-4.png" alt="Payment Channels" /><br />',
+                '<img height="30" class="mt-2" src="'.$this->assets.'/img/footer/line-1.png" alt="Payment Channels" /><br />',
+                '<img height="30" class="mt-2" src="'.$this->assets.'/img/footer/line-4.png" alt="Payment Channels" /><br />',
             ]
         ], 200);
     }
@@ -167,9 +167,9 @@ class APIController extends Controller
             "@type": "Product",
             "name": "Yogyakarta Night Walking and Food Tours",
             "image": [
-                "'.env("APP_ASSET_URL").'/img/schema/jogja-food-tour-1x1.jpg",
-                "'.env("APP_ASSET_URL").'/img/schema/jogja-food-tour-4x3.jpg",
-                "'.env("APP_ASSET_URL").'/img/schema/jogja-food-tour-16x9.jpg"
+                "'.$this->assets.'/img/schema/jogja-food-tour-1x1.jpg",
+                "'.$this->assets.'/img/schema/jogja-food-tour-4x3.jpg",
+                "'.$this->assets.'/img/schema/jogja-food-tour-16x9.jpg"
             ],
             "description": "See a different side of Yogyakarta, Indonesia’s cultural capital, on this fun night tour jam-packed with street food delights. Join your guide and no more than seven other travelers in the city center, then board a “becak” rickshaw to tour the sights. Savor the light, sweet flavors of Javanese cuisine; soak up the vibrant atmosphere of this university city; try traditional games; and enjoy fairground rides at Alun-Alun Kidul.",
             "sku": "110844P2",
@@ -945,7 +945,7 @@ class APIController extends Controller
                     $(\'#alert-payment\').fadeIn("slow");
                     $("#ovoPhoneNumber").attr("disabled", false);
                     $("#submit").attr("disabled", false);
-                    $("#submit").html(\' <strong>Click to pay with <img class="ml-2 mr-2" src="'.env("APP_ASSET_URL").'/img/payment/ovo-light.png" height="30" /></strong> \');
+                    $("#submit").html(\' <strong>Click to pay with <img class="ml-2 mr-2" src="'.$this->assets.'/img/payment/ovo-light.png" height="30" /></strong> \');
                 }
             }
 

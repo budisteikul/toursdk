@@ -6,7 +6,7 @@ use budisteikul\toursdk\Helpers\XenditHelper;
 use budisteikul\toursdk\Helpers\StripeHelper;
 use budisteikul\toursdk\Helpers\BookingHelper;
 use budisteikul\toursdk\Helpers\GeneralHelper;
-
+use budisteikul\toursdk\Helpers\SettingHelper;
 use Ramsey\Uuid\Uuid;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
@@ -100,7 +100,7 @@ class PaymentHelper {
     {
         if(self::have_payment($shoppingcart))
         {
-            
+            $asset = SettingHelper::getSetting('assets');
 
             if($shoppingcart->shoppingcart_payment->payment_provider=="none")
             {
@@ -252,7 +252,7 @@ class PaymentHelper {
                                     <div class="row h-100">
                                         <div class="col-12 text-center">
 
-                                            <img class="img-fluid border border-white mt-2" alt="QRIS LOGO" style="max-width:250px; height:30px; image-rendering: -webkit-optimize-contrast;" src="'.env("APP_ASSET_URL").'/img/payment/qris-logo.png">
+                                            <img class="img-fluid border border-white mt-2" alt="QRIS LOGO" style="max-width:250px; height:30px; image-rendering: -webkit-optimize-contrast;" src="'.$asset.'/img/payment/qris-logo.png">
                                             <br />
                                             <img class="img-fluid border border-white mt-2" alt="QRIS" style="max-width:250px; image-rendering: -webkit-optimize-contrast;" src="'. BookingHelper::generate_qrcode($shoppingcart) .' ">
                                             <br />

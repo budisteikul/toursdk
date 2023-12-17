@@ -1,4 +1,4 @@
-
+@inject('Setting', 'budisteikul\toursdk\Helpers\SettingHelper')
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -209,7 +209,7 @@ footer {
            				
            </td>
            <td style="background-color:#FFFFFF; text-align:right; padding-right:0px; line-height: 18px; font-size:14px; color:#777777">
-                        <img src="{{ env('APP_ASSET_URL') }}/img/pdf/logo-blue.jpg" height="30" />
+                        <img src="{{ $Setting->getSetting('assets') }}/img/pdf/logo-blue.jpg" height="30" />
                         <div style="margin-top:3px;">Jl. Abiyoso VII No.190 Bantul ID</div>
                         <div>Telp: +62 857 43 112 112</div>
                         <div>Email: guide@vertikaltrip.com</div>

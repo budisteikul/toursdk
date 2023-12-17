@@ -14,7 +14,7 @@ class TourSDKServiceProvider extends ServiceProvider
     public function register()
     {
         
-        $this->app['router']->middleware('SettingMiddleware', \budisteikul\toursdk\Middleware\SettingMiddleware::class);
+        $this->app['router']->aliasMiddleware('SettingMiddleware', \budisteikul\toursdk\Middleware\SettingMiddleware::class);
     }
 
     /**

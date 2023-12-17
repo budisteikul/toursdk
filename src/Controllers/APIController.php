@@ -56,7 +56,7 @@ class APIController extends Controller
         }
     }
 
-    public function index_jscript(Request $request)
+    public function config(Request $request)
     {
         $paypal_sdk = 'https://www.paypal.com/sdk/js?client-id='.env("PAYPAL_CLIENT_ID").'&currency='. env("PAYPAL_CURRENCY").'&disable-funding=credit,card';
         

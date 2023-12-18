@@ -284,9 +284,7 @@ class ContentHelper {
                 'xendit_total' =>  GeneralHelper::numberFormat(BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'IDR'),'IDR'),
                 'xendit_rate' => '',
                 'xendit_label' => '
-                <strong class="mb-1">Card Payments 
-                    <img class="ml-2" src="'. config('site.assets') .'/img/payment/powered-by-xendit.png" height="24" alt="Card Payment" />
-                </strong>
+                <strong class="mb-1">Card Payments</strong>
                 <div class="ml-0 mb-1 mt-2">
                     <img src="'. config('site.assets') .'/img/payment/xendit-card-payment.png" style="max-height:35px" class="img-fluid" alt="Payment Logo" />
                 </div>',

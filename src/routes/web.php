@@ -1,7 +1,6 @@
 <?php
 
 	// API
-	Route::get('/api/home', 'budisteikul\toursdk\Controllers\APIController@home')->middleware(['SettingMiddleware']);
 	Route::get('/api/index_jscript', 'budisteikul\toursdk\Controllers\APIController@config')->middleware(['SettingMiddleware']);
 	Route::get('/api/config', 'budisteikul\toursdk\Controllers\APIController@config')->middleware(['SettingMiddleware']);
 	Route::get('/api/{sessionId}/navbar', 'budisteikul\toursdk\Controllers\APIController@navbar')->middleware(['SettingMiddleware']);

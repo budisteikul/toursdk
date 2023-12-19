@@ -340,18 +340,6 @@ class APIController extends Controller
         return $pdf->download('Ticket-'. $shoppingcart_product->product_confirmation_code .'.pdf');
     }
 
-    public function home()
-    {
-        $dataObj = ContentHelper::view_categories();
-        //$category = Category::where('slug','jogja-food-tour')->firstOrFail();
-        //$dataObj = ContentHelper::view_category($category);
-        return response()->json([
-            'message' => 'success',
-            'categories' => $dataObj
-        ], 200);
-        
-    }
-
     public function categories()
     {
         $dataObj = ContentHelper::view_categories();

@@ -292,7 +292,7 @@ class ContentHelper {
                 //QRIS
                 'qris_currency' => 'IDR',
                 'qris_total' =>  GeneralHelper::numberFormat(BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'IDR'),'IDR'),
-                'qris_rate' => $idr_rate_text,
+                'qris_rate' => '',
                 'qris_label' => '
                 <div class="mb-2">
                     <strong>Scan to Pay</strong>

@@ -251,7 +251,7 @@ class PaymentHelper {
                                     <div class="row h-100">
                                         <div class="col-12 text-center">
 
-                                            <img class="img-fluid border border-white mt-2" alt="QRIS LOGO" style="max-width:250px; height:30px; image-rendering: -webkit-optimize-contrast;" src="'.$asset.'/img/payment/qris-logo.png">
+                                            <img class="img-fluid border border-white mt-2" alt="QRIS LOGO" style="max-width:250px; height:30px; image-rendering: -webkit-optimize-contrast;" src="'.config('site.assets').'/img/payment/qris-logo.png">
                                             <br />
                                             <img class="img-fluid border border-white mt-2" alt="QRIS" style="max-width:250px; image-rendering: -webkit-optimize-contrast;" src="'. BookingHelper::generate_qrcode($shoppingcart) .' ">
                                             <br />

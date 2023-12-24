@@ -28,6 +28,7 @@ class SettingMiddleware
             if($setting->name=="footer") $footer = $setting->value;
             if($setting->name=="image") $image = $setting->value;
             if($setting->name=="logo") $logo = $setting->value;
+            if($setting->name=="title") $title = $setting->value;
         }
         
 
@@ -39,6 +40,7 @@ class SettingMiddleware
         config(['site.footer' => $footer]);
         config(['site.image' => $image]);
         config(['site.logo' => $logo]);
+        config(['site.title' => $title]);
         
         return $next($request);
     }

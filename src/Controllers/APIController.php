@@ -92,7 +92,8 @@ class APIController extends Controller
             'logo' => config('site.assets').'/img/header/'.config('site.logo'),
             'json_ld' => $json_ld,
             'categories' => $categories,
-            'url' => GeneralHelper::url()
+            'url' => GeneralHelper::url(),
+            'title' => config('site.title'),
         ], 200);
     }
 

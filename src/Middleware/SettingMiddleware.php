@@ -27,6 +27,7 @@ class SettingMiddleware
             if($setting->name=="company") $company = $setting->value;
             if($setting->name=="footer") $footer = $setting->value;
             if($setting->name=="image") $image = $setting->value;
+            if($setting->name=="logo") $logo = $setting->value;
         }
         
 
@@ -37,6 +38,7 @@ class SettingMiddleware
         config(['site.company' => $company]);
         config(['site.footer' => $footer]);
         config(['site.image' => $image]);
+        config(['site.logo' => $logo]);
         
         return $next($request);
     }

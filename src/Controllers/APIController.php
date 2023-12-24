@@ -89,7 +89,7 @@ class APIController extends Controller
         $json_ld = self::json_ld();
         return response()->json([
             'message' => 'success',
-            'logo' => config('site.assets').'/img/header/jogjafoodtour.png',
+            'logo' => config('site.assets').'/img/header/'.config('site.logo'),
             'json_ld' => $json_ld,
             'categories' => $categories,
             'url' => GeneralHelper::url()

@@ -275,7 +275,7 @@ class ContentHelper {
                 'products' => $dataProducts,
                 'mainQuestions' => $dataMainQuestion,
                 'productQuestions' => $dataProductQuestion,
-                
+                'cancellationPolicy' => 'I agree with the <a className="text-theme" href="/page/terms-and-conditions" target="_blank">terms and conditions</a>.',
                 'payment_enable' => $payment_enable,
                 'payment_default' => $payment_default,
 

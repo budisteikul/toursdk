@@ -16,15 +16,18 @@ class ImageHelper {
 
     public static function urlImageGoogle($public_id,$width=0,$height=0)
     {
-        if(config('site.image')=="google") {
-            
-            $url = 'https://storage.googleapis.com/'. self::env_googleCloudStorageBucket() .'/images/original/'. $public_id;
+        $url = config('site.image_url') .'/original/'. $public_id;
+        /*
+        if(config('site.image')=="cloudflare") 
+        {
+            $url = 'https://'. self::env_googleCloudStorageBucket() .'/images/original/'. $public_id;
         }
         else
         {
-            
-            $url = 'https://'. self::env_googleCloudStorageBucket() .'/images/original/'. $public_id;
+            $url = 'https://storage.googleapis.com/'. self::env_googleCloudStorageBucket() .'/images/original/'. $public_id;
         }
+        */
+
         $url = str_ireplace("original","w_".$width."-h_".$height."",$url);
         return $url;
         

@@ -71,11 +71,106 @@ class APIController extends Controller
         
         $analytic = LogHelper::analytic();
 
+        $headerBox = '
+        <img src="'.config('site.assets').'/img/header/jogjafoodtour.png" alt="Jogja Food Tour" width="250" />
+        <hr class="hr-theme" />
+        <p class="text-faded">
+          Join us on this experience to try authentic Javanese dishes, play traditional games, travel on a becak, learn interesting fun facts about city, interact with locals and many more.
+          <br />
+          Enjoy Jogja in Local Ways!
+        </p>';
+
+        $usefullLink[] = [
+            'title' => 'Night Walk Meeting Point',
+            'link' => 'https://linktr.ee/foodtour',
+            'type' => 'outsite'
+        ];
+
+        $usefullLink[] = [
+            'title' => 'Morning Walk Meeting Point',
+            'link' => 'https://linktr.ee/foodtour',
+            'type' => 'outsite'
+        ];
+
+        $dataPrivacyTerm[] = [
+            'title' => 'Terms and Conditions',
+            'link' => '/page/terms-and-conditions'
+        ];
+
+        $dataPrivacyTerm[] = [
+            'title' => 'Privacy Policy',
+            'link' => '/page/privacy-policy'
+        ];
+
+        $company = config('site.company');
+        $footerTitle = config('site.footer');
+
+        $tourGuides[] = [
+            'image' => config('site.assets').'/img/guide/kalika-ratna.jpg',
+            'name' => 'Kalika',
+            'description' => 'Your Local Friend in Jogja',
+        ];
+
+        $tourGuides[] = [
+            'image' => config('site.assets').'/img/guide/anisa.jpg',
+            'name' => 'Anisa',
+            'description' => 'Your Local Friend in Jogja',
+        ];
+
+        $tourGuides[] = [
+            'image' => config('site.assets').'/img/guide/budi.jpg',
+            'name' => 'Wayan Budi',
+            'description' => 'Partner Relation',
+        ];
+
+        $services[] = [
+            'icon' => '<i class="fa fa-4x fa-bolt text-theme mb-2"></i>',
+            'name' => 'Instant Confirmation',
+            'description' => 'To secure your spot while keeping your plans flexible. Your booking are confirmed automatically!',
+        ];
+
+        $services[] = [
+            'icon' => '<i class="fas fa-4x fa-phone-alt text-theme mb-2"></i>',
+            'name' => '24/7 Support',
+            'description' => 'Stay Connected with us! With 24/7 Support.',
+        ];
+
+        $services[] = [
+            'icon' => '<i class="fas fa-4x fa-history text-theme mb-2"></i>',
+            'name' => 'Full Refund',
+            'description' => 'Have your plans changed? No worries! You can cancel the booking anytime!',
+        ];
+
+        $services[] = [
+            'icon' => '<i class="fa fa-4x fa-utensils text-theme mb-2"></i>',
+            'name' => 'Customizable',
+            'description' => 'We can accommodate many food restrictions — Just fill it on booking form!',
+        ];
+
         return response()->json([
-            'message' => 'success',
             'jscripts' => $jscripts,
             'analytic' => $analytic,
-            'assets' => config('site.assets')
+            'assets' => config('site.assets'),
+            'tourGuides' => $tourGuides,
+            'services' => $services,
+            'headerBox' => $headerBox,
+            'headerBackground' => config('site.assets').'/img/header/background.jpg',
+            'footerUsefullLinks' => $usefullLink,
+            'footerPrivacyterms' => $dataPrivacyTerm,
+            'footerWhatsapp' => '+6285743112112',
+            'footerCompany' => $company,
+            'footerTitle' => $footerTitle,
+            'footerPartners' => [
+                '<a target="_blank" rel="noreferrer noopener" href="https://www.getyourguide.com/yogyakarta-l349/yogyakarta-night-walking-and-food-tour-t429708"><img height="30" class="mb-1 mt-2 mr-2 img-thumbnail" src="'.config('site.assets').'/img/footer/getyourguide-logo.png"} alt="GetYourGuide" /></a>',
+                '<a target="_blank" rel="noreferrer noopener" href="https://www.airbnb.com/experiences/434368"><img height="30" class="mb-1 mt-2 mr-2 img-thumbnail" src="'.config('site.assets').'/img/footer/airbnb-logo.png"} alt="Airbnb" /></a>',
+                '<a target="_blank" rel="noreferrer noopener" href="https://www.tripadvisor.com/AttractionProductReview-g14782503-d15646790-Small_Group_Walking_and_Food_Tour_by_Night_in_Yogyakarta-Yogyakarta_Yogyakarta_R.html"><img height="30" class="mb-1 mt-2 mr-2 img-thumbnail" src="'.config('site.assets').'/img/footer/tripadvisor-logo.png"} alt="Tripadvisor" /></a>',
+                
+                
+            ],
+            'footerPaymentChannels' => [
+                '<img height="30" class="mt-2" src="'.config('site.assets').'/img/footer/line-1.png" alt="Payment Channels" /><br />',
+                '<img height="30" class="mt-2" src="'.config('site.assets').'/img/footer/line-4.png" alt="Payment Channels" /><br />',
+            ]
         ], 200);
     }
 

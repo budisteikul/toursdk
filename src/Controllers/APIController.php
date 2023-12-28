@@ -62,8 +62,6 @@ class APIController extends Controller
         $payment_enable = config('site.payment_enable');
         $payment_array = explode(",",$payment_enable);
         
-        
-
         if(in_array('xendit',$payment_array)) {
             $jscripts[] = ['https://js.xendit.co/v1/xendit.min.js',false];
             $jscripts[] = [ config('site.assets') .'/js/payform.min.js',true];
@@ -71,7 +69,6 @@ class APIController extends Controller
         if(in_array('stripe',$payment_array)) $jscripts[] = ['https://js.stripe.com/v3/', true];
         if(in_array('paypal',$payment_array)) $jscripts[] = [$paypal_sdk, true];
         
-
         $analytic = LogHelper::analytic();
 
         return response()->json([

@@ -16,13 +16,13 @@ class ImageHelper {
 
     public static function urlImageGoogle($public_id,$width=0,$height=0)
     {
-        if(config('site.image_url')=="")
+        if(config('site.image')=="")
         {
             $url = 'https://storage.googleapis.com/'. self::env_googleCloudStorageBucket() .'/images/original/'. $public_id;
         }
         else
         {
-            $url = config('site.image_url') .'/original/'. $public_id;
+            $url = config('site.image') .'/original/'. $public_id;
         }
         
         $url = str_ireplace("original","w_".$width."-h_".$height."",$url);

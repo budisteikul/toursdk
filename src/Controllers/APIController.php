@@ -668,13 +668,22 @@ class APIController extends Controller
 
         $shoppingcart = Cache::get('_'. $sessionId);
 
+
         if(!isset($shoppingcart->products))
         {
+            $dataShoppingcart[] = array(
+                'payment_enable' => config('site.payment_enable')
+            );
+            FirebaseHelper::shoppingcart($sessionId,$dataShoppingcart);
             return array();
         }
 
         if(count($shoppingcart->products)==0)
         {
+            $dataShoppingcart[] = array(
+                'payment_enable' => config('site.payment_enable')
+            );
+            FirebaseHelper::shoppingcart($sessionId,$dataShoppingcart);
             return array();
         }
         

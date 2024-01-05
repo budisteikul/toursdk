@@ -59,16 +59,16 @@ class FirebaseHelper {
         return $response;
     }
     
-    public static function shoppingcart($sessionId)
+    public static function shoppingcart($sessionId,$dataShoppingcart=null)
     {
             $shoppingcart = Cache::get('_'. $sessionId);
-            $dataShoppingcart = ContentHelper::view_shoppingcart($shoppingcart);
+            if($dataShoppingcart==null) $dataShoppingcart = ContentHelper::view_shoppingcart($shoppingcart);
             $dataFirebase = array(
                 'shoppingcarts' => $dataShoppingcart,
                 'api_url' => env('APP_API_URL'),
                 'message' => 'success'
             );
-            self::connect('shoppingcart/'.$shoppingcart->session_id,$dataFirebase,"PUT");
+            self::connect('shoppingcart/'.$sessionId,$dataFirebase,"PUT");
     }
 
     public static function receipt($shoppingcart)

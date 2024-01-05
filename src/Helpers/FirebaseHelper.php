@@ -67,6 +67,9 @@ class FirebaseHelper {
             $dataFirebase = array(
                 'shoppingcarts' => $dataShoppingcart,
                 'api_url' => env('APP_API_URL'),
+                'payment_enable' => config('site.payment_enable'),
+                'payment_default' => config('site.payment_default'),
+                'cancellationPolicy' => 'I agree with the <a class="text-theme" href="/page/terms-and-conditions" target="_blank">terms and conditions</a>.',
                 'message' => 'success'
             );
             self::connect('shoppingcart/'.$sessionId,$dataFirebase,"PUT");

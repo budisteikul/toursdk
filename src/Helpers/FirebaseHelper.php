@@ -59,10 +59,11 @@ class FirebaseHelper {
         return $response;
     }
     
-    public static function shoppingcart($sessionId,$dataShoppingcart=null)
+    public static function shoppingcart($sessionId)
     {
             $shoppingcart = Cache::get('_'. $sessionId);
-            if($dataShoppingcart==null) $dataShoppingcart = ContentHelper::view_shoppingcart($shoppingcart);
+            $dataShoppingcart = ContentHelper::view_shoppingcart($shoppingcart);
+
             $dataFirebase = array(
                 'shoppingcarts' => $dataShoppingcart,
                 'api_url' => env('APP_API_URL'),

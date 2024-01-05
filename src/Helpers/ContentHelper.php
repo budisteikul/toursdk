@@ -22,6 +22,14 @@ class ContentHelper {
         $dataShoppingcart = array();
         $dataProducts = array();
 
+        if($shoppingcart==null)
+        {
+            $dataShoppingcart[] = array(
+                'payment_enable' => config('site.payment_enable')
+            );
+            return $dataShoppingcart;
+        }
+
         foreach(collect($shoppingcart->products)->sortBy('booking_id') as $shoppingcart_product)
         {
             

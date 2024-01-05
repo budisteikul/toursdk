@@ -665,6 +665,10 @@ class APIController extends Controller
 
         $data = json_decode($request->getContent(), true);
         $sessionId = $data['sessionId'];
+        if($sessionId=="")
+        {
+            return array();
+        }
 
         $shoppingcart = Cache::get('_'. $sessionId);
 

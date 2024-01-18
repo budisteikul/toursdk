@@ -201,7 +201,7 @@ class APIController extends Controller
         
         if(str_contains(GeneralHelper::url(), 'jogjafoodtour'))
         {
-            $categories = Category::where('parent_id',0)->where('slug','jogja-food-tour')->get();
+            $categories = Category::where('parent_id',0)->where('slug','yogyakarta')->get();
             $logo = config('site.assets').'/img/header/'.config('site.logo');
         }
         else
@@ -469,7 +469,7 @@ class APIController extends Controller
     {
         if(str_contains(GeneralHelper::url(), 'jogjafoodtour'))
         {
-            $category = Category::where('slug','jogja-food-tour')->firstOrFail();
+            $category = Category::where('slug','yogyakarta')->firstOrFail();
             $dataObj = ContentHelper::view_category($category);
         }
         else

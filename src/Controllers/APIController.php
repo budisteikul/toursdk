@@ -202,16 +202,18 @@ class APIController extends Controller
         if(str_contains(GeneralHelper::url(), 'jogjafoodtour'))
         {
             $categories = Category::where('parent_id',0)->where('slug','jogja-food-tour')->get();
+            $logo = config('site.assets').'/img/header/'.config('site.logo');
         }
         else
         {
             $categories = Category::where('parent_id',0)->get();
+            $logo = config('site.assets').'/img/header/vertikaltrip.svg';
         }
         
         $json_ld = self::json_ld();
         return response()->json([
             'message' => 'success',
-            'logo' => config('site.assets').'/img/header/'.config('site.logo'),
+            'logo' => $logo,
             'json_ld' => $json_ld,
             'categories' => $categories,
             'url' => GeneralHelper::url(),

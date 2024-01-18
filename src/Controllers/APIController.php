@@ -199,7 +199,15 @@ class APIController extends Controller
     public function navbar($sessionId)
     {
         
-        $categories = Category::where('parent_id',0)->get();
+        if(str_contains(GeneralHelper::url(), 'jogjafoodtour'))
+        {
+            $categories = Category::where('parent_id',0)->where('slug','jogja-food-tour')->get();
+        }
+        else
+        {
+            $categories = Category::where('parent_id',0)->get();
+        }
+        
         $json_ld = self::json_ld();
         return response()->json([
             'message' => 'success',
@@ -457,9 +465,16 @@ class APIController extends Controller
 
     public function categories()
     {
-        $dataObj = ContentHelper::view_categories();
-        //$category = Category::where('slug','jogja-food-tour')->firstOrFail();
-        //$dataObj = ContentHelper::view_category($category);
+        if(str_contains(GeneralHelper::url(), 'jogjafoodtour'))
+        {
+            $category = Category::where('slug','jogja-food-tour')->firstOrFail();
+            $dataObj = ContentHelper::view_category($category);
+        }
+        else
+        {
+            $dataObj = ContentHelper::view_categories();
+        }
+
         return response()->json([
             'message' => 'success',
             'categories' => $dataObj

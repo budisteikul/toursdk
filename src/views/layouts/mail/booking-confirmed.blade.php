@@ -136,7 +136,8 @@ table.body .article {
                                 
                                         <hr style="height:1px;border:none;color:#EEE;background-color:#EEE;" />
                                         Your booking number is : <b>{{$shoppingcart->confirmation_code}}</b>
-                                        <br><br>
+                                        <br>
+                                        <br>
                                         {!! $Content->view_product_detail($shoppingcart) !!}
                                         <br>
                                 

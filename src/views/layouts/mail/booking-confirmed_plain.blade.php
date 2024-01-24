@@ -15,7 +15,7 @@ Your booking number is : {{$shoppingcart->confirmation_code}}
 Follow link below to know way to the meeting point.
 https://linktr.ee/foodtour
 
-Our guide will contact you in the day of the tour. If you have any question, feel free to contact us.
+Our guide will contact you in the day of the tour via Whatsapp or Email. If you have any question, feel free to contact us.
 See you there :) 
 
 Regards,

@@ -4,7 +4,6 @@
 	Route::get('/api/index_jscript', 'budisteikul\toursdk\Controllers\APIController@config')->middleware(['SettingMiddleware']);
 	Route::get('/api/config', 'budisteikul\toursdk\Controllers\APIController@config')->middleware(['SettingMiddleware']);
 	Route::get('/api/{sessionId}/navbar', 'budisteikul\toursdk\Controllers\APIController@navbar')->middleware(['SettingMiddleware']);
-	Route::get('/api/footer', 'budisteikul\toursdk\Controllers\APIController@footer')->middleware(['SettingMiddleware']);
 	Route::get('/api/tawkto/{id}', 'budisteikul\toursdk\Controllers\APIController@tawkto')->middleware(['SettingMiddleware']);
 
 	//Review

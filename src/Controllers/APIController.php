@@ -71,14 +71,53 @@ class APIController extends Controller
         
         $analytic = LogHelper::analytic();
 
-        $headerBox = '
-        <img src="'.config('site.assets').'/img/header/jogjafoodtour.png" alt="Jogja Food Tour" width="250" />
-        <hr class="hr-theme" />
-        <p class="text-faded">
-          Join us on this experience to try authentic Javanese dishes, play traditional games, travel on a becak, learn interesting fun facts about city, interact with locals and many more.
-          <br />
-          Enjoy Jogja in Local Ways!
-        </p>';
+        if(str_contains(GeneralHelper::url(), 'jogjafoodtour'))
+        {
+            $headerBox = '
+            <img src="'.config('site.assets').'/img/header/jogjafoodtour.png" alt="Jogja Food Tour" width="250" />
+            <hr class="hr-theme" />
+            <p class="text-faded">
+                Join us on this experience to try authentic dishes, play traditional games, travel on a becak, learn interesting fun facts about city, interact with locals and many more.
+                <br />
+                Enjoy Jogja in Local Ways!
+            </p>';
+
+            $featured = '
+                <div class="row pb-0">
+                    <div class="col-lg-8 text-center mx-auto">
+                        <h3 class="section-heading" style="margin-top:50px;">Yogyakarta: The way to this city’s heart is through its food</h3>
+                        <div class="col-lg-8 text-center mx-auto">
+                            Perhaps better known for being a bastion of history and culture, Yogyakarta is also the unofficial culinary capital of Indonesia
+                        </div>
+                        <br />
+                        <hr class="hr-theme" />
+                    </div>
+                </div>
+
+                 <div class="row text-center">
+                    <div class="col-md-8 mx-auto">
+                        <img src="'.config('site.assets').'/img/content/silkwinds.jpg" alt="Silkwinds | Jogja Food Tour" class="img-fluid rounded" />
+                        <img src="'.config('site.assets').'/img/content/silkwinds-magazine-logo.png" alt="Silkwinds | Jogja Food Tour" style={{ marginTop: "4px" }} class="img-fluid rounded" />
+                        <span class="caption text-muted"><a class="text-muted" rel="noreferrer" target="_blank" href="https://www.silverkris.com/yogyakarta-the-way-to-this-citys-heart-is-through-its-food/">Silkwinds Magazine</a></span>
+                    </div>
+                </div>
+            ';
+
+            $siteTitle = 'JOGJA FOOD TOUR';
+        }
+        else
+        {
+            $headerBox = '
+            <img src="'.config('site.assets').'/img/header/vertikaltrip.svg" alt="Vertikal Trip" width="250" />
+            <hr class="hr-theme" />';
+
+            $featured = '
+                
+            ';
+
+            $siteTitle = 'VERTIKAL TRIP';
+        }
+        
 
         $usefullLink[] = [
             'title' => 'List of Google Map Meeting Point',
@@ -145,30 +184,10 @@ class APIController extends Controller
             'jscripts' => $jscripts,
             'analytic' => $analytic,
             'assets' => config('site.assets'),
-            'featured' => '
-
-                <div class="row pb-0">
-                    <div class="col-lg-8 text-center mx-auto">
-                        <h3 class="section-heading" style="margin-top:50px;">Yogyakarta: The way to this city’s heart is through its food</h3>
-                        <div class="col-lg-8 text-center mx-auto">
-                            Perhaps better known for being a bastion of history and culture, Yogyakarta is also the unofficial culinary capital of Indonesia
-                        </div>
-                        <br />
-                        <hr class="hr-theme" />
-                    </div>
-                </div>
-
-                 <div class="row text-center">
-                    <div class="col-md-8 mx-auto">
-                        <img src="'.config('site.assets').'/img/content/silkwinds.jpg" alt="Silkwinds | Jogja Food Tour" class="img-fluid rounded" />
-                        <img src="'.config('site.assets').'/img/content/silkwinds-magazine-logo.png" alt="Silkwinds | Jogja Food Tour" style={{ marginTop: "4px" }} class="img-fluid rounded" />
-                        <span class="caption text-muted"><a class="text-muted" rel="noreferrer" target="_blank" href="https://www.silverkris.com/yogyakarta-the-way-to-this-citys-heart-is-through-its-food/">Silkwinds Magazine</a></span>
-                    </div>
-                </div>
-
-            ',
+            'featured' => $featured,
             'tourGuides' => $tourGuides,
             'services' => $services,
+            'siteTitle' => $siteTitle,
             'headerBox' => $headerBox,
             'headerBackground' => config('site.assets').'/img/header/background.jpg',
             'footerUsefullLinks' => $usefullLink,
@@ -215,54 +234,7 @@ class APIController extends Controller
         ], 200);
     }
 
-    public function footer()
-    {   
-        
-        $dataPrivacyTerm[] = [
-            'title' => 'Terms and Conditions',
-            'link' => '/page/terms-and-conditions'
-        ];
-
-        $dataPrivacyTerm[] = [
-            'title' => 'Privacy Policy',
-            'link' => '/page/privacy-policy'
-        ];
-
-        $usefullLink[] = [
-            'title' => 'Night Walk Meeting Point',
-            'link' => 'https://linktr.ee/foodtour',
-            'type' => 'outsite'
-        ];
-
-        $usefullLink[] = [
-            'title' => 'Morning Walk Meeting Point',
-            'link' => 'https://linktr.ee/foodtour',
-            'type' => 'outsite'
-        ];
-
-        $company = config('site.company');
-        $footerTitle = config('site.footer');
-
-        return response()->json([
-            'message' => 'success',
-            'usefullLinks' => $usefullLink,
-            'whatsapp' => '+6285743112112',
-            'privacyterms' => $dataPrivacyTerm,
-            'company' => $company,
-            'footerTitle' => $footerTitle,
-            'partners' => [
-                '<a target="_blank" rel="noreferrer noopener" href="https://www.getyourguide.com/yogyakarta-l349/yogyakarta-night-walking-and-food-tour-t429708"><img height="30" class="mb-1 mt-2 mr-2 img-thumbnail" src="'.config('site.assets').'/img/footer/getyourguide-logo.png"} alt="GetYourGuide" /></a>',
-                '<a target="_blank" rel="noreferrer noopener" href="https://www.airbnb.com/experiences/434368"><img height="30" class="mb-1 mt-2 mr-2 img-thumbnail" src="'.config('site.assets').'/img/footer/airbnb-logo.png"} alt="Airbnb" /></a>',
-                '<a target="_blank" rel="noreferrer noopener" href="https://www.tripadvisor.com/AttractionProductReview-g14782503-d15646790-Small_Group_Walking_and_Food_Tour_by_Night_in_Yogyakarta-Yogyakarta_Yogyakarta_R.html"><img height="30" class="mb-1 mt-2 mr-2 img-thumbnail" src="'.config('site.assets').'/img/footer/tripadvisor-logo.png"} alt="Tripadvisor" /></a>',
-                
-                
-            ],
-            'paymentChannels' => [
-                '<img height="30" class="mt-2" src="'.config('site.assets').'/img/footer/line-1.png" alt="Payment Channels" /><br />',
-                '<img height="30" class="mt-2" src="'.config('site.assets').'/img/footer/line-4.png" alt="Payment Channels" /><br />',
-            ]
-        ], 200);
-    }
+    
 
     public function review_count()
     {

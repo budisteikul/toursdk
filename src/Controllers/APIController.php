@@ -104,18 +104,23 @@ class APIController extends Controller
             ';
 
             $siteTitle = 'JOGJA FOOD TOUR';
+
+            $headerBackground = config('site.assets').'/img/header/background.jpg';
         }
         else
         {
             $headerBox = '
             <img src="'.config('site.assets').'/img/header/vertikaltrip.svg" alt="Vertikal Trip" width="250" />
-            <hr class="hr-theme" />';
-
-            $featured = '
-                
+            <br />
+            <h5 class="text-white">Eat like a local and feel the magic</h5>
+            <hr class="hr-theme" />
             ';
 
+            $featured = '';
+
             $siteTitle = 'VERTIKAL TRIP';
+
+            $headerBackground = config('site.assets').'/img/header/backgroud-food.jpg';
         }
         
 
@@ -189,7 +194,7 @@ class APIController extends Controller
             'services' => $services,
             'siteTitle' => $siteTitle,
             'headerBox' => $headerBox,
-            'headerBackground' => config('site.assets').'/img/header/background.jpg',
+            'headerBackground' => $headerBackground,
             'footerUsefullLinks' => $usefullLink,
             'footerPrivacyterms' => $dataPrivacyTerm,
             'footerWhatsapp' => '+6285743112112',

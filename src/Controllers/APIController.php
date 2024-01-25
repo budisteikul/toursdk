@@ -120,7 +120,7 @@ class APIController extends Controller
 
             $siteTitle = 'VERTIKAL TRIP';
 
-            $headerBackground = config('site.assets').'/img/header/backgroud-food.jpg';
+            $headerBackground = config('site.assets').'/img/header/background-food.jpg';
         }
         
 

@@ -230,7 +230,6 @@ class APIController extends Controller
             'json_ld' => $json_ld,
             'categories' => $categories,
             'url' => GeneralHelper::url(),
-            'title' => config('site.title'),
         ], 200);
     }
 

@@ -219,7 +219,8 @@ class APIController extends Controller
         
         if(str_contains(GeneralHelper::url(), 'jogjafoodtour'))
         {
-            $categories = Category::where('parent_id',0)->where('slug','yogyakarta')->get();
+            //$categories = Category::where('parent_id',0)->where('slug','yogyakarta')->get();
+            $categories = Category::where('parent_id',0)->get();
             $logo = config('site.assets').'/img/header/'.config('site.logo');
         }
         else

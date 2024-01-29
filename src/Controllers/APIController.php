@@ -186,6 +186,7 @@ class APIController extends Controller
         ];
 
         return response()->json([
+            'mainUrl' => GeneralHelper::url(),
             'jscripts' => $jscripts,
             'analytic' => $analytic,
             'assets' => config('site.assets'),

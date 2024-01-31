@@ -439,15 +439,20 @@ class APIController extends Controller
 
     public function categories()
     {
+        /*
         if(str_contains(GeneralHelper::url(), 'jogjafoodtour'))
         {
             $category = Category::where('slug','yogyakarta')->firstOrFail();
             $dataObj = ContentHelper::view_category($category);
+            $dataObj = ContentHelper::view_categories();
         }
         else
         {
             $dataObj = ContentHelper::view_categories();
         }
+        */
+
+        $dataObj = ContentHelper::view_categories();
 
         return response()->json([
             'message' => 'success',

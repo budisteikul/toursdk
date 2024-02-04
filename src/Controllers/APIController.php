@@ -116,7 +116,26 @@ class APIController extends Controller
             <hr class="hr-theme" />
             ';
 
-            $featured = '';
+            $featured = '
+                <div class="row pb-0">
+                    <div class="col-lg-8 text-center mx-auto">
+                        <h3 class="section-heading" style="margin-top:50px;">Yogyakarta: The way to this city’s heart is through its food</h3>
+                        <div class="col-lg-8 text-center mx-auto">
+                            Perhaps better known for being a bastion of history and culture, Yogyakarta is also the unofficial culinary capital of Indonesia
+                        </div>
+                        <br />
+                        <hr class="hr-theme" />
+                    </div>
+                </div>
+
+                 <div class="row text-center">
+                    <div class="col-md-8 mx-auto">
+                        <img src="'.config('site.assets').'/img/content/silkwinds.jpg" alt="Silkwinds | Jogja Food Tour" class="img-fluid rounded" />
+                        <img src="'.config('site.assets').'/img/content/silkwinds-magazine-logo.png" alt="Silkwinds | Jogja Food Tour" style={{ marginTop: "4px" }} class="img-fluid rounded" />
+                        <span class="caption text-muted"><a class="text-muted" rel="noreferrer" target="_blank" href="https://www.silverkris.com/yogyakarta-the-way-to-this-citys-heart-is-through-its-food/">Silkwinds Magazine</a></span>
+                    </div>
+                </div>
+            ';
 
             $siteTitle = 'VERTIKAL TRIP';
 

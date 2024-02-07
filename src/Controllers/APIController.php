@@ -1001,9 +1001,9 @@ class APIController extends Controller
     {
         $jscript = '
         
-        function reloadThisPage()
+        function afterCheckout(url)
         {
-            window.location.reload();
+            window.openAppRoute(url); 
         }
 
         function clearFormAlert(data)

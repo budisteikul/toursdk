@@ -33,6 +33,7 @@ class PaymentController extends Controller
             $data = json_decode($request->getContent(), true);
 
             $sessionId = $data['sessionId'];
+            $trackingCode = $data['trackingCode'];
             
             $check_question = BookingHelper::check_question_json($sessionId,$data);
             if(count($check_question) > 0)
@@ -40,8 +41,11 @@ class PaymentController extends Controller
                 $check_question['message'] = "Oops there was a problem, please check your input and try again.";
                 return response()->json($check_question);
             }
+
             $shoppingcart = BookingHelper::save_question_json($sessionId,$data);
-            
+            $shoppingcart = BookingHelper::save_trackingCode($sessionId,$trackingCode);
+
+
             FirebaseHelper::shoppingcart($sessionId);
             
             $payment = $data['payment'];

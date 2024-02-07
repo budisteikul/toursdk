@@ -1583,6 +1583,7 @@ class BookingHelper {
 		$shoppingcart->due_now = $shoppingcart_json->due_now;
 		$shoppingcart->due_on_arrival = $shoppingcart_json->due_on_arrival;
 		$shoppingcart->url = $shoppingcart_json->url;
+		$shoppingcart->referer = $shoppingcart_json->referer;
 		$shoppingcart->save();
 
 		foreach($shoppingcart_json->products as $product)
@@ -2063,6 +2064,18 @@ class BookingHelper {
         $qrcode = base64_encode(QrCode::errorCorrection('H')->format('png')->merge($path,.5,false)->size(1024)->margin(0)->generate($shoppingcart_product->shoppingcart->url .'/booking/receipt/'.$shoppingcart_product->shoppingcart->session_id.'/'.$shoppingcart_product->shoppingcart->confirmation_code  ));
         $pdf = PDF::setOptions(['tempDir' => storage_path(),'fontDir' => storage_path(),'fontCache' => storage_path(),'isRemoteEnabled' => true])->loadView('toursdk::layouts.pdf.ticket', compact('shoppingcart_product','qrcode'))->setPaper($customPaper);
         return $pdf;
+	}
+
+	public static function save_trackingCode($sessionId,$trackingCode)
+	{
+		if($trackingCode==null) $trackingCode = null;
+		if($trackingCode=="") $trackingCode = null;
+		if($trackingCode=="null") $trackingCode = null;
+		$shoppingcart = Cache::get('_'. $sessionId);
+		$shoppingcart->referer = $trackingCode;
+		Cache::forget('_'. $sessionId);
+		Cache::add('_'. $sessionId, $shoppingcart, 172800);
+		//$shoppingcart->trackingCode
 	}
 
 }

@@ -62,6 +62,7 @@ class APIController extends Controller
         $payment_enable = config('site.payment_enable');
         $payment_array = explode(",",$payment_enable);
         
+        $jscripts = array();
         if(in_array('xendit',$payment_array)) {
             $jscripts[] = ['https://js.xendit.co/v1/xendit.min.js',false];
             $jscripts[] = [ config('site.assets') .'/js/payform.min.js',true];
@@ -1003,6 +1004,7 @@ class APIController extends Controller
         
         function afterCheckout(url)
         {
+            window.clearTrackingCode();
             window.openAppRoute(url); 
         }
 

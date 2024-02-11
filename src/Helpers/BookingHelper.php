@@ -1571,54 +1571,60 @@ class BookingHelper {
 		$shoppingcart_json = Cache::get('_'. $sessionId);
 		
 		$shoppingcart = new Shoppingcart();
-		$shoppingcart->booking_status = $shoppingcart_json->booking_status;
-		$shoppingcart->session_id = $shoppingcart_json->session_id;
-		$shoppingcart->booking_channel = $shoppingcart_json->booking_channel;
-		$shoppingcart->confirmation_code = $shoppingcart_json->confirmation_code;
-		$shoppingcart->promo_code = $shoppingcart_json->promo_code;
-		$shoppingcart->currency = $shoppingcart_json->currency;
-		$shoppingcart->subtotal = $shoppingcart_json->subtotal;
-		$shoppingcart->discount = $shoppingcart_json->discount;
-		$shoppingcart->total = $shoppingcart_json->total;
-		$shoppingcart->due_now = $shoppingcart_json->due_now;
-		$shoppingcart->due_on_arrival = $shoppingcart_json->due_on_arrival;
-		$shoppingcart->url = $shoppingcart_json->url;
-		$shoppingcart->referer = $shoppingcart_json->referer;
+		if(isset($shoppingcart_json->booking_status)) $shoppingcart->booking_status = $shoppingcart_json->booking_status;
+		if(isset($shoppingcart_json->session_id)) $shoppingcart->session_id = $shoppingcart_json->session_id;
+		if(isset($shoppingcart_json->booking_channel)) $shoppingcart->booking_channel = $shoppingcart_json->booking_channel;
+		if(isset($shoppingcart_json->confirmation_code)) $shoppingcart->confirmation_code = $shoppingcart_json->confirmation_code;
+		if(isset($shoppingcart_json->promo_code)) $shoppingcart->promo_code = $shoppingcart_json->promo_code;
+		if(isset($shoppingcart_json->currency)) $shoppingcart->currency = $shoppingcart_json->currency;
+		if(isset($shoppingcart_json->subtotal)) $shoppingcart->subtotal = $shoppingcart_json->subtotal;
+		if(isset($shoppingcart_json->discount)) $shoppingcart->discount = $shoppingcart_json->discount;
+		if(isset($shoppingcart_json->total)) $shoppingcart->total = $shoppingcart_json->total;
+		if(isset($shoppingcart_json->due_now)) $shoppingcart->due_now = $shoppingcart_json->due_now;
+		if(isset($shoppingcart_json->due_on_arrival)) $shoppingcart->due_on_arrival = $shoppingcart_json->due_on_arrival;
+
+		if(isset($shoppingcart_json->url)) $shoppingcart->url = $shoppingcart_json->url;
+		if(isset($shoppingcart_json->referer)) $shoppingcart->referer = $shoppingcart_json->referer;
+		
 		$shoppingcart->save();
 
 		foreach($shoppingcart_json->products as $product)
 		{
 			$shoppingcart_product = new ShoppingcartProduct();
 			$shoppingcart_product->shoppingcart_id = $shoppingcart->id;
-			$shoppingcart_product->booking_id = $product->booking_id;
-			$shoppingcart_product->product_confirmation_code = $product->product_confirmation_code;
-			$shoppingcart_product->product_id = $product->product_id;
-			$shoppingcart_product->image = $product->image;
-			$shoppingcart_product->title = $product->title;
-			$shoppingcart_product->rate = $product->rate;
-			$shoppingcart_product->date = $product->date;
-			$shoppingcart_product->currency = $product->currency;
-			$shoppingcart_product->subtotal = $product->subtotal;
-			$shoppingcart_product->discount = $product->discount;
-			$shoppingcart_product->total = $product->total;
-			$shoppingcart_product->due_now = $product->due_now;
-			$shoppingcart_product->due_on_arrival = $product->due_on_arrival;
+
+			if(isset($product->booking_id)) $shoppingcart_product->booking_id = $product->booking_id;
+			if(isset($product->product_confirmation_code)) $shoppingcart_product->product_confirmation_code = $product->product_confirmation_code;
+			if(isset($product->product_id)) $shoppingcart_product->product_id = $product->product_id;
+			if(isset($product->image)) $shoppingcart_product->image = $product->image;
+			if(isset($product->title)) $shoppingcart_product->title = $product->title;
+			if(isset($product->rate)) $shoppingcart_product->rate = $product->rate;
+			if(isset($product->date)) $shoppingcart_product->date = $product->date;
+			if(isset($product->currency)) $shoppingcart_product->currency = $product->currency;
+			if(isset($product->subtotal)) $shoppingcart_product->subtotal = $product->subtotal;
+			if(isset($product->discount)) $shoppingcart_product->discount = $product->discount;
+			if(isset($product->total)) $shoppingcart_product->total = $product->total;
+			if(isset($product->due_now)) $shoppingcart_product->due_now = $product->due_now;
+			if(isset($product->due_on_arrival)) $shoppingcart_product->due_on_arrival = $product->due_on_arrival;
+
 			$shoppingcart_product->save();
 			
 			foreach($product->product_details as $product_detail)
 			{
 				$shoppingcart_product_detail = new ShoppingcartProductDetail();
 				$shoppingcart_product_detail->shoppingcart_product_id = $shoppingcart_product->id;
-				$shoppingcart_product_detail->type = $product_detail->type;
-				$shoppingcart_product_detail->title = $product_detail->title;
-				$shoppingcart_product_detail->people = $product_detail->people;
-				$shoppingcart_product_detail->qty = $product_detail->qty;
-				$shoppingcart_product_detail->price = $product_detail->price;
-				$shoppingcart_product_detail->unit_price = $product_detail->unit_price;
-				$shoppingcart_product_detail->currency = $product_detail->currency;
-				$shoppingcart_product_detail->subtotal = $product_detail->subtotal;
-				$shoppingcart_product_detail->discount = $product_detail->discount;
-				$shoppingcart_product_detail->total = $product_detail->total;
+
+				if(isset($product_detail->type)) $shoppingcart_product_detail->type = $product_detail->type;
+				if(isset($product_detail->title)) $shoppingcart_product_detail->title = $product_detail->title;
+				if(isset($product_detail->people)) $shoppingcart_product_detail->people = $product_detail->people;
+				if(isset($product_detail->qty)) $shoppingcart_product_detail->qty = $product_detail->qty;
+				if(isset($product_detail->price)) $shoppingcart_product_detail->price = $product_detail->price;
+				if(isset($product_detail->unit_price)) $shoppingcart_product_detail->unit_price = $product_detail->unit_price;
+				if(isset($product_detail->currency)) $shoppingcart_product_detail->currency = $product_detail->currency;
+				if(isset($product_detail->subtotal)) $shoppingcart_product_detail->subtotal = $product_detail->subtotal;
+				if(isset($product_detail->discount)) $shoppingcart_product_detail->discount = $product_detail->discount;
+				if(isset($product_detail->total)) $shoppingcart_product_detail->total = $product_detail->total;
+
 				$shoppingcart_product_detail->save();
 			}
 		}
@@ -1630,27 +1636,31 @@ class BookingHelper {
 			$shoppingcart_question->type = $question->type;
 			if(isset($question->when_to_ask)) $shoppingcart_question->when_to_ask = $question->when_to_ask;
 			if(isset($question->participant_number)) $shoppingcart_question->participant_number = $question->participant_number;
-			$shoppingcart_question->booking_id = $question->booking_id;
-			$shoppingcart_question->question_id = $question->question_id;
-			$shoppingcart_question->label = $question->label;
-			$shoppingcart_question->data_type = $question->data_type;
-			$shoppingcart_question->data_format = $question->data_format;
-			$shoppingcart_question->required = $question->required;
-			$shoppingcart_question->select_option = $question->select_option;
-			$shoppingcart_question->select_multiple = $question->select_multiple;
-			$shoppingcart_question->help = $question->help;
-			$shoppingcart_question->order = $question->order;
-			$shoppingcart_question->answer = $question->answer;
+
+			if(isset($question->booking_id)) $shoppingcart_question->booking_id = $question->booking_id;
+			if(isset($question->question_id)) $shoppingcart_question->question_id = $question->question_id;
+			if(isset($question->label)) $shoppingcart_question->label = $question->label;
+			if(isset($question->data_type)) $shoppingcart_question->data_type = $question->data_type;
+			if(isset($question->data_format)) $shoppingcart_question->data_format = $question->data_format;
+			if(isset($question->required)) $shoppingcart_question->required = $question->required;
+			if(isset($question->select_option)) $shoppingcart_question->select_option = $question->select_option;
+			if(isset($question->select_multiple)) $shoppingcart_question->select_multiple = $question->select_multiple;
+			if(isset($question->help)) $shoppingcart_question->help = $question->help;
+			if(isset($question->order)) $shoppingcart_question->order = $question->order;
+			if(isset($question->answer)) $shoppingcart_question->answer = $question->answer;
+
 			$shoppingcart_question->save();
 
 			foreach($question->question_options as $question_option)
 			{
 				$shoppingcart_question_option = new ShoppingcartQuestionOption();
 				$shoppingcart_question_option->shoppingcart_question_id = $shoppingcart_question->id;
-				$shoppingcart_question_option->label = $question_option->label;
-				$shoppingcart_question_option->value = $question_option->value;
-				$shoppingcart_question_option->order = $question_option->order;
-				$shoppingcart_question_option->answer = $question_option->answer;
+
+				if(isset($question_option->label)) $shoppingcart_question_option->label = $question_option->label;
+				if(isset($question_option->value)) $shoppingcart_question_option->value = $question_option->value;
+				if(isset($question_option->order)) $shoppingcart_question_option->order = $question_option->order;
+				if(isset($question_option->answer)) $shoppingcart_question_option->answer = $question_option->answer;
+
 				$shoppingcart_question_option->save();
 				
 			}
@@ -1679,6 +1689,7 @@ class BookingHelper {
 		if(isset($shoppingcart_json->payment->rate_to)) $shoppingcart_payment->rate_to = $shoppingcart_json->payment->rate_to;
 		if(isset($shoppingcart_json->payment->expiration_date)) $shoppingcart_payment->expiration_date = $shoppingcart_json->payment->expiration_date;
 		if(isset($shoppingcart_json->payment->payment_status)) $shoppingcart_payment->payment_status = $shoppingcart_json->payment->payment_status;
+
 		$shoppingcart_payment->save();
 
 		

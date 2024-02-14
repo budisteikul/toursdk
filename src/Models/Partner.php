@@ -9,5 +9,5 @@ class Partner extends Model
     protected $table = 'partners';
     protected $keyType = 'string';
     protected $dateFormat = 'Y-m-d H:i:s.u';
-    protected $fillable = ['name','trackingCode','description'];
+    protected $fillable = ['name','tracking_code','description'];
 }

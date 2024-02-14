@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('partners', function (Blueprint $table) {
             $table->id();
-            $table->uuid('tracking_code')->nullable();
+            $table->string('tracking_code')->nullable();
             $table->string('name')->nullable();
             $table->longText('description')->nullable();
             $table->timestamps(6);

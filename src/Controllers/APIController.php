@@ -17,6 +17,7 @@ use budisteikul\toursdk\Models\Review;
 use budisteikul\toursdk\Models\Product;
 use budisteikul\toursdk\Models\Channel;
 use budisteikul\toursdk\Models\Page;
+use budisteikul\toursdk\Models\Partner;
 use budisteikul\toursdk\Models\Shoppingcart;
 use budisteikul\toursdk\Models\ShoppingcartProduct;
 use budisteikul\toursdk\Models\ShoppingcartCancellation;
@@ -205,7 +206,9 @@ class APIController extends Controller
             'description' => 'We can accommodate many food restrictions — Just fill it on booking form!',
         ];
 
-        return response()->json([
+        
+
+        $response = [
             'mainUrl' => GeneralHelper::url(),
             'jscripts' => $jscripts,
             'analytic' => $analytic,
@@ -232,7 +235,16 @@ class APIController extends Controller
                 '<img height="30" class="mt-2" src="'.config('site.assets').'/img/footer/line-1.png" alt="Payment Channels" /><br />',
                 '<img height="30" class="mt-2" src="'.config('site.assets').'/img/footer/line-4.png" alt="Payment Channels" /><br />',
             ]
-        ], 200);
+        ];
+
+        $trackingCode = $request->input('trackingCode');
+        $partner = Partner::where('tracking_code',$trackingCode)->first();
+        if($partner)
+        {
+            $response['trackingCode'] = $trackingCode;
+        }
+
+        return response()->json($response, 200);
     }
 
     public function navbar($sessionId)

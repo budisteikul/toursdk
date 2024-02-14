@@ -1016,7 +1016,7 @@ class APIController extends Controller
         
         function afterCheckout(url)
         {
-            window.clearTrackingCode();
+            //window.clearTrackingCode();
             window.openAppRoute(url); 
         }
 

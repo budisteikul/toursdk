@@ -10,4 +10,9 @@ class Partner extends Model
     protected $keyType = 'string';
     protected $dateFormat = 'Y-m-d H:i:s.u';
     protected $fillable = ['name','tracking_code','description'];
+
+    public function shoppingcarts()
+    {
+        return $this->hasMany(Shoppingcart::class,'tracking_code','referer');
+    }
 }

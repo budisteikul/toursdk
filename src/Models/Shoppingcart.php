@@ -31,4 +31,9 @@ class Shoppingcart extends Model
         return $this->hasOne(ShoppingcartCancellation::class,'shoppingcart_id','id');
     }
 
+    public function partners()
+    {
+        return $this->belongsTo(Partner::class,'referer','tracking_code');
+    }
+
 }

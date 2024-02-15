@@ -726,6 +726,32 @@ class ContentHelper {
         return $invoice;
     }
 
+    public static function view_invoice_limited($shoppingcart)
+    {
+        $invoice = '<div class="card mb-2"><div class="card-body bg-light">';
+        $invoice1 = '<b>'. $shoppingcart->confirmation_code .' - INVOICE</b>';
+
+        $invoice .= $invoice1.'</br>';
+        $invoice .= 'Channel : '.$shoppingcart->booking_channel.'</br>';
+
+        $main_contact = BookingHelper::get_answer_contact($shoppingcart);
+
+        $first_name = $main_contact->firstName;
+        $last_name = $main_contact->lastName;
+        //$email = $main_contact->email;
+        //$phone = $main_contact->phoneNumber;
+
+        if($first_name!='' || $last_name!='') $invoice .= 'Name : '.$first_name.' '. $last_name .' 
+        <input type="hidden" id="full_name" value="'.$first_name.' '. $last_name .'"> <button onclick="copyToClipboard(\'#full_name\')" title="Copied" data-toggle="tooltip" data-placement="right" data-trigger="click" class="btn btn-light btn-sm invoice-hilang"><i class="far fa-copy"></i></button></br>';
+        //if($email!='') $invoice .= 'Email : '.$email .'</br>';
+        //if($phone!='') $invoice .= 'Phone : '.$phone .'</br>';
+
+        //$invoice .= 'Status : '. BookingHelper::get_bookingStatus($shoppingcart) .'</br>';
+        $invoice .= '</div></div>';
+
+        return $invoice;
+    }
+
 	public static function view_product_detail($shoppingcart,$html2text=false)
 	{
 		$product = '';

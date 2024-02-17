@@ -200,7 +200,7 @@ class APIController extends Controller
         $services[] = [
             'icon' => '<i class="fa fa-4x fa-utensils text-theme mb-2"></i>',
             'name' => 'Customizable',
-            'description' => 'We can accommodate many food restrictions — Just fill it on booking form!',
+            'description' => 'We can accommodate many food restrictions (Jogja Only) — Just fill it on booking form!',
         ];
 
         

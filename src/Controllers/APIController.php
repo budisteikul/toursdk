@@ -113,9 +113,12 @@ class APIController extends Controller
         {
             $headerBox = '
             <img src="'.config('site.assets').'/img/header/vertikaltrip.svg" alt="Vertikal Trip" width="250" />
-            <br />
-            <h5 class="text-white">Eat like a local and feel the magic</h5>
             <hr class="hr-theme" />
+            
+            <p class="text-faded">
+                Join us on this experience to try authentic local dishes, learn interesting fun facts about city, interact with locals and many more.
+            </p>
+            
             ';
 
             $featured = '
@@ -138,7 +141,7 @@ class APIController extends Controller
 
             $siteTitle = 'VERTIKAL TRIP';
 
-            $headerBackground = config('site.assets').'/img/header/background.jpg';
+            $headerBackground = config('site.assets').'/img/header/background-food.jpg';
         }
         
 

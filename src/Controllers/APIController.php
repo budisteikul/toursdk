@@ -178,7 +178,7 @@ class APIController extends Controller
 
         $tourGuides[] = [
             'image' => config('site.assets').'/img/guide/budi.jpg',
-            'name' => 'Putu',
+            'name' => 'Budi',
             'description' => 'Tour Guide in Bali',
         ];
 

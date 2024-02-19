@@ -1012,6 +1012,13 @@ class APIController extends Controller
     
     public function checkout_jscript()
     {
+        $payment_array = explode(",",config('site.payment_enable'));
+        $payment_enable = '';
+        foreach($payment_array as $x)
+        {
+            $payment_enable .= '$("#payment_'.$x.'").attr("disabled",false);';
+        }
+
         $jscript = '
         
         var submit_text;
@@ -1033,9 +1040,7 @@ class APIController extends Controller
         {
             $("#submitCheckout").slideDown("slow");
             $("#paymentContainer").html(\'\');
-            $("#payment_xendit").attr("disabled",false);
-            $("#payment_stripe").attr("disabled",false);
-            $("#payment_paypal").attr("disabled",false);
+            '.$payment_enable.'
             submitEnabled();
         }
 

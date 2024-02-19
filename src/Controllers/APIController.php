@@ -1014,6 +1014,31 @@ class APIController extends Controller
     {
         $jscript = '
         
+        var submit_text;
+
+        function submitDisabled()
+        {
+            submit_text = $("#submitCheckout").text();
+            $("#submitCheckout").attr("disabled", true);
+            $(\'#submitCheckout\').html(\'<i class="fa fa-spinner fa-spin"></i>&nbsp;&nbsp;processing...\');
+        }
+
+        function submitEnabled()
+        {
+            $("#submitCheckout").attr("disabled", false);
+            $(\'#submitCheckout\').html(\'<i class="fas fa-lock"></i> <strong id="submitText">\'+ submit_text +\'</strong>\');
+        }
+
+        function changePaymentMethod()
+        {
+            $("#submitCheckout").slideDown("slow");
+            $("#paymentContainer").html(\'\');
+            $("#payment_xendit").attr("disabled",false);
+            $("#payment_stripe").attr("disabled",false);
+            $("#payment_paypal").attr("disabled",false);
+            submitEnabled();
+        }
+
         function afterCheckout(url)
         {
             //window.clearTrackingCode();
@@ -1068,17 +1093,7 @@ class APIController extends Controller
                 }
             }
 
-        function submitDisabled()
-        {
-            $("#submitCheckout").attr("disabled", true);
-            $(\'#submitCheckout\').html(\'<i class="fa fa-spinner fa-spin"></i>&nbsp;&nbsp;processing...\');
-        }
-
-        function submitEnabled()
-        {
-            $("#submitCheckout").attr("disabled", false);
-            $(\'#submitCheckout\').html(\'<i class="fas fa-lock"></i> <strong id="submitText"></strong>\');
-        }
+        
 
         function redirect(url)
         {

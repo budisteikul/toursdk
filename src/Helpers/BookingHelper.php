@@ -1893,7 +1893,14 @@ class BookingHelper {
 	public static function get_rate($shoppingcart)
 	{
 		$amount = $shoppingcart->due_now / $shoppingcart->shoppingcart_payment->amount;
+
+		if($shoppingcart->shoppingcart_payment->rate_from=="IDR")
+		{
+			$amount = number_format((float)$amount, 2, '.', '');
+		}
+		
 		$value = '1 '. $shoppingcart->shoppingcart_payment->rate_to .' = '. $amount .' '. $shoppingcart->shoppingcart_payment->rate_from;
+
 		return $value;
 	}
 
@@ -1918,6 +1925,8 @@ class BookingHelper {
 			} 
             $value = number_format((float)$value, 2, '.', '');
 		}
+
+
 
 		return $value;
 	}

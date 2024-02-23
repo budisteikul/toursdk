@@ -23,33 +23,6 @@ class XenditHelper {
         $status_json = new \stdClass();
         $response_json = new \stdClass();
 
-        
-
-        if($data->transaction->bank=="dana")
-        {
-            $data->transaction->mins_expired = 30;
-            $data->transaction->date_expired = Carbon::parse($data->transaction->date_now)->addMinutes($data->transaction->mins_expired);
-
-            $success_redirect_url = $data->transaction->finish_url_full;
-            $data1 = (new self)->createEWalletDanaCharge($data->transaction->amount,$success_redirect_url);
-            
-            if(isset($data1->error_code))
-            {
-                $status_json->id = '0';
-                $status_json->message = 'error';
-            }
-            else
-            {
-                $data_json->authorization_id = $data1->id;
-                $data_json->redirect = $data1->actions->mobile_web_checkout_url;
-                $data_json->order_id = $data1->reference_id;
-
-                $status_json->id = '1';
-                $status_json->message = 'success';
-            }
-            
-        }
-
         if($data->transaction->bank=="qris")
         {
             $data->transaction->mins_expired = 30;
@@ -244,19 +217,6 @@ class XenditHelper {
         $data->channel_properties = new \stdClass();
         $data->channel_properties->mobile_number = $mobile_number;
         
-        return json_decode($this->POST('/ewallets/charges',$data));
-    }
-
-    public function createEWalletDanaCharge($amount,$success_redirect_url)
-    {
-        $data = new \stdClass();
-        $data->reference_id = Uuid::uuid4()->toString();
-        $data->currency = 'IDR';
-        $data->amount = $amount;
-        $data->checkout_method = 'ONE_TIME_PAYMENT';
-        $data->channel_code = 'ID_DANA';
-        $data->channel_properties = new \stdClass();
-        $data->channel_properties->success_redirect_url = $success_redirect_url;
         return json_decode($this->POST('/ewallets/charges',$data));
     }
 

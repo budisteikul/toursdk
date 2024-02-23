@@ -80,7 +80,6 @@ class CallbackController extends Controller
                     ], 200);
                 }
 
-                //VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
                 BookingHelper::set_bookingStatus($sessionId,'CONFIRMED');
                 BookingHelper::set_confirmationCode($sessionId);
                 PaymentHelper::create_payment($sessionId,"xendit","ovo");
@@ -89,14 +88,7 @@ class CallbackController extends Controller
                 BookingHelper::shoppingcart_notif($shoppingcart_payment->shoppingcart);
             }
 
-            if($channel_code=="ID_DANA")
-            {
-                $shoppingcart_payment = ShoppingcartPayment::where('payment_provider','xendit')->where('order_id',$reference_id)->first();
-                if($shoppingcart_payment){
-                    PaymentHelper::confirm_payment($shoppingcart_payment->shoppingcart,"CONFIRMED");
-                    BookingHelper::shoppingcart_notif($shoppingcart_payment->shoppingcart);
-                }
-            }
+            
         }
 
         if($event=="qr.payment")

@@ -28,16 +28,26 @@
     Route::get('/api/product/{slug}', 'budisteikul\toursdk\Controllers\APIController@product')->middleware(['SettingMiddleware']);
 	Route::get('/api/product/{slug}/{sessionId}/product_jscript', 'budisteikul\toursdk\Controllers\APIController@product_jscript')->middleware(['SettingMiddleware']);
 
+
+
+
+
 	//Create Payment
 	Route::post('/api/payment/checkout', 'budisteikul\toursdk\Controllers\PaymentController@checkout')->middleware(['SettingMiddleware']);
+
 	Route::get('/api/payment/stripe/jscript/{sessionId}', 'budisteikul\toursdk\Controllers\PaymentController@stripe_jscript')->middleware(['SettingMiddleware']);
 	Route::post('/api/payment/stripe', 'budisteikul\toursdk\Controllers\PaymentController@createpaymentstripe')->middleware(['SettingMiddleware']);
+
 	Route::get('/api/payment/xendit/jscript/{sessionId}', 'budisteikul\toursdk\Controllers\PaymentController@xendit_jscript')->middleware(['SettingMiddleware']);
 	Route::post('/api/payment/xendit', 'budisteikul\toursdk\Controllers\PaymentController@createpaymentxendit')->middleware(['SettingMiddleware']);
+
 	Route::get('/api/payment/paypal/jscript/{sessionId}', 'budisteikul\toursdk\Controllers\PaymentController@paypal_jscript')->middleware(['SettingMiddleware']);
 	Route::post('/api/payment/paypal', 'budisteikul\toursdk\Controllers\PaymentController@createpaymentpaypal')->middleware(['SettingMiddleware']);
+
 	Route::get('/api/payment/ovo/jscript/{sessionId}', 'budisteikul\toursdk\Controllers\PaymentController@ovo_jscript')->middleware(['SettingMiddleware']);
 	Route::post('/api/payment/ovo', 'budisteikul\toursdk\Controllers\PaymentController@createpaymentovo')->middleware(['SettingMiddleware']);
+
+
 
 	//Shoppingcart
 	Route::get('/api/activity/{activityId}/calendar/json/{year}/{month}', 'budisteikul\toursdk\Controllers\APIController@snippetscalendar')->middleware(['SettingMiddleware']);

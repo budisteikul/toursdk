@@ -91,12 +91,6 @@ class PaymentController extends Controller
                     $response = PaymentHelper::create_payment($sessionId,"xendit","qris");
                 break;
 
-                case 'dana':
-                    BookingHelper::set_bookingStatus($sessionId,'PENDING');
-                    BookingHelper::set_confirmationCode($sessionId);
-                    $response = PaymentHelper::create_payment($sessionId,"xendit","dana");
-                break;
-
                 case 'bss':
                     BookingHelper::set_bookingStatus($sessionId,'PENDING');
                     BookingHelper::set_confirmationCode($sessionId);
@@ -123,18 +117,12 @@ class PaymentController extends Controller
             $text = null;
             $session_id = $shoppingcart->session_id;
             $confirmation_code = $shoppingcart->confirmation_code;
-            $redirect_type = 1;
             $redirect = $shoppingcart->shoppingcart_payment->redirect;
 
-            if($shoppingcart->shoppingcart_payment->payment_type=="ewallet")
-            {
-                $redirect_type = 2;
-                $text = strtoupper($shoppingcart->shoppingcart_payment->bank_name);
-            }
-
+            $redirect_type = 1;
             if($shoppingcart->shoppingcart_payment->payment_type=="bank_redirect")
             {
-                $redirect_type = 4;
+                $redirect_type = 2;
             }
 
             return response()->json([

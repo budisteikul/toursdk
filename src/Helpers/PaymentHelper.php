@@ -418,14 +418,6 @@ class PaymentHelper {
                     $response->status->id = 1;
                 }
                 
-                if($data->transaction->bank == 'dana')
-                {
-                    $payment_type = 'ewallet';
-                    $bank_name = 'dana';
-                    $payment_status = 4;
-                    $response = XenditHelper::createPayment($data);
-                }
-
                 if($data->transaction->bank == 'bss')
                 {
                     $payment_type = 'bank_transfer';

@@ -1321,6 +1321,7 @@ class BookingHelper {
 
 					if($question->question_id=="phoneNumber")
 						{
+							/*
 							$rules = array('phoneNumber' => 'phone:AUTO');
 							$inputs = array(
     							'phoneNumber' => $data['questions'][$question->question_id]
@@ -1330,6 +1331,7 @@ class BookingHelper {
     							$status = false;
 								$array[$question->question_id] = array('Phone number format not valid.');
 							}
+							*/
 						}
 
 				

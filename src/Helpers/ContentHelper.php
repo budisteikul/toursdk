@@ -344,18 +344,6 @@ class ContentHelper {
 
         }
 
-        $ticket = '';
-        try {
-            if($shoppingcart->shoppingcart_payment->payment_status==2 || $shoppingcart->shoppingcart_payment->payment_status==1) {
-                foreach($shoppingcart->shoppingcart_products()->get() as $shoppingcart_product) {
-                    $ticket .= '<a target="_blank" class="text-theme" href="'.url('/api').'/pdf/ticket/'.$shoppingcart->session_id.'/Ticket-'.$shoppingcart_product->product_confirmation_code.'.pdf"><i class="fas fa-ticket-alt"></i> Ticket-'. $shoppingcart_product->product_confirmation_code .'.pdf</a>
-                                <br />';
-                }
-            }
-        } catch (Exception $e) {
-        }
-        
-        if($ticket=="") $ticket = 'No Documents <br /><small class="form-text text-muted">* Available when status is paid</small>';
         
         $how_to_pay = array();
         
@@ -392,14 +380,13 @@ class ContentHelper {
         $main_contact = BookingHelper::get_answer_contact($shoppingcart);
         $due_date = Carbon::createFromFormat('Y-m-d H:i:s', BookingHelper::due_date($shoppingcart,"database"));
         
-
         $dataObj = array(
             'vendor' => env("APP_NAME"),
             'booking_status' => $shoppingcart->booking_status,
             'booking_status_asText' => $booking_status_asText,
+            'payment_status_asText' => $payment_status_asText,
             'confirmation_code' => $shoppingcart->confirmation_code,
             'total' => $shoppingcart->currency .' '. GeneralHelper::numberFormat($shoppingcart->due_now),
-            'payment_status_asText' => $payment_status_asText,
             'firstName' => $main_contact->firstName,
             'lastName' => $main_contact->lastName,
             'phoneNumber' => $main_contact->phoneNumber,
@@ -408,7 +395,7 @@ class ContentHelper {
             'how_to_pay' => $how_to_pay,
             'due_date' => $due_date,
             'header' => 'Thank you for your booking with <strong>'.env("APP_NAME").'</strong>.',
-            'refund' => ''
+            //'ext_box1' => '<div class="card shadow mt-4"><div class="card-body"></div></div><div class="card shadow mt-4"><div class="card-body"></div></div>'
         );
 
         return $dataObj;

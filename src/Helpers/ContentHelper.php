@@ -264,10 +264,10 @@ class ContentHelper {
         
         //================================================
         
-        $usd_rate_text = '<small>Charge in USD</small>';
-        $idr_rate_text = '<small>Charge in IDR</small>';
-        if($shoppingcart->currency!="USD") $usd_rate_text = '<small>Charge in USD, '. BookingHelper::text_rate($shoppingcart,'USD').'</small>';
-        if($shoppingcart->currency!="IDR") $idr_rate_text = '<small>Charge in IDR, '. BookingHelper::text_rate($shoppingcart,'IDR').'</small>';
+        $usd_rate_text = '<small><strong>Charge in USD</strong></small>';
+        $idr_rate_text = '<small><strong>Charge in IDR</strong></small>';
+        if($shoppingcart->currency!="USD") $usd_rate_text = '<small><strong>Charge in USD</strong>, '. BookingHelper::text_rate($shoppingcart,'USD').'</small>';
+        if($shoppingcart->currency!="IDR") $idr_rate_text = '<small><strong>Charge in IDR</strong>, '. BookingHelper::text_rate($shoppingcart,'IDR').'</small>';
 
         $dataShoppingcart[] = array(
 

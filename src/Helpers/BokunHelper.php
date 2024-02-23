@@ -33,7 +33,7 @@ class BokunHelper {
    		return env("BOKUN_SECRET_KEY");
     }
 
-
+    /*
     public static function bokunAPI_connect($path, $method = 'GET', $data = "")
     {
     		if(self::env_bokunEnv()=="production")
@@ -82,48 +82,7 @@ class BokunHelper {
 			return $contents;
     }
 
-    
-
-    public static function bokunWidget_connect($path, $method = 'GET', $data = "")
-	{
-
-			if(self::env_bokunEnv()=="production")
-			{
-				$endpoint = "https://widgets.bokun.io";
-			}
-			else
-			{
-				$endpoint = "https://widgets.bokuntest.com";
-			}
-			
-			$headers = [
-		  		'x-bokun-channel' => self::env_bokunBookingChannel(),
-		  		'content-type' => 'application/json',
-        	];
-
-      		$client = new \GuzzleHttp\Client(['headers' => $headers,'http_errors' => false]);
-
-      		if($method=="POST")
-			{
-				$response = $client->request($method,$endpoint.$path,
-    			[	
-    				'json' => $data
-    			]);
-			}
-			else
-			{
-				
-				$response = $client->request($method,$endpoint.$path);
-
-			}
-
-			$contents = $response->getBody()->getContents();
-			return $contents;
-	}
-
-	
-
-	public static function set_mainContactQuestion($sessionId)
+    public static function set_mainContactQuestion($sessionId)
 	{
 		$currency = self::env_bokunCurrency();
         $lang = self::env_bokunLang();
@@ -159,8 +118,45 @@ class BokunHelper {
         //$value = json_decode($value);
         return '';
     }
-
+	*/
     
+
+    public static function bokunWidget_connect($path, $method = 'GET', $data = "")
+	{
+			if(self::env_bokunEnv()=="production")
+			{
+				$endpoint = "https://widgets.bokun.io";
+			}
+			else
+			{
+				$endpoint = "https://widgets.bokuntest.com";
+			}
+			
+			$headers = [
+		  		'x-bokun-channel' => self::env_bokunBookingChannel(),
+		  		'content-type' => 'application/json',
+        	];
+
+      		$client = new \GuzzleHttp\Client(['headers' => $headers,'http_errors' => false]);
+
+      		if($method=="POST")
+			{
+				$response = $client->request($method,$endpoint.$path,
+    			[	
+    				'json' => $data
+    			]);
+			}
+			else
+			{
+				
+				$response = $client->request($method,$endpoint.$path);
+
+			}
+
+			$contents = $response->getBody()->getContents();
+			return $contents;
+	}
+
     public static function get_currency($currency="")
 	{
         if($currency=="") $currency = self::env_bokunCurrency();
@@ -246,14 +242,12 @@ class BokunHelper {
 
 	public static function get_calendar_new($activityId,$year="",$month="")
 	{
-		
 		$currency = self::env_bokunCurrency();
         $lang = self::env_bokunLang();
         $bookingChannel = self::env_bokunBookingChannel();
 
         if($year=="") $year = -1;
         if($month=="") $month = -1;
-        
         
         $data = '{"guidedLanguages":[],"pricingCategories":[]}';
         $data = json_decode($data);
@@ -277,7 +271,6 @@ class BokunHelper {
     		return self::bokunWidget_connect('/snippets/activity/'.$activityId.'/calendar/json/'.$year.'/'.$month .'?lang='.$lang.'&currency='.$currency);
 		});
 		
-
 		//$value = self::bokunWidget_connect('/snippets/activity/'.$activityId.'/calendar/json/'.$year.'/'.$month .'?lang='.$lang.'&currency='.$currency);
 
 		$value = json_decode($value);
@@ -305,6 +298,7 @@ class BokunHelper {
 		$value = Cache::remember('_bokunProductPickup_'. $currency .'_'. $lang .'_'. $activityId,7200, function() use ($activityId,$lang,$bookingChannel) {
     		return self::bokunWidget_connect('/widgets/'.$bookingChannel.'/activity/'.$activityId.'/pickupPlaces?selectedLang='.$lang);
 		});
+
 		$value = json_decode($value);
 		return $value;
 	}

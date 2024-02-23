@@ -1882,13 +1882,20 @@ class BookingHelper {
 			if($check>0)
 			{
 				$value = $shoppingcart->due_now / $check;
-				$value = number_format((float)$value, 2);
+				if($currency!="IDR")
+				{
+					$value = number_format((float)$value, 2);
+				}
+				
+
 				$value = '1 '. $currency .' = '. $value .' '. $shoppingcart->currency;
 			}
 
-			$amount = $value .'<div class="mt-2"><span class="badge badge-success" style="font-size:12px;">Total : '. self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,$currency) .' '. $currency .'</span></div>';
+			$amount = GeneralHelper::numberFormat(self::convert_currency($shoppingcart->due_now,$shoppingcart->currency,$currency),$currency);
+
+			$text = $value .'<div class="mt-2"><span class="badge badge-success" style="font-size:12px;">Total : '. $amount .' '. $currency .'</span></div>';
 		
-			return $amount;
+			return $text;
 	}
 	
 
@@ -1927,8 +1934,6 @@ class BookingHelper {
 			} 
             $value = number_format((float)$value, 2, '.', '');
 		}
-
-
 
 		return $value;
 	}

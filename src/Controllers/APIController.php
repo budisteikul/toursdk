@@ -1122,6 +1122,24 @@ class APIController extends Controller
     {
         $jscript = '
             
+            function copyToClipboard(element) {
+                var $temp = $("<input>");
+                $("body").append($temp);
+                $temp.val($(element).val()).select();
+                document.execCommand("copy");
+                $temp.remove();
+  
+                $(element +"_button").tooltip("hide");
+                $(element +"_button").tooltip("show");
+                hideTooltip(element +"_button");
+            }
+
+            function hideTooltip(element) {
+                setTimeout(function() {
+                    $(element).tooltip(\'dispose\');
+                }, 1000);
+            }
+
             function clear_timer()
             {
                 clearInterval(document.getElementById("timer_id").value);

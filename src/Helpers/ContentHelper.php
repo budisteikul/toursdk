@@ -337,7 +337,7 @@ class ContentHelper {
         try {
             //if($shoppingcart->booking_channel=="WEBSITE") {
                 if($shoppingcart->shoppingcart_payment->payment_status>0) {
-                    $invoice = '<a target="_blank" class="text-theme" href="'.url('/api').'/pdf/invoice/'. $shoppingcart->session_id .'/Invoice-'. $shoppingcart->confirmation_code .'.pdf"><i class="fas fa-file-invoice"></i> Invoice-'. $shoppingcart->confirmation_code .'.pdf</a><br />';
+                    $invoice = '<a target="_blank" class="text-theme" href="'.url('/api').'/pdf/invoice/'. $shoppingcart->session_id .'/Invoice-'. $shoppingcart->confirmation_code .'.pdf"><h5><i class="fas fa-file-invoice"></i> Invoice-'. $shoppingcart->confirmation_code .'.pdf</h5></a><br />';
                 }
             //}
         } catch (Exception $e) {

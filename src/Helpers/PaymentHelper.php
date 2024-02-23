@@ -174,7 +174,7 @@ class PaymentHelper {
                     if($shoppingcart->shoppingcart_payment->payment_type=="bank_transfer")
                     {
                         $amount_text = GeneralHelper::formatRupiah($shoppingcart->shoppingcart_payment->amount);
-                        $account_number_text = 'Account Number';
+                        $account_number_text = 'Virtual Account Number';
                         
                         return '
                                 <div class="card mb-1">

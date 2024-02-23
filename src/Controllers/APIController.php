@@ -1005,7 +1005,6 @@ class APIController extends Controller
         FirebaseHelper::receipt($shoppingcart);
         
         return response()->json([
-                'receipt' => $dataObj,
                 'message' => "success"
             ], 200);
     }

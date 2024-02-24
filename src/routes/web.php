@@ -92,3 +92,6 @@
 	// TASK
 	Route::post('/task', 'budisteikul\toursdk\Controllers\TaskController@task')->middleware(['SettingMiddleware']);
 
+	// LOG
+	Route::post('/api/log/{identifier}', 'budisteikul\toursdk\Controllers\LogController@log')->middleware(['SettingMiddleware']);
+

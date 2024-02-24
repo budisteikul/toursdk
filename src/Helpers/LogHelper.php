@@ -1,6 +1,7 @@
 <?php
 namespace budisteikul\toursdk\Helpers;
 use Illuminate\Support\Facades\Storage;
+use Ramsey\Uuid\Uuid;
 
 class LogHelper {
 
@@ -13,7 +14,7 @@ class LogHelper {
         
         try
         {
-            Storage::disk('gcs')->put('log/log-'. $identifier .'-'. date('YmdHis') .'.txt', json_encode($data, JSON_PRETTY_PRINT));
+            Storage::disk('gcs')->put('log/log-'. $identifier .'-'. date('YmdHis') .'-'.Uuid::uuid4()->toString().'.txt', json_encode($data, JSON_PRETTY_PRINT));
         }
         catch(exception $e)
         {

@@ -334,6 +334,15 @@ class PaymentController extends Controller
         });
 
         function xenditResponseHandler (err, creditCardToken) {
+
+                            $.ajax({
+                                data: creditCardToken,
+                                type: \'POST\',
+                                url: \''. env('APP_API_URL') .'/log/xendit-log\'
+                            }).done(function( data ) {
+                                
+                            });
+
             if (creditCardToken.status === "APPROVED" || creditCardToken.status === "VERIFIED") {
                             $("#three-ds-container").hide();
                             $("#loader").show();
@@ -377,6 +386,7 @@ class PaymentController extends Controller
                                 }
                             });
             } else if (creditCardToken.status === "IN_REVIEW") {
+
                             $("#three-ds-container").hide();
                             $("#three-ds-container").html("<iframe id=\"3ds-inline-frame\" name=\"3ds-inline-frame\" scrolling=\"no\"></iframe>");
                             $("#3ds-inline-frame").css("background-color", "#FFFFFF");

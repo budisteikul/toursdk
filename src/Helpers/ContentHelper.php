@@ -370,7 +370,10 @@ class ContentHelper {
         {
             if($shoppingcart->shoppingcart_payment->payment_status==4)
             {   
-                $how_to_pay = 'Log in to bank and transfer funds to the virtual account to complete the transaction.';
+                $how_to_pay = '
+                Log in to bank and transfer funds to the virtual account to complete the transaction.
+                <h3>Please note: </h3>
+                Do not save this virtual account number, because every booking have a unique virtual account number';
             } 
         }
         

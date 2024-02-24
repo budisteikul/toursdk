@@ -335,14 +335,6 @@ class PaymentController extends Controller
 
         function xenditResponseHandler (err, creditCardToken) {
 
-                            $.ajax({
-                                data: creditCardToken,
-                                type: \'POST\',
-                                url: \''. env('APP_API_URL') .'/log/token\'
-                            }).done(function( data ) {
-                                
-                            });
-
             if (creditCardToken.status === "APPROVED" || creditCardToken.status === "VERIFIED") {
                             $("#three-ds-container").hide();
                             $("#loader").show();
@@ -398,8 +390,26 @@ class PaymentController extends Controller
                             window.open(creditCardToken.payer_authentication_url, "3ds-inline-frame");
                             $("#three-ds-container").show();
             } else if (creditCardToken.status === "FRAUD") {
+                            
+                            $.ajax({
+                                data: creditCardToken,
+                                type: \'POST\',
+                                url: \''. env('APP_API_URL') .'/log/token\'
+                            }).done(function( data ) {
+                                
+                            });
+
                             enableButton();
             } else if (creditCardToken.status === "FAILED") {
+
+                            $.ajax({
+                                data: creditCardToken,
+                                type: \'POST\',
+                                url: \''. env('APP_API_URL') .'/log/token\'
+                            }).done(function( data ) {
+                                
+                            });
+
                             enableButton();
             }
         }

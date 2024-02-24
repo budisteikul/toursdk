@@ -270,7 +270,6 @@ class ContentHelper {
         if($shoppingcart->currency!="IDR") $idr_rate_text = '<small><strong>Charge in IDR</strong>, '. BookingHelper::text_rate($shoppingcart,'IDR').'</small>';
 
         $dataShoppingcart[] = array(
-
                 'id' => $shoppingcart->session_id,
                 'confirmation_code' => $shoppingcart->confirmation_code,
                 'promo_code' => $shoppingcart->promo_code,
@@ -287,46 +286,52 @@ class ContentHelper {
                 'cancellationPolicy' => 'I agree with the <a class="text-theme" href="/page/terms-and-conditions" target="_blank">terms and conditions</a>.',
                 'payment_enable' => $payment_enable,
                 'payment_default' => $payment_default,
+            );
 
-                //XENDIT 
-                'xendit_currency' => 'IDR',
-                'xendit_total' =>  GeneralHelper::numberFormat(BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'IDR'),'IDR'),
-                'xendit_rate' => $idr_rate_text,
-                'xendit_label' => '
+        if(str_contains( $payment_enable,"xendit"))
+        {
+            $dataShoppingcart[0]["xendit_currency"] = "IDR";
+            $dataShoppingcart[0]["xendit_total"] = GeneralHelper::numberFormat(BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'IDR'),'IDR');
+            $dataShoppingcart[0]["xendit_rate"] = $idr_rate_text;
+            $dataShoppingcart[0]["xendit_label"] = '
                 <strong class="mb-1">Card Payment</strong>
                 <div class="ml-0 mb-1 mt-2">
                     <img src="'. config('site.assets') .'/img/payment/xendit-card-payment.png" style="max-height:35px" class="img-fluid" alt="Payment Logo" />
-                </div>',
+                </div>';
+        }
 
-                //QRIS
-                'qris_currency' => 'IDR',
-                'qris_total' =>  GeneralHelper::numberFormat(BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'IDR'),'IDR'),
-                'qris_rate' => '',
-                'qris_label' => '
-                <div class="mt-2">
-                    <img src="'. config('site.assets') .'/img/payment/QRIS_logo.png" style="max-height:30px" class="img-fluid" alt="Payment Logo" />
-                </div>',
-
-                //PAYPAL
-                'paypal_currency' => env("PAYPAL_CURRENCY"),
-                'paypal_total' => GeneralHelper::numberFormat(BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,env("PAYPAL_CURRENCY")),'USD'),
-                'paypal_rate' => $usd_rate_text,
-                'paypal_label' => '<strong class="mb-1"><img src="'. config('site.assets') .'/img/payment/paypal.png" height="25" alt="Paypal" /></strong>',
-
-                //STRIPE
-                'stripe_currency' => 'USD',
-                'stripe_total' => GeneralHelper::numberFormat(BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'USD'),'USD'),
-                'stripe_rate' => $usd_rate_text,
-                'stripe_label' => '
+        if(str_contains( $payment_enable,"stripe"))
+        {
+            $dataShoppingcart[0]["stripe_currency"] = "USD";
+            $dataShoppingcart[0]["stripe_total"] = GeneralHelper::numberFormat(BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'USD'),'USD');
+            $dataShoppingcart[0]["stripe_rate"] = $usd_rate_text;
+            $dataShoppingcart[0]["stripe_label"] = '
                 <strong class="mb-1">Card Payment 
                     <img class="ml-2" src="'. config('site.assets') .'/img/payment/stripe.png" height="20" alt="Card Payment" />
                 </strong>
                 <div class="ml-0 mb-1 mt-2">
                     <img src="'. config('site.assets') .'/img/payment/card-payment-new.png" style="max-height:35px" class="img-fluid" alt="Payment Logo" />
-                </div>',
+                </div>';
+        }
 
-                
-            );
+        if(str_contains( $payment_enable,"paypal"))
+        {
+            $dataShoppingcart[0]["paypal_currency"] = env("PAYPAL_CURRENCY");
+            $dataShoppingcart[0]["paypal_total"] = GeneralHelper::numberFormat(BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,env("PAYPAL_CURRENCY")),'USD');
+            $dataShoppingcart[0]["paypal_rate"] = $usd_rate_text;
+            $dataShoppingcart[0]["paypal_label"] = '<strong class="mb-1"><img src="'. config('site.assets') .'/img/payment/paypal.png" height="25" alt="Paypal" /></strong>';
+        }
+
+        if(str_contains( $payment_enable,"qris"))
+        {
+            $dataShoppingcart[0]["qris_currency"] = 'IDR';
+            $dataShoppingcart[0]["qris_total"] = GeneralHelper::numberFormat(BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'IDR'),'IDR');
+            $dataShoppingcart[0]["qris_rate"] = $idr_rate_text;
+            $dataShoppingcart[0]["qris_label"] = '
+                <div class="mt-2">
+                    <img src="'. config('site.assets') .'/img/payment/QRIS_logo.png" style="max-height:30px" class="img-fluid" alt="Payment Logo" />
+                </div>';
+        }
 
         return $dataShoppingcart;
     }

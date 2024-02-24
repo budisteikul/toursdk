@@ -261,7 +261,6 @@ class ContentHelper {
         $payment_enable = config('site.payment_enable');
         $payment_default = config('site.payment_default');
         
-        
         //================================================
         
         $usd_rate_text = '<small><strong>Charge in USD</strong></small>';
@@ -271,6 +270,8 @@ class ContentHelper {
 
         $dataShoppingcart[] = array(
                 'id' => $shoppingcart->session_id,
+                'payment_enable' => $payment_enable,
+                'payment_default' => $payment_default,
                 'confirmation_code' => $shoppingcart->confirmation_code,
                 'promo_code' => $shoppingcart->promo_code,
                 'currency' => $shoppingcart->currency,
@@ -282,10 +283,7 @@ class ContentHelper {
                 'products' => $dataProducts,
                 'mainQuestions' => $dataMainQuestion,
                 'productQuestions' => $dataProductQuestion,
-                
-                'cancellationPolicy' => 'I agree with the <a class="text-theme" href="/page/terms-and-conditions" target="_blank">terms and conditions</a>.',
-                'payment_enable' => $payment_enable,
-                'payment_default' => $payment_default,
+                'cancellationPolicy' => 'I agree with the <a class="text-theme" href="/page/terms-and-conditions" target="_blank">terms and conditions</a>.'
             );
 
         if(str_contains( $payment_enable,"xendit"))

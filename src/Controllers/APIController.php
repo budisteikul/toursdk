@@ -114,9 +114,9 @@ class APIController extends Controller
             $headerBox = '
             <img src="'.config('site.assets').'/img/header/vertikaltrip.svg" alt="Vertikal Trip" width="250" />
             <hr class="hr-theme" />
-            
+            <h3 class="text-white">MUST TRY GASTRONOMY ACTIVIES IN INDONESIA</h3>
             <p class="text-faded">
-                Join us on this experience to try authentic local dishes, learn interesting fun facts about city, interact with locals and many more.
+                Join us on this activity to try authentic local dishes, learn interesting fun facts about city, interact with locals and many more. Our team will accompany your journey and making you feel like a local!
             </p>
             
             ';
@@ -167,19 +167,19 @@ class APIController extends Controller
         $tourGuides[] = [
             'image' => config('site.assets').'/img/guide/kalika-ratna.jpg',
             'name' => 'Kalika',
-            'description' => 'Tour Guide in Jogja',
+            'description' => 'Story Teller',
         ];
 
         $tourGuides[] = [
             'image' => config('site.assets').'/img/guide/anisa.jpg',
             'name' => 'Anisa',
-            'description' => 'Tour Guide in Jogja',
+            'description' => 'Story Teller',
         ];
 
         $tourGuides[] = [
             'image' => config('site.assets').'/img/guide/budi.jpg',
             'name' => 'Budi',
-            'description' => 'Tour Guide in Bali',
+            'description' => 'Story Teller',
         ];
 
         $services[] = [

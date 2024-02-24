@@ -9,7 +9,7 @@ class LogHelper {
     {
         if(env("APP_ENV")=="local")
         {
-            //return "";
+            return "";
         }
         
         try

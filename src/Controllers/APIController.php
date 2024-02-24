@@ -58,7 +58,9 @@ class APIController extends Controller
 
     public function config(Request $request)
     {
-        $paypal_sdk = 'https://www.paypal.com/sdk/js?client-id='.env("PAYPAL_CLIENT_ID").'&currency='. env("PAYPAL_CURRENCY").'&disable-funding=credit,card';
+        //$paypal_sdk = 'https://www.paypal.com/sdk/js?client-id='.env("PAYPAL_CLIENT_ID").'&currency='. env("PAYPAL_CURRENCY").'&disable-funding=credit,card';
+
+        $paypal_sdk = 'https://www.paypal.com/sdk/js?client-id='.env("PAYPAL_CLIENT_ID").'&currency='. env("PAYPAL_CURRENCY").'';
         
         $payment_enable = config('site.payment_enable');
         $payment_array = explode(",",$payment_enable);

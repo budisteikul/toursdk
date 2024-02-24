@@ -85,7 +85,6 @@ class PaymentController extends Controller
                 break;
 
                 case 'qris':
-                    //VoucherHelper::apply_voucher($sessionId,'LOCALPAYMENT');
                     BookingHelper::set_bookingStatus($sessionId,'PENDING');
                     BookingHelper::set_confirmationCode($sessionId);
                     $response = PaymentHelper::create_payment($sessionId,"xendit","qris");

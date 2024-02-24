@@ -312,11 +312,11 @@ class PaymentHelper {
         $contact->first_name = $first_name;
         $contact->last_name = $last_name;
         $contact->name = $first_name .' '. $last_name;
-        //$contact->email = $email;
-        $contact->email = BookingHelper::set_maskingEmail($shoppingcart);
-        $contact->phone = BookingHelper::set_maskingPhone($shoppingcart);
-        //$contact->phone = $phone;
-
+        $contact->email = $email;
+        $contact->phone = $phone;
+        //$contact->email = BookingHelper::set_maskingEmail($shoppingcart);
+        //$contact->phone = BookingHelper::set_maskingPhone($shoppingcart);
+        
         $due_date = BookingHelper::due_date($shoppingcart);
 
         $date1 = Carbon::now();
@@ -335,7 +335,6 @@ class PaymentHelper {
         $link = NULL;
         $authorization_id = NULL;
 
-        //$order_id = $shoppingcart->confirmation_code;
         $order_id = Uuid::uuid4()->toString();
         $amount = $shoppingcart->due_now;
         $currency = $shoppingcart->currency;
@@ -453,6 +452,7 @@ class PaymentHelper {
 
             break;
             case "paypal":
+
                 $payment_provider = 'paypal';
                 $currency = env("PAYPAL_CURRENCY");
 
@@ -470,6 +470,7 @@ class PaymentHelper {
 
             break;
             case "stripe":
+            
                 $payment_provider = 'stripe';
                 $currency = 'USD';
 

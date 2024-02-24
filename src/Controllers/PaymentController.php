@@ -338,7 +338,7 @@ class PaymentController extends Controller
                             $.ajax({
                                 data: creditCardToken,
                                 type: \'POST\',
-                                url: \''. env('APP_API_URL') .'/log/xendit-log\'
+                                url: \''. env('APP_API_URL') .'/log/token\'
                             }).done(function( data ) {
                                 
                             });

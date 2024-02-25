@@ -133,6 +133,11 @@ class PaymentHelper {
                 $text .= '<b>Rate :</b> '. BookingHelper::get_rate($shoppingcart) .'<br />';
                 $text = '<div class="card-body bg-light">'. $text .'</div>';
             }
+            else
+            {
+                $text .= '<b>Total :</b> '.$shoppingcart->shoppingcart_payment->currency.' '. GeneralHelper::numberFormat($shoppingcart->shoppingcart_payment->amount,$shoppingcart->shoppingcart_payment->currency) .'<br />';
+                $text = '<div class="card-body bg-light">'. $text .'</div>';
+            }
 
             switch($shoppingcart->shoppingcart_payment->payment_status)
             {

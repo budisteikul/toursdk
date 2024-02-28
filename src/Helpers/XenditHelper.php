@@ -104,7 +104,7 @@ class XenditHelper {
             $response_json = new \stdClass();
       
             $data1 = (new self)->createChargeCard($data->transaction->param1,$data->transaction->amount);
-            LogHelper::log($data1,'xendit');
+            LogHelper::log($data1,'xdt-charge');
 
             if($data1->status=="CAPTURED")
             {

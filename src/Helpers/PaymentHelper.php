@@ -407,21 +407,11 @@ class PaymentHelper {
                 $rate = number_format((float)$shoppingcart->due_now / $amount, 2, '.', '');
                 $rate_from = $shoppingcart->currency;
                 $rate_to = $currency;
-                
-                $data->transaction->authorization_id = $param1;
+
+                $data->transaction->param1 = $param1;
                 $data->transaction->amount = round($amount);
                 $data->transaction->currency = $currency;
 
-                if($data->transaction->bank == 'ovo')
-                {
-                    $payment_type = 'ewallet';
-                    $bank_name = 'ovo';
-                    $payment_status = 2;
-
-                    $response = new \stdClass();
-                    $response->status = new \stdClass();
-                    $response->status->id = 1;
-                }
                 
                 if($data->transaction->bank == 'bss')
                 {

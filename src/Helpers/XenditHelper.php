@@ -77,7 +77,7 @@ class XenditHelper {
         if($data->transaction->bank=="invoice")
         {
             
-            $data1 = (new self)->createInvoice($data->transaction->amount);
+            $data1 = (new self)->createInvoice($data->transaction->amount,$data->transaction->param1);
 
             if(isset($data1->error_code))
             {
@@ -103,7 +103,7 @@ class XenditHelper {
             $status_json = new \stdClass();
             $response_json = new \stdClass();
       
-            $data1 = (new self)->createChargeCard($data->transaction->authorization_id,$data->transaction->amount);
+            $data1 = (new self)->createChargeCard($data->transaction->param1,$data->transaction->amount);
             LogHelper::log($data1,'xendit');
 
             if($data1->status=="CAPTURED")

@@ -172,12 +172,12 @@ class XenditHelper {
         }
     }
 
-    public function createInvoice($amount)
+    public function createInvoice($amount, $payment_method=['CREDIT_CARD'])
     {
         $data = new \stdClass();
         $data->external_id = Uuid::uuid4()->toString();
         $data->amount = $amount;
-        $data->payment_methods = ['CREDIT_CARD'];
+        $data->payment_methods = $payment_method;
         return json_decode($this->POST('/v2/invoices',$data));
     }
 

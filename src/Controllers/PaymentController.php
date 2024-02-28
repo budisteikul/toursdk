@@ -396,24 +396,8 @@ class PaymentController extends Controller
                             $("#three-ds-container").show();
             } else if (creditCardToken.status === "FRAUD") {
                             
-                            $.ajax({
-                                data: creditCardToken,
-                                type: \'POST\',
-                                url: \''. env('APP_API_URL') .'/log/token\'
-                            }).done(function( data ) {
-                                
-                            });
-
                             enableButton();
             } else if (creditCardToken.status === "FAILED") {
-
-                            $.ajax({
-                                data: creditCardToken,
-                                type: \'POST\',
-                                url: \''. env('APP_API_URL') .'/log/token\'
-                            }).done(function( data ) {
-                                
-                            });
 
                             enableButton();
             }

@@ -169,19 +169,21 @@ class APIController extends Controller
         $tourGuides[] = [
             'image' => config('site.assets').'/img/guide/kalika-ratna.jpg',
             'name' => 'Kalika',
-            'description' => 'Story Teller',
+            'description' => '',
         ];
 
         $tourGuides[] = [
             'image' => config('site.assets').'/img/guide/anisa.jpg',
             'name' => 'Anisa',
-            'description' => 'Story Teller',
+            'description' => '',
         ];
 
+        
+
         $tourGuides[] = [
-            'image' => config('site.assets').'/img/guide/budi.jpg',
-            'name' => 'Budi',
-            'description' => 'Story Teller',
+            'image' => config('site.assets').'/img/guide/dharma02.jpg',
+            'name' => 'Dharma',
+            'description' => '',
         ];
 
         $services[] = [

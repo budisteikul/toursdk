@@ -378,7 +378,7 @@ footer {
 @endif
 <div style="clear: both;"></div>
 <footer>
-	Invoice was generated on a server and is valid without the signature and seal.
+	Invoice was auto generated and is valid without the signature and seal. Scan qrcode to update invoice.
 </footer>
 </body>
 </html>

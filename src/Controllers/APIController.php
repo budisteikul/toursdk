@@ -50,7 +50,7 @@ class APIController extends Controller
                 $shoppingcart_cancellation = new ShoppingcartCancellation();
                 $shoppingcart_cancellation->status = 1;
                 $shoppingcart_cancellation->shoppingcart_id = $shoppingcart->id;
-                $shoppingcart_cancellation->amount = 100;
+                $shoppingcart_cancellation->amount = $shoppingcart->shoppingcart_payment->amount;
                 $shoppingcart_cancellation->save();
             }
         }

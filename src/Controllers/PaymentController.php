@@ -298,7 +298,7 @@ class PaymentController extends Controller
 
         $("#submitCheckout").slideUp("slow");
 
-        $("#paymentContainer").html(\'<hr /><form id="payment-form"><div class="row"><div class="col-md-12 mb-2"><h2 class=" mt-2">Card Information</h2></div><div class="col-md-12 mb-2"><div class="input-group"><div class="input-group-append"><span class="input-group-text" id="inputGroupPrepend3"><i id="cardBrand" class="far fa-credit-card"></i></span></div><input class="form-control" type="text" id="card-number" placeholder="Card Number" value="" style="height: 47px;border-radius: 0;"><div id="cardNumberFeddback" class="invalid-feedback">Card number invalid.</div></div></div></div><div class="row no-gutters"><div class="col-md-6 mb-2"><input type="text" class="form-control" id="cc-expiration" placeholder="MM / YY" required="" style="height: 47px;border-radius: 0;"><div id="expirationFeddback" class="invalid-feedback">Expiration invalid.</div></div><div class="col-md-6 mb-2"><input type="text" class="form-control" id="cc-cvv" placeholder="CVC" required="" style="height: 47px;border-radius: 0;"><div id="cvvFeedback" class="invalid-feedback">CVC invalid.</div></div></div><button style="height:47px;" class="mt-2 btn btn-lg btn-block btn-theme" id="submit"><strong>Pay with card</strong></button><div id="change_payment" class="mt-2"><center><small><a href="#" class="text-theme" onClick="changePaymentMethod(); return false;">Click here</a> to change payment method</small></center></div></form><div id=\"loader\" class=\"mb-4\"></div><div id=\"text-alert\" class=\"text-center\"></div><div id="three-ds-container" class="modal" style="display: none;"></div>\');
+        $("#paymentContainer").html(\'<hr /><form id="payment-form"><div class="row"><div class="col-md-12 mb-2"><h2 class=" mt-2">Card Information</h2></div><div class="col-md-12 mb-2"><div class="input-group"><div class="input-group-append"><span class="input-group-text" id="inputGroupPrepend3"><i id="cardBrand" class="far fa-credit-card fa-lg"></i></span></div><input class="form-control" type="text" id="card-number" placeholder="Card Number" value="" style="height: 47px;border-radius: 0;"><div id="cardNumberFeddback" class="invalid-feedback">Card number invalid.</div></div></div></div><div class="row no-gutters"><div class="col-md-6 mb-2"><input type="text" class="form-control" id="cc-expiration" placeholder="MM / YY" required="" style="height: 47px;border-radius: 0;"><div id="expirationFeddback" class="invalid-feedback">Expiration invalid.</div></div><div class="col-md-6 mb-2"><input type="text" class="form-control" id="cc-cvv" placeholder="CVC" required="" style="height: 47px;border-radius: 0;"><div id="cvvFeedback" class="invalid-feedback">CVC invalid.</div></div></div><button style="height:47px;" class="mt-2 btn btn-lg btn-block btn-theme" id="submit"><strong>Pay with card</strong></button><div id="change_payment" class="mt-2"><center><small><a href="#" class="text-theme" onClick="changePaymentMethod(); return false;">Click here</a> to change payment method</small></center></div></form><div id=\"loader\" class=\"mb-4\"></div><div id=\"text-alert\" class=\"text-center\"></div><div id="three-ds-container" class="modal" style="display: none;"></div>\');
 
         payform.cardNumberInput(document.getElementById("card-number"));
         payform.expiryInput(document.getElementById("cc-expiration"));
@@ -311,23 +311,28 @@ class PaymentController extends Controller
                 if(card_brand=="visa")
                 {
                     $("#cardBrand").removeClass();
-                    $("#cardBrand").addClass(\'fab\').addClass(\'fa-cc-visa\');
+                    $("#cardBrand").addClass(\'fab\').addClass(\'fa-cc-visa  fa-lg\');
                 }
                 else if(card_brand=="mastercard")
                 {
                     $("#cardBrand").removeClass();
-                    $("#cardBrand").addClass(\'fab\').addClass(\'fa-cc-mastercard\');
+                    $("#cardBrand").addClass(\'fab\').addClass(\'fa-cc-mastercard  fa-lg\');
                 }
                 else if(card_brand=="jcb")
                 {
                     $("#cardBrand").removeClass();
-                    $("#cardBrand").addClass(\'fab\').addClass(\'fa-cc-jcb\');
+                    $("#cardBrand").addClass(\'fab\').addClass(\'fa-cc-jcb  fa-lg\');
                 }
                 else
                 {
                     $("#cardBrand").removeClass();
-                    $("#cardBrand").addClass(\'far\').addClass(\'fa-credit-card\');
+                    $("#cardBrand").addClass(\'far\').addClass(\'fa-credit-card  fa-lg\');
                 }
+            }
+            else
+            {
+                $("#cardBrand").removeClass();
+                $("#cardBrand").addClass(\'far\').addClass(\'fa-credit-card  fa-lg\');
             }
             
             

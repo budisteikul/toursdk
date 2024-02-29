@@ -100,6 +100,8 @@ class BookingHelper {
 			$grand_subtotal = 0;
 			$grand_discount = 0;
 
+			$currency = config('site.currency');
+
 			for($i=0;$i<count($data['activityBookings']);$i++)
 			{
 				$shoppingcart_product = new ShoppingcartProduct();
@@ -240,21 +242,22 @@ class BookingHelper {
 			$grand_subtotal += $subtotal_product;
 			$grand_total += $total_product;
 			
-			$shoppingcart->currency = $data['currency'];
+			//$shoppingcart->currency = $data['currency'];
+			$shoppingcart->currency = $currency;
 			$shoppingcart->subtotal = $grand_subtotal;
 			$shoppingcart->discount = $grand_discount;
 			$shoppingcart->total = $grand_total;
 			$shoppingcart->due_now = $grand_total;
 			$shoppingcart->save();
 
-			$new_currency = 'IDR';
+			$new_currency = config('site.currency');
 			$shoppingcart_payment = new ShoppingcartPayment();
 			$shoppingcart_payment->payment_provider = 'none';
 			$shoppingcart_payment->amount = $grand_total;
-			$shoppingcart_payment->rate = self::convert_currency(1,$data['currency'],$new_currency);
-			$shoppingcart_payment->rate_from = $data['currency'];
+			$shoppingcart_payment->rate = self::convert_currency(1,$currency,$new_currency);
+			$shoppingcart_payment->rate_from = $currency;
 			$shoppingcart_payment->rate_to = $new_currency;
-			$shoppingcart_payment->currency = $data['currency'];
+			$shoppingcart_payment->currency = $currency;
 			$shoppingcart_payment->payment_status = 2;
 			$shoppingcart_payment->shoppingcart_id = $shoppingcart->id;
 			$shoppingcart_payment->save();
@@ -2072,7 +2075,7 @@ class BookingHelper {
 	public static function create_invoice_pdf($shoppingcart)
 	{
 		$path = config('site.assets') .'/img/pdf/qrcode-logo.png';
-		$qrcode = base64_encode(QrCode::errorCorrection('H')->format('png')->merge($path,.5,false)->size(1024)->margin(0)->generate($shoppingcart->url .'/booking/receipt/'.$shoppingcart->session_id.'/'.$shoppingcart->confirmation_code  ));
+		$qrcode = base64_encode(QrCode::errorCorrection('H')->format('png')->merge($path,.5,false)->size(1024)->margin(0)->generate(env('APP_API_URL') .'/pdf/invoice/'.$shoppingcart->session_id.'/Invoice-'.$shoppingcart->confirmation_code.'.pdf'  ));
         $pdf = PDF::setOptions(['tempDir' =>  storage_path(),'fontDir' => storage_path(),'fontCache' => storage_path(),'isRemoteEnabled' => true])->loadView('toursdk::layouts.pdf.invoice', compact('shoppingcart','qrcode'))->setPaper('a4', 'portrait');
         return $pdf;
 	}

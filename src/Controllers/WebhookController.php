@@ -85,25 +85,40 @@ class WebhookController extends Controller
             {
                 $confirmation_code = $data['confirmationCode'];
             }
+
             if($bookingChannel=="Viator.com") $confirmation_code = 'BR-'. $data['externalBookingReference'];
             
-            switch($request->input('action'))
+
+            $status = $data['status'];
+
+            switch($status)
             {
-            case 'BOOKING_CONFIRMED':
-                if(Shoppingcart::where('confirmation_code',$confirmation_code)->count()==0)
-                {
+                case 'CONFIRMED':
+                    
+                    $count = Shoppingcart::where('confirmation_code',$confirmation_code)->where('booking_status','CONFIRMED')->count();
+
+                    if($count>0)
+                    {
+                        $shoppingcart = Shoppingcart::where('confirmation_code',$confirmation_code)->where('booking_status','CONFIRMED')->first();
+                        PaymentHelper::confirm_payment($shoppingcart,"CANCELED",true);
+                        BookingHelper::shoppingcart_notif($shoppingcart);
+                    }
+
                     $shoppingcart = BookingHelper::webhook_insert_shoppingcart($data);
                     PaymentHelper::confirm_payment($shoppingcart,"CONFIRMED",true);
                     BookingHelper::shoppingcart_notif($shoppingcart);
-                }
-                return response('OK', 200)->header('Content-Type', 'text/plain');
-            break;
-            case 'BOOKING_ITEM_CANCELLED':
-                $shoppingcart = Shoppingcart::where('confirmation_code',$confirmation_code)->firstOrFail();
-                PaymentHelper::confirm_payment($shoppingcart,"CANCELED",true);
-                BookingHelper::shoppingcart_notif($shoppingcart);
-                return response('OK', 200)->header('Content-Type', 'text/plain');
-            break;
+                
+                    return response('CONFIRMED OK', 200)->header('Content-Type', 'text/plain');
+                break;
+                case 'CANCELLED':
+                    if(Shoppingcart::where('confirmation_code',$confirmation_code)->where('booking_status','CONFIRMED')->count()>0)
+                    {
+                        $shoppingcart = Shoppingcart::where('confirmation_code',$confirmation_code)->where('booking_status','CONFIRMED')->first();
+                        PaymentHelper::confirm_payment($shoppingcart,"CANCELED",true);
+                        BookingHelper::shoppingcart_notif($shoppingcart);
+                    }
+                    return response('CANCELLED OK', 200)->header('Content-Type', 'text/plain');
+                break;
             }
         }
 

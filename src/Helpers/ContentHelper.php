@@ -340,7 +340,7 @@ class ContentHelper {
         try {
             
                 if($shoppingcart->shoppingcart_payment->payment_status>0) {
-                    $invoice = '<a target="_blank" class="text-theme" href="'.url('/api').'/pdf/invoice/'. $shoppingcart->session_id .'/Invoice-'. $shoppingcart->confirmation_code .'.pdf"><h5><i class="fas fa-file-invoice"></i> Invoice-'. $shoppingcart->confirmation_code .'.pdf</h5></a>';
+                    $invoice = '<a target="_blank" class="text-theme" href="'.url('/api').'/pdf/invoice/'. $shoppingcart->session_id .'/Invoice-'. $shoppingcart->confirmation_code .'.pdf"><h5><i class="far fa-file-pdf"></i> Invoice-'. $shoppingcart->confirmation_code .'.pdf</h5></a>';
                 }
             
         } catch (Exception $e) {

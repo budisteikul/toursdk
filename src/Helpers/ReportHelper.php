@@ -4,13 +4,13 @@ use budisteikul\toursdk\Models\ShoppingcartProduct;
 
 class ReportHelper {
 
-    public static function traveller_product_per_year($product_id,$year)
+    public static function traveller_product_per_year($title,$year)
     {
         $total = 0;
         $products = ShoppingcartProduct::with('shoppingcart')
         ->WhereHas('shoppingcart', function($query) {
                  $query->where('booking_status','CONFIRMED');
-            })->where('product_id',$product_id)->whereYear('date',$year)->whereMonth('date',$month)->get();
+            })->where('title',$title)->whereYear('date',$year)->whereMonth('date',$month)->get();
         
         foreach($products as $product)
         {
@@ -61,13 +61,13 @@ class ReportHelper {
         return $total;
     }
 
-    public static function traveller_product_per_month($product_id,$month,$year)
+    public static function traveller_product_per_month($title,$month,$year)
     {
         $total = 0;
         $products = ShoppingcartProduct::with('shoppingcart')
         ->WhereHas('shoppingcart', function($query) {
                  $query->where('booking_status','CONFIRMED');
-            })->where('product_id',$product_id)->whereYear('date',$year)->whereMonth('date',$month)->get();
+            })->where('title',$title)->whereYear('date',$year)->whereMonth('date',$month)->get();
         
         foreach($products as $product)
         {

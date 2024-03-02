@@ -150,7 +150,7 @@ class APIController extends Controller
         
 
         $usefullLink[] = [
-            'title' => 'List of GMap Meeting Point',
+            'title' => 'Meeting Point',
             'link' => 'https://linktr.ee/foodtour',
             'type' => 'outsite'
         ];

@@ -680,6 +680,18 @@ class ContentHelper {
                 'agendaItems' => $dataObj5,
                 'promotion' => $data_voucher,
                 'images' => $image,
+                /*
+                'marketplace' => '
+                    <div class="card mb-4 shadow p-2">
+                    <div class="card-header">
+                    <h3><i class="fa-solid fa-ticket"></i>  Available on Marketplace</h3></div>
+                    <div class="card-body">
+                        <img height="30" class="mb-1 mt-2 mr-2 img-thumbnail" src="https://storage.googleapis.com/storage.vertikaltrip.com/assets/img/footer/tripadvisor-logo.png" }="" alt="Tripadvisor">
+                        <img height="30" class="mb-1 mt-2 mr-2 img-thumbnail" src="https://storage.googleapis.com/storage.vertikaltrip.com/assets/img/footer/airbnb-logo.png" }="" alt="Airbnb">
+                        <img height="30" class="mb-1 mt-2 mr-2 img-thumbnail" src="https://storage.googleapis.com/storage.vertikaltrip.com/assets/img/footer/getyourguide-logo.png" }="" alt="GetYourGuide">
+                    </div>
+                    <div>',
+                */
             );
 
         return $dataObj;

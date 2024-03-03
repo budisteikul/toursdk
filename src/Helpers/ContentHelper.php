@@ -302,9 +302,9 @@ class ContentHelper {
         {
             $dataShoppingcart[0]["stripe_currency"] = "USD";
             $dataShoppingcart[0]["stripe_total"] = GeneralHelper::numberFormat(BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'USD'),'USD');
-            $dataShoppingcart[0]["stripe_rate"] = $usd_rate_text;
+            $dataShoppingcart[0]["stripe_rate"] = $usd_rate_text ;
             $dataShoppingcart[0]["stripe_label"] = '
-                <strong class="mb-1">Card Payment 
+                <strong class="mb-1">Alt. Card Payment 
                     <img class="ml-2" src="'. config('site.assets') .'/img/payment/stripe.png" height="20" alt="Card Payment" />
                 </strong>
                 <div class="ml-0 mb-1 mt-2">

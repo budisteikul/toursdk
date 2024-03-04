@@ -26,6 +26,11 @@ class Product extends Model
         return $this->hasMany(Review::class,'product_id');
     }
 
+    public function marketplaces()
+    {
+        return $this->hasMany(ShoppingcartProduct::class,'product_id');
+    }
+
     public function vouchers()
     {
         return $this->belongsToMany(Voucher::class,'vouchers_products','product_id','voucher_id')->withPivot('type')->withTimestamps();

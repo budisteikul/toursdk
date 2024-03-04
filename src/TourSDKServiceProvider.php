@@ -46,15 +46,12 @@ class TourSDKServiceProvider extends ServiceProvider
         $this->loadMigrationsFrom(__DIR__.'/migrations/2022_12_23_220624_create_settings_table.php');
         $this->loadMigrationsFrom(__DIR__.'/migrations/2023_12_07_135250_create_shoppingcart_cancellations_table.php');
         $this->loadMigrationsFrom(__DIR__.'/migrations/2024_02_08_003236_create_partners_table.php');
+        $this->loadMigrationsFrom(__DIR__.'/migrations/2024_03_04_180443_create_marketplaces_table.php');
         $this->loadRoutesFrom(__DIR__.'/routes/web.php');
     }
 
     protected function registerConfig()
     {
-        
-        
-        
-
         app()->config["filesystems.disks.gcs"] = [
             'driver' => 'gcs',
             'key_file_path' => env('GOOGLE_CLOUD_KEY_FILE', null), 
@@ -67,7 +64,5 @@ class TourSDKServiceProvider extends ServiceProvider
             'visibility' => 'public', 
             'metadata' => ['cacheControl'=> 'public,max-age=86400'], 
         ];
-
-
     }
 }

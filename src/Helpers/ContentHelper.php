@@ -667,15 +667,15 @@ class ContentHelper {
         {
             if($marketplace->name=="tripadvisor")
             {
-                $marketplace_list  .= '<a href="'. $marketplace->link .'" target="_blank"><img height="30" class="mb-1 mt-2 mr-2 img-thumbnail" src="https://storage.googleapis.com/storage.vertikaltrip.com/assets/img/footer/tripadvisor-logo.png" }="" alt="Tripadvisor"></a>';
+                $marketplace_list  .= '<a href="'. $marketplace->link .'" target="_blank"><img height="30" class="mb-1 mt-2 mr-2 img-thumbnail" src="'.config('site.assets').'/img/footer/tripadvisor-logo.png" }="" alt="Tripadvisor"></a>';
             }
             if($marketplace->name=="airbnb")
             {
-                $marketplace_list  .= '<a href="'. $marketplace->link .'" target="_blank"><img height="30" class="mb-1 mt-2 mr-2 img-thumbnail" src="https://storage.googleapis.com/storage.vertikaltrip.com/assets/img/footer/airbnb-logo.png" }="" alt="Airbnb"></a>';
+                $marketplace_list  .= '<a href="'. $marketplace->link .'" target="_blank"><img height="30" class="mb-1 mt-2 mr-2 img-thumbnail" src="'.config('site.assets').'/img/footer/airbnb-logo.png" }="" alt="Airbnb"></a>';
             }
             if($marketplace->name=="getyourguide")
             {
-                $marketplace_list  .= '<a href="'. $marketplace->link .'" target="_blank"><img height="30" class="mb-1 mt-2 mr-2 img-thumbnail" src="https://storage.googleapis.com/storage.vertikaltrip.com/assets/img/footer/getyourguide-logo.png" }="" alt="GetYourGuide"></a>';
+                $marketplace_list  .= '<a href="'. $marketplace->link .'" target="_blank"><img height="30" class="mb-1 mt-2 mr-2 img-thumbnail" src="'.config('site.assets').'/img/footer/getyourguide-logo.png" }="" alt="GetYourGuide"></a>';
             }
         }
 

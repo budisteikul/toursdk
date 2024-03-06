@@ -12,7 +12,10 @@ class ShoppingcartCancellation extends Model
     protected $dateFormat = 'Y-m-d H:i:s.u';
     protected $fillable = [
     	'shoppingcart_id',
+        'currency',
     	'amount',
+        'refund',
+        'reason',
     	'status'
     ];
 

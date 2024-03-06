@@ -177,118 +177,6 @@ class PaymentController extends Controller
             
     }
 
-    
-
-    public function createpaymentovo(Request $request)
-    {
-            $validator = Validator::make($request->all(), [
-                'sessionId' => ['required', 'string', 'max:255'],
-                'phoneNumber' => ['required', 'string', 'max:255'],
-            ]);
-
-            if ($validator->fails()) {
-                return response()->json([
-                    'message' => 'required',
-                ]);
-            }
-
-            $phoneNumber = $request->input('phoneNumber');
-            $sessionId = $request->input('sessionId');
-
-            $shoppingcart = Cache::get('_'. $sessionId);
-            
-            if(substr($phoneNumber,0,1)=="0")
-            {
-                $phoneNumber = substr($phoneNumber,1);
-            }
-            $phoneNumber = "+62". $phoneNumber;
-
-            $xendit = new XenditHelper();
-            $response = $xendit->createEWalletOvoCharge($shoppingcart->due_now,$phoneNumber);
-            if(isset($response->error_code))
-            {
-                return response()->json([
-                    "message" => "error"
-                ]);
-            }
-            FirebaseHelper::upload_payment('PENDING',$response->reference_id,$sessionId,'ovo');
-            return response()->json([
-                    "message" => "success",
-                    "reference_id" => $response->reference_id
-                ]);
-            
-    }
-
-
-    public function ovo_jscript($sessionId)
-    {
-        $shoppingcart = Cache::get('_'. $sessionId);
-        $jscript = '
-            $("#submitCheckout").slideUp("slow");
-            $("#paymentContainer").html(\'<div class="form mb-2 mt-2"><strong>Please input your OVO number :</strong></div><div class="form-row mb-4 mt-2"><div class="col-xs-2"><input type="text" style="height:47px; width:50px;" class="form-control  disabled" value="+62" disabled></div><div class="col"><input id="ovoPhoneNumber" type="text" style="height:47px;" class="form-control" placeholder="85743112112"></div></div><div id=\"text-alert\" class=\"text-center mb-4 mt-2\"></div><button id="submit" onClick="createpaymentovo()" class="btn btn-lg btn-block btn-theme" style="height:47px"><strong>Click to pay with <img class="ml-2 mr-2" src="'.config('site.assets').'/img/payment/ovo-light.png" height="30" /></strong></button>\');
-
-            function createpaymentovo()
-            {
-                            var phoneNumber = document.getElementById("ovoPhoneNumber").value;
-                            
-                            $("#ovoPhoneNumber").removeClass("is-invalid");
-                            $("#alert-payment").slideUp("slow");
-                            $("#ovoPhoneNumber").attr("disabled", true);
-                            $("#submit").attr("disabled", true);
-                            $("#submit").html(\' <i class="fa fa-spinner fa-spin fa-fw"></i>  processing... \');
-
-                            $("#text-alert").show();
-                            $("#text-alert").html( "Please check OVO app on your mobile phone, to process payment" );
-                            
-                            if(phoneNumber=="")
-                            {
-                                $("#ovoPhoneNumber").addClass("is-invalid");
-                                
-                                $("#text-alert").hide();
-                                $("#text-alert").html( "" );
-                                $("#ovoPhoneNumber").attr("disabled", false);
-                                $("#submit").attr("disabled", false);
-                                $("#submit").html(\' <strong>Click to pay with <img class="ml-2 mr-2" src="'.config('site.assets').'/img/payment/ovo-light.png" height="30" /></strong> \');
-                                return false;
-                            }
-
-
-                            $.ajax({
-                                data: {
-                                    "sessionId": \''.$sessionId.'\',
-                                    "phoneNumber": phoneNumber,
-                                },
-                                type: \'POST\',
-                                url: \''. url('/api') .'/payment/ovo\'
-                                }).done(function(data) {
-                                    
-                                    if(data.message=="success")
-                                    {
-                                        window.startListenerEwallet(data.reference_id);
-                                        setTimeout(
-                                        function() 
-                                        {
-                                            window.stopListenerEwallet(data.reference_id);
-                                            failedpaymentEwallet("ovo");
-                                        }, 65000);
-                                    }
-                                    else
-                                    {
-                                        failedpaymentEwallet("ovo");
-                                    }
-
-                                }).fail(function(error) {
-
-                                    failedpaymentEwallet("ovo");
-                                        
-                            });
-
-                            return false;
-            }
-        ';
-        return response($jscript)->header('Content-Type', 'application/javascript');
-    }
-
     public function xendit_jscript($sessionId)
     {
         $shoppingcart = Cache::get('_'. $sessionId);
@@ -508,7 +396,7 @@ class PaymentController extends Controller
         $jscript = '
         
             $("#submitCheckout").slideUp("slow");
-            $("#paymentContainer").html(\'<form id="payment-form"><div id="stripe-wallet" class="pt-2 pb-2 justify-content-center"><h2>Pay with</h2><div id="payment-request-button"></div><div class="mt-2 mb-2" style="width: 100%; height: 12px; border-bottom: 1px solid #D0D0D0; text-align: center"><span style="color: #D0D0D0; font-size: 12px; background-color: #FFFFFF; padding: 0 10px;">or pay with card</span></div></div><div class="form-control mt-2 mb-2" style="height:47px;" id="card-element"></div><div id="card-errors" role="alert"></div><button style="height:47px;" class="btn btn-lg btn-block btn-theme" id="submit"><strong>Pay with card</strong></button><div id="change_payment" class="mt-2"><center><small><a href="#" class="text-theme" onClick="changePaymentMethod(); return false;">Click here</a> to change payment method</small></center></div></form><div id=\"loader\" class=\"mb-4\"></div><div id=\"text-alert\" class=\"text-center\"></div>\');
+            $("#paymentContainer").html(\'<hr /><form id="payment-form"><div id="stripe-wallet" class="pt-2 pb-2 justify-content-center"><h2>Pay with</h2><div id="payment-request-button"></div><div class="mt-2 mb-2" style="width: 100%; height: 12px; border-bottom: 1px solid #D0D0D0; text-align: center"><span style="color: #D0D0D0; font-size: 12px; background-color: #FFFFFF; padding: 0 10px;">or pay with card</span></div></div><div class="form-control mt-2 mb-2" style="height:47px;" id="card-element"></div><div id="card-errors" role="alert"></div><button style="height:47px;" class="btn btn-lg btn-block btn-theme" id="submit"><strong>Pay with card</strong></button><div id="change_payment" class="mt-2"><center><small><a href="#" class="text-theme" onClick="changePaymentMethod(); return false;">Click here</a> to change payment method</small></center></div></form><div id=\"loader\" class=\"mb-4\"></div><div id=\"text-alert\" class=\"text-center\"></div>\');
 
                  var stripe = Stripe(\''. env("STRIPE_PUBLISHABLE_KEY") .'\', {
                     apiVersion: "2020-08-27",

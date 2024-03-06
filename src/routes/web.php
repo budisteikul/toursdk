@@ -89,9 +89,9 @@
 	Route::post('/webhook/{webhook_app}', 'budisteikul\toursdk\Controllers\WebhookController@webhook')->middleware(['SettingMiddleware']);
 	Route::get('/webhook/{webhook_app}', 'budisteikul\toursdk\Controllers\WebhookController@webhook')->middleware(['SettingMiddleware']);
 
-	// TASK
+	//TASK
 	Route::post('/task', 'budisteikul\toursdk\Controllers\TaskController@task')->middleware(['SettingMiddleware']);
 
-	// LOG
-	Route::post('/api/log/{identifier}', 'budisteikul\toursdk\Controllers\LogController@log')->middleware(['SettingMiddleware']);
+	//LOG
+	Route::post('/logger/{identifier}', 'budisteikul\toursdk\Controllers\LogController@log')->middleware(['SettingMiddleware']);
 

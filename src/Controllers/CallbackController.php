@@ -65,31 +65,7 @@ class CallbackController extends Controller
             ], 200);
         }
 
-        if($event=="ewallet.capture")
-        {
-            if($channel_code=="ID_OVO")
-            {
-                $output = FirebaseHelper::read_payment($reference_id);
-                $sessionId = $output->session_id;
-
-                if($data['data']['status']!="SUCCEEDED")
-                {
-                    FirebaseHelper::upload_payment('FAILED',$reference_id,$sessionId,'ovo');
-                    return response()->json([
-                        'message' => "error"
-                    ], 200);
-                }
-
-                BookingHelper::set_bookingStatus($sessionId,'CONFIRMED');
-                BookingHelper::set_confirmationCode($sessionId);
-                PaymentHelper::create_payment($sessionId,"xendit","ovo");
-                $shoppingcart = BookingHelper::confirm_booking($sessionId);
-                FirebaseHelper::upload_payment('CONFIRMED',$reference_id,$sessionId,'ovo',"/booking/receipt/".$shoppingcart->session_id."/".$shoppingcart->confirmation_code);
-                BookingHelper::shoppingcart_notif($shoppingcart_payment->shoppingcart);
-            }
-
-            
-        }
+        
 
         if($event=="qr.payment")
         {

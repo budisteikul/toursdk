@@ -20,7 +20,9 @@ return new class extends Migration
             $table->foreign('shoppingcart_id')
                     ->references('id')->on('shoppingcarts')
                     ->onDelete('cascade')->onUpdate('cascade');
+            $table->string('currency')->default('USD');        
             $table->float('amount',24,2)->default(0);
+            $table->float('refund',24,2)->default(0);
             $table->longText('reason')->nullable();
             $table->tinyText('status')->default(0);
             $table->timestamps(6);

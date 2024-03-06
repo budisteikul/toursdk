@@ -652,6 +652,7 @@ class PaymentController extends Controller
                 },
                 */
                 createOrder: function() {
+                    $("#alert-payment").html(\'\');
                     return fetch(\''. url('/api') .'/payment/paypal\', {
                         method: \'POST\',
                         credentials: \'same-origin\',

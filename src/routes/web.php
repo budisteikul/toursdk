@@ -44,10 +44,6 @@
 	Route::get('/api/payment/paypal/jscript/{sessionId}', 'budisteikul\toursdk\Controllers\PaymentController@paypal_jscript')->middleware(['SettingMiddleware']);
 	Route::post('/api/payment/paypal', 'budisteikul\toursdk\Controllers\PaymentController@createpaymentpaypal')->middleware(['SettingMiddleware']);
 
-	Route::get('/api/payment/ovo/jscript/{sessionId}', 'budisteikul\toursdk\Controllers\PaymentController@ovo_jscript')->middleware(['SettingMiddleware']);
-	Route::post('/api/payment/ovo', 'budisteikul\toursdk\Controllers\PaymentController@createpaymentovo')->middleware(['SettingMiddleware']);
-
-
 
 	//Shoppingcart
 	Route::get('/api/activity/{activityId}/calendar/json/{year}/{month}', 'budisteikul\toursdk\Controllers\APIController@snippetscalendar')->middleware(['SettingMiddleware']);

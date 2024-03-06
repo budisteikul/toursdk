@@ -186,7 +186,7 @@ class PaymentController extends Controller
 
         $("#submitCheckout").slideUp("slow");
 
-        $("#paymentContainer").html(\'<hr /><form id="payment-form"><div class="row"><div class="col-md-12 mb-2"><h2 class=" mt-2">Card Information</h2></div><div class="col-md-12 mb-2"><div class="input-group"><div class="input-group-append"><span class="input-group-text" id="inputGroupPrepend3"><i id="cardBrand" class="far fa-credit-card fa-lg"></i></span></div><input class="form-control" type="text" id="card-number" placeholder="Card Number" value="" style="height: 47px;border-radius: 0;"><div id="cardNumberFeddback" class="invalid-feedback">Card number invalid.</div></div></div></div><div class="row no-gutters"><div class="col-md-6 mb-2"><input type="text" class="form-control" id="cc-expiration" placeholder="MM / YY" required="" style="height: 47px;border-radius: 0;"><div id="expirationFeddback" class="invalid-feedback">Expiration invalid.</div></div><div class="col-md-6 mb-2"><input type="text" class="form-control" id="cc-cvv" placeholder="CVC" required="" style="height: 47px;border-radius: 0;"><div id="cvvFeedback" class="invalid-feedback">CVC invalid.</div></div></div><button style="height:47px;" class="mt-2 btn btn-lg btn-block btn-theme" id="submit"><strong>Pay with card</strong></button><div id="change_payment" class="mt-2"><center><small><a href="#" class="text-theme" onClick="changePaymentMethod(); return false;">Click here</a> to change payment method</small></center></div></form><div id=\"loader\" class=\"mb-4\"></div><div id=\"text-alert\" class=\"text-center\"></div><div id="three-ds-container" class="modal" style="display: none;"></div>\');
+        $("#paymentContainer").html(\'<hr /><form id="payment-form"><div class="row"><div class="col-md-12 mb-2"><h2 class=" mt-2">Card Information</h2></div><div class="col-md-12 mb-2"><div class="input-group"><div class="input-group-append"><span class="input-group-text" id="inputGroupPrepend3"><i id="cardBrand" class="far fa-credit-card fa-lg"></i></span></div><input class="form-control" type="text" id="card-number" placeholder="Card Number" value="" style="height: 47px;border-radius: 0;"><div id="cardNumberFeddback" class="invalid-feedback">Card number invalid.</div></div></div></div><div class="row no-gutters"><div class="col-md-6 mb-2"><input type="text" class="form-control" id="cc-expiration" placeholder="MM / YY" required="" style="height: 47px;border-radius: 0;"><div id="expirationFeddback" class="invalid-feedback">Expiration invalid.</div></div><div class="col-md-6 mb-2"><input type="text" class="form-control" id="cc-cvv" placeholder="CVC" required="" style="height: 47px;border-radius: 0;"><div id="cvvFeedback" class="invalid-feedback">CVC invalid.</div></div></div><button style="height:47px;" class="mt-2 btn btn-lg btn-block btn-theme" id="submit"><i class="fas fa-lock"></i> <strong>Pay with card</strong></button><div id="change_payment" class="mt-2"><center><small><a href="#" class="text-theme" onClick="changePaymentMethod(); return false;">Click here</a> to change payment method</small></center></div></form><div id=\"loader\" class=\"mb-4\"></div><div id=\"text-alert\" class=\"text-center\"></div><div id="three-ds-container" class="modal" style="display: none;"></div>\');
 
         payform.cardNumberInput(document.getElementById("card-number"));
         payform.expiryInput(document.getElementById("cc-expiration"));
@@ -308,7 +308,7 @@ class PaymentController extends Controller
             $("#loader").removeClass("loader");
             $("#payment-form").slideDown("slow");
             $("#submit").attr("disabled", false);
-            $("#submit").html(\'<strong>Pay with card</strong>\');
+            $("#submit").html(\'<i class="fas fa-lock"></i> <strong>Pay with card</strong>\');
         }
 
         var form = document.getElementById(\'payment-form\');
@@ -396,7 +396,7 @@ class PaymentController extends Controller
         $jscript = '
         
             $("#submitCheckout").slideUp("slow");
-            $("#paymentContainer").html(\'<hr /><form id="payment-form"><div id="stripe-wallet" class="pt-2 pb-2 justify-content-center"><h2>Pay with</h2><div id="payment-request-button"></div><div class="mt-2 mb-2" style="width: 100%; height: 12px; border-bottom: 1px solid #D0D0D0; text-align: center"><span style="color: #D0D0D0; font-size: 12px; background-color: #FFFFFF; padding: 0 10px;">or pay with card</span></div></div><div class="form-control mt-2 mb-2" style="height:47px;" id="card-element"></div><div id="card-errors" role="alert"></div><button style="height:47px;" class="btn btn-lg btn-block btn-theme" id="submit"><strong>Pay with card</strong></button><div id="change_payment" class="mt-2"><center><small><a href="#" class="text-theme" onClick="changePaymentMethod(); return false;">Click here</a> to change payment method</small></center></div></form><div id=\"loader\" class=\"mb-4\"></div><div id=\"text-alert\" class=\"text-center\"></div>\');
+            $("#paymentContainer").html(\'<hr /><form id="payment-form"><div id="stripe-wallet" class="pt-2 pb-2 justify-content-center"><h2>Pay with</h2><div id="payment-request-button"></div><div class="mt-2 mb-2" style="width: 100%; height: 12px; border-bottom: 1px solid #D0D0D0; text-align: center"><span style="color: #D0D0D0; font-size: 12px; background-color: #FFFFFF; padding: 0 10px;">or pay with card</span></div></div><div class="form-control mt-2 mb-2" style="height:47px;" id="card-element"></div><div id="card-errors" role="alert"></div><button style="height:47px;" class="btn btn-lg btn-block btn-theme" id="submit"><i class="fas fa-lock"></i> <strong>Pay with card</strong></button><div id="change_payment" class="mt-2"><center><small><a href="#" class="text-theme" onClick="changePaymentMethod(); return false;">Click here</a> to change payment method</small></center></div></form><div id=\"loader\" class=\"mb-4\"></div><div id=\"text-alert\" class=\"text-center\"></div>\');
 
                  var stripe = Stripe(\''. env("STRIPE_PUBLISHABLE_KEY") .'\', {
                     apiVersion: "2020-08-27",
@@ -476,7 +476,7 @@ class PaymentController extends Controller
                             $("#loader").removeClass("loader");
                             $("#payment-form").slideDown("slow");
                             $("#submit").attr("disabled", false);
-                            $("#submit").html(\'<strong>Pay with card</strong>\');
+                            $("#submit").html(\'<i class="fas fa-lock"></i> <strong>Pay with card</strong>\');
                             $(\'#alert-payment\').html(\'<div id="alert-failed" class="alert alert-danger text-center mt-2" role="alert"><h2 style="margin-bottom:10px; margin-top:10px;"><i class="far fa-frown"></i> \'+ result.error.message +\'</h2></div>\');
                             $(\'#alert-payment\').fadeIn("slow");
 

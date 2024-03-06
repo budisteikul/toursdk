@@ -238,8 +238,8 @@ class APIController extends Controller
                 
             ],
             'footerPaymentChannels' => [
-                '<img height="30" class="mt-2" src="'.config('site.assets').'/img/footer/line-7.png" alt="Payment Channels" /><br />',
-                //'<img height="30" class="mt-2" src="'.config('site.assets').'/img/footer/line-4.png" alt="Payment Channels" /><br />',
+                '<img height="30" class="mt-2" src="'.config('site.assets').'/img/footer/line-1.png" alt="Payment Channels" /><br />',
+                '<img height="30" class="mt-2" src="'.config('site.assets').'/img/footer/line-4.png" alt="Payment Channels" /><br />',
             ]
         ];
 

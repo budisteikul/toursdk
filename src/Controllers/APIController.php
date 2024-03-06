@@ -1043,6 +1043,7 @@ class APIController extends Controller
 
         function changePaymentMethod()
         {
+            $("#alert-payment").html(\'\');
             $("#submitCheckout").slideDown("slow");
             $("#paymentContainer").html(\'\');
             '.$payment_enable.'

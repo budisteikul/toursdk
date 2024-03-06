@@ -8,7 +8,7 @@ use budisteikul\toursdk\Helpers\PaymentHelper;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Cache;
 use budisteikul\toursdk\Helpers\FirebaseHelper;
-
+use Ramsey\Uuid\Uuid;
 
 class PaymentController extends Controller
 {
@@ -181,7 +181,8 @@ class PaymentController extends Controller
     {
         $shoppingcart = Cache::get('_'. $sessionId);
         $amount = BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'IDR');
-        
+       
+
         $jscript = '
 
         $("#submitCheckout").slideUp("slow");
@@ -193,6 +194,9 @@ class PaymentController extends Controller
         payform.cvcInput(document.getElementById("cc-cvv"));
 
         $(\'#card-number\').on(\'input\', function() {
+
+
+
             if($(\'#card-number\').val().length >=3)
             {
                 var card_brand = payform.parseCardType($(\'#card-number\').val());
@@ -283,14 +287,30 @@ class PaymentController extends Controller
                             window.open(creditCardToken.payer_authentication_url, "3ds-inline-frame");
                             $("#three-ds-container").show();
             } else if (creditCardToken.status === "FRAUD") {
-                            
                             enableButton();
             } else if (creditCardToken.status === "FAILED") {
 
                             enableButton();
+                            var error_message = creditCardToken.failure_reason;
+
+                            if(creditCardToken.failure_reason=="AUTHENTICATION_FAILED")
+                            {
+                                error_message = "Authentication Failed";
+                            }
+                            
+                            $(\'#alert-payment\').html(\'<div id="alert-failed" class="alert alert-danger text-center mt-2" role="alert"><h2 style="margin-bottom:10px; margin-top:10px;"><i class="far fa-frown"></i> \'+ error_message +\'</h2></div>\');
+                            $(\'#alert-payment\').fadeIn("slow");
+                           
             }
         }
         
+        function randomNumber()
+        {
+            var randomNumber = Date.now() + Math.random();
+            randomNumber = randomNumber.toString().replace(".","");
+            return randomNumber;
+        }
+
         function cleanFeedback()
         {
             $("#card-number").removeClass("is-invalid");
@@ -330,7 +350,7 @@ class PaymentController extends Controller
                 var expiryMonth = expiryArray[0].trim();
                 var expiryYear = expiryArray[1].trim();
                 var cvvNumber = $("#cc-cvv").val();
-
+                var external_id = randomNumber();
                 
                 if(expiryYear.length==2)
                 {
@@ -374,7 +394,8 @@ class PaymentController extends Controller
                     card_exp_month: expiryMonth,
                     card_exp_year: expiryYear,
                     card_cvn: cvvNumber,
-                    is_multiple_use: false
+                    is_multiple_use: false,
+                    external_id: external_id
                 }, xenditResponseHandler);
 
 

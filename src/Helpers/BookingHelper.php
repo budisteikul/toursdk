@@ -1483,6 +1483,7 @@ class BookingHelper {
 		foreach($group_shoppingcart_products as $group_shoppingcart_product)
         {
         	$date = Carbon::parse($group_shoppingcart_product->date)->format('Y-m-d');
+        	$time = Carbon::parse($group_shoppingcart_product->date)->format('H:i');
         	$people = ShoppingcartProductDetail::with('shoppingcart_product')
             	->WhereHas('shoppingcart_product', function($query) use ($date,$activityId) {
             	$query->whereDate('date','=',$date)->where(['product_id'=>$activityId])->WhereHas('shoppingcart', function($query) {
@@ -1493,6 +1494,7 @@ class BookingHelper {
 
             $bookings[] = (object)[
             	"date" => $date,
+            	"time" => $time,
             	"people" => $people,
         	];
         }
@@ -1502,35 +1504,41 @@ class BookingHelper {
         {
         	foreach($value as $firstDay)
         	{
-        		foreach($bookings as $booking)
+        		foreach($firstDay->availabilities as $availability)
 				{
-					if($booking->date == $firstDay->fullDate)
+					foreach($bookings as $booking)
 					{
-						foreach($firstDay->availabilities as $availability)
-                        {
-                        	$availability->data->bookedParticipants +=  $booking->people;
-							$availability->data->availabilityCount -= $booking->people;
-
-							$availability->activityAvailability->bookedParticipants +=  $booking->people;
-							$availability->activityAvailability->availabilityCount -= $booking->people;
-
-							// cek cek aja
-							if($booking->people>=$availability->activityAvailability->minParticipants)
+						if($booking->date == $firstDay->fullDate)
+						{
+							if($availability->activityAvailability->startTime==$booking->time)
 							{
-								$availability->activityAvailability->minParticipantsToBookNow = 1;
-							}
-							if($booking->people>=$availability->data->minParticipants)
-							{
-								$availability->data->minParticipantsToBookNow = 1;
-							}
+                        		$availability->data->bookedParticipants +=  $booking->people;
+								$availability->data->availabilityCount -= $booking->people;
+
+								$availability->activityAvailability->bookedParticipants +=  $booking->people;
+								$availability->activityAvailability->availabilityCount -= $booking->people;
+
+								// cek cek aja
+								if($booking->people>=$availability->activityAvailability->minParticipants)
+								{
+									$availability->activityAvailability->minParticipantsToBookNow = 1;
+								}
+								if($booking->people>=$availability->data->minParticipants)
+								{
+									$availability->data->minParticipantsToBookNow = 1;
+								}
                                         
-							$availability->availabilityCount -= $booking->people;
+								$availability->availabilityCount -= $booking->people;
 
-							if($availability->availabilityCount<=0) $firstDay->soldOut = true;
+								if($availability->availabilityCount<=0) $firstDay->soldOut = true;
+							}
 
-                        }
+						}
 					}
-				}
+
+                }
+					
+				
         	}
         }
 
@@ -1550,35 +1558,44 @@ class BookingHelper {
                         {
                             if(!$day->soldOut)
                             {
-                                foreach($bookings as $booking)
-                                {
-                                    if($booking->date == $day->fullDate)
-                                    {
-                                        foreach($day->availabilities as $availability)
-                                        {
-                                            $availability->data->bookedParticipants +=  $booking->people;
-                                            $availability->data->availabilityCount -= $booking->people;
 
-                                            $availability->activityAvailability->bookedParticipants +=  $booking->people;
-                                            $availability->activityAvailability->availabilityCount -= $booking->people;
+								foreach($day->availabilities as $availability)
+								{
+									foreach($bookings as $booking)
+									{
+										if($booking->date == $day->fullDate)
+										{
+
+											if($availability->activityAvailability->startTime==$booking->time)
+											{
+												$availability->data->bookedParticipants +=  $booking->people;
+                                            	$availability->data->availabilityCount -= $booking->people;
+
+                                            	$availability->activityAvailability->bookedParticipants +=  $booking->people;
+                                            	$availability->activityAvailability->availabilityCount -= $booking->people;
                                         	
-                                        	// cek cek aja
-                                        	if($booking->people>=$availability->activityAvailability->minParticipants)
-											{
-												$availability->activityAvailability->minParticipantsToBookNow = 1;
+                                        		// cek cek aja
+                                        		if($booking->people>=$availability->activityAvailability->minParticipants)
+												{
+													$availability->activityAvailability->minParticipantsToBookNow = 1;
+												}
+												if($booking->people>=$availability->data->minParticipants)
+												{
+													$availability->data->minParticipantsToBookNow = 1;
+												}
+
+
+                                            	$availability->availabilityCount -= $booking->people;
+
+                                            	if($availability->availabilityCount<=0) $day->soldOut = true;
 											}
-											if($booking->people>=$availability->data->minParticipants)
-											{
-												$availability->data->minParticipantsToBookNow = 1;
-											}
 
-
-                                            $availability->availabilityCount -= $booking->people;
-
-                                            if($availability->availabilityCount<=0) $day->soldOut = true;
+                                            	
                                         }
                                     }
                                 }
+                                   
+                                
                             }
                         }
                     }

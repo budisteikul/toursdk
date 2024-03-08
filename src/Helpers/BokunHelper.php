@@ -33,7 +33,7 @@ class BokunHelper {
    		return env("BOKUN_SECRET_KEY");
     }
 
-    /*
+    
     public static function bokunAPI_connect($path, $method = 'GET', $data = "")
     {
     		if(self::env_bokunEnv()=="production")
@@ -82,6 +82,15 @@ class BokunHelper {
 			return $contents;
     }
 
+    public static function get_cancelProductBooking($product_confirmation_code)
+    {
+    	//$data = '{"note": "test","notify": false,"refund": false,"refundAmount": 0,"remainInvoiced": false}';
+        //$data = json_decode($data);
+        //$value = self::bokunAPI_connect('/booking.json/cancel-product-booking/'.$product_confirmation_code,'POST', $data);
+        //$value = json_decode($value);
+        return '';
+    }
+
     public static function set_mainContactQuestion($sessionId)
 	{
 		$currency = self::env_bokunCurrency();
@@ -96,7 +105,7 @@ class BokunHelper {
         $value = json_decode($value);
         return $value;
 	}
-    public static function get_confirmBooking($sessionId)
+    public static function set_confirmBooking($sessionId)
 	{
 		self::set_mainContactQuestion($sessionId);
         $currency = self::env_bokunCurrency();
@@ -110,15 +119,8 @@ class BokunHelper {
         return $value->booking->confirmationCode;
 	}
 
-	public static function get_cancelProductBooking($product_confirmation_code)
-    {
-    	//$data = '{"note": "test","notify": false,"refund": false,"refundAmount": 0,"remainInvoiced": false}';
-        //$data = json_decode($data);
-        //$value = self::bokunAPI_connect('/booking.json/cancel-product-booking/'.$product_confirmation_code,'POST', $data);
-        //$value = json_decode($value);
-        return '';
-    }
-	*/
+	
+	
     
 
     public static function bokunWidget_connect($path, $method = 'GET', $data = "")

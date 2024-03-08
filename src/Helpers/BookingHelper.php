@@ -1739,8 +1739,14 @@ class BookingHelper {
 	public static function confirm_booking($sessionId,$sendMail=true)
 	{
 		$shoppingcart = Cache::get('_'. $sessionId);
-
         $shoppingcart = self::confirm_transaction($sessionId);
+
+        if(config('site.bokun')=="true")
+        {
+        	BokunHelper::set_mainContactQuestion($sessionId);
+        	BokunHelper::set_confirmBooking($sessionId);
+        }
+        
 
         self::shoppingcart_clear($sessionId);
 

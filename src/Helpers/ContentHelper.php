@@ -685,8 +685,9 @@ class ContentHelper {
             $marketplace_content = '
                     <div class="card mb-4 shadow p-2">
                     <div class="card-header">
-                    <h3><i class="fas fa-store"></i>  Or book this tour on markeplace</h3></div>
-                    <div class="card-body">
+                    <h3><i class="fas fa-store"></i>  Book this tour on markeplace</h3>
+                    </div>
+                    <div class="card-body mt-0">
                         '.$marketplace_list.'
                     </div>
                     <div>';

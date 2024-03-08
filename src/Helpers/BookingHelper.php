@@ -1483,26 +1483,13 @@ class BookingHelper {
 		foreach($group_shoppingcart_products as $group_shoppingcart_product)
         {
         	$date = Carbon::parse($group_shoppingcart_product->date)->format('Y-m-d');
-        	if(config('site.bokun')=="true")
-        	{
-        		$people = ShoppingcartProductDetail::with('shoppingcart_product')
-            	->WhereHas('shoppingcart_product', function($query) use ($date,$activityId) {
-            	$query->whereDate('date','=',$date)->where(['product_id'=>$activityId])->WhereHas('shoppingcart', function($query) {
-              		return $query->where('booking_channel','AAA');
-            	});
-            	})->get()->sum('people');
-        	}
-        	else
-        	{
-        		$people = ShoppingcartProductDetail::with('shoppingcart_product')
+        	$people = ShoppingcartProductDetail::with('shoppingcart_product')
             	->WhereHas('shoppingcart_product', function($query) use ($date,$activityId) {
             	$query->whereDate('date','=',$date)->where(['product_id'=>$activityId])->WhereHas('shoppingcart', function($query) {
               		return $query->where('booking_status','CONFIRMED');
               		//return $query->where('booking_channel','WEBSITE')->orWhere('booking_channel','AIRBNB');
             	});
             	})->get()->sum('people');
-        	}
-            
 
             $bookings[] = (object)[
             	"date" => $date,
@@ -1526,6 +1513,16 @@ class BookingHelper {
 
 							$availability->activityAvailability->bookedParticipants +=  $booking->people;
 							$availability->activityAvailability->availabilityCount -= $booking->people;
+
+							// cek cek aja
+							if($booking->people>=$availability->activityAvailability->minParticipants)
+							{
+								$availability->activityAvailability->minParticipantsToBookNow = 1;
+							}
+							if($booking->people>=$availability->data->minParticipants)
+							{
+								$availability->data->minParticipantsToBookNow = 1;
+							}
                                         
 							$availability->availabilityCount -= $booking->people;
 
@@ -1564,7 +1561,18 @@ class BookingHelper {
 
                                             $availability->activityAvailability->bookedParticipants +=  $booking->people;
                                             $availability->activityAvailability->availabilityCount -= $booking->people;
-                                        
+                                        	
+                                        	// cek cek aja
+                                        	if($booking->people>=$availability->activityAvailability->minParticipants)
+											{
+												$availability->activityAvailability->minParticipantsToBookNow = 1;
+											}
+											if($booking->people>=$availability->data->minParticipants)
+											{
+												$availability->data->minParticipantsToBookNow = 1;
+											}
+
+
                                             $availability->availabilityCount -= $booking->people;
 
                                             if($availability->availabilityCount<=0) $day->soldOut = true;
@@ -1754,11 +1762,9 @@ class BookingHelper {
 		$shoppingcart = Cache::get('_'. $sessionId);
         $shoppingcart = self::confirm_transaction($sessionId);
 
-        if(config('site.bokun')=="true")
-        {
-        	BokunHelper::set_mainContactQuestion($sessionId);
-        	BokunHelper::set_confirmBooking($sessionId);
-        }
+        
+        	//BokunHelper::set_mainContactQuestion($sessionId);
+        	//BokunHelper::set_confirmBooking($sessionId);
         
 
         self::shoppingcart_clear($sessionId);

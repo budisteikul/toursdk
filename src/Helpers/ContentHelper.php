@@ -665,17 +665,15 @@ class ContentHelper {
         $marketplaces = Marketplace::where('product_id',$product->id)->orderBy('name')->get();
         foreach($marketplaces as $marketplace)
         {
-            if($marketplace->name=="tripadvisor")
+            if($marketplace->name=="viator")
             {
-                $marketplace_list  .= '<a href="'. $marketplace->link .'" target="_blank"><img height="30" class="mb-1 mt-2 mr-2 img-thumbnail" src="'.config('site.assets').'/img/footer/tripadvisor-logo.png" }="" alt="Tripadvisor"></a>';
-            }
-            if($marketplace->name=="airbnb")
-            {
-                $marketplace_list  .= '<a href="'. $marketplace->link .'" target="_blank"><img height="30" class="mb-1 mt-2 mr-2 img-thumbnail" src="'.config('site.assets').'/img/footer/airbnb-logo.png" }="" alt="Airbnb"></a>';
+                $marketplace_list  .= '<a href="'. $marketplace->link .'" class="btn btn-warning btn-block" target="_blank">
+                    <span class="mb-1 mt-1 mr-1 ml-1"><strong>Book on</strong></span> <img height="20" class="mb-1 mt-1 mr-1 ml-1" src="'. config('site.assets') .'/img/button/viator01.png"></a>';
             }
             if($marketplace->name=="getyourguide")
             {
-                $marketplace_list  .= '<a href="'. $marketplace->link .'" target="_blank"><img height="30" class="mb-1 mt-2 mr-2 img-thumbnail" src="'.config('site.assets').'/img/footer/getyourguide-logo.png" }="" alt="GetYourGuide"></a>';
+                $marketplace_list  .= '<a href="'. $marketplace->link .'" class="btn btn-warning btn-block" target="_blank">
+                    <span class="mb-1 mt-1 mr-1 ml-1"><strong>Book on</strong></span> <img height="20" class="mb-1 mt-1 mr-1 ml-1" src="'. config('site.assets') .'/img/button/gyg02.png"></a>';
             }
         }
 
@@ -685,7 +683,7 @@ class ContentHelper {
             $marketplace_content = '
                     <div class="card mb-4 shadow p-2">
                     <div class="card-header">
-                    <h3><i class="fas fa-store"></i>  Book this tour on markeplace</h3>
+                    <h3><i class="fas fa-store"></i>  Available on markeplace</h3>
                     </div>
                     <div class="card-body mt-0">
                         '.$marketplace_list.'

@@ -1430,9 +1430,41 @@ class BookingHelper {
 	{
 		
         $contents = BokunHelper::get_calendar($activityId,$year,$month);
-
         $value[] = $contents->firstAvailableDay;
         
+        //=========================================================
+        $min_pax = Product::where('bokun_id',$activityId)->first()->min_pax;
+
+        foreach($value as $firstDay)
+        	{
+				foreach($firstDay->availabilities as $availability)
+				{
+					$availability->activityAvailability->minParticipants = $min_pax;
+					$availability->activityAvailability->minParticipantsToBookNow = $min_pax;
+
+					$availability->data->minParticipants = $min_pax;
+					$availability->data->minParticipantsToBookNow = $min_pax;
+				}
+        	}
+
+        
+        foreach($contents->weeks as $week)
+        {
+            foreach($week->days as $day)
+            {
+            	foreach($day->availabilities as $availability)
+				{
+					$availability->activityAvailability->minParticipants = $min_pax;
+					$availability->activityAvailability->minParticipantsToBookNow = $min_pax;
+
+					$availability->data->minParticipants = $min_pax;
+					$availability->data->minParticipantsToBookNow = $min_pax;
+				}
+
+				
+            }
+        }
+        //=========================================================
         $closeouts = CloseOut::where('bokun_id', $activityId)->where('date','>=',date('Y-m-d'))->get();
 
         foreach($value as $firstDay)
@@ -1467,7 +1499,7 @@ class BookingHelper {
                 }
             }
         }
-
+        //=========================================================
         
         //=========================================================
         // Check booking full or not
@@ -1492,10 +1524,13 @@ class BookingHelper {
             	});
             	})->get()->sum('people');
 
+            $min_pax = Product::where('bokun_id',$activityId)->first()->min_pax;
+
             $bookings[] = (object)[
             	"date" => $date,
             	"time" => $time,
             	"people" => $people,
+            	"min_pax" => $min_pax,
         	];
         }
 
@@ -1519,11 +1554,11 @@ class BookingHelper {
 								$availability->activityAvailability->availabilityCount -= $booking->people;
 
 								// cek cek aja
-								if($booking->people>=$availability->activityAvailability->minParticipants)
+								if($booking->people>=$booking->min_pax)
 								{
 									$availability->activityAvailability->minParticipantsToBookNow = 1;
 								}
-								if($booking->people>=$availability->data->minParticipants)
+								if($booking->people>=$booking->min_pax)
 								{
 									$availability->data->minParticipantsToBookNow = 1;
 								}
@@ -1575,11 +1610,11 @@ class BookingHelper {
                                             	$availability->activityAvailability->availabilityCount -= $booking->people;
                                         	
                                         		// cek cek aja
-                                        		if($booking->people>=$availability->activityAvailability->minParticipants)
+                                        		if($booking->people>=$booking->min_pax)
 												{
 													$availability->activityAvailability->minParticipantsToBookNow = 1;
 												}
-												if($booking->people>=$availability->data->minParticipants)
+												if($booking->people>=$booking->min_pax)
 												{
 													$availability->data->minParticipantsToBookNow = 1;
 												}

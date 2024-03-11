@@ -119,14 +119,14 @@ class XenditHelper {
                  $status_json->id = '0';
                  $message = '';
                  if($data1->failure_reason=="EXPIRED_CARD") $message = 'The card has expired.';
-                 if($data1->failure_reason=="ISSUER_SUSPECT_FRAUD") $message = 'The card has been declined by the issuing bank due to potential fraud suspicion.';
-                 if($data1->failure_reason=="DECLINED_BY_PROCESSOR") $message = 'The card has been declined by the processor.';
-                 if($data1->failure_reason=="INSUFFICIENT_BALANCE") $message = 'The card does not have enough balance.';
-                 if($data1->failure_reason=="STOLEN_CARD") $message = 'The card has been marked as stolen.';
-                 if($data1->failure_reason=="INACTIVE_OR_UNAUTHORIZED_CARD") $message = 'The card is inactive or unauthorized to perform the transaction.';
-                 if($data1->failure_reason=="PROCESSOR_ERROR") $message = 'The charge failed because there\'s an integration issue between the card processor and the bank.';
+                 if($data1->failure_reason=="ISSUER_SUSPECT_FRAUD") $message = 'The card has been declined by the issuing bank due to potential fraud suspicion. Try Alt. Debit/Credit Card payment method';
+                 if($data1->failure_reason=="DECLINED_BY_PROCESSOR") $message = 'The card has been declined by the processor. Try Alt. Debit/Credit Card payment method';
+                 if($data1->failure_reason=="INSUFFICIENT_BALANCE") $message = 'The card does not have enough balance. Try Alt. Debit/Credit Card payment method';
+                 if($data1->failure_reason=="STOLEN_CARD") $message = 'The card has been marked as stolen. Try Alt. Debit/Credit Card payment method';
+                 if($data1->failure_reason=="INACTIVE_OR_UNAUTHORIZED_CARD") $message = 'The card is inactive or unauthorized to perform the transaction. Try Alt. Debit/Credit Card payment method';
+                 if($data1->failure_reason=="PROCESSOR_ERROR") $message = 'The charge failed because there\'s an integration issue between the card processor and the bank. Try Alt. Debit/Credit Card payment method';
                  if($data1->failure_reason=="INVALID_CVV") $message = 'The card is declined due to unmatched CVV / CVC';
-                 if($data1->failure_reason=="DECLINED_BY_ISSUER") $message = 'The card is declined by the issuing bank.';
+                 if($data1->failure_reason=="DECLINED_BY_ISSUER") $message = 'The card is declined by the issuing bank. Try Alt. Debit/Credit Card payment method';
                  $status_json->message = $message;
             }
 

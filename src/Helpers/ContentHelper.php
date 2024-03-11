@@ -308,8 +308,8 @@ class ContentHelper {
                 <strong class="mb-1">Alt. Debit/Credit Card
                     <img class="ml-2" src="'. config('site.assets') .'/img/payment/stripe.png" height="20" alt="Card Payment" />
                 </strong>
+                <br /><span>Especially card from US/CA/UK</span>
                 <div class="ml-0 mb-1 mt-2">
-                
                     <img src="'. config('site.assets') .'/img/payment/card-payment-new.png" style="max-height:35px" class="img-fluid" alt="Payment Logo" />
                 </div>';
             /*

@@ -126,7 +126,7 @@ class XenditHelper {
                  if($data1->failure_reason=="INACTIVE_OR_UNAUTHORIZED_CARD") $message = 'The card is inactive or unauthorized to perform the transaction.';
                  if($data1->failure_reason=="PROCESSOR_ERROR") $message = 'The charge failed because there\'s an integration issue between the card processor and the bank.';
                  if($data1->failure_reason=="INVALID_CVV") $message = 'The card is declined due to unmatched CVV / CVC';
-                 if($data1->failure_reason=="DECLINED_BY_ISSUER") $message = 'The card is declined by the issuing bank';
+                 if($data1->failure_reason=="DECLINED_BY_ISSUER") $message = 'The card is declined by the issuing bank.';
                  $status_json->message = $message;
             }
 

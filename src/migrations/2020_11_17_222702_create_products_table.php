@@ -22,7 +22,7 @@ class CreateProductsTable extends Migration
 			$table->bigInteger('category_id')->default(0);
 			$table->bigInteger('bokun_id')->default(0);
 			
-            $table->float('min_pax',24,2)->default(1);
+            $table->float('min_participant',24,2)->default(1);
 
             $table->boolean('deposit_percentage')->default(true);
             $table->float('deposit_amount',24,2)->default(0);

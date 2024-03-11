@@ -1433,17 +1433,17 @@ class BookingHelper {
         $value[] = $contents->firstAvailableDay;
         
         //=========================================================
-        $min_pax = Product::where('bokun_id',$activityId)->first()->min_pax;
+        $min_participant = Product::where('bokun_id',$activityId)->first()->min_participant;
 
         foreach($value as $firstDay)
         	{
 				foreach($firstDay->availabilities as $availability)
 				{
-					$availability->activityAvailability->minParticipants = $min_pax;
-					$availability->activityAvailability->minParticipantsToBookNow = $min_pax;
+					$availability->activityAvailability->minParticipants = $min_participant;
+					$availability->activityAvailability->minParticipantsToBookNow = $min_participant;
 
-					$availability->data->minParticipants = $min_pax;
-					$availability->data->minParticipantsToBookNow = $min_pax;
+					$availability->data->minParticipants = $min_participant;
+					$availability->data->minParticipantsToBookNow = $min_participant;
 				}
         	}
 
@@ -1454,11 +1454,11 @@ class BookingHelper {
             {
             	foreach($day->availabilities as $availability)
 				{
-					$availability->activityAvailability->minParticipants = $min_pax;
-					$availability->activityAvailability->minParticipantsToBookNow = $min_pax;
+					$availability->activityAvailability->minParticipants = $min_participant;
+					$availability->activityAvailability->minParticipantsToBookNow = $min_participant;
 
-					$availability->data->minParticipants = $min_pax;
-					$availability->data->minParticipantsToBookNow = $min_pax;
+					$availability->data->minParticipants = $min_participant;
+					$availability->data->minParticipantsToBookNow = $min_participant;
 				}
 
 				
@@ -1524,13 +1524,13 @@ class BookingHelper {
             	});
             	})->get()->sum('people');
 
-            $min_pax = Product::where('bokun_id',$activityId)->first()->min_pax;
+            $min_participant = Product::where('bokun_id',$activityId)->first()->min_participant;
 
             $bookings[] = (object)[
             	"date" => $date,
             	"time" => $time,
             	"people" => $people,
-            	"min_pax" => $min_pax,
+            	"min_participant" => $min_participant,
         	];
         }
 
@@ -1554,11 +1554,11 @@ class BookingHelper {
 								$availability->activityAvailability->availabilityCount -= $booking->people;
 
 								// cek cek aja
-								if($booking->people>=$booking->min_pax)
+								if($booking->people>=$booking->min_participant)
 								{
 									$availability->activityAvailability->minParticipantsToBookNow = 1;
 								}
-								if($booking->people>=$booking->min_pax)
+								if($booking->people>=$booking->min_participant)
 								{
 									$availability->data->minParticipantsToBookNow = 1;
 								}
@@ -1610,11 +1610,11 @@ class BookingHelper {
                                             	$availability->activityAvailability->availabilityCount -= $booking->people;
                                         	
                                         		// cek cek aja
-                                        		if($booking->people>=$booking->min_pax)
+                                        		if($booking->people>=$booking->min_participant)
 												{
 													$availability->activityAvailability->minParticipantsToBookNow = 1;
 												}
-												if($booking->people>=$booking->min_pax)
+												if($booking->people>=$booking->min_participant)
 												{
 													$availability->data->minParticipantsToBookNow = 1;
 												}

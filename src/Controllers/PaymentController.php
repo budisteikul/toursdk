@@ -187,7 +187,7 @@ class PaymentController extends Controller
 
         $("#submitCheckout").slideUp("slow");
 
-        $("#paymentContainer").html(\'<hr /><form id="payment-form"><div class="row"><div class="col-md-12 mb-2"><h2 class=" mt-2">Card Information</h2></div><div class="col-md-12 mb-2"><div class="input-group"><div class="input-group-append"><span class="input-group-text" id="inputGroupPrepend3"><i id="cardBrand" class="far fa-credit-card fa-lg"></i></span></div><input class="form-control" type="text" id="card-number" placeholder="Card Number" value="" style="height: 47px;border-radius: 0;"><div id="cardNumberFeddback" class="invalid-feedback">Card number invalid.</div></div></div></div><div class="row no-gutters"><div class="col-md-6 mb-2"><input type="text" class="form-control" id="cc-expiration" placeholder="MM / YY" required="" style="height: 47px;border-radius: 0;"><div id="expirationFeddback" class="invalid-feedback">Expiration invalid.</div></div><div class="col-md-6 mb-2"><input type="text" class="form-control" id="cc-cvv" placeholder="CVC" required="" style="height: 47px;border-radius: 0;"><div id="cvvFeedback" class="invalid-feedback">CVC invalid.</div></div></div><button style="height:47px;" class="mt-2 btn btn-lg btn-block btn-theme" id="submit"><i class="fas fa-lock"></i> <strong>Pay with card</strong></button><div id="change_payment" class="mt-2"><center><small><a href="#" class="text-theme" onClick="changePaymentMethod(); return false;">Click here</a> to change payment method</small></center></div></form><div id=\"loader\" class=\"mb-4\"></div><div id=\"text-alert\" class=\"text-center\"></div><div id="three-ds-container" class="modal" style="display: none;"></div>\');
+        $("#paymentContainer").html(\'<hr /><form id="payment-form"><div class="row"><div class="col-md-12 mb-2"><h2 class=" mt-2">Card Information</h2></div><div class="col-md-12 mb-2"><div class="input-group"><div class="input-group-append"><span class="input-group-text" id="inputGroupPrepend3"><i id="cardBrand" class="far fa-credit-card fa-lg"></i></span></div><input class="form-control" type="text" id="card-number" placeholder="Card Number" value="" style="height: 47px;border-radius: 0;"><div id="cardNumberFeddback" class="invalid-feedback">Card number invalid.</div></div></div></div><div class="row no-gutters"><div class="col-md-4 mb-2"><input type="text" class="form-control" id="cc-expiration" placeholder="MM / YY" required="" style="height: 47px;border-radius: 0;"><div id="expirationFeddback" class="invalid-feedback">Expiration invalid.</div></div><div class="col-md-4 mb-2"><input type="text" class="form-control" id="cc-cvv" placeholder="CVC" required="" style="height: 47px;border-radius: 0;"><div id="cvvFeedback" class="invalid-feedback">CVC invalid.</div></div><div class="col-md-4 mb-2"><input type="text" class="form-control" id="cc-zipcode" placeholder="Zip Code" required="" style="height: 47px;border-radius: 0;"><div id="zipcodeFeedback" class="invalid-feedback">Zip code invalid.</div></div></div><button style="height:47px;" class="mt-2 btn btn-lg btn-block btn-theme" id="submit"><i class="fas fa-lock"></i> <strong>Pay with card</strong></button><div id="change_payment" class="mt-2"><center><small><a href="#" class="text-theme" onClick="changePaymentMethod(); return false;">Click here</a> to change payment method</small></center></div></form><div id=\"loader\" class=\"mb-4\"></div><div id=\"text-alert\" class=\"text-center\"></div><div id="three-ds-container" class="modal" style="display: none;"></div>\');
 
         payform.cardNumberInput(document.getElementById("card-number"));
         payform.expiryInput(document.getElementById("cc-expiration"));
@@ -316,6 +316,7 @@ class PaymentController extends Controller
             $("#card-number").removeClass("is-invalid");
             $("#cc-expiration").removeClass("is-invalid");
             $("#cc-cvv").removeClass("is-invalid");
+            $("#cc-zipcode").removeClass("is-invalid");
         }
 
         function enableButton()
@@ -324,6 +325,7 @@ class PaymentController extends Controller
             $("#card-number").attr("disabled", false);
             $("#cc-expiration").attr("disabled", false);
             $("#cc-cvv").attr("disabled", false);
+            $("#cc-zipcode").attr("disabled", false);
             $("#loader").hide();
             $("#loader").removeClass("loader");
             $("#payment-form").slideDown("slow");
@@ -350,6 +352,7 @@ class PaymentController extends Controller
                 var expiryMonth = expiryArray[0].trim();
                 var expiryYear = expiryArray[1].trim();
                 var cvvNumber = $("#cc-cvv").val();
+                var zipCode = $("#cc-zipcode").val();
                 var external_id = randomNumber();
                 
                 if(expiryYear.length==2)
@@ -382,12 +385,14 @@ class PaymentController extends Controller
                 $("#card-number").attr("disabled", true);
                 $("#cc-expiration").attr("disabled", true);
                 $("#cc-cvv").attr("disabled", true);
+                $("#cc-zipcode").attr("disabled", true);
 
                 cardNumber = cardNumber.replace(/\s/g,"");
                 expiryMonth = expiryMonth.trim();
                 expiryYear = expiryYear.trim();
                 cvvNumber = cvvNumber.trim();
-                
+                zipCode = zipCode.trim();
+
                 Xendit.card.createToken({
                     amount: '.$amount.',
                     card_number: cardNumber,
@@ -395,7 +400,8 @@ class PaymentController extends Controller
                     card_exp_year: expiryYear,
                     card_cvn: cvvNumber,
                     is_multiple_use: false,
-                    external_id: external_id
+                    external_id: external_id,
+                    billing_details: JSON.stringify({"address": { "postal_code": "\'+ zipCode +\'" }})
                 }, xenditResponseHandler);
 
 

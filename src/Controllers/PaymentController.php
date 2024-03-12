@@ -244,13 +244,13 @@ class PaymentController extends Controller
         <div id="three-ds-container" class="modal" style="display: none;"></div>
         ';
 
-        $payment_container = str_replace(array("\r", "\n"), '', $payment_container);
+        
 
         $jscript = '
 
         $("#submitCheckout").slideUp("slow");
 
-        $("#paymentContainer").html(\''. $payment_container .'\');
+        $("#paymentContainer").html(\''. str_replace(array("\r", "\n"), '', $payment_container) .'\');
 
         payform.cardNumberInput(document.getElementById("card-number"));
         payform.expiryInput(document.getElementById("cc-expiration"));
@@ -507,12 +507,12 @@ class PaymentController extends Controller
         <div id="loader" class="mb-4"></div>
         <div id="text-alert" class="text-center"></div>
         ';
-        $payment_container = str_replace(array("\r", "\n"), '', $payment_container);
+        
 
         $jscript = '
         
             $("#submitCheckout").slideUp("slow");
-            $("#paymentContainer").html(\''.$payment_container.'\');
+            $("#paymentContainer").html(\''.str_replace(array("\r", "\n"), '', $payment_container).'\');
 
                  var stripe = Stripe(\''. env("STRIPE_PUBLISHABLE_KEY") .'\', {
                     apiVersion: "2020-08-27",
@@ -763,13 +763,13 @@ class PaymentController extends Controller
         <div id="loader" class="mb-4"></div>
         <div id="text-alert" class="text-center"></div>
         ';
-        $payment_container = str_replace(array("\r", "\n"), '', $payment_container);
+        
 
         $jscript = '
         jQuery(document).ready(function($) {
 
             $("#submitCheckout").slideUp("slow");  
-            $("#paymentContainer").html(\''. $payment_container .'\');
+            $("#paymentContainer").html(\''. str_replace(array("\r", "\n"), '', $payment_container) .'\');
            
             paypal.Buttons({
                 /*

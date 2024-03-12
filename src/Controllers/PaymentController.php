@@ -38,7 +38,7 @@ class PaymentController extends Controller
             $check_question = BookingHelper::check_question_json($sessionId,$data);
             if(count($check_question) > 0)
             {
-                $check_question['message'] = "Oops there was a problem, please check your input and try again.";
+                $check_question['message'] = '<span style="font-size:16px">Oops there was a problem, please check your input and try again.</span>';
                 return response()->json($check_question);
             }
 
@@ -76,62 +76,26 @@ class PaymentController extends Controller
                     ]);
                 break;
 
-                case 'ovo':
+                case 'qris':
                     return response()->json([
                         'message' => 'success',
-                        'payment' => 'ovo',
-                        'id' => 3
+                        'payment' => 'qris'
                     ]);
                 break;
 
-                case 'qris':
-                    BookingHelper::set_bookingStatus($sessionId,'PENDING');
-                    BookingHelper::set_confirmationCode($sessionId);
-                    $response = PaymentHelper::create_payment($sessionId,"xendit","qris");
-                break;
-
                 case 'bss':
-                    BookingHelper::set_bookingStatus($sessionId,'PENDING');
-                    BookingHelper::set_confirmationCode($sessionId);
-                    $response = PaymentHelper::create_payment($sessionId,"xendit","bss");
+                    return response()->json([
+                        'message' => 'success',
+                        'payment' => 'bss'
+                    ]);
                 break;
 
                 default:
-                    BookingHelper::set_bookingStatus($sessionId,'PENDING');
-                    BookingHelper::set_confirmationCode($sessionId);
-                    $response = PaymentHelper::create_payment($sessionId,"xendit","invoice");
-
+                    return response()->json([
+                        'id' => "0",
+                        'message' => "Oops there was a problem",
+                    ]);
             }
-
-            if($response->status->id=="0")
-            {
-                return response()->json([
-                    'id' => "0",
-                    'message' => $response->status->message,
-                ]);
-            }
-
-            $shoppingcart = BookingHelper::confirm_booking($sessionId);
-            
-            $text = null;
-            $session_id = $shoppingcart->session_id;
-            $confirmation_code = $shoppingcart->confirmation_code;
-            $redirect = $shoppingcart->shoppingcart_payment->redirect;
-
-            $redirect_type = 1;
-            if($shoppingcart->shoppingcart_payment->payment_type=="bank_redirect")
-            {
-                $redirect_type = 2;
-            }
-
-            return response()->json([
-                "message" => "success",
-                "id" => $redirect_type,
-                "redirect" => $redirect,
-                "text" => $text,
-                "session_id" => $session_id,
-                "confirmation_code" => $confirmation_code
-            ]);
             
     }
     
@@ -175,6 +139,38 @@ class PaymentController extends Controller
                 ]);
             }
             
+    }
+
+
+    public function qris_jscript($sessionId)
+    {
+        $shoppingcart = Cache::get('_'. $sessionId);
+        BookingHelper::set_bookingStatus($sessionId,'PENDING');
+        BookingHelper::set_confirmationCode($sessionId);
+        $response = PaymentHelper::create_payment($sessionId,"xendit","qris");
+
+        if($response->status->id=="1")
+        {
+            $shoppingcart = BookingHelper::confirm_booking($sessionId);
+            $session_id = $shoppingcart->session_id;
+            $confirmation_code = $shoppingcart->confirmation_code;
+            $redirect = '/booking/receipt/'.$session_id.'/'.$confirmation_code;
+            $jscript = '
+                afterCheckout("'.$redirect.'");
+            ';
+            return response($jscript)->header('Content-Type', 'application/javascript');
+        }
+        else
+        {
+            $jscript = '
+                $(\'#alert-payment\').html(\'<div id="alert-failed" class="alert alert-danger text-center mt-2" role="alert"><strong style="margin-bottom:10px; margin-top:10px; font-size:16px;"><i class="far fa-frown"></i> Oops there was a problem</strong></div>\');
+                $(\'#alert-payment\').fadeIn("slow");
+                setTimeout(function (){
+                    changePaymentMethod();
+                }, 1500);
+            ';
+            return response($jscript)->header('Content-Type', 'application/javascript');
+        }
     }
 
     public function xendit_jscript($sessionId)

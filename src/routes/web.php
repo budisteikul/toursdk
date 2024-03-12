@@ -34,15 +34,18 @@
 
 	//Create Payment
 	Route::post('/api/payment/checkout', 'budisteikul\toursdk\Controllers\PaymentController@checkout')->middleware(['SettingMiddleware']);
-
+	//Stripe
 	Route::get('/api/payment/stripe/jscript/{sessionId}', 'budisteikul\toursdk\Controllers\PaymentController@stripe_jscript')->middleware(['SettingMiddleware']);
 	Route::post('/api/payment/stripe', 'budisteikul\toursdk\Controllers\PaymentController@createpaymentstripe')->middleware(['SettingMiddleware']);
-
+	//Xendit
 	Route::get('/api/payment/xendit/jscript/{sessionId}', 'budisteikul\toursdk\Controllers\PaymentController@xendit_jscript')->middleware(['SettingMiddleware']);
 	Route::post('/api/payment/xendit', 'budisteikul\toursdk\Controllers\PaymentController@createpaymentxendit')->middleware(['SettingMiddleware']);
-
+	//Paypal
 	Route::get('/api/payment/paypal/jscript/{sessionId}', 'budisteikul\toursdk\Controllers\PaymentController@paypal_jscript')->middleware(['SettingMiddleware']);
 	Route::post('/api/payment/paypal', 'budisteikul\toursdk\Controllers\PaymentController@createpaymentpaypal')->middleware(['SettingMiddleware']);
+	//QRIS
+	Route::get('/api/payment/qris/jscript/{sessionId}', 'budisteikul\toursdk\Controllers\PaymentController@qris_jscript')->middleware(['SettingMiddleware']);
+	
 
 
 	//Shoppingcart

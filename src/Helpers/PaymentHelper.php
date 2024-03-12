@@ -392,6 +392,7 @@ class PaymentHelper {
         $data->transaction = $transaction;
 
         if($data->transaction->mins_expired==0) {
+            $data->transaction->second_expired = 3600;
             $data->transaction->mins_expired = 60;
             $data->transaction->date_expired = Carbon::parse($data->transaction->date_now)->addMinutes($data->transaction->mins_expired);
         }

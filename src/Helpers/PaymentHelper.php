@@ -320,13 +320,12 @@ class PaymentHelper {
         $contact->name = $first_name .' '. $last_name;
         $contact->email = $email;
         $contact->phone = $phone;
-        //$contact->email = BookingHelper::set_maskingEmail($shoppingcart);
-        //$contact->phone = BookingHelper::set_maskingPhone($shoppingcart);
         
         $due_date = BookingHelper::due_date($shoppingcart);
 
         $date1 = Carbon::now();
         $date2 = Carbon::parse($due_date);
+        $second_expired = $date2->diffInSeconds($date1, true);
         $mins_expired  = $date2->diffInMinutes($date1, true);
         $date_expired = Carbon::parse($due_date)->formatLocalized('%Y-%m-%d %H:%M:%S');
         $date_now = Carbon::parse($date1)->formatLocalized('%Y-%m-%d %H:%M:%S +0700');
@@ -360,6 +359,7 @@ class PaymentHelper {
         $transaction->confirmation_code = $shoppingcart->confirmation_code;
         $transaction->payment_provider = $payment_provider;
         $transaction->bank = $bank;
+        $transaction->second_expired = $second_expired;
         $transaction->mins_expired = $mins_expired;
         $transaction->date_expired = $date_expired;
         $transaction->date_now = $date_now;

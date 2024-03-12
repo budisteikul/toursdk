@@ -77,7 +77,7 @@ class XenditHelper {
         if($data->transaction->bank=="invoice")
         {
             
-            $data1 = (new self)->createInvoice($data->transaction->amount,$data->transaction->param1);
+            $data1 = (new self)->createInvoice($data->transaction->amount,$data->transaction->param1,$data->transaction->second_expired);
 
             if(isset($data1->error_code))
             {
@@ -102,7 +102,10 @@ class XenditHelper {
             $data_json = new \stdClass();
             $status_json = new \stdClass();
             $response_json = new \stdClass();
-      
+            
+            $token_info = (new self)->getTokenCard($data->transaction->param1);
+            LogHelper::log($token_info,'xdt-info');
+
             $data1 = (new self)->createChargeCard($data->transaction->param1,$data->transaction->amount);
             LogHelper::log($data1,'xdt-charge');
 
@@ -132,6 +135,11 @@ class XenditHelper {
         $response_json->data = $data_json;
 
         return $response_json;
+    }
+
+    public function getTokenCard($token_id)
+    {
+        return json_decode($this->GET('/credit_card_tokens/'.$token_id));
     }
 
     public function createChargeCard($token_id,$amount)
@@ -166,12 +174,13 @@ class XenditHelper {
         }
     }
 
-    public function createInvoice($amount, $payment_method=['CREDIT_CARD'])
+    public function createInvoice($amount, $payment_method=['CREDIT_CARD'], $invoice_duration)
     {
         $data = new \stdClass();
         $data->external_id = Uuid::uuid4()->toString();
         $data->amount = $amount;
         $data->payment_methods = $payment_method;
+        $data->invoice_duration = $invoice_duration;
         return json_decode($this->POST('/v2/invoices',$data));
     }
 

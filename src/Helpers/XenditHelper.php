@@ -117,16 +117,10 @@ class XenditHelper {
             else
             {
                  $status_json->id = '0';
-                 $message = '';
+                 $message = 'The card is declined by the issuing bank.  Please change charge payment method into USD and try again';
                  if($data1->failure_reason=="EXPIRED_CARD") $message = 'The card has expired.';
-                 if($data1->failure_reason=="ISSUER_SUSPECT_FRAUD") $message = 'The card has been declined by the issuing bank due to potential fraud suspicion. Please change payment method into USD and try again';
-                 if($data1->failure_reason=="DECLINED_BY_PROCESSOR") $message = 'The card has been declined by the processor. Please change payment method into USD and try again';
-                 if($data1->failure_reason=="INSUFFICIENT_BALANCE") $message = 'The card does not have enough balance.  Please change payment method into USD and try again';
-                 if($data1->failure_reason=="STOLEN_CARD") $message = 'The card has been marked as stolen.  Please change payment method into USD and try again';
-                 if($data1->failure_reason=="INACTIVE_OR_UNAUTHORIZED_CARD") $message = 'The card is inactive or unauthorized to perform the transaction.  Please change payment method into USD and try again';
-                 if($data1->failure_reason=="PROCESSOR_ERROR") $message = 'The charge failed because there\'s an integration issue between the card processor and the bank.  Please change payment method into USD and try again';
-                 if($data1->failure_reason=="INVALID_CVV") $message = 'The card is declined due to unmatched CVV / CVC.  Please change payment method into USD and try again';
-                 if($data1->failure_reason=="DECLINED_BY_ISSUER") $message = 'The card is declined by the issuing bank.  Please change payment method into USD and try again';
+                 if($data1->failure_reason=="INSUFFICIENT_BALANCE") $message = 'The card does not have enough balance.';
+                 if($data1->failure_reason=="INVALID_CVV") $message = 'The card is declined due to unmatched CVV / CVC.';
                  $status_json->message = $message;
             }
 

@@ -90,18 +90,14 @@ class FirebaseHelper {
         self::connect('receipt/'.$shoppingcart->session_id ."/". $shoppingcart->confirmation_code,$data,"PUT");
     }
 
-    public static function payment($status,$session_id,$redirect_url=null)
+    public static function write($identifier,$data=null)
     {
-            $data = array(
-                'status' => $status,
-                'redirect_url' => $redirect_url
-            );
-            self::connect('payment/'.$session_id,$data,"PUT");
+            self::connect($identifier,$data,"PUT");
     }
 
-    public static function read_payment($session_id)
+    public static function read($identifier)
     {
-            return self::connect('payment/'.$session_id,"","GET");
+            return self::connect($identifier,"","GET");
     }
 }
 ?>

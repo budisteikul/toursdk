@@ -767,10 +767,10 @@ class PaymentController extends Controller
 
         function postBilling(id,country)
         {
-            var givenName = $("#cc-givenName").val();
-            var surname = $("#cc-surname").val();
-            var streetLine1 = $("#cc-streetLine1").val();
-            var postalCode = $("#cc-postalCode").val();
+            var givenName = $("#cc-givenName").val().trim();
+            var surname = $("#cc-surname").val().trim();
+            var streetLine1 = $("#cc-streetLine1").val().trim();
+            var postalCode = $("#cc-postalCode").val().trim();
 
             $.ajax({
                     url: "'. env('APP_API_URL') .'/firebase/billing/"+ id,
@@ -872,9 +872,6 @@ class PaymentController extends Controller
                 expiryYear = expiryYear.trim();
                 cvvNumber = cvvNumber.trim();
 
-                
-
-                
                 Xendit.card.createToken({
                     amount: '.$amount.',
                     card_number: cardNumber,

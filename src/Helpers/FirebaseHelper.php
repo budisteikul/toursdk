@@ -99,5 +99,10 @@ class FirebaseHelper {
     {
             return self::connect($identifier,"","GET");
     }
+
+    public static function delete($identifier)
+    {
+            return self::connect($identifier,"","DELETE");
+    }
 }
 ?>

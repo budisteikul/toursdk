@@ -38,7 +38,7 @@
 	Route::get('/api/payment/stripe/jscript/{sessionId}', 'budisteikul\toursdk\Controllers\PaymentController@stripe_jscript')->middleware(['SettingMiddleware']);
 	Route::post('/api/payment/stripe', 'budisteikul\toursdk\Controllers\PaymentController@createpaymentstripe')->middleware(['SettingMiddleware']);
 	//Xendit
-	Route::get('/api/payment/xendit/jscript/{sessionId}', 'budisteikul\toursdk\Controllers\PaymentController@xendit_jscript')->middleware(['SettingMiddleware']);
+	Route::get('/api/payment/xendit/jscript/{sessionId}', 'budisteikul\toursdk\Controllers\PaymentController@xendit_jscript_2')->middleware(['SettingMiddleware']);
 	Route::post('/api/payment/xendit', 'budisteikul\toursdk\Controllers\PaymentController@createpaymentxendit')->middleware(['SettingMiddleware']);
 	//Paypal
 	Route::get('/api/payment/paypal/jscript/{sessionId}', 'budisteikul\toursdk\Controllers\PaymentController@paypal_jscript')->middleware(['SettingMiddleware']);
@@ -96,4 +96,5 @@
 
 	//Billing details
 	Route::post('/api/firebase/billing/{sessionId}', 'budisteikul\toursdk\Controllers\FirebaseController@billing')->middleware(['SettingMiddleware']);
+	Route::get('/api/test', 'budisteikul\toursdk\Controllers\FirebaseController@test')->middleware(['SettingMiddleware']);
 

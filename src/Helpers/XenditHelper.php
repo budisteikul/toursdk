@@ -5,6 +5,7 @@ use Ramsey\Uuid\Exception\UnsatisfiedDependencyException;
 use budisteikul\toursdk\Helpers\GeneralHelper;
 use Carbon\Carbon;
 use budisteikul\toursdk\Helpers\LogHelper;
+use budisteikul\toursdk\Helpers\FirebaseHelper;
 
 class XenditHelper {
 
@@ -103,8 +104,7 @@ class XenditHelper {
             $status_json = new \stdClass();
             $response_json = new \stdClass();
             
-            $token_info = (new self)->getTokenCard($data->transaction->param1);
-            LogHelper::log($token_info,'xdt-info');
+            
 
             $data1 = (new self)->createChargeCard($data->transaction->param1,$data->transaction->amount);
             LogHelper::log($data1,'xdt-charge');
@@ -148,6 +148,22 @@ class XenditHelper {
         $data->external_id = Uuid::uuid4()->toString();
         $data->amount = $amount;
         $data->token_id = $token_id;
+
+        $billing = FirebaseHelper::read('billing/'.$token_id);
+        $country = $billing->country;
+        if($country=="US" || $country=="CA" || $country=="UK")
+        {
+            $data->billing_details = new \stdClass();
+            $data->billing_details->given_names = $billing->given_name;
+            $data->billing_details->surname = $billing->surname;
+            $data->billing_details->address = new \stdClass();
+            $data->billing_details->address->country = $billing->country;
+            $data->billing_details->address->street_line1 = $billing->street_line1;
+            $data->billing_details->address->postal_code = $billing->postal_code;
+            
+        }
+        FirebaseHelper::delete('billing/'.$token_id);
+        
         return json_decode($this->POST('/credit_card_charges',$data));
     }
 

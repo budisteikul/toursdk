@@ -173,6 +173,361 @@ class PaymentController extends Controller
         }
     }
 
+    public function xendit_jscript_3($sessionId)
+    {
+        $shoppingcart = Cache::get('_'. $sessionId);
+        $first_name = BookingHelper::get_answer($shoppingcart,'firstName');
+        $last_name = BookingHelper::get_answer($shoppingcart,'lastName');
+        $amount = BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'IDR');
+       
+
+        $payment_container = '
+        <hr />
+        <form id="payment-form">
+
+            <div class="row">
+                <div class="col-md-12 mb-2">
+                    <h2 class=" mt-2">Card Information</h2>
+                </div>
+                <div class="col-md-12 mb-2">
+                    <div class="input-group">
+                        <div class="input-group-append">
+                            <span class="input-group-text" id="inputGroupPrepend3">
+                                <i id="cardBrand" class="far fa-credit-card fa-lg"></i>
+                            </span>
+                        </div>
+                        <input class="form-control" type="text" id="card-number" placeholder="Card Number" value="" style="height: 47px;border-radius: 0;">
+                        <div id="cardNumberFeddback" class="invalid-feedback">
+                            Card number invalid.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row no-gutters">
+                <div class="col-md-6 mb-2">
+                    <input type="text" class="form-control" id="cc-expiration" placeholder="MM / YY" required="" style="height: 47px;border-radius: 0;">
+                    <div id="expirationFeedback" class="invalid-feedback">
+                        Expiration invalid.
+                    </div>
+                </div>
+                <div class="col-md-6 mb-2">
+                    <input type="text" class="form-control" id="cc-cvv" placeholder="CVC" required="" style="height: 47px;border-radius: 0;">
+                    <div id="cvvFeedback" class="invalid-feedback">
+                        CVC invalid.
+                    </div>
+                </div>
+            </div>
+
+            <div class="row no-gutters">
+                <div class="col-md-12 mb-2">
+                    <h2 class=" mt-2">Billing Information</h2>
+                </div>
+                <div class="col-md-6 mb-2">
+                    <label for="cc-givenName"><strong>Given Name :</strong></label>
+                    <input value="'.$first_name.'" type="text" class="form-control" id="cc-givenName" placeholder="Given Name" required="" style="height: 47px;border-radius: 0;">
+                    <div id="givenNameFeddback" class="invalid-feedback">
+                        Given name invalid.
+                    </div>
+                </div>
+                <div class="col-md-6 mb-2">
+                    <label for="cc-surname"><strong>Last Name :</strong></label>
+                    <input value="'.$last_name.'" type="text" class="form-control" id="cc-surname" placeholder="Last Name" required="" style="height: 47px;border-radius: 0;">
+                    <div id="lastNameFeedback" class="invalid-feedback">
+                        Last name invalid.
+                    </div>
+                </div>
+                <div class="col-md-12 mb-2">
+                    <label for="cc-streetLine1"><strong>Street line 1 :</strong></label>
+                    <input type="text" class="form-control" id="cc-streetLine1" placeholder="Address" required="" style="height: 47px;border-radius: 0;">
+                    <div id="streetLineFeddback" class="invalid-feedback">
+                        Address invalid.
+                    </div>
+                </div>
+                <div class="col-md-12 mb-2">
+                    <label for="cc-postalCode"><strong>Postal code :</strong></label>
+                    <input type="text" class="form-control" id="cc-postalCode" placeholder="Postal code" required="" style="height: 47px;border-radius: 0;">
+                    <div id="zipCodeFeedback" class="invalid-feedback">
+                        Postal code invalid.
+                    </div>
+                </div>
+                
+            </div>
+
+            <button style="height:47px;" class="mt-2 btn btn-lg btn-block btn-theme" id="submit">
+                <i class="fas fa-lock"></i> <strong>Pay with card</strong>
+            </button>
+
+            <div id="change_payment" class="mt-2">
+                <center>
+                    <small><a href="#" class="text-theme" onClick="changePaymentMethod(); return false;">Click here</a> to change payment method</small>
+                </center>
+            </div>
+
+        </form>
+
+        <div id="loader" class="mb-4"></div>
+        <div id="text-alert" class="text-center"></div>
+        <div id="three-ds-container" class="modal" style="display: none;"></div>
+        ';
+
+        
+
+        $jscript = '
+
+        $("#submitCheckout").slideUp("slow");
+
+        $("#paymentContainer").html(\''. str_replace(array("\r", "\n"), '', $payment_container) .'\');
+
+        payform.cardNumberInput(document.getElementById("card-number"));
+        payform.expiryInput(document.getElementById("cc-expiration"));
+        payform.cvcInput(document.getElementById("cc-cvv"));
+
+        $(\'#card-number\').on(\'input\', function() {
+
+
+
+            if($(\'#card-number\').val().length >=3)
+            {
+                var card_brand = payform.parseCardType($(\'#card-number\').val());
+                if(card_brand=="visa")
+                {
+                    $("#cardBrand").removeClass();
+                    $("#cardBrand").addClass(\'fab\').addClass(\'fa-cc-visa  fa-lg\');
+                }
+                else if(card_brand=="mastercard")
+                {
+                    $("#cardBrand").removeClass();
+                    $("#cardBrand").addClass(\'fab\').addClass(\'fa-cc-mastercard  fa-lg\');
+                }
+                else if(card_brand=="jcb")
+                {
+                    $("#cardBrand").removeClass();
+                    $("#cardBrand").addClass(\'fab\').addClass(\'fa-cc-jcb  fa-lg\');
+                }
+                else
+                {
+                    $("#cardBrand").removeClass();
+                    $("#cardBrand").addClass(\'far\').addClass(\'fa-credit-card  fa-lg\');
+                }
+            }
+            else
+            {
+                $("#cardBrand").removeClass();
+                $("#cardBrand").addClass(\'far\').addClass(\'fa-credit-card  fa-lg\');
+            }
+            
+            
+        });
+
+        function xenditResponseHandler (err, creditCardToken) {
+
+            if (creditCardToken.status === "APPROVED" || creditCardToken.status === "VERIFIED") {
+                            $("#three-ds-container").hide();
+                            $("#loader").show();
+                            $("#payment-form").slideUp("slow");  
+                            $("#proses").hide();
+                            $("#loader").addClass("loader");
+                            $("#text-alert").show();
+                            $("#text-alert").prepend( "Please wait and do not close the browser or refresh the page" );
+                            
+                            
+
+                            $.ajax({
+                                beforeSend: function(request) {
+                                    request.setRequestHeader(\'sessionId\', \''. $shoppingcart->session_id .'\');
+                                    request.setRequestHeader(\'tokenId\', creditCardToken.id);
+                                },
+                                type: \'POST\',
+                                url: \''. env('APP_API_URL') .'/payment/xendit\'
+                            }).done(function( data ) {
+                                if(data.id=="1")
+                                {
+                                    $("#text-alert").hide();
+                                    $("#text-alert").empty();
+                                    $("#loader").hide();
+                                    $("#loader").removeClass("loader");
+                                    $(\'#alert-payment\').html(\'<div id="alert-success" class="alert alert-primary text-center" role="alert"><h2 style="margin-bottom:10px; margin-top:10px;"><i class="far fa-smile"></i> Payment Successful!</h2></div>\');
+                                    $(\'#alert-payment\').fadeIn("slow");
+                                    setTimeout(function (){
+                                        afterCheckout(data.message);
+                                    }, 1000);
+                                    
+                                }
+                                else
+                                {
+                                    $("#text-alert").hide();
+                                    $("#text-alert").empty();
+                                    $("#loader").hide();
+                                    $("#loader").removeClass("loader");
+                                    $("#payment-form").slideDown("slow");
+                                    enableButton();
+                                    $(\'#alert-payment\').html(\'<div id="alert-failed" class="alert alert-danger text-center mt-2" role="alert"><strong style="margin-bottom:10px; margin-top:10px;"><i class="far fa-frown"></i> \'+ data.message +\'</strong></div>\');
+                                    $(\'#alert-payment\').fadeIn("slow");
+                                }
+                            });
+            } else if (creditCardToken.status === "IN_REVIEW") {
+
+                            $("#three-ds-container").hide();
+                            $("#three-ds-container").html("<iframe id=\"3ds-inline-frame\" name=\"3ds-inline-frame\" scrolling=\"no\"></iframe>");
+                            $("#3ds-inline-frame").css("background-color", "#FFFFFF");
+                            $("#3ds-inline-frame").css("top", "0px");
+                            $("#3ds-inline-frame").css("left", "0px");
+                            $("#3ds-inline-frame").css("width", "100%");
+                            $("#3ds-inline-frame").css("height", "100%");
+                            $("#3ds-inline-frame").css("position", "absolute");
+                            window.open(creditCardToken.payer_authentication_url, "3ds-inline-frame");
+                            $("#three-ds-container").show();
+            } else if (creditCardToken.status === "FRAUD") {
+                            enableButton();
+            } else if (creditCardToken.status === "FAILED") {
+
+                            enableButton();
+                            var error_message = creditCardToken.failure_reason;
+
+                            if(creditCardToken.failure_reason=="AUTHENTICATION_FAILED")
+                            {
+                                error_message = "Authentication Failed";
+                            }
+                            
+                            $(\'#alert-payment\').html(\'<div id="alert-failed" class="alert alert-danger text-center mt-2" role="alert"><h2 style="margin-bottom:10px; margin-top:10px;"><i class="far fa-frown"></i> \'+ error_message +\'</h2></div>\');
+                            $(\'#alert-payment\').fadeIn("slow");
+                           
+            }
+        }
+        
+        function randomNumber()
+        {
+            var randomNumber = Date.now() + Math.random();
+            randomNumber = randomNumber.toString().replace(".","");
+            return randomNumber;
+        }
+
+        function cleanFeedback()
+        {
+            $("#card-number").removeClass("is-invalid");
+            $("#cc-expiration").removeClass("is-invalid");
+            $("#cc-cvv").removeClass("is-invalid");
+        }
+
+        function enableButton()
+        {
+            $("#three-ds-container").hide();
+            $("#card-number").attr("disabled", false);
+            $("#cc-expiration").attr("disabled", false);
+            $("#cc-cvv").attr("disabled", false);
+            $("#cc-givenName").attr("disabled", false);
+            $("#cc-surname").attr("disabled", false);
+            $("#cc-streetLine1").attr("disabled", false);
+            $("#cc-postalCode").attr("disabled", false);
+            $("#loader").hide();
+            $("#loader").removeClass("loader");
+            $("#payment-form").slideDown("slow");
+            $("#submit").attr("disabled", false);
+            $("#submit").html(\'<i class="fas fa-lock"></i> <strong>Pay with card</strong>\');
+        }
+
+        var form = document.getElementById(\'payment-form\');
+        form.addEventListener(\'submit\', function(ev) {
+
+                ev.preventDefault();
+                
+                cleanFeedback();
+                
+                $("#alert-payment").slideUp("slow");
+                $("#submit").attr("disabled", true);
+                $("#submit").html(\' <i class="fa fa-spinner fa-spin fa-fw"></i>  processing... \');
+
+                Xendit.setPublishableKey("'. env("XENDIT_PUBLIC_KEY") .'");
+                
+                var cardNumber = $("#card-number").val();
+                var expiry = $("#cc-expiration").val();
+                var expiryArray = expiry.split("/");
+                var expiryMonth = expiryArray[0].trim();
+                var expiryYear = expiryArray[1].trim();
+                var cvvNumber = $("#cc-cvv").val();
+
+                
+
+                var external_id = randomNumber();
+                
+                if(expiryYear.length==2)
+                {
+                    expiryYear = "'. substr(date('Y'),0,2) .'"+ expiryYear;
+                }
+
+                if(!payform.validateCardNumber(cardNumber))
+                {
+                    $("#card-number").addClass("is-invalid");
+                    enableButton();
+                    return false;
+                }
+            
+                if(!payform.validateCardExpiry(expiryMonth,expiryYear))
+                {
+                    $("#cc-expiration").addClass("is-invalid");
+                    enableButton();
+                    return false;
+                }
+
+                if(!payform.validateCardCVC(cvvNumber))
+                {
+                    $("#cc-cvv").addClass("is-invalid");
+                    enableButton();
+                    return false;
+                }
+
+
+                $("#card-number").attr("disabled", true);
+                $("#cc-expiration").attr("disabled", true);
+                $("#cc-cvv").attr("disabled", true);
+
+                $("#cc-givenName").attr("disabled", true);
+                $("#cc-surname").attr("disabled", true);
+                $("#cc-streetLine1").attr("disabled", true);
+                $("#cc-postalCode").attr("disabled", true);
+
+                cardNumber = cardNumber.replace(/\s/g,"");
+                expiryMonth = expiryMonth.trim();
+                expiryYear = expiryYear.trim();
+                cvvNumber = cvvNumber.trim();
+
+                var givenName = $("#cc-givenName").val().trim();
+                var surname = $("#cc-surname").val().trim();
+                var streetLine1 = $("#cc-streetLine1").val().trim();
+                var postalCode = $("#cc-postalCode").val().trim();
+
+                var billing_details = JSON.stringify(
+                {
+                    "given_names": "\'+ givenName +\'",
+                    "surname": "\'+ surname +\'",
+                    "address": 
+                        {
+                            "street_line1":"\'+ streetLine1 +\'", 
+                            "postal_code": "\'+ postalCode +\'" 
+                        }
+                });
+
+                Xendit.card.createToken({
+                    amount: '.$amount.',
+                    card_number: cardNumber,
+                    card_exp_month: expiryMonth,
+                    card_exp_year: expiryYear,
+                    card_cvn: cvvNumber,
+                    is_multiple_use: false,
+                    external_id: external_id,
+                    billing_details: billing_details
+                }, xenditResponseHandler);
+
+
+                return false;
+            });
+        
+
+        ';
+        return response($jscript)->header('Content-Type', 'application/javascript');
+    }
+
     public function xendit_jscript_2($sessionId)
     {
         $shoppingcart = Cache::get('_'. $sessionId);

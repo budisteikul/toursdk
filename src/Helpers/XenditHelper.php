@@ -149,6 +149,7 @@ class XenditHelper {
         $data->amount = $amount;
         $data->token_id = $token_id;
 
+        
         $billing = FirebaseHelper::read('billing/'.$token_id);
         $country = $billing->country;
         if($country=="US" || $country=="CA" || $country=="UK")
@@ -160,10 +161,11 @@ class XenditHelper {
             $data->billing_details->address->country = $billing->country;
             $data->billing_details->address->street_line1 = $billing->street_line1;
             $data->billing_details->address->postal_code = $billing->postal_code;
-            
+
         }
         FirebaseHelper::delete('billing/'.$token_id);
         
+
         return json_decode($this->POST('/credit_card_charges',$data));
     }
 

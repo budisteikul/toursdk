@@ -430,9 +430,14 @@ class PaymentController extends Controller
             $("#cc-cvv").removeClass("is-invalid");
         }
 
+        var oldBin = "";
         $("#card-number").on("blur", function() {
-            checkBin();
+            if (oldBin != this.value) {
+                checkBin();
+                oldBin = this.value;
+            }
         });
+
 
         function checkBin()
         {

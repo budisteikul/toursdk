@@ -151,16 +151,28 @@ class XenditHelper {
 
         
         $billing = FirebaseHelper::read('billing/'.$token_id);
-        $country = $billing->country;
+        $country = "";
+        if(isset($billing->country)) $country = $billing->country;
         if($country=="US" || $country=="CA" || $country=="UK")
         {
+            $given_name = "";
+            $surname = "";
+            $street_line1 = "";
+            $postal_code = "";
+
+            if(isset($billing->given_name)) $given_name = $billing->given_name;
+            if(isset($billing->surname)) $surname = $billing->surname;
+            if(isset($billing->street_line1)) $street_line1 = $billing->street_line1;
+            if(isset($billing->postal_code)) $postal_code = $billing->postal_code;
+
+
             $data->billing_details = new \stdClass();
-            $data->billing_details->given_names = $billing->given_name;
-            $data->billing_details->surname = $billing->surname;
+            $data->billing_details->given_names = $given_name;
+            $data->billing_details->surname = $surname;
             $data->billing_details->address = new \stdClass();
-            $data->billing_details->address->country = $billing->country;
-            $data->billing_details->address->street_line1 = $billing->street_line1;
-            $data->billing_details->address->postal_code = $billing->postal_code;
+            $data->billing_details->address->country = $country;
+            $data->billing_details->address->street_line1 = $street_line1;
+            $data->billing_details->address->postal_code = $postal_code;
 
         }
         FirebaseHelper::delete('billing/'.$token_id);

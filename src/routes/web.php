@@ -94,7 +94,7 @@
 	//LOG
 	Route::post('/logger/{identifier}', 'budisteikul\toursdk\Controllers\LogController@log')->middleware(['SettingMiddleware']);
 
-	//Billing details
-	Route::post('/api/firebase/billing/{sessionId}', 'budisteikul\toursdk\Controllers\FirebaseController@billing')->middleware(['SettingMiddleware']);
-	Route::get('/api/test', 'budisteikul\toursdk\Controllers\FirebaseController@test')->middleware(['SettingMiddleware']);
+	//Billing Tools
+	Route::post('/api/tool/billing/{sessionId}', 'budisteikul\toursdk\Controllers\ToolController@billing')->middleware(['SettingMiddleware']);
+	Route::post('/api/tool/bin', 'budisteikul\toursdk\Controllers\ToolController@bin')->middleware(['SettingMiddleware']);
 

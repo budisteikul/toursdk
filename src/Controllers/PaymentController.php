@@ -300,7 +300,7 @@ class PaymentController extends Controller
 
         $("#submitCheckout").slideUp("slow");
         $("#paymentContainer").html(\''. str_replace(array("\r", "\n"), '', $payment_container) .'\');
-        addBillingForm();
+        
 
         payform.cardNumberInput(document.getElementById("card-number"));
         payform.expiryInput(document.getElementById("cc-expiration"));
@@ -430,6 +430,46 @@ class PaymentController extends Controller
             $("#cc-cvv").removeClass("is-invalid");
         }
 
+        $("#card-number").on("blur", function() {
+            checkBin();
+        });
+
+        function checkBin()
+        {
+            var cardNumber = $("#card-number").val();
+            cardNumber = cardNumber.replace(/\s/g,"").trim();
+            var bin = cardNumber.substring(0, 6);
+
+            if(bin.length!=6)
+            {
+                removeBillingForm();
+                return false;
+            }
+
+            $.ajax({
+                    url: "'. env('APP_API_URL') .'/tool/bin",
+                    method: "POST",
+                    data: { 
+                        bin: bin
+                    },
+                }).done(function(response) {
+                    const obj = JSON.parse(response);
+                    var country_code = obj.bin_data.country_code;
+                    if(country_code == "US" || country_code == "CA" || country_code == "GB" || country_code == "UK")
+                    {
+                        addBillingForm();
+                    }
+                    else
+                    {
+                        removeBillingForm();
+                    }
+                }).fail(function( jqXHR, textStatus ) {
+
+                });
+
+            
+        }
+
         function addBillingForm()
         {
             $("#billing_form").html(\''. str_replace(array("\r", "\n"), '', $billing_form) .'\');
@@ -449,7 +489,7 @@ class PaymentController extends Controller
                 var postalCode = $("#cc-postalCode").val().trim();
 
                 $.ajax({
-                    url: "'. env('APP_API_URL') .'/firebase/billing/"+ id,
+                    url: "'. env('APP_API_URL') .'/tool/billing/"+ id,
                     method: "POST",
                     data: { 
                         tokenId: id,

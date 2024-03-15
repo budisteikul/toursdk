@@ -184,6 +184,15 @@ class PaymentController extends Controller
         $last_name = BookingHelper::get_answer($shoppingcart,'lastName');
         $amount = BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'IDR');
         
+        //live
+        //638d7e67c266b9542b6a2492
+        //65f41038c7742f6834d917ef
+
+        //dev
+        //638d7e67c266b9542b6a2492
+        //65f40f9713a252326eaa9421
+
+
         //$data1 = new XenditHelper();
         //$data1 = $data1->createInvoice($amount,['CREDIT_CARD'],3600);
         //LogHelper::log($data1,'xdt-charge');

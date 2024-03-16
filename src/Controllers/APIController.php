@@ -78,7 +78,7 @@ class APIController extends Controller
         if(str_contains(GeneralHelper::url(), 'jogjafoodtour'))
         {
             $headerBox = '
-            <img src="'.config('site.assets').'/img/header/'.config('site.logo').'" alt="Jogja Food Tour" width="250" />
+            <img src="'.config('site.assets').'/img/header/'.config('site.logo').'" alt="Jogja Food Tour" />
             <hr class="hr-theme" />
             <p class="text-faded">
                 Join us on this experience to try authentic dishes, play traditional games, travel on a becak, learn interesting fun facts about city, interact with locals and many more.

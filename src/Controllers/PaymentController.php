@@ -458,8 +458,7 @@ class PaymentController extends Controller
                         bin: bin
                     },
                 }).done(function(response) {
-                    const obj = JSON.parse(response);
-                    var country_code = obj.data.country_code;
+                    var country_code = response.country_code;
                     if(country_code == "US" || country_code == "CA" || country_code == "GB" || country_code == "UK")
                     {
                         addBillingForm();

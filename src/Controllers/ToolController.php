@@ -28,7 +28,8 @@ class ToolController extends Controller
             return "";
         }
 
-        $value = Cache::rememberForever('_bin_'. $bin, function ()  use ($bin){
+        $country_code = "";
+        $response = Cache::rememberForever('_bin_'. $bin, function ()  use ($bin){
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_VERBOSE, true);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER,true);
@@ -43,10 +44,14 @@ class ToolController extends Controller
             $response = curl_exec($ch);
         
             curl_close ($ch);
+
             return $response;
         });
         
-        return response()->json($value, 200);
+        $response = json_decode($response);
+        if(isset($response->data->country_code)) $country_code = $response->data->country_code;
+        
+        return response()->json(['country_code'=>$country_code], 200);
     }
 
     public function billing($sessionId,Request $request)

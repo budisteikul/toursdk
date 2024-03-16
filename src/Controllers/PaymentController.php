@@ -443,9 +443,9 @@ class PaymentController extends Controller
         {
             var cardNumber = $("#card-number").val();
             cardNumber = cardNumber.replace(/\s/g,"").trim();
-            var bin = cardNumber.substring(0, 6);
+            var bin = cardNumber.substring(0, 8);
 
-            if(bin.length!=6)
+            if(bin.length!=8)
             {
                 removeBillingForm();
                 return false;
@@ -459,7 +459,7 @@ class PaymentController extends Controller
                     },
                 }).done(function(response) {
                     const obj = JSON.parse(response);
-                    var country_code = obj.bin_data.country_code;
+                    var country_code = obj.data.country_code;
                     if(country_code == "US" || country_code == "CA" || country_code == "GB" || country_code == "UK")
                     {
                         addBillingForm();

@@ -15,7 +15,7 @@ class ToolController extends Controller
         
     }
     
-    public function bin(Request $request)
+    public function bin_xendit(Request $request)
     {
         $bin = $request->input("bin");
         if(!is_numeric($bin))
@@ -34,6 +34,35 @@ class ToolController extends Controller
 
         $headerArray[] = "Invoice-id: ". env("XENDIT_INVOICE_ID");
         $headerArray[] = "Origin: https://checkout.xendit.co";
+
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET"); 
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headerArray);
+        
+        $response = curl_exec($ch);
+        
+        curl_close ($ch);
+        return response()->json($response, 200);
+    }
+
+    public function bin(Request $request)
+    {
+        $bin = $request->input("bin");
+        if(!is_numeric($bin))
+        {
+            return "";
+        }
+        if(strlen($bin)!=8)
+        {
+            return "";
+        }
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_VERBOSE, true);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER,true);
+        curl_setopt($ch, CURLOPT_URL, env("MIDTRANS_URL")."/v1/bins/".$bin);
+
+        $headerArray[] = "Accept: application/json";
+        $headerArray[] = "Authorization: Basic ". base64_encode(env("MIDTRANS_SERVER_KEY")."");
 
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET"); 
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headerArray);

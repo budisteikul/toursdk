@@ -15,35 +15,6 @@ class ToolController extends Controller
     {
         
     }
-    
-    public function bin_xendit(Request $request)
-    {
-        $bin = $request->input("bin");
-        if(!is_numeric($bin))
-        {
-            return "";
-        }
-        if(strlen($bin)!=6)
-        {
-            return "";
-        }
-
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_VERBOSE, true);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER,true);
-        curl_setopt($ch, CURLOPT_URL, env("XENDIT_URL")."?business_id=".env("XENDIT_BUSSINES_ID")."&amount=50000&currency=IDR&bin=".$bin);
-
-        $headerArray[] = "Invoice-id: ". env("XENDIT_INVOICE_ID");
-        $headerArray[] = "Origin: https://checkout.xendit.co";
-
-        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET"); 
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $headerArray);
-        
-        $response = curl_exec($ch);
-        
-        curl_close ($ch);
-        return response()->json($response, 200);
-    }
 
     public function bin(Request $request)
     {

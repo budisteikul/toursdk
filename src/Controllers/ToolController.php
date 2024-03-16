@@ -5,6 +5,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use budisteikul\toursdk\Helpers\LogHelper;
 use budisteikul\toursdk\Helpers\FirebaseHelper;
+use Illuminate\Support\Facades\Cache;
 
 class ToolController extends Controller
 {
@@ -56,21 +57,25 @@ class ToolController extends Controller
             return "";
         }
 
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_VERBOSE, true);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER,true);
-        curl_setopt($ch, CURLOPT_URL, env("MIDTRANS_URL")."/v1/bins/".$bin);
+        $value = Cache::rememberForever('_bin_'. $bin, function ()  use ($bin){
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_VERBOSE, true);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER,true);
+            curl_setopt($ch, CURLOPT_URL, env("MIDTRANS_URL")."/v1/bins/".$bin);
 
-        $headerArray[] = "Accept: application/json";
-        $headerArray[] = "Authorization: Basic ". base64_encode(env("MIDTRANS_SERVER_KEY")."");
+            $headerArray[] = "Accept: application/json";
+            $headerArray[] = "Authorization: Basic ". base64_encode(env("MIDTRANS_SERVER_KEY")."");
 
-        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET"); 
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $headerArray);
+            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET"); 
+            curl_setopt($ch, CURLOPT_HTTPHEADER, $headerArray);
         
-        $response = curl_exec($ch);
+            $response = curl_exec($ch);
         
-        curl_close ($ch);
-        return response()->json($response, 200);
+            curl_close ($ch);
+            return $response;
+        });
+        
+        return response()->json($value, 200);
     }
 
     public function billing($sessionId,Request $request)

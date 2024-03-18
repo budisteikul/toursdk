@@ -120,7 +120,7 @@ class XenditHelper {
             else
             {
                  $status_json->id = '0';
-                 $message = 'Fail to charge card.  Please change charge payment method into USD and try again';
+                 $message = 'Failed to charge card. Please change charge payment method into USD and try again';
                  if($data1->failure_reason=="EXPIRED_CARD") $message = 'The card has expired.';
                  if($data1->failure_reason=="INSUFFICIENT_BALANCE") $message = 'The card does not have enough balance.';
                  if($data1->failure_reason=="INVALID_CVV") $message = 'The card is declined due to unmatched CVV / CVC.';

@@ -75,43 +75,7 @@ class APIController extends Controller
         
         $analytic = LogHelper::analytic();
 
-        if(str_contains(GeneralHelper::url(), 'jogjafoodtour'))
-        {
-            $headerBox = '
-            <img src="'.config('site.assets').'/img/header/'.config('site.logo').'" alt="Jogja Food Tour" />
-            <hr class="hr-theme" />
-            <p class="text-faded">
-                Join us on this experience to try authentic dishes, play traditional games, travel on a becak, learn interesting fun facts about city, interact with locals and many more.
-                <br />
-                Enjoy Jogja in Local Ways!
-            </p>';
-
-            $featured = '
-                <div class="row pb-0">
-                    <div class="col-lg-8 text-center mx-auto">
-                        <h3 class="section-heading" style="margin-top:50px;">Yogyakarta: The way to this city’s heart is through its food</h3>
-                        <div class="col-lg-8 text-center mx-auto">
-                            Perhaps better known for being a bastion of history and culture, Yogyakarta is also the unofficial culinary capital of Indonesia
-                        </div>
-                        <br />
-                        <hr class="hr-theme" />
-                    </div>
-                </div>
-
-                 <div class="row text-center">
-                    <div class="col-md-8 mx-auto">
-                        <img src="'.config('site.assets').'/img/content/silkwinds.jpg" alt="Silkwinds | Jogja Food Tour" class="img-fluid rounded" />
-                        <img src="'.config('site.assets').'/img/content/silkwinds-magazine-logo.png" alt="Silkwinds | Jogja Food Tour" style={{ marginTop: "4px" }} class="img-fluid rounded" />
-                        <span class="caption text-muted"><a class="text-muted" rel="noreferrer" target="_blank" href="https://www.silverkris.com/yogyakarta-the-way-to-this-citys-heart-is-through-its-food/">Silkwinds Magazine</a></span>
-                    </div>
-                </div>
-            ';
-
-            $siteTitle = 'JOGJA FOOD TOUR';
-
-            $headerBackground = config('site.assets').'/img/header/background.jpg';
-        }
-        else
+        if(str_contains(GeneralHelper::url(), 'vertikaltrip'))
         {
             $headerBox = '
             <img src="'.config('site.assets').'/img/header/vertikaltrip.svg" alt="Vertikal Trip" width="250" />
@@ -146,6 +110,44 @@ class APIController extends Controller
             $siteTitle = 'VERTIKAL TRIP';
 
             $headerBackground = config('site.assets').'/img/header/background-food.jpg';
+        }
+        else
+        {
+            
+
+            $headerBox = '
+            <img src="'.config('site.assets').'/img/header/'.config('site.logo').'" alt="Jogja Food Tour" />
+            <hr class="hr-theme" />
+            <p class="text-faded">
+                Join us on this experience to try authentic dishes, play traditional games, travel on a becak, learn interesting fun facts about city, interact with locals and many more.
+                <br />
+                Enjoy Jogja in Local Ways!
+            </p>';
+
+            $featured = '
+                <div class="row pb-0">
+                    <div class="col-lg-8 text-center mx-auto">
+                        <h3 class="section-heading" style="margin-top:50px;">Yogyakarta: The way to this city’s heart is through its food</h3>
+                        <div class="col-lg-8 text-center mx-auto">
+                            Perhaps better known for being a bastion of history and culture, Yogyakarta is also the unofficial culinary capital of Indonesia
+                        </div>
+                        <br />
+                        <hr class="hr-theme" />
+                    </div>
+                </div>
+
+                 <div class="row text-center">
+                    <div class="col-md-8 mx-auto">
+                        <img src="'.config('site.assets').'/img/content/silkwinds.jpg" alt="Silkwinds | Jogja Food Tour" class="img-fluid rounded" />
+                        <img src="'.config('site.assets').'/img/content/silkwinds-magazine-logo.png" alt="Silkwinds | Jogja Food Tour" style={{ marginTop: "4px" }} class="img-fluid rounded" />
+                        <span class="caption text-muted"><a class="text-muted" rel="noreferrer" target="_blank" href="https://www.silverkris.com/yogyakarta-the-way-to-this-citys-heart-is-through-its-food/">Silkwinds Magazine</a></span>
+                    </div>
+                </div>
+            ';
+
+            $siteTitle = 'JOGJA FOOD TOUR';
+
+            $headerBackground = config('site.assets').'/img/header/background.jpg';
         }
         
 
@@ -256,16 +258,16 @@ class APIController extends Controller
     public function navbar($sessionId)
     {
         
-        if(str_contains(GeneralHelper::url(), 'jogjafoodtour'))
+        if(str_contains(GeneralHelper::url(), 'vertikaltrip'))
         {
             //$categories = Category::where('parent_id',0)->where('slug','yogyakarta')->get();
             $categories = Category::where('parent_id',0)->get();
-            $logo = config('site.assets').'/img/header/'.config('site.logo');
+            $logo = config('site.assets').'/img/header/vertikaltrip.svg';
         }
         else
         {
             $categories = Category::where('parent_id',0)->get();
-            $logo = config('site.assets').'/img/header/vertikaltrip.svg';
+            $logo = config('site.assets').'/img/header/'.config('site.logo');
         }
         
         $json_ld = self::json_ld();

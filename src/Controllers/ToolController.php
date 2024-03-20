@@ -30,19 +30,17 @@ class ToolController extends Controller
 
         $country_code = "";
         $response = Cache::rememberForever('_bin_'. $bin, function ()  use ($bin){
-            $ch = curl_init();
-            curl_setopt($ch, CURLOPT_VERBOSE, true);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER,true);
-            curl_setopt($ch, CURLOPT_URL, env("MIDTRANS_URL")."/v1/bins/".$bin);
 
             $headerArray[] = "Accept: application/json";
             $headerArray[] = "Authorization: Basic ". base64_encode(env("MIDTRANS_SERVER_KEY")."");
 
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_VERBOSE, true);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER,true);
+            curl_setopt($ch, CURLOPT_URL, env("MIDTRANS_URL")."/v1/bins/".$bin);
             curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET"); 
             curl_setopt($ch, CURLOPT_HTTPHEADER, $headerArray);
-        
             $response = curl_exec($ch);
-        
             curl_close ($ch);
 
             return $response;

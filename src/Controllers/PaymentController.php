@@ -190,28 +190,28 @@ class PaymentController extends Controller
                     <h2 class=" mt-2">Billing Information</h2>
                 </div>
                 <div class="col-md-6 mb-2">
-                    <label for="cc-givenName"><strong>Given Name :</strong></label>
+                    <label for="cc-givenName"><strong>Given name</strong></label>
                     <input value="'.$first_name.'" type="text" class="form-control" id="cc-givenName" required="" placeholder="Given Name" style="height: 47px;border-radius: 0;">
                     <div id="givenNameFeddback" class="invalid-feedback">
                         Given name invalid.
                     </div>
                 </div>
                 <div class="col-md-6 mb-2">
-                    <label for="cc-surname"><strong>Last Name :</strong></label>
+                    <label for="cc-surname"><strong>Last name</strong></label>
                     <input value="'.$last_name.'" type="text" class="form-control" id="cc-surname" required="" placeholder="Last Name"  style="height: 47px;border-radius: 0;">
                     <div id="lastNameFeedback" class="invalid-feedback">
                         Last name invalid.
                     </div>
                 </div>
                 <div class="col-md-12 mb-2">
-                    <label for="cc-streetLine1"><strong>Street line 1 :</strong></label>
+                    <label for="cc-streetLine1"><strong>Street line 1</strong></label>
                     <input type="text" class="form-control" id="cc-streetLine1" required="" placeholder="Address" style="height: 47px;border-radius: 0;">
                     <div id="streetLineFeddback" class="invalid-feedback">
                         Address invalid.
                     </div>
                 </div>
                 <div class="col-md-12 mb-2">
-                    <label for="cc-postalCode"><strong>Postal code :</strong></label>
+                    <label for="cc-postalCode"><strong>Postal code</strong></label>
                     <input type="text" class="form-control" id="cc-postalCode" required="" placeholder="Postal code" style="height: 47px;border-radius: 0;">
                     <div id="zipCodeFeedback" class="invalid-feedback">
                         Postal code invalid.
@@ -231,13 +231,14 @@ class PaymentController extends Controller
                     <h2 class=" mt-2">Card Information</h2>
                 </div>
                 <div class="col-md-12 mb-2">
+                    <label for="card-number"><strong>Card number</strong></label>
                     <div class="input-group">
                         <div class="input-group-append">
                             <span class="input-group-text" id="inputGroupPrepend3">
                                 <i id="cardBrand" class="far fa-credit-card fa-lg"></i>
                             </span>
                         </div>
-                        <input class="form-control" type="text" id="card-number" placeholder="Card Number" value="" style="height: 47px;border-radius: 0;">
+                        <input class="form-control" type="text" id="card-number" placeholder="Card number" value="" style="height: 47px;border-radius: 0;">
                         <div id="cardNumberFeddback" class="invalid-feedback">
                             Card number invalid.
                         </div>
@@ -247,13 +248,15 @@ class PaymentController extends Controller
 
             <div class="row no-gutters">
                 <div class="col-md-6 mb-2">
+                    <label for="cc-expiration"><strong>Valid thru</strong></label>
                     <input type="text" class="form-control" id="cc-expiration" placeholder="MM / YY" required="" style="height: 47px;border-radius: 0;">
                     <div id="expirationFeedback" class="invalid-feedback">
                         Expiration invalid.
                     </div>
                 </div>
                 <div class="col-md-6 mb-2">
-                    <input type="text" class="form-control" id="cc-cvv" placeholder="CVC" required="" style="height: 47px;border-radius: 0;">
+                    <label for="cc-cvv"><strong>CVV / CVN</strong></label>
+                    <input type="text" class="form-control" id="cc-cvv" placeholder="3-4 digits code" required="" style="height: 47px;border-radius: 0;">
                     <div id="cvvFeedback" class="invalid-feedback">
                         CVC invalid.
                     </div>
@@ -294,12 +297,11 @@ class PaymentController extends Controller
         payform.cvcInput(document.getElementById("cc-cvv"));
 
         $(\'#card-number\').on(\'input\', function() {
-            if($(\'#card-number\').val().length >=6)
+            if($(\'#card-number\').val().length >=8)
             {
                 var card_brand = payform.parseCardType($(\'#card-number\').val());
                 if(card_brand=="visa")
                 {
-                    
                     $("#cardBrand").removeClass();
                     $("#cardBrand").addClass(\'fab\').addClass(\'fa-cc-visa  fa-lg\');
                 }
@@ -315,14 +317,12 @@ class PaymentController extends Controller
                 }
                 else
                 {
-                    
                     $("#cardBrand").removeClass();
                     $("#cardBrand").addClass(\'far\').addClass(\'fa-credit-card  fa-lg\');
                 }
             }
             else
             {
-                
                 $("#cardBrand").removeClass();
                 $("#cardBrand").addClass(\'far\').addClass(\'fa-credit-card  fa-lg\');
             }

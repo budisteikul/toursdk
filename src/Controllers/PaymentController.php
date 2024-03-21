@@ -190,10 +190,10 @@ class PaymentController extends Controller
                     <h2 class=" mt-2">Billing Information</h2>
                 </div>
                 <div class="col-md-6 mb-2">
-                    <label for="cc-givenName"><strong>Given name</strong></label>
+                    <label for="cc-givenName"><strong>First name</strong></label>
                     <input value="'.$first_name.'" type="text" class="form-control" id="cc-givenName" required="" placeholder="Given Name" style="height: 47px;border-radius: 0;">
-                    <div id="givenNameFeddback" class="invalid-feedback">
-                        Given name invalid.
+                    <div id="givenNameFeedback" class="invalid-feedback">
+                        First name invalid.
                     </div>
                 </div>
                 <div class="col-md-6 mb-2">
@@ -206,7 +206,7 @@ class PaymentController extends Controller
                 <div class="col-md-12 mb-2">
                     <label for="cc-streetLine1"><strong>Street line 1</strong></label>
                     <input type="text" class="form-control" id="cc-streetLine1" required="" placeholder="Address" style="height: 47px;border-radius: 0;">
-                    <div id="streetLineFeddback" class="invalid-feedback">
+                    <div id="streetLineFeedback" class="invalid-feedback">
                         Address invalid.
                     </div>
                 </div>
@@ -239,7 +239,7 @@ class PaymentController extends Controller
                             </span>
                         </div>
                         <input class="form-control" type="text" id="card-number" placeholder="Card number" value="" style="height: 47px;border-radius: 0;" onKeyUp="return checkCardNumber();">
-                        <div id="cardNumberFeddback" class="invalid-feedback">
+                        <div id="cardNumberFeedback" class="invalid-feedback">
                             Card number invalid.
                         </div>
                     </div>
@@ -461,6 +461,10 @@ class PaymentController extends Controller
                 else
                 {
                     $("#card-number").removeClass("is-invalid");
+                    if (oldBin != this.value) {
+                        checkBin();
+                        oldBin = this.value;
+                    }
                 }
             }
         }

@@ -238,7 +238,7 @@ class PaymentController extends Controller
                                 <i id="cardBrand" class="far fa-credit-card fa-lg"></i>
                             </span>
                         </div>
-                        <input class="form-control" type="text" id="card-number" placeholder="Card number" value="" style="height: 47px;border-radius: 0;">
+                        <input class="form-control" type="text" id="card-number" placeholder="Card number" value="" style="height: 47px;border-radius: 0;" onKeyUp="return checkCardNumber();">
                         <div id="cardNumberFeddback" class="invalid-feedback">
                             Card number invalid.
                         </div>
@@ -249,16 +249,16 @@ class PaymentController extends Controller
             <div class="row no-gutters">
                 <div class="col-md-6 mb-2">
                     <label for="cc-expiration"><strong>Valid thru</strong></label>
-                    <input type="text" class="form-control" id="cc-expiration" placeholder="MM / YY" required="" style="height: 47px;border-radius: 0;">
+                    <input type="text" class="form-control" id="cc-expiration" placeholder="MM / YY" required="" style="height: 47px;border-radius: 0;" onKeyUp="return checkExpiration();">
                     <div id="expirationFeedback" class="invalid-feedback">
                         Expiration invalid.
                     </div>
                 </div>
                 <div class="col-md-6 mb-2">
                     <label for="cc-cvv"><strong>CVV / CVN</strong></label>
-                    <input type="text" class="form-control" id="cc-cvv" placeholder="3-4 digits code" required="" style="height: 47px;border-radius: 0;">
+                    <input type="text" class="form-control" id="cc-cvv" placeholder="3-4 digits code" required="" style="height: 47px;border-radius: 0;" onKeyUp="return checkCvv();">
                     <div id="cvvFeedback" class="invalid-feedback">
-                        CVC invalid.
+                        CVV / CVN invalid.
                     </div>
                 </div>
             </div>
@@ -425,13 +425,121 @@ class PaymentController extends Controller
             $("#cc-cvv").removeClass("is-invalid");
         }
 
+
+        var cardNumber_keypress = false;
+        var expiration_keypress = false;
+        var cvv_keypress = false;
         var oldBin = "";
         $("#card-number").on("blur", function() {
+            var cardNumber = $("#card-number").val();
+            cardNumber_keypress = true;
+            if(!payform.validateCardNumber(cardNumber))
+            {
+                $("#card-number").addClass("is-invalid");
+                return;
+            }
+            else
+            {
+                $("#card-number").removeClass("is-invalid");
+                cardNumber_keypress = false;
+            }
             if (oldBin != this.value) {
                 checkBin();
                 oldBin = this.value;
             }
         });
+        
+        function checkCardNumber()
+        {
+            if(cardNumber_keypress)
+            {
+                var cardNumber = $("#card-number").val();
+                if(!payform.validateCardNumber(cardNumber))
+                {
+                    $("#card-number").addClass("is-invalid");
+                }
+                else
+                {
+                    $("#card-number").removeClass("is-invalid");
+                }
+            }
+        }
+
+        $("#cc-expiration").on("blur", function() {
+            var expiry = $("#cc-expiration").val();
+            expiration_keypress = true;
+            var expiryArray = expiry.split("/");
+            if(expiryArray.length>1)
+            {
+                
+                var expiryMonth = expiryArray[0].trim();
+                var expiryYear = expiryArray[1].trim();
+                
+                if(!payform.validateCardExpiry(expiryMonth,expiryYear))
+                {
+                    $("#cc-expiration").addClass("is-invalid");
+                }
+                else
+                {
+                    $("#cc-expiration").removeClass("is-invalid");
+                    expiration_keypress = false;
+                }
+            }
+        });
+
+        function checkExpiration()
+        {
+            if(expiration_keypress)
+            {
+                var expiry = $("#cc-expiration").val();
+                var expiryArray = expiry.split("/");
+                if(expiryArray.length>1)
+                {  
+                    var expiryMonth = expiryArray[0].trim();
+                    var expiryYear = expiryArray[1].trim();
+                    if(!payform.validateCardExpiry(expiryMonth,expiryYear))
+                    {
+                        $("#cc-expiration").addClass("is-invalid");
+                    }
+                    else
+                    {
+                        $("#cc-expiration").removeClass("is-invalid");
+                    }
+                }
+            }
+        }
+
+        $("#cc-cvv").on("blur", function() {
+            var cvvNumber = $("#cc-cvv").val();
+            cvv_keypress = true;
+            if(!payform.validateCardCVC(cvvNumber))
+            {
+                $("#cc-cvv").addClass("is-invalid");
+            }
+            else
+            {
+                $("#cc-cvv").removeClass("is-invalid");
+                cvv_keypress = false;
+            }
+        });
+
+        function checkCvv()
+        {
+            if(cvv_keypress)
+            {
+                var cvvNumber = $("#cc-cvv").val();
+                if(!payform.validateCardCVC(cvvNumber))
+                {
+                    $("#cc-cvv").addClass("is-invalid");
+                }
+                else
+                {
+                    $("#cc-cvv").removeClass("is-invalid");
+                }
+            }
+        }
+
+
 
 
         function checkBin()

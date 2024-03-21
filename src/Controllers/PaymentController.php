@@ -329,6 +329,14 @@ class PaymentController extends Controller
         });
 
         function xenditResponseHandler (err, creditCardToken) {
+            if (err) {
+                enableButton();
+                var error_message = err.message;
+                $(\'#alert-payment\').html(\'<div id="alert-failed" class="alert alert-danger text-center mt-2" role="alert"><h2 style="margin-bottom:10px; margin-top:10px;"><i class="far fa-frown"></i> \'+ error_message +\'</h2></div>\');
+                $(\'#alert-payment\').fadeIn("slow");
+                return;
+            }
+
             if (creditCardToken.status === "APPROVED" || creditCardToken.status === "VERIFIED") {
                             $("#three-ds-container").hide();
                             $("#loader").show();
@@ -576,8 +584,6 @@ class PaymentController extends Controller
                 expiryMonth = expiryMonth.trim();
                 expiryYear = expiryYear.trim();
                 cvvNumber = cvvNumber.trim();
-
-                //billing_details: JSON.stringify({"address": { "postal_code": "\'+ zipCode +\'" }})
 
                 Xendit.card.createToken({
                     amount: '.$amount.',

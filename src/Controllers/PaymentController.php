@@ -185,7 +185,7 @@ class PaymentController extends Controller
         $amount = BookingHelper::convert_currency($shoppingcart->due_now,$shoppingcart->currency,'IDR');
         
         $billing_form = '
-            <div id="billing_form1" class="row no-gutters">
+            <div id="billing_form1" class="row no-gutters mt-2">
                 <div class="col-md-12 mb-2">
                     <h2 class=" mt-2">Billing Information</h2>
                 </div>

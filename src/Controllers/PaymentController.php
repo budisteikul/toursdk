@@ -489,6 +489,10 @@ class PaymentController extends Controller
                     expiration_keypress = false;
                 }
             }
+            else
+            {
+                $("#cc-expiration").addClass("is-invalid");
+            }
         });
 
         function checkExpiration()
@@ -509,6 +513,10 @@ class PaymentController extends Controller
                     {
                         $("#cc-expiration").removeClass("is-invalid");
                     }
+                }
+                else
+                {
+                    $("#cc-expiration").addClass("is-invalid");
                 }
             }
         }

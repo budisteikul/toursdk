@@ -272,7 +272,7 @@ class PaymentController extends Controller
 
             <div id="change_payment" class="mt-2">
                 <center>
-                    <small><a href="#" class="text-theme" onClick="changePaymentMethod(); return false;">Click here</a> to change payment method</small>
+                    <small><a href="#paymentMethod" class="text-theme" onClick="changePaymentMethod();">Click here</a> to change payment method</small>
                 </center>
             </div>
 
@@ -756,7 +756,7 @@ class PaymentController extends Controller
                 <i class="fas fa-lock"></i> <strong>Pay with card</strong>
             </button>
             <div id="change_payment" class="mt-2">
-                <center><small><a href="#" class="text-theme" onClick="changePaymentMethod(); return false;">Click here</a> to change payment method</small>
+                <center><small><a href="#paymentMethod" class="text-theme" onClick="changePaymentMethod();">Click here</a> to change payment method</small>
                 </center>
             </div>
         </form>
@@ -1013,7 +1013,7 @@ class PaymentController extends Controller
         <div id="proses">
             <div id="paypal-button-container"></div>
             <div id="change_payment" class="mt-2">
-                <center><small><a href="#" class="text-theme" onClick="changePaymentMethod(); return false;">Click here</a> to change payment method</small></center>
+                <center><small><a href="#paymentMethod" class="text-theme" onClick="changePaymentMethod();">Click here</a> to change payment method</small></center>
             </div>
         </div>
 

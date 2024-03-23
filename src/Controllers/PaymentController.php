@@ -425,6 +425,19 @@ class PaymentController extends Controller
             $("#cc-cvv").removeClass("is-invalid");
         }
 
+        
+        function addBillingForm()
+        {
+            $("#billing_form").html(\''. str_replace(array("\r", "\n"), '', $billing_form) .'\');
+            
+        }
+        function removeBillingForm()
+        {
+            $("#billing_form").html(\'\');
+            
+        }
+
+        
 
         var cardNumber_keypress = false;
         var expiration_keypress = false;
@@ -589,14 +602,7 @@ class PaymentController extends Controller
             
         }
 
-        function addBillingForm()
-        {
-            $("#billing_form").html(\''. str_replace(array("\r", "\n"), '', $billing_form) .'\');
-        }
-        function removeBillingForm()
-        {
-            $("#billing_form").html(\'\');
-        }
+
 
         function postBilling(id,country)
         {

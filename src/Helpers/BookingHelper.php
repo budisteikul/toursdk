@@ -316,6 +316,7 @@ class BookingHelper {
 			$sp_rate = $activity[$i]->rate->title;
 			$sp_currency = $contents->customerInvoice->currency;
 			$sp_date = ProductHelper::texttodate($product_invoice[$i]->dates);
+			$sp_cancellation = self::get_cancellation($sp_date,$activity[$i]->rate->cancellationPolicy->simpleCutoffHours);
 
 			$subtotal_product = 0;
 			$total_discount = 0;
@@ -467,6 +468,7 @@ class BookingHelper {
 				'rate' => $sp_rate,
 				'currency' =>  $sp_currency,
 				'date' => $sp_date,
+				'cancellation' => $sp_cancellation,
 				'subtotal' => $subtotal_product,
 				'discount' => $total_discount,
 				'total' => $total_product,
@@ -803,6 +805,7 @@ class BookingHelper {
 			
 			
 			$sp_date = ProductHelper::texttodate($product_invoice[$i]->dates);
+			$sp_cancellation = self::get_cancellation($sp_date,$activity[$i]->rate->cancellationPolicy->simpleCutoffHours);
 			
 			$subtotal_product = 0;
 			$total_discount = 0;
@@ -945,6 +948,7 @@ class BookingHelper {
 				'rate' => $sp_rate,
 				'currency' =>  $sp_currency,
 				'date' => $sp_date,
+				'cancellation' => $sp_cancellation,
 				'subtotal' => $subtotal_product,
 				'discount' => $total_discount,
 				'total' => $total_product,
@@ -1174,6 +1178,30 @@ class BookingHelper {
 		return $shoppingcart;
 	}
 	
+
+	public static function get_cancellation($date,$hour=null)
+	{
+		$value = "";
+		if($hour==null)
+		{
+			$value = "Fully refundable until ". ProductHelper::datetotext($date);
+		}
+		else
+		{
+			$date = Carbon::createFromFormat('Y-m-d H:i:s', $date)->addHours($hour*-1);
+			$now = date('Y-m-d H:i:s');
+			if($now>=$date)
+			{
+				$value = "Non-refundable";
+			}
+			else
+			{
+				$value = "Fully refundable until ". ProductHelper::datetotext($date);
+			}
+			
+		}
+		return $value;
+	}
 
 	public static function get_deposit($bokunId,$amount)
 	{
@@ -1678,6 +1706,7 @@ class BookingHelper {
 			if(isset($product->title)) $shoppingcart_product->title = $product->title;
 			if(isset($product->rate)) $shoppingcart_product->rate = $product->rate;
 			if(isset($product->date)) $shoppingcart_product->date = $product->date;
+			if(isset($product->cancellation)) $shoppingcart_product->cancellation = $product->cancellation;
 			if(isset($product->currency)) $shoppingcart_product->currency = $product->currency;
 			if(isset($product->subtotal)) $shoppingcart_product->subtotal = $product->subtotal;
 			if(isset($product->discount)) $shoppingcart_product->discount = $product->discount;

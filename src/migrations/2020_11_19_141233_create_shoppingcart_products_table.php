@@ -30,6 +30,7 @@ class CreateShoppingcartProductsTable extends Migration
             $table->string('title')->nullable();
             $table->string('rate')->nullable();
             $table->dateTime('date')->nullable();
+            $table->string('cancellation')->nullable();
             
             $table->string('currency')->default('USD');
             $table->float('subtotal',24,2)->default(0);

@@ -137,6 +137,37 @@ class GeneralHelper {
         return $hasil_rupiah;
     }
 
+    public static function hourToDay($hour)
+    {
+        $value = "";
+        $hid = 24;
+        $day = round($hour/$hid);
+
+        if( $day < 0 )
+        {
+            if($hour==1)
+            {
+                $value = $hour ." hour";
+            }
+            else
+            {
+                $value = $hour ." hours";
+            }
+        }
+        else
+        {
+            if($day==1)
+            {
+                $value = $day ." day";
+            }
+            else
+            {
+                $value = $day ." days";
+            }
+        }
+        return $value;   
+    }
+
     public static function roundCurrency($value,$currency="IDR")
     {
         if($currency=="IDR")

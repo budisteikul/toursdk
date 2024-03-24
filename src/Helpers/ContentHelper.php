@@ -123,7 +123,8 @@ class ContentHelper {
                 'product_total' => $product_total_asText,
                 'image' => $shoppingcart_product->image,
                 'date' => ProductHelper::datetotext($shoppingcart_product->date),
-                'rate' => $shoppingcart_product->rate,
+                'note' => '<i>Cancellation policy : <br />'.$shoppingcart_product->cancellation.'</i>',
+                'rate' => $shoppingcart_product->rate ,
                 'product_detail' => $product_detail_asText,
                 'pickups' => $dataPickup,
                 'extras' => $dataExtra,
@@ -671,6 +672,15 @@ class ContentHelper {
                 <li>Bookings are fully refundable up to the time of the event</li>
             </div>';
         }
+        else
+        {
+            $cancellationPolicy = '
+            <div class="mb-4">
+                <h3 class="mb-3">Cancellation Policy</h3>
+                <li>Refund if cancelled at least '. GeneralHelper::hourToDay($content->cancellationPolicy->simpleCutoffHours) .' before the event</li>
+            </div>';
+        }
+
 
         $marketplace_list  = null;
         $marketplaces = Marketplace::where('product_id',$product->id)->orderBy('name')->get();

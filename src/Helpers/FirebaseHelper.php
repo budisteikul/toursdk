@@ -69,6 +69,7 @@ class FirebaseHelper {
                 'api_url' => env('APP_API_URL'),
                 'payment_enable' => config('site.payment_enable'),
                 'payment_default' => config('site.payment_default'),
+                'agreement' => 'I agree with the <a class="text-theme" href="/page/terms-and-conditions" target="_blank">terms and conditions</a> and cancellation policy for each product.',
                 'cancellationPolicy' => 'I agree with the <a class="text-theme" href="/page/terms-and-conditions" target="_blank">terms and conditions</a>.',
                 'message' => 'success'
             );

@@ -285,7 +285,6 @@ class ContentHelper {
                 'products' => $dataProducts,
                 'mainQuestions' => $dataMainQuestion,
                 'productQuestions' => $dataProductQuestion,
-                'cancellationPolicy' => 'I agree with the <a class="text-theme" href="/page/terms-and-conditions" target="_blank">terms and conditions</a>.'
             );
 
         if(str_contains( $payment_enable,"xendit"))

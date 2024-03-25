@@ -121,7 +121,7 @@ class APIController extends Controller
             <p class="text-faded">
                 Join us on this experience to try authentic dishes, play traditional games, travel on a becak, learn interesting fun facts about city, interact with locals and many more.
                 <br />
-                Enjoy Jogja in Local Ways!
+                Enjoy Jogja Like Locals!
             </p>';
 
             $featured = '

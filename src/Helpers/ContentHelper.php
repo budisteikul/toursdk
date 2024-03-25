@@ -123,8 +123,8 @@ class ContentHelper {
                 'product_total' => $product_total_asText,
                 'image' => $shoppingcart_product->image,
                 'date' => ProductHelper::datetotext($shoppingcart_product->date),
-                'note' => '<div><span class="fas fa-1x fa-history text-success"></span> Cancellation policy <br />
-                        <i>'.$shoppingcart_product->cancellation.'</i></div>',
+                'note' => '<div class="text-success"><span><i class="fas fa-1x fa-history "></i> <b>Cancellation policy</b> </span><br />
+                        '.$shoppingcart_product->cancellation.'</div>',
                 'rate' => $shoppingcart_product->rate ,
                 'product_detail' => $product_detail_asText,
                 'pickups' => $dataPickup,
@@ -777,9 +777,12 @@ class ContentHelper {
 
 		foreach($shoppingcart->shoppingcart_products()->get() as $shoppingcart_product)
 		{
-			$product .= '<div class="card mb-2"><div class="card-body bg-light">';
+			$product .= '<div class="card mb-2">
+                <div class="card-body bg-light">';
 
-			$product .= '<strong>'.$shoppingcart_product->title.'</strong><br />';
+			$product .= '<div class="row">
+            
+            <div class="col-md-12"><strong>'.$shoppingcart_product->title.'</strong><br />';
 			
             $thedate = ProductHelper::datetotext($shoppingcart_product->date);
             if($thedate!=null) $product .= $thedate .' <br />';
@@ -807,12 +810,15 @@ class ContentHelper {
 				}
 			}
 
-			
-			$product .= '<br />'. BookingHelper::get_answer_product($shoppingcart,$shoppingcart_product->booking_id) .'<br />';
+			$product .= '</div></div>';
+			$product .= '
+            <div>'. BookingHelper::get_answer_product($shoppingcart,$shoppingcart_product->booking_id) .'</div>
+            ';
 			
 
 			
-			$product .= '</div></div>';
+			$product .= '</div>
+            </div>';
 		}
 
 		if($html2text)

@@ -778,7 +778,7 @@ class ContentHelper {
 		foreach($shoppingcart->shoppingcart_products()->get() as $shoppingcart_product)
 		{
 			$product .= '<div class="card mb-2">
-            
+
                 <div class="card-body">';
 
 			$product .= '<div class="row">
@@ -816,7 +816,7 @@ class ContentHelper {
             <div>'. BookingHelper::get_answer_product($shoppingcart,$shoppingcart_product->booking_id) .'</div>
             ';
 			
-
+            $product .= '<div class="mt-1 text-success">'. $shoppingcart_product->cancellation .'</div>';
 			
 			$product .= '</div>
             </div>';

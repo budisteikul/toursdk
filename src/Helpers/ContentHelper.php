@@ -123,7 +123,7 @@ class ContentHelper {
                 'product_total' => $product_total_asText,
                 'image' => $shoppingcart_product->image,
                 'date' => ProductHelper::datetotext($shoppingcart_product->date),
-                'note' => '<i>Cancellation policy : <br />'.$shoppingcart_product->cancellation.'</i>',
+                'note' => '<i><span class="fas fa-1x fa-history"></span> Cancellation policy : <br />'.$shoppingcart_product->cancellation.'</i>',
                 'rate' => $shoppingcart_product->rate ,
                 'product_detail' => $product_detail_asText,
                 'pickups' => $dataPickup,

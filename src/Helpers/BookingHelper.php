@@ -30,7 +30,7 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class BookingHelper {
 
-	public static function webhook_insert_shoppingcart($data)
+	public static function webhook_bokun($data)
 	{
 			$shoppingcart = new Shoppingcart();
 			$shoppingcart->booking_status = 'CONFIRMED';
@@ -1672,9 +1672,12 @@ class BookingHelper {
         return $contents;
 	}
 
-	public static function confirm_transaction($sessionId)
+	public static function confirm_transaction($sessionId=null,$shoppingcart_json=null)
 	{
-		$shoppingcart_json = Cache::get('_'. $sessionId);
+		if($shoppingcart_json==null)
+		{
+			$shoppingcart_json = Cache::get('_'. $sessionId);
+		}
 		
 		$shoppingcart = new Shoppingcart();
 		if(isset($shoppingcart_json->booking_status)) $shoppingcart->booking_status = $shoppingcart_json->booking_status;
@@ -1688,7 +1691,6 @@ class BookingHelper {
 		if(isset($shoppingcart_json->total)) $shoppingcart->total = $shoppingcart_json->total;
 		if(isset($shoppingcart_json->due_now)) $shoppingcart->due_now = $shoppingcart_json->due_now;
 		if(isset($shoppingcart_json->due_on_arrival)) $shoppingcart->due_on_arrival = $shoppingcart_json->due_on_arrival;
-
 		if(isset($shoppingcart_json->url)) $shoppingcart->url = $shoppingcart_json->url;
 		if(isset($shoppingcart_json->referer)) $shoppingcart->referer = $shoppingcart_json->referer;
 		

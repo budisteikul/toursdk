@@ -104,7 +104,7 @@ class WebhookController extends Controller
                         BookingHelper::shoppingcart_notif($shoppingcart);
                     }
 
-                    $shoppingcart = BookingHelper::webhook_insert_shoppingcart($data);
+                    $shoppingcart = BookingHelper::webhook_bokun($data);
                     PaymentHelper::confirm_payment($shoppingcart,"CONFIRMED",true);
                     BookingHelper::shoppingcart_notif($shoppingcart);
                 

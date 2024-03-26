@@ -235,7 +235,7 @@ class PaymentController extends Controller
                     <div class="input-group pr-1">
                         <div class="input-group-prepend">
                             <span class="input-group-text bg-white">
-                                <i class="far fa-credit-card fa-lg fa-fw"></i>
+                                <i id="cardBrand" class="far fa-credit-card fa-lg fa-fw"></i>
                             </span>
                         </div>
                         <input class="form-control" type="text" id="card-number" placeholder="Card number" value="" style="height: 47px;border-radius: 0;" onKeyUp="return checkCardNumber();">
@@ -317,28 +317,28 @@ class PaymentController extends Controller
                 if(card_brand=="visa")
                 {
                     $("#cardBrand").removeClass();
-                    $("#cardBrand").addClass(\'fab\').addClass(\'fa-cc-visa  fa-lg\');
+                    $("#cardBrand").addClass(\'fab\').addClass(\'fa-cc-visa  fa-lg fa-fw\');
                 }
                 else if(card_brand=="mastercard")
                 {
                     $("#cardBrand").removeClass();
-                    $("#cardBrand").addClass(\'fab\').addClass(\'fa-cc-mastercard  fa-lg\');
+                    $("#cardBrand").addClass(\'fab\').addClass(\'fa-cc-mastercard  fa-lg fa-fw\');
                 }
                 else if(card_brand=="jcb")
                 {
                     $("#cardBrand").removeClass();
-                    $("#cardBrand").addClass(\'fab\').addClass(\'fa-cc-jcb  fa-lg\');
+                    $("#cardBrand").addClass(\'fab\').addClass(\'fa-cc-jcb  fa-lg fa-fw\');
                 }
                 else
                 {
                     $("#cardBrand").removeClass();
-                    $("#cardBrand").addClass(\'far\').addClass(\'fa-credit-card  fa-lg\');
+                    $("#cardBrand").addClass(\'far\').addClass(\'fa-credit-card  fa-lg fa-fw\');
                 }
             }
             else
             {
                 $("#cardBrand").removeClass();
-                $("#cardBrand").addClass(\'far\').addClass(\'fa-credit-card  fa-lg\');
+                $("#cardBrand").addClass(\'far\').addClass(\'fa-credit-card  fa-lg fa-fw\');
             }
         });
 

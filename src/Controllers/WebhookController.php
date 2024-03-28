@@ -33,6 +33,11 @@ class WebhookController extends Controller
                 $message = $body['entry'][0]['changes'][0]['value']['messages'][0]['text']['body'];
                 $message_id = $body['entry'][0]['changes'][0]['value']['messages'][0]['id'];
 
+             if($type=="text")
+             {
+
+               
+
                 curl_setopt_array($ch = curl_init(), array(
                     CURLOPT_URL => "https://api.pushover.net/1/messages.json",
                     CURLOPT_POSTFIELDS => array(
@@ -96,7 +101,7 @@ class WebhookController extends Controller
                 curl_setopt($ch, CURLOPT_HTTPHEADER, $headerArray);
                 $response = curl_exec($ch);
                 curl_close ($ch);
-
+             }
                 return response('OK', 200)->header('Content-Type', 'text/plain');
             }
             else

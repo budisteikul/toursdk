@@ -27,7 +27,7 @@ class TaskHelper {
 	{
 		if(env("APP_ENV")=="local")
 		{
-			return "";
+			//return "";
 		}
 
 		$queue_id = Uuid::uuid4()->toString();

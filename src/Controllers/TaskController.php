@@ -84,14 +84,32 @@ class TaskController extends Controller
             }
             $phoneNumber = $nomor;
 
-            $data = '{ "messaging_product": "whatsapp", "to": "'.$phoneNumber.'", "type": "template", "template": { "name": "thanks_for_booking", "language": { "code": "en_US" }, "components": [{ "type": "body", "parameters": [ { "type": "text", "text": "'.$firstName.'" },  { "type": "text", "text": "'.$bookingNumber.'" } ] }] } }';
-
+            $data = [
+                "messaging_product" => "whatsapp",
+                "to" => $phoneNumber,
+                "type" => "template",
+                "template" => [
+                    "name" => "thanks_for_booking",
+                    "language" => [
+                        "code" => "en_US"
+                    ],
+                    "components" => [
+                        [
+                            "type"=> "body",
+                            "parameters" => [
+                                ["type"=>"text","text"=> $firstName],
+                                ["type"=>"text","text"=> $bookingNumber]
+                            ]
+                        ]
+                    ]
+                ]
+            ];
 
 
             $payload = json_encode($data);
-            $headerArray[] = "Accept: application/json";
-            $headerArray[] = "Authorization: Basic ". env("META_WHATSAPP_TOKEN");
-            $headerArray[] = 'Content-Length: ' . strlen($payload);
+            
+            $headerArray[] = "Content-Type: application/json";
+            $headerArray[] = "Authorization: Bearer ". env("META_WHATSAPP_TOKEN");
 
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_VERBOSE, true);

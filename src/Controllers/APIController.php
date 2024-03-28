@@ -29,7 +29,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 
-
+use budisteikul\toursdk\Helpers\TaskHelper;
 
 class APIController extends Controller
 {
@@ -37,6 +37,18 @@ class APIController extends Controller
     public function __construct(Request $request)
     {
         
+    }
+
+    public function dicoba(Request $request)
+    {       
+            
+        $shoppingcart = Shoppingcart::where('session_id','34dcc6f-3713-dbd4-4a6-b63271f260')->where('confirmation_code','VT-240328024')->first();
+        $payload = new \stdClass();
+        $payload->app = 'whatsapp';
+        $payload->session_id = $shoppingcart->session_id;
+        $payload->confirmation_code = $shoppingcart->confirmation_code;
+
+        TaskHelper::create($payload);
     }
 
     public function cancellation($sessionId,$confirmationCode)

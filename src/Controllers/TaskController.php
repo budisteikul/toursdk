@@ -66,60 +66,64 @@ class TaskController extends Controller
         if($data->app=="whatsapp")
         {
             $shoppingcart = Shoppingcart::where('session_id',$data->session_id)->where('confirmation_code',$data->confirmation_code)->first();
-            $firstName = $shoppingcart->shoppingcart_questions()->select('answer')->where('type','mainContactDetails')->where('question_id','firstName')->first()->answer;
-            $phoneNumber = $shoppingcart->shoppingcart_questions()->select('answer')->where('type','mainContactDetails')->where('question_id','phoneNumber')->first()->answer;
-            $bookingNumber = $shoppingcart->confirmation_code;
-
-            $number = $phoneNumber;
-            $number_array = explode(" ",$number);
-            if(isset($number_array[1]))
+            if($shoppingcart)
             {
-                $number_array[1] = ltrim($number_array[1], '0');
-            }
+                $firstName = $shoppingcart->shoppingcart_questions()->select('answer')->where('type','mainContactDetails')->where('question_id','firstName')->first()->answer;
+                $phoneNumber = $shoppingcart->shoppingcart_questions()->select('answer')->where('type','mainContactDetails')->where('question_id','phoneNumber')->first()->answer;
+                $bookingNumber = $shoppingcart->confirmation_code;
+
+                $number = $phoneNumber;
+                $number_array = explode(" ",$number);
+                if(isset($number_array[1]))
+                {
+                    $number_array[1] = ltrim($number_array[1], '0');
+                }
                         
-            $nomor = '';
-            foreach($number_array as $no)
-            {
-                $nomor .= preg_replace("/[^0-9]/","",$no);
-            }
-            $phoneNumber = $nomor;
+                $nomor = '';
+                foreach($number_array as $no)
+                {
+                    $nomor .= preg_replace("/[^0-9]/","",$no);
+                }
+                $phoneNumber = $nomor;
 
-            $data = [
-                "messaging_product" => "whatsapp",
-                "to" => $phoneNumber,
-                "type" => "template",
-                "template" => [
-                    "name" => "thanks_for_booking",
-                    "language" => [
-                        "code" => "en_US"
-                    ],
-                    "components" => [
-                        [
-                            "type"=> "body",
-                            "parameters" => [
-                                ["type"=>"text","text"=> $firstName],
-                                ["type"=>"text","text"=> $bookingNumber]
+                $data = [
+                    "messaging_product" => "whatsapp",
+                    "to" => $phoneNumber,
+                    "type" => "template",
+                    "template" => [
+                        "name" => "thanks_for_booking",
+                        "language" => [
+                            "code" => "en_US"
+                        ],
+                        "components" => [
+                            [
+                                "type"=> "body",
+                                "parameters" => [
+                                    ["type"=>"text","text"=> $firstName],
+                                    ["type"=>"text","text"=> $bookingNumber]
+                                ]
                             ]
                         ]
                     ]
-                ]
-            ];
+                ];
 
 
-            $payload = json_encode($data);
+                $payload = json_encode($data);
             
-            $headerArray[] = "Content-Type: application/json";
-            $headerArray[] = "Authorization: Bearer ". env("META_WHATSAPP_TOKEN");
+                $headerArray[] = "Content-Type: application/json";
+                $headerArray[] = "Authorization: Bearer ". env("META_WHATSAPP_TOKEN");
 
-            $ch = curl_init();
-            curl_setopt($ch, CURLOPT_VERBOSE, true);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER,true);
-            curl_setopt($ch, CURLOPT_URL, 'https://graph.facebook.com/v19.0/'.env("META_BUSINESS_ID").'/messages');
-            curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
-            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
-            curl_setopt($ch, CURLOPT_HTTPHEADER, $headerArray);
-            $response = curl_exec($ch);
-            curl_close ($ch);
+                $ch = curl_init();
+                curl_setopt($ch, CURLOPT_VERBOSE, true);
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER,true);
+                curl_setopt($ch, CURLOPT_URL, 'https://graph.facebook.com/v19.0/'.env("META_BUSINESS_ID").'/messages');
+                curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
+                curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+                curl_setopt($ch, CURLOPT_HTTPHEADER, $headerArray);
+                $response = curl_exec($ch);
+                curl_close ($ch);
+            }
+            
             
             return response('OK', 200)->header('Content-Type', 'text/plain');
         }

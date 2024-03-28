@@ -1856,17 +1856,13 @@ class BookingHelper {
 		$shoppingcart = Cache::get('_'. $sessionId);
         $shoppingcart = self::confirm_transaction($sessionId);
 
-        
-        	//BokunHelper::set_mainContactQuestion($sessionId);
-        	//BokunHelper::set_confirmBooking($sessionId);
-        
-
         self::shoppingcart_clear($sessionId);
 
         if($sendMail)
         {
         	self::shoppingcart_mail($shoppingcart);
         }
+
         self::shoppingcart_notif($shoppingcart);
         return $shoppingcart;
 	}

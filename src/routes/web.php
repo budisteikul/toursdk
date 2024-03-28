@@ -103,3 +103,7 @@
 	Route::get('/api/contact-us', function () {
     	return redirect()->to('https://wa.me/6285743112112');
 	});
+
+	Route::get('/api/meeting-point', function () {
+    	return redirect()->to('https://linktr.ee/foodtour');
+	});

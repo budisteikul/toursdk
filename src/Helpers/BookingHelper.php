@@ -1851,15 +1851,16 @@ class BookingHelper {
         return $shoppingcart;
 	}
 
-	public static function confirm_booking($sessionId,$sendMail=true)
+	public static function confirm_booking($sessionId,$notif_customer=true)
 	{
 		$shoppingcart = Cache::get('_'. $sessionId);
         $shoppingcart = self::confirm_transaction($sessionId);
 
         self::shoppingcart_clear($sessionId);
 
-        if($sendMail)
+        if($notif_customer)
         {
+        	self::shoppingcart_whatsapp($shoppingcart);
         	self::shoppingcart_mail($shoppingcart);
         }
 

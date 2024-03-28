@@ -360,14 +360,14 @@ footer {
 
 <br />
 
-
+@if($shoppingcart->shoppingcart_payment->payment_provider!="none")
 <div id="notices" style="margin-top: 10px;float:right;">
   
   <div style="font-size: 14px; color: #AAAAAA; line-height: 18px; font-weight: bold; ">PAYMENT STATUS</div>  
   <div class="notice"><small>{!! $PaymentHelper->get_paymentStatus($shoppingcart) !!}</small></div>
   
 </div>
-
+@endif
 
 @if($shoppingcart->shoppingcart_payment->payment_provider=="none")
 <h2 style="margin-bottom:3px;">Payment Details</h2>

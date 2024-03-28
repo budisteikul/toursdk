@@ -31,6 +31,7 @@ class WebhookController extends Controller
                 $type = $body['entry'][0]['changes'][0]['value']['messages'][0]['type'];
                 $from = $body['entry'][0]['changes'][0]['value']['messages'][0]['from'];
                 $message = $body['entry'][0]['changes'][0]['value']['messages'][0]['text']['body'];
+                $message_id = $body['entry'][0]['changes'][0]['value']['messages'][0]['id'];
 
                 curl_setopt_array($ch = curl_init(), array(
                     CURLOPT_URL => "https://api.pushover.net/1/messages.json",
@@ -56,6 +57,28 @@ class WebhookController extends Controller
                             "code" => "en_US"
                         ]
                     ]
+                ];
+
+
+                $payload = json_encode($data);
+            
+                $headerArray[] = "Content-Type: application/json";
+                $headerArray[] = "Authorization: Bearer ". env("META_WHATSAPP_TOKEN");
+
+                $ch = curl_init();
+                curl_setopt($ch, CURLOPT_VERBOSE, true);
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER,true);
+                curl_setopt($ch, CURLOPT_URL, 'https://graph.facebook.com/v19.0/'.env("META_BUSINESS_ID").'/messages');
+                curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
+                curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+                curl_setopt($ch, CURLOPT_HTTPHEADER, $headerArray);
+                $response = curl_exec($ch);
+                curl_close ($ch);
+
+                $data = [
+                    "messaging_product" => "whatsapp",
+                    "status" => "read",
+                    "message_id" => $message_id
                 ];
 
 

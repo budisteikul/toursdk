@@ -106,8 +106,9 @@ class WebhookController extends Controller
 
                     $shoppingcart = BookingHelper::webhook_bokun($data);
                     PaymentHelper::confirm_payment($shoppingcart,"CONFIRMED",true);
+                    BookingHelper::shoppingcart_whatsapp($shoppingcart);
                     BookingHelper::shoppingcart_notif($shoppingcart);
-                
+                    
                     return response('CONFIRMED OK', 200)->header('Content-Type', 'text/plain');
                 break;
                 case 'CANCELLED':

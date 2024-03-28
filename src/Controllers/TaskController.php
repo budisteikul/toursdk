@@ -63,6 +63,16 @@ class TaskController extends Controller
             return response('OK', 200)->header('Content-Type', 'text/plain');
         }
 
+        if($data->app=="whatsapp")
+        {
+            $shoppingcart = Shoppingcart::where('session_id',$data->session_id)->where('confirmation_code',$data->confirmation_code)->first();
+            $firstName = $shoppingcart->shoppingcart_questions()->select('answer')->where('type','mainContactDetails')->where('question_id','firstName')->first()->answer;
+            $phoneNumber = $shoppingcart->shoppingcart_questions()->select('answer')->where('type','mainContactDetails')->where('question_id','phoneNumber')->first()->answer;
+
+            
+            return response('OK', 200)->header('Content-Type', 'text/plain');
+        }
+
         if($data->app=="pushover")
         {
             $confirmation_code = $data->confirmation_code;

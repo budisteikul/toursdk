@@ -37,8 +37,10 @@ class WebhookController extends Controller
                     CURLOPT_POSTFIELDS => array(
                         "token" => env('PUSHOVER_TOKEN'),
                         "user" => env('PUSHOVER_USER'),
-                        "title" => $from,
+                        "title" => 'Message from '. $from,
                         "message" => $message,
+                        "url" => 'https://wa.me/'.$from,
+                        "url_title" => "Reply"
                     ),
                     ));
                 curl_exec($ch);

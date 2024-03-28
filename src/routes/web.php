@@ -98,3 +98,8 @@
 	Route::post('/api/tool/billing/{sessionId}', 'budisteikul\toursdk\Controllers\ToolController@billing')->middleware(['SettingMiddleware']);
 	Route::post('/api/tool/bin', 'budisteikul\toursdk\Controllers\ToolController@bin')->middleware(['SettingMiddleware']);
 
+
+
+	Route::get('/api/contact-us', function () {
+    	return redirect()->to('https://wa.me/6285743112112');
+	});

@@ -7,6 +7,7 @@ use budisteikul\toursdk\Helpers\PaymentHelper;
 use budisteikul\toursdk\Models\Shoppingcart;
 use budisteikul\toursdk\Helpers\WiseHelper;
 use budisteikul\toursdk\Helpers\TaskHelper;
+use budisteikul\toursdk\Helpers\LogHelper;
 
 class WebhookController extends Controller
 {
@@ -19,6 +20,74 @@ class WebhookController extends Controller
     
     public function webhook($webhook_app,Request $request)
     {
+        if($webhook_app=="whatsapp")
+        {
+            
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+                $json = $request->getContent();
+                $body = json_decode($json, true);
+
+                $type = $body['entry'][0]['changes'][0]['value']['messages'][0]['type'];
+                $from = $body['entry'][0]['changes'][0]['value']['messages'][0]['from'];
+                $message = $body['entry'][0]['changes'][0]['value']['messages'][0]['text']['body'];
+
+                curl_setopt_array($ch = curl_init(), array(
+                    CURLOPT_URL => "https://api.pushover.net/1/messages.json",
+                    CURLOPT_POSTFIELDS => array(
+                        "token" => env('PUSHOVER_TOKEN'),
+                        "user" => env('PUSHOVER_USER'),
+                        "title" => $from,
+                        "message" => $message,
+                    ),
+                    ));
+                curl_exec($ch);
+                curl_close($ch);
+
+                $data = [
+                    "messaging_product" => "whatsapp",
+                    "to" => $from,
+                    "type" => "template",
+                    "template" => [
+                        "name" => "welcome",
+                        "language" => [
+                            "code" => "en_US"
+                        ]
+                    ]
+                ];
+
+
+                $payload = json_encode($data);
+            
+                $headerArray[] = "Content-Type: application/json";
+                $headerArray[] = "Authorization: Bearer ". env("META_WHATSAPP_TOKEN");
+
+                $ch = curl_init();
+                curl_setopt($ch, CURLOPT_VERBOSE, true);
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER,true);
+                curl_setopt($ch, CURLOPT_URL, 'https://graph.facebook.com/v19.0/'.env("META_BUSINESS_ID").'/messages');
+                curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
+                curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+                curl_setopt($ch, CURLOPT_HTTPHEADER, $headerArray);
+                $response = curl_exec($ch);
+                curl_close ($ch);
+
+                return response('OK', 200)->header('Content-Type', 'text/plain');
+            }
+            else
+            {
+                $mode = $request->input("hub_mode");
+                $token = $request->input("hub_verify_token");
+                $challenge = $request->input("hub_challenge");
+
+                if ($mode == "subscribe" && $token == env("META_WHATSAPP_TOKEN")) {
+                    return response($challenge, 200)->header('Content-Type', 'text/plain');
+                } else {
+                    return response('Forbidden', 403)->header('Content-Type', 'text/plain');
+                }
+            }
+        }
+
         if($webhook_app=="wise")
         {
             $is_test = $request->header('X-Test-Notification');
